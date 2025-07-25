@@ -51,6 +51,10 @@ Join us if you share these values.
 
 ## &nbsp;
 
+Read our [Manifesto](./MANIFESTO.md) to understand our values and vision.
+
+## &nbsp;
+
 ## Contributing
 
 We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for details, including our Contributor License Agreement (CLA).
