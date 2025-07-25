@@ -51,6 +51,12 @@ Join us if you share these values.
 
 ## &nbsp;
 
+## Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for details, including our Contributor License Agreement (CLA).
+
+## &nbsp;
+
 ## Roadmap
 
 - ✅ Define the project idea  
