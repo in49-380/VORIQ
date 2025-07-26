@@ -1,0 +1,79 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Need help? Use Q&A Discussions!
+    url: https://github.com/orgs/in49-380/discussions/categories/q-a
+    about: "Please use the Q&A section in Discussions for questions and support."
+issue_templates:
+  - name: Bug report
+    about: Report a problem or bug.
+    labels: bug
+    body:
+      - type: markdown
+        attributes:
+          value: |
+            Thanks for reporting a bug! Please fill out the template below.
+      - type: input
+        id: description
+        attributes:
+          label: Describe the bug
+          description: What did you expect to happen? What happened instead?
+          placeholder: A clear and concise description of what the bug is.
+          required: true
+      - type: input
+        id: steps
+        attributes:
+          label: Steps to reproduce
+          description: How can we reproduce the issue?
+          placeholder: Step-by-step instructions
+          required: true
+      - type: dropdown
+        id: severity
+        attributes:
+          label: Severity
+          options:
+            - Low
+            - Medium
+            - High
+          required: false
+  - name: Feature request
+    about: Suggest a new feature or improvement.
+    labels: enhancement
+    body:
+      - type: markdown
+        attributes:
+          value: |
+            Please describe the feature or improvement you'd like to see.
+      - type: input
+        id: feature_description
+        attributes:
+          label: Feature description
+          placeholder: Describe your idea here.
+          required: true
+  - name: Good first issue
+    about: A simple task suitable for newcomers.
+    labels: good first issue
+    body:
+      - type: markdown
+        attributes:
+          value: |
+            This is a good issue for new contributors.
+      - type: input
+        id: task_details
+        attributes:
+          label: Task details
+          placeholder: Describe the task.
+          required: true
+  - name: Help wanted
+    about: Request for assistance.
+    labels: help wanted
+    body:
+      - type: markdown
+        attributes:
+          value: |
+            We need help with this issue.
+      - type: input
+        id: help_needed
+        attributes:
+          label: What help do you need?
+          placeholder: Describe what kind of help is required.
+          required: true
