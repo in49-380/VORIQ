@@ -1,6 +1,6 @@
 blank_issues_enabled: false
 contact_links:
-  - name: Need help? Use Q&A Discussions!
+  - name: Need more help? Use Q&A Discussions!
     url: https://github.com/orgs/in49-380/discussions/categories/q-a
     about: "Please use the Q&A section in Discussions for questions and support."
 issue_templates:
