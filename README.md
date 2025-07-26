@@ -3,11 +3,9 @@
 
 ## Project Description
 
-**WarenKontrol** is an independent platform designed to provide users with objective, data-driven insights about products listed on e-commerce sites, car dealerships, manufacturers' websites, and more.
+**WarenKontrol** is an independent, non-commercial platform designed to provide users with objective, data-driven insights about products listed on e-commerce sites, car dealerships, manufacturers' websites, and more — strictly based on publicly available information.
 
-The service operates on-demand: a user submits a request for a specific product or source, and receives a comprehensive, analytically processed report based on publicly available information such as reviews, ratings, mentions, technical specifications, and more.
-
-We collect and analyze open data to generate a statistically grounded product profile, stripped of marketing bias.
+The service operates on-demand: a user voluntarily submits a request for a specific product (e.g., by providing a link), and receives an analytically processed report based on open data sources such as reviews, ratings, public forum mentions, and technical specifications.
 
 Users receive:
 
@@ -30,9 +28,8 @@ This shift helps to:
 * Reduce ecological damage caused by the disposal of low-lifespan products;
 * Raise consumer expectations around product longevity and quality;
 * Cut long-term costs for buyers by promoting more durable goods.
-
-We believe that **awareness leads to influence**.
-When consumers have access to the full, unbiased truth about products, they can drive change in the marketplace.
+* 
+Our mission is pursued fully in compliance with all applicable laws and ethical standards, ensuring responsible and lawful operation.
 
 ## &nbsp;
 
@@ -47,11 +44,24 @@ We believe that quality, transparent, and open software can influence everyday d
 
 Donations from commercial entities such as marketplaces or manufacturers are accepted and used alongside contributions from individual donors, without receiving special attention or privileges.
 
+We are committed to ethical development practices and adherence to legal and social responsibilities.
+
 Join us if you share these values.
 
 ## &nbsp;
 
 Read our [Manifesto](./MANIFESTO.md) to understand our values and vision.
+
+## &nbsp;
+
+## Legal Compliance
+**WarenKontrol** strictly adheres to all applicable laws and regulations, including **GDPR** and relevant local legislation.
+
+As described in Project Description, all data collection is performed only upon explicit user request and involves exclusively publicly available information.
+
+We do not engage in mass scraping, do not store or replicate third-party content, and do not collect personal data without explicit user consent.
+
+Our commitment to transparency, privacy, and legal compliance is fundamental to the platform’s operation.
 
 ## &nbsp;
 
@@ -97,7 +107,7 @@ See the [LICENSE](./LICENSE) file for details.
 
 Commercial use is prohibited without explicit permission.
 
-&nbsp;<br>
+---
 
 ### Why We Use the AGPL-3.0 License
 
@@ -105,18 +115,22 @@ We chose the AGPL-3.0 license because this is a socially significant, community-
 
 Our goals are:
 
-- To ensure transparency, public benefit, and technical openness;
-- To prevent unauthorized commercial exploitation, especially by large platforms, marketplaces, or vendors;
+- To ensure transparency, public benefit, and technical openness;  
+- To prevent unauthorized commercial exploitation, especially by large platforms, marketplaces, or vendors;  
 - To protect the project from corporate interests that may conflict with its original mission.
 
 The AGPL-3.0 license requires that anyone who uses this code—whether as a service or as part of a modified version—must also share their code under the same license. This includes web-based services (SaaS), not just distributed binaries.
 
 This ensures that improvements, forks, and integrations remain open to the public, sustaining a fair and collaborative ecosystem.
 
+The AGPL-3.0 license ensures that this project and all its derivatives remain open source and accessible to the community, preventing proprietary closures.
+
+## &nbsp;
+
 If you are interested in **commercial use** of this project, please publish a **public request** by [opening a GitHub issue in this repository](../../issues), clearly describing:
 
-- Your intended use case;
-- The scope of integration or modification;
+- Your intended use case;  
+- The scope of integration or modification;  
 - Any licensing or partnership proposal you may have.
 
 This ensures full transparency for the community and allows us to evaluate requests openly.
