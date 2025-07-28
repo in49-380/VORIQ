@@ -1,9 +1,9 @@
-# WarenKontrol
+# VORIQ
 ## &nbsp;
 
 ## Project Description
 
-**WarenKontrol** is an independent, non-commercial platform designed to provide users with objective, data-driven insights about products listed on e-commerce sites, car dealerships, manufacturers' websites, and more — strictly based on publicly available information.
+**VORIQ** is an independent, non-commercial platform designed to provide users with objective, data-driven insights about products listed on e-commerce sites, car dealerships, manufacturers' websites, and more — strictly based on publicly available information.
 
 The service operates on-demand: a user voluntarily submits a request for a specific product (e.g., by providing a link), and receives an analytically processed report based on open data sources such as reviews, ratings, public forum mentions, and technical specifications.
 
@@ -20,7 +20,7 @@ Users receive:
 
 ## Project Mission
 
-**WarenKontrol** serves as a feedback bridge between consumers and producers.
+**VORIQ** serves as a feedback bridge between consumers and producers.
 Our mission is to **shift manufacturers' focus away from short-term consumerism toward durable, high-quality, and environmentally conscious production**.
 
 This shift helps to:
@@ -55,7 +55,7 @@ Read our [Manifesto](./MANIFESTO.md) to understand our values and vision.
 ## &nbsp;
 
 ## Legal Compliance
-**WarenKontrol** strictly adheres to all applicable laws and regulations, including **GDPR** and relevant local legislation.
+**VORIQ** strictly adheres to all applicable laws and regulations, including **GDPR** and relevant local legislation.
 
 As described in Project Description, all data collection is performed only upon explicit user request and involves exclusively publicly available information.
 
