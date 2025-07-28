@@ -35,7 +35,7 @@ Our mission is pursued fully in compliance with all applicable laws and ethical 
 
 ## Team
 
-We are a group of independent developers and enthusiasts united by the desire to use technology for the benefit of society.  
+We are a [group of independent developers](./TEAM.md) and enthusiasts united by the desire to use technology for the benefit of society.  
 Our project is not funded by corporations, political entities, or commercial contracts.
 
 We believe that quality, transparent, and open software can influence everyday decisions — from product choices to attitudes toward the environment.
@@ -46,9 +46,7 @@ Donations from commercial entities such as marketplaces or manufacturers are acc
 
 We are committed to ethical development practices and adherence to legal and social responsibilities.
 
-Join us if you share these values.
-
-## &nbsp;
+Join us if you share these values.  
 
 Read our [Manifesto](./MANIFESTO.md) to understand our values and vision.
 
