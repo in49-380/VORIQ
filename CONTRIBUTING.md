@@ -1,4 +1,4 @@
-# Contributing to WarenKontrol
+# Contributing to VORIQ
 
 Thank you for your interest in contributing to WarenKontrol! We appreciate your help in making this project better.
 
