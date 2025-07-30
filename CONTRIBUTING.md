@@ -18,9 +18,10 @@ Submitting a Pull Request (PR) means you have read, understood, and accepted the
 
 <br>
 
-## Code of Conduct
+**[Code of Conduct](./Code_of_Conduct.md)**
+ 
+ <br>
 
-Please adhere to our [Code of Conduct](./CODE_OF_CONDUCT.md) to maintain a respectful and collaborative community.
 
 ## Reporting Issues
 
