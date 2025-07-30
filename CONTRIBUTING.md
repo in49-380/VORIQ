@@ -1,4 +1,4 @@
-# Contributing to WarenKontrol
+# Contributing to VORIQ
 
 Thank you for your interest in contributing to WarenKontrol! We appreciate your help in making this project better.
 
@@ -7,20 +7,25 @@ Before submitting any code or documentation changes, please read the following g
 ## Contributor License Agreement (CLA)
 
 By contributing to this project, you agree to the terms of our Contributor License Agreement (CLA).  
-You can find the full CLA document here: [CLA.md](./CLA.md).
+You can find the full CLA document here: [CLA](./CLA.md).
 
 Submitting a Pull Request (PR) means you have read, understood, and accepted the CLA, and that you have the rights to contribute the code or content you submit.
 
 ## How to Contribute
+<br>
 
-- Fork the repository and create your feature branch (`git checkout -b feature-name`).
-- Make your changes with clear, concise commit messages.
-- Write tests if applicable and ensure existing tests pass.
-- Submit a Pull Request describing your changes clearly.
+**[Commit and Branch rules](./Commit_and_Branch_Rules.md)**
 
-## Code of Conduct
+<br>
 
-Please adhere to our [Code of Conduct](./CODE_OF_CONDUCT.md) to maintain a respectful and collaborative community.
+**[Issue Policy](./Issue_Policy.md)**
+ 
+<br>
+ 
+**[Code of Conduct](./Code_of_Conduct.md)**
+ 
+<br>
+
 
 ## Reporting Issues
 

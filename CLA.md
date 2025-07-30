@@ -1,6 +1,6 @@
 # CONTRIBUTOR LICENSE AGREEMENT (CLA)
 
-This Agreement governs the transfer of rights to code contributed to the project in order to ensure legal clarity and protect the interests of the project owner.
+This Agreement governs the transfer of rights to code contributed to the **VORIQ** project in order to ensure legal clarity and protect the interests of the project owner.
 
 **This Agreement** sets forth the terms under which contributors transfer rights to the code submitted to the repository (hereinafter referred to as the "Project") to the repository owner (hereinafter referred to as the "Owner"). This Agreement is concluded in accordance with the applicable law of the European Union.
 
