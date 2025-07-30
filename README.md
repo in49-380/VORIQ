@@ -82,7 +82,7 @@ Our commitment to transparency, privacy, and legal compliance is fundamental to 
 
 ## Contributing
 
-We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for details, including our Contributor License Agreement (CLA).
+We welcome contributions! Please see [CONTRIBUTING](./CONTRIBUTING.md) for details, including our Contributor License Agreement (CLA).
 
 ## &nbsp;
 
