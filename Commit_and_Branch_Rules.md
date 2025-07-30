@@ -73,7 +73,8 @@ This will automatically close the issue once the PR is merged.
 
 * One commit = one logical change.
 * Branch names must be in **lowercase**, with hyphens as word separators.
-* Do **not** commit directly to `main` or `master`. Always use pull requests.
+* Do not commit directly to main. Use dev as the integration branch.
+* All pull requests must be merged into the **dev** branch.
 * Use Draft PRs if the feature is still in development.
 
 ---
