@@ -1,0 +1,4 @@
+- **Full Name:** Oleksandr Harbuz
+- **Technology Stack for This Project:** Java, Spring Framework
+- **GitHub Profile:** https://github.com/a-harbuz
+- **LinkedIn Profile:** https://www.linkedin.com/in/oleksandr-harbuz-1b9b41300/
