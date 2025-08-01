@@ -1,0 +1,4 @@
+- **Full Name:** Zharova Natalia
+- **Technology Stack for This Project:** Frontend. JS, TS, React
+- **GitHub Profile:** https://github.com/ZhNath
+- **LinkedIn Profile:** 
