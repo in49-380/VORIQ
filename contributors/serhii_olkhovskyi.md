@@ -1,0 +1,4 @@
+- **Full Name:** Serhii Olkhovskyi
+- **Technology Stack for This Project:** Python, Django.
+- **GitHub Profile:** https://github.com/Olkhovskyi-Serhii
+- **LinkedIn Profile:** https://www.linkedin.com/in/serhii-olkhovskyi/
