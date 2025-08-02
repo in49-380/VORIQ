@@ -34,7 +34,7 @@ jobs:
           else
             BRANCH_NAME=${GITHUB_REF#refs/heads/}
           fi
-          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
 
       - name: Validate branch name
         id: validate_branch_name
