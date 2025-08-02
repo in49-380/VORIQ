@@ -13,3 +13,4 @@ else
    echo "Available <type>: feature|bugfix|hotfix|refactor|test|docs|chore"
    exit 1 
 fi
+
