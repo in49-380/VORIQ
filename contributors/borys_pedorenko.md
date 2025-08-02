@@ -1,0 +1,4 @@
+- **Full Name:** Borys Pedorenko
+- **Technology Stack for This Project:** Java, JUnit, Selenium, RestAssured, Postman, SQL, Allure, Cucumber, Maven, GitHub 
+- **GitHub Profile:** https://github.com/Boriszhenya
+- **LinkedIn Profile:** https://www.linkedin.com/in/borys-pedorenko-62511853/
