@@ -40,13 +40,22 @@ jobs:
 
       - name: Validate commit messages
         run: |
-          echo "line1: ${{ github.event.head_commit.message }}"
-          echo "line2: ${{ github.event.workflow_run.head_commit.message }}"
-          echo "line3: ${{github.event.after}}"
-          echo "line4: $(git log --format=%B -n 1 ${{github.event.after}})"
-          echo "line5: $(git log -n 1 --format=%s)"
-          echo "line6: $(git log -n 1 --format=%B)"
-          echo "line7: $(git show -s --format='%s')"
+          echo "line01: ${{ github.event.head_commit.message }}"
+          echo "line02: ${{ github.event.workflow_run.head_commit.message }}"
+          echo "line03: ${{ github.event.after }}"
+          echo "line04: $(git log --format=%B -n 1 ${{github.event.after}})"
+          echo "line05: $(git log -n 1 --format=%s)"
+          echo "line06: $(git log -n 1 --format=%B)"
+          echo "line07: $(git show -s --format='%s')"
+          pr_num=${{ github.event.pull_request.number }}
+          echo "line08: $pr_num"
+          git fetch origin refs/pull/${pr_num}/head:refs/remotes/origin/pull/${pr_num}/head
+          commit_title=$(git log -1 --pretty=format:"%s" origin/pull/${pr_num}/head)
+          commit_body=$(git log -1 --pretty=format:"%b" origin/pull/${pr_num}/head)
+          echo "line09: Commit Title: $commit_title"
+          echo "line10: Commit Body: $commit_body"
+          echo "line11: Commit Title: ${{ github.event.pull_request.title }}"
+          echo "line12: Commit Body: ${{ github.event.pull_request.body }}"
 
 
 
