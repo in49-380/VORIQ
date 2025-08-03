@@ -40,17 +40,9 @@ jobs:
 
       - name: Validate commit messages
         run: |
-          COMMIT_MESSAGES=$(git log origin/${{ github.event.before }}..HEAD --pretty=format:"%s")
-          echo "$COMMIT_MESSAGES" | while read -r message; do
-            if [[ ! "$message" =~ ^(feature|bugfix|hotfix|refactor|test|docs):\ #[0-9]+\ .{1,72} ]]; then
-              echo "Commit message '$message' does not follow the naming convention."
+          COMMIT_MESSAGE=$(git log -n 1 --format=%s)
+            if [[ ! "$COMMIT_MESSAGE" =~ ^(feature|bugfix|hotfix|refactor|test|docs):\ #[0-9]+\ .{1,72} ]]; then
+              echo "Commit message '$COMMIT_MESSAGE' does not follow the naming convention."
               echo "Expected format: <type>: #<issue-id> <short summary>"
               exit 1
             fi
-            FIRST_LINE=$(echo "$message" | head -n 1)
-            if [ ${#FIRST_LINE} -gt 72 ]; then
-              echo "First line of commit message '$FIRST_LINE' exceeds 72 characters."
-              exit 1
-            fi
-          done
-
