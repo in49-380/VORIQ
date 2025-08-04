@@ -45,4 +45,4 @@ The application is a single-page interface (SPA) operating entirely through a ro
 * Terms of Use:  `/api/meta/terms`
 * Privacy Policy:  `/api/meta/privacy`
 * Cookie Policy:  `/api/meta/cookies`
-* GitHub Repository: [https://github.com/in49-380/VORIQ](https://github.com/in49-380/VORIQ`)
+* GitHub Repository: [https://github.com/in49-380/VORIQ](https://github.com/in49-380/VORIQ)
