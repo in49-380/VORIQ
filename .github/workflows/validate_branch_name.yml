@@ -27,7 +27,7 @@ jobs:
         id: validate_branch_name
         run: |
           echo "BRANCH_NAME=$BRANCH_NAME"
-          if [[ "$BRANCH_NAME" =~ ^(feature|bugfix|hotfix|refactor|test|docs|chore)\/[0-9]+-[a-z0-9-]{5,}$ ]]; then
+          if [[ "$BRANCH_NAME" =~ ^(feature|bugfix|hotfix|refactor|test|docs|chore)/[0-9]{1,}-[a-z0-9-]{5,}$ ]]; then
             echo "Branch name '$BRANCH_NAME' is valid."
             exit 0 
           else
