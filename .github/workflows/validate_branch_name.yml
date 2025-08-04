@@ -59,7 +59,7 @@ jobs:
 
           COMMIT_MESSAGE=$commit_title
           echo "$COMMIT_MESSAGE"
-            if [[ ! "$COMMIT_MESSAGE" =~ ^(feature|bugfix|hotfix|refactor|test|docs):\ #[0-9]+\ .{1,72} ]]; then
+            if [[ ! "$COMMIT_MESSAGE" =~ ^(feature|bugfix|hotfix|refactor|test|docs|chore):\ #[0-9]+\ .{1,72} ]]; then
               echo "Commit message '$COMMIT_MESSAGE' does not follow the naming convention."
               echo "Expected format: <type>: #<issue-id> <short summary>"
               exit 1
