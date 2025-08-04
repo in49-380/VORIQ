@@ -57,8 +57,6 @@ jobs:
           echo "line11: Commit Title: ${{ github.event.pull_request.title }}"
           echo "line12: Commit Body: ${{ github.event.pull_request.body }}"
 
-
-
           COMMIT_MESSAGE=$commit_title
           echo "$COMMIT_MESSAGE"
             if [[ ! "$COMMIT_MESSAGE" =~ ^(feature|bugfix|hotfix|refactor|test|docs):\ #[0-9]+\ .{1,72} ]]; then
