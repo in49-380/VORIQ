@@ -1,0 +1,4 @@
+- **Full Name:** Ihor Tkachenko
+- **Technology Stack for This Project:** Java, Maven, Selenium, JUnit, Cucumber, Allure, Postman, RestAssured, SQL 
+- **GitHub Profile:** https://github.com/IhorTk
+- **LinkedIn Profile:** https://www.linkedin.com/in/ihor-tkachenko-572708346/
