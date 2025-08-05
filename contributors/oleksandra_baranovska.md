@@ -8,7 +8,7 @@
 
 Cucumber, Appium, JUnit, JavaScript, HTML/CSS, MySQL, DBeaver
 
-\- \*\*GitHub Profile:\*\* \[https://github.com/Malvin174](https://github.com/Malvin174)
+\- \*\*GitHub Profile:\*\* \[https://github.com/Malvin174]
 
-\- \*\*LinkedIn Profile:\*\* \[https://linkedin.com/in/your\_profile](www.linkedin.com/in/oleksandra-baranovska-qatesterin)
+\- \*\*LinkedIn Profile:\*\* \[https://linkedin.com/in/oleksandra-baranovska-qatesterin]
 
