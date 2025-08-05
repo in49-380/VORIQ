@@ -1,0 +1,4 @@
+- **Full Name:** Dmytro Opryshchenko
+- **Technology Stack for This Project:** JavaScript, TypeScript, React.js
+- **GitHub Profile:** https://github.com/dima-opr
+- **LinkedIn Profile:** https://www.linkedin.com/in/dmytro-opryshchenko/
