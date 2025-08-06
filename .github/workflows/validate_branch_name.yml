@@ -21,6 +21,11 @@ jobs:
           else
             BRANCH_NAME=${GITHUB_REF#refs/heads/}
           fi
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+
+      - name: Validate branch name
+        id: validate_branch_name
+        run: |
           echo "BRANCH_NAME: $BRANCH_NAME"
           if [[ ! "$BRANCH_NAME" =~ ^(feature|bugfix|hotfix|refactor|test|docs|chore)\/[0-9]{1,}-[a-zA-Z0-9_-]{5,}$ ]]; then
             echo "Branch name '$BRANCH_NAME' does not follow the naming convention."
@@ -28,6 +33,8 @@ jobs:
             echo "Available <type>: feature|bugfix|hotfix|refactor|test|docs|chore"
             exit 1 
           fi
+        env: 
+          BRANCH_NAME: ${{ env.BRANCH_NAME }}
 
       - name: Validate commit messages
         run: |
