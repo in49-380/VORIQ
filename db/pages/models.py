@@ -154,7 +154,7 @@ class SearchQuery(models.Model):
         # Sorting by creation date (newest requests first)
         ordering = ['-created_at']
 
-# Search Result model - Модель результатов поиска
+# Search Result model
 class SearchResult(models.Model):
     """
     Model for storing search query results. Connects the search query with found cars. 
