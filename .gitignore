@@ -1,34 +1,67 @@
-# IDEs
+# === OS ===
+.DS_Store
+Thumbs.db
+
+# === IDEs ===
 .vscode/
 .idea/
 *.sublime*
 
-# OS
-.DS_Store
-Thumbs.db
-
-# Build
+# === Build ===
 build/
 dist/
 *.o
 *.exe
 *.log
 
-# Python
+# === Python ===
 __pycache__/
 *.pyc
 
-# CMake
+# === Django ===
+# Local database (SQLite)
+db.sqlite3
+*.sqlite3
+*.db
+
+# Static and media files (collected or uploaded)
+staticfiles/
+media/
+
+# Local settings (example: settings/local.py)
+settings_local.py
+*local.py
+
+# === Virtual Environment ===
+venv/
+env/
+ENV/
+
+# === CMake ===
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
 Makefile
 
-# Qt
+# === Qt ===
 *.pro.user
 *.qmake.stash
 
-# Secrets
+# === Secrets ===
 .env
 *.key
 *.pem
+
+# === Logs ===
+*.log
+
+# === Coverage ===
+.coverage
+htmlcov/
+
+# === PyTest ===
+.pytest_cache/
+
+# === Editor swap files ===
+*.swp
+*.swo
