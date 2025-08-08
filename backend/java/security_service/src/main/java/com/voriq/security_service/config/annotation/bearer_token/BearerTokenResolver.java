@@ -7,6 +7,8 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import static com.voriq.security_service.service.token_utilities.TokenUtilities.extractTokenFromRequest;
+
 
 @Component
 public class BearerTokenResolver implements HandlerMethodArgumentResolver {
@@ -21,7 +23,7 @@ public class BearerTokenResolver implements HandlerMethodArgumentResolver {
                                   ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest,
                                   WebDataBinderFactory binderFactory) {
-        return extractJwtFromRequest(webRequest);
+        return extractTokenFromRequest(webRequest);
     }
 }
 

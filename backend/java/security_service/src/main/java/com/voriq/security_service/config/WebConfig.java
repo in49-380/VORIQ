@@ -1,7 +1,5 @@
 package com.voriq.security_service.config;
 
-
-
 import com.voriq.security_service.config.annotation.bearer_token.BearerTokenResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;

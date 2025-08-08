@@ -1,7 +1,7 @@
 package com.voriq.security_service.config.configs_components;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.healthcare.auth_service.exception_handler.dto.ErrorResponse;
+import com.voriq.security_service.exception_handler.dto.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
