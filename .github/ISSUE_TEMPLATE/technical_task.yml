@@ -1,0 +1,56 @@
+name: Technical Task
+description: Internal technical work item for backend/frontend/CI.
+title: "[Task]: "
+labels: ["type: task"]
+body:
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Why this task is needed (background, scope, non-goals).
+      placeholder: Short rationale and scope.
+    validations:
+      required: true
+
+  - type: textarea
+    id: implementation
+    attributes:
+      label: Implementation Notes
+      description: Key steps, interfaces, migrations, risks.
+      placeholder: Bullet points or a short plan.
+    validations:
+      required: true
+
+  - type: input
+    id: components
+    attributes:
+      label: Components / Area
+      description: Affected area (e.g., backend, frontend, parser, CI).
+      placeholder: "backend, api"
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance Criteria
+      description: Measurable conditions for acceptance.
+      placeholder: |
+        - [ ] AC1
+        - [ ] AC2
+    validations:
+      required: true
+
+  - type: input
+    id: dependencies
+    attributes:
+      label: Dependencies (blocks / blocked by)
+      description: Related issues (e.g., #123) or epic.
+      placeholder: "#123"
+
+  - type: input
+    id: links
+    attributes:
+      label: Links (docs/spec/design)
+      description: Links to docs, diagrams, OpenAPI, etc.
+      placeholder: "docs link, PRD link"
