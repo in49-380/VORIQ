@@ -1,16 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
+  
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #c0bebe;
-
+  
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+/* temporary for Klaro */
+ 
+/* Border, shadows, ... */
+--cm-box-shadow-dark-md: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 5px 5px 10px 0 rgba(250, 13, 13, 0.19);
+--cm-box-shadow-light-sm: 0 2px 5px 0 rgba(0, 0, 0, 0.11) ;
+--cm-box-shadow-dark-sm: 0 2px 5px 0 rgba(0, 0, 0, 0.33);
+
+/*
+Variables that begin with   -- should NEVER be used directly in CSS rules.
+they should only be included via the "@include var(property, var-name)"
+mechanism.
+*/
+
+/* Border styles */
+  --border-radius: 4px  ;
+  --border-style: solid  ;
+  --border-width: 1px  ;
+
+/* Cookie notice positioning */
+  --notice-right: 20px  ;
+  --notice-left: auto  ;
+  --notice-top: auto  ;
+  --notice-bottom: 20px  ;
+  --notice-max-width: 400px  ;
+  --notice-position: fixed  ;
+
+/* Text colors */
+  --button-text-color: #fff  ;
+
+
+/* Differently shaded colors */
+
+
+
+/* all these variables can be tweaked at runtime by specifying them via the
+'styling' config parameter. */
+  --font-size: 14px;
+  --font-family: 'Arial', sans-serif;
+  --title-font-family: 'Arial', cursive, sans-serif;
+
+    --button-text-color: #333;
+
+
+    --green1: #d8f3dc;
+    --green2: #95d5b2;
+    --green3: #52b788;
+
+    --blue1: #caf0f8;
+    --blue2: #90e0ef;
+    --blue3: #00b4d8;
+
+    --red1: #f8d7da;
+    --red2: #f5c2c7;
+    --red3: #dc3545;
+
+    --light1: #f8f9fa;
+    --light2: #e9ecef;
+    --light3: #dee2e6;
+
+    --dark0: #ffffffa8;
+    --dark1: #343a40;
+    --dark2: #212529;
+    --dark3: #121416;
+
+    --white1: #ffffff;
+    --white2: #f8f8f8;
+    --white3: #f0f0f0;
+
+    --border-radius: 6px;
+    --border-style: solid;
+    --border-width: 1px;
+    --notice-left: auto;
+    --notice-right: 16px;
+    --notice-top: auto;
+    --notice-bottom: 16px;
+    --notice-max-width: 420px;
+    --notice-position: fixed;
+
+
+/* Spacing */
+--cm-space: (
+    xs: 4px,
+    sm: 8px,
+    md: 12px,
+    lg: 24px,
+    xl: 48px,
+    xxl: 96px
+)  ;
+
+/* Breakpoints */
+--cm-desktop: 1024px;
+--cm-tablet: 768px;
+--cm-mobile: 384px;
+
 }
 
 
@@ -22,7 +121,6 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #424141;
   cursor: pointer;
   transition: border-color 0.25s;
 }

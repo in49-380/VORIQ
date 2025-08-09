@@ -9,5 +9,21 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+ 
   </body>
 </html>
+
+<!--KLARO (cookies policy) To make sure that no third-party scripts are loaded without consent,
+  you need to modify your HTML code a tiny bit: For inline scripts,
+   replace the value of the type attribute with text/plain
+    (this keeps the browser from executing the script) 
+    and add a data attribute with the original type, e.g.
+     data-type="application/javascript". Also add a data-name 
+     attribute that matches the name of the given app in your config, e.g. data-name="googleAnalytics".
+
+For external script do the same, but in addition 
+rename the src attribute to data-src (this ensures 
+that the browser won't load the script without the consent of the user).
+ This also works for other tags such as images or tracking pixels.
+  Just remember to always add a data-name attribute that matches the
+  name of the app in your config so that Klaro knows which element belongs to which app -->
