@@ -2,7 +2,7 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { useEffect } from 'react';
 import { sendTokenToBackend } from '../api/googleAuth';
 import { useContext } from 'react';
-import AuthContext from '../oauth/AuthContext';
+import AuthContext from '../components/oauth/AuthContext';
 
 
 
