@@ -1,6 +1,7 @@
-import useGoogleAuth from "./useGoogleAuth";
+import useGoogleAuth from "../hooks/useGoogleAuth";
 import AuthContext from "./AuthContext";
 import { useContext } from "react";
+import Button from '../components/Button';
 
 const LogoutButton=()=>{
     const {token}=useContext(AuthContext);
@@ -8,10 +9,9 @@ const LogoutButton=()=>{
     const handleOnClick=()=>{logout()}
     
     return token?(
-        <button onClick={handleOnClick}
-         className="fixed top-4 right-4 px-4 py-2 bg-red-600 text-white rounded 
-         hover:bg-red-700 transition" >
-         Logout</button>
+        <Button onClick={handleOnClick} 
+                children={'Logout'} 
+                style={'fixed top-4 right-4'}/>
     ):(null)
 }
 export default LogoutButton

@@ -1,0 +1,68 @@
+name: QA / Test Case
+description: QA task to verify a feature or endpoint.
+title: "[QA]: "
+labels: ["type: qa", "QA"]
+body:
+  - type: input
+    id: verifies
+    attributes:
+      label: Verifies Issue
+      description: Link the dev issue this QA covers (e.g., #62).
+      placeholder: "#NN"
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: What is in scope for this QA task.
+      placeholder: Endpoints, UI flows, error paths.
+    validations:
+      required: true
+
+  - type: textarea
+    id: test_cases
+    attributes:
+      label: Test Cases
+      description: List individual test cases.
+      placeholder: |
+        - [ ] TC1: ...
+        - [ ] TC2: ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_results
+    attributes:
+      label: Expected Results
+      description: What should be observed for each case (status codes, UI states, db effects).
+      placeholder: Clear pass/fail criteria.
+    validations:
+      required: true
+
+  - type: textarea
+    id: data_fixtures
+    attributes:
+      label: Data / Fixtures
+      description: Test data, accounts, seed scripts.
+      placeholder: JSON, curl, Postman, pytest fixtures.
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance Criteria
+      description: Conditions to accept QA as done.
+      placeholder: |
+        - [ ] All listed test cases executed
+        - [ ] All expected results matched
+        - [ ] Bugs filed (if any) with repro steps
+    validations:
+      required: true
+
+  - type: input
+    id: dependencies
+    attributes:
+      label: Dependencies (blocked by)
+      description: Related issues or env requirements.
+      placeholder: "#NN"
