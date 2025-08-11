@@ -1,3 +1,6 @@
+import configTranslations from './configTranslations.json'
+
+
 export const klaroConfig={
     // noAutoLoad: true,
 
@@ -24,86 +27,9 @@ export const klaroConfig={
     acceptAll: true,
     hideDeclineAll: false,
     hideLearnMore: false,
-    translations: {
-        // zz: {
-        //     privacyPolicyUrl: '/privacy',
-        // },
-        de: {
-            privacyPolicyUrl: '/datenschutz',
-            consentNotice: {
-                description: 'Dieser Text wird in der Einwilligungsbox erscheinen.',
-            },
-            consentModal: {
-                description:
-                    'Hier können Sie einsehen und anpassen, welche Information wir über Sie ' +
-                    'sammeln. Einträge die als "Beispiel" gekennzeichnet sind dienen lediglich ' +
-                    'zu Demonstrationszwecken und werden nicht wirklich verwendet.',
-            },
-            purposes: {
-                analytics: {
-                    title: 'Besucher-Statistiken',
-                },
-                security: {
-                    title: 'Sicherheit',
-                },
-                livechat: {
-                    title: 'Live Chat',
-                },
-                advertising: {
-                    title: 'Anzeigen von Werbung',
-                },
-                styling: {
-                    title: 'Styling',
-                },
-            },
-        },
-        en: {
-            privacyPolicyUrl: '/privacy',
-       
-           consentModal: {
-                title: '<u>title</u>',
-                description:
-                    'Here you can see and customize the information that we collect about you. Entries marked as "Example" are just for demonstration purposes and are not really used on this website.',
-            },
-            inlineTracker: {
-                description: 'Example of an inline tracking script',
-            },
-            externalTracker: {
-                description: 'Example of an external tracking script',
-            },
-            adsense: {
-                description: 'Displaying of advertisements (just an example)',
-                title: 'Google Adsense Advertisement',
-            },
-            matomo: {
-                description: 'Collecting of visitor statistics',
-            },
-            camera: {
-                description:
-                    'A surveillance camera (just an example for an IMG tag)',
-            },
-            cloudflare: {
-                description: 'Protection against DDoS attacks',
-            },
-            intercom: {
-                description:
-                    'Chat widget & collecting of visitor statistics (just an example)',
-            },
-            mouseflow: {
-                description: 'Real-Time user analytics (just an example)',
-            },
-            googleFonts: {
-                description: 'Web fonts hosted by Google',
-            },
-            purposes: {
-                analytics: 'Analytics',
-                security: 'Security',
-                livechat: 'Livechat',
-                advertising: 'Advertising',
-                styling: 'Styling',
-            },
-        }
-    },
+
+    translations:configTranslations,
+    
 
     services: [
         {

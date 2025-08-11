@@ -1,0 +1,24 @@
+{
+    "welcome": "Welcome",
+    "carPage": "Main page, here will be cars",
+      
+    "logout": "Logout",
+    "settings": "Settings",
+    "error": {
+        "notFound": "Page not found",
+        "server": "Server error"
+    },
+    "cookieSettings": "Cookie Settings",
+ 
+    "cookieModal":{
+           "title":"Cookies & Privacy Settings",
+           "desctiption": "We use cookies to enhance your experience. You can accept, reject, or customize them.",
+        "cookieButton":{
+            "decline":"Decline",
+            "acceptAll":"Accept all",
+            "customize":"Customize"
+        }
+    }
+    
+  }
+  
