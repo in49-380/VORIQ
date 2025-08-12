@@ -1,5 +1,6 @@
 import configTranslations from './configTranslations.json'
-
+const currentLang = localStorage.getItem('Language') || 'en'
+console.log('currentLangKlaro', currentLang)
 
 export const klaroConfig={
     // noAutoLoad: true,
@@ -28,6 +29,7 @@ export const klaroConfig={
     hideDeclineAll: false,
     hideLearnMore: false,
 
+    lang: currentLang,
     translations:configTranslations,
     
 
@@ -45,6 +47,9 @@ export const klaroConfig={
                 de: {
                     description: 'Matomo ist ein einfacher, selbstgehosteter Analytics-Service.',
                 },
+                uk:{
+                    description: 'Matomo — це простий сервіс аналітики, що розгортається на власному сервері.',
+                }
             },
             purposes: ['analytics'],
    /*
@@ -69,17 +74,6 @@ export const klaroConfig={
                 'piwik_ignore',
             ],
 
- /*
-            You can define an optional callback function that will be called each time the
-            consent state for the given service changes. The consent value will be passed as
-            the first parameter to the function (true=consented). The `service` config will
-            be passed as the second parameter.
-            */
-            callback: function(consent, service) {
-                console.log(
-                    'User consent for service ' + service.name + ': consent=' + consent
-                );
-            },
 
   /*
             If 'required' is set to 'true', Klaro will not allow this service to be disabled
@@ -101,6 +95,8 @@ export const klaroConfig={
             disables and re-enables them due to a consent change by the user.
             */
             onlyOnce: true,        },
+
+
         {
             name: 'youtube',
             // “The service loads only upon contextual user consent (for example, clicking on the video).”
@@ -110,14 +106,6 @@ export const klaroConfig={
         // ******************************************
         // ******🔽 * TEST *****************************
         // ******************************************
-    {
-      name: 'funnyTracker',
-      title: 'Funny Tracker',
-      purposes: ['jokes'],
-      cookies: ['funny_cookie'],
-      default: false,
-      required: false,
-    },
     {
       name: 'betaTest',
       title: 'Beta Performance Tester',
@@ -154,7 +142,7 @@ export const klaroConfig={
             name: 'adsense',
             // if you omit the title here Klaro will try to look it up in the
             // translations
-            //title: 'Google AdSense',
+            title: 'Google AdSense',
             purposes: ['advertising'],
         },
         {

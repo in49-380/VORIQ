@@ -54,7 +54,7 @@ export default function KlaroConsent() {
       open={isVisible}
       onOpenChange={setIsVisible}
       title={t('cookieModal.title')}
-      description={t('cookieModal.desctiption')}
+      description={t('cookieModal.description')}
     >
       <div className="flex justify-end space-x-4 mt-6">
         <Button onClick={handleDecline} className="bg-red-500 text-white hover:bg-red-600">
