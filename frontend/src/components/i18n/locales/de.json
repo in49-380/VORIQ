@@ -1,0 +1,22 @@
+{
+    "welcome": "Willkommen",
+     "carPage": "Startseite, hier werden Autos sein",
+      
+    "logout": "Abmelden",
+    "settings": "Einstellungen",
+    "error": {
+        "notFound": "Seite nicht gefunden",
+        "server": "Serverfehler"
+    },
+         "cookieSettings": "Cookie-Einstellungen",
+         "cookieModal": {
+            "title": "Cookies & Datenschutzeinstellungen",
+            "desctiption": "Wir verwenden Cookies, um Ihre Erfahrung zu verbessern. Sie können diese akzeptieren, ablehnen oder anpassen.",
+            "cookieButton": {
+              "decline": "Ablehnen",
+              "acceptAll": "Alle akzeptieren",
+              "customize": "Anpassen"
+            }}
+        
+  }
+  

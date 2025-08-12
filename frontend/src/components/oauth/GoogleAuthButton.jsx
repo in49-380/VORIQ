@@ -1,9 +1,9 @@
-import  useGoogleAuth from '../hooks/useGoogleAuth';
+import  useGoogleAuth from '../../hooks/useGoogleAuth';
 
 import GoogleIcon from '@mui/icons-material/Google';
 import { useContext } from 'react';
 import AuthContext from './AuthContext';
-import Button from '../components/Button';
+import Button from '../Button';
 
 
 const GoogleAuthButton=()=>{
