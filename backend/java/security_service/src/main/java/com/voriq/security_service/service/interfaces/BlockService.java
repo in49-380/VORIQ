@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public interface BlockService {
 
-    void block(UUID userId);
+    boolean block(UUID userId);
 
     boolean isBlocked(UUID userId);
 }

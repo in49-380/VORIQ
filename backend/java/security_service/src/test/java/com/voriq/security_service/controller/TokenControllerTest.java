@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
@@ -30,10 +31,13 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import static com.voriq.security_service.config.SecurityConfig.ISSUE_URL;
+import static com.voriq.security_service.config.SecurityConfig.VALIDATE_URL;
+import static com.voriq.security_service.service.TokenStoreStrategy.DelegatingTokenStoreStrategy.DEFAULT_SET_VALUE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.reset;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -66,8 +70,11 @@ class TokenControllerTest {
     @Value("${prefix.blocked}")
     private String blockedPrefix;
 
-    @Value("${rate.limit}")
-    private long requestLimitIntervalMs;
+    @Value("${rate.limit-ms.issue}")
+    private long issueRequestLimitIntervalMs;
+
+    @Value("${rate.limit-ms.validate}")
+    private long validateRequestLimitIntervalMs;
 
     private static final UUID USER_ID_1 = UUID.fromString("33333333-3333-3333-3333-333333333333");
     private static final UUID USER_KEY_1 = UUID.fromString("cccccccc-cccc-cccc-cccc-cccccccccccc");
@@ -130,7 +137,7 @@ class TokenControllerTest {
     }
 
     private void waitForRateLimitReset() {
-        waitForRateLimitReset(requestLimitIntervalMs);
+        waitForRateLimitReset(issueRequestLimitIntervalMs);
     }
 
     @Nested
@@ -160,7 +167,7 @@ class TokenControllerTest {
             removeLastLogLine();
         }
 
-        @ParameterizedTest(name = "Тест {index}: issue_token_should_return_400_when_request_data_isnt_valid [{arguments}]")
+        @ParameterizedTest(name = "Test {index}: issue_token_should_return_400_when_request_data_isnt_valid [{arguments}]")
         @MethodSource("wrongUserData")
         public void issue_token_should_return_400_when_request_data_isnt_valid(String id, String key) throws Exception {
             String requestJson = """
@@ -246,7 +253,7 @@ class TokenControllerTest {
             redisTemplate.delete(blockedPrefix + USER_ID_1);
         }
 
-        @ParameterizedTest(name = "Тест {index}: issue_token_should_return_404_when_user_not_found [{arguments}]")
+        @ParameterizedTest(name = "Test {index}: issue_token_should_return_404_when_user_not_found [{arguments}]")
         @MethodSource("incorrectUserData")
         public void issue_token_should_return_404_when_user_not_found(TokenRequestDto dto) throws Exception {
 
@@ -393,6 +400,190 @@ class TokenControllerTest {
                 waitForRateLimitReset();
             } finally {
                 reset(userRepository);
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("GET /api" + VALIDATE_URL)
+    class ValidateTokenTest {
+
+        @Test
+        public void validate_token_should_return_204() throws Exception {
+            String token = getNewToken();
+            removeLastLogLine();
+
+            mockMvc.perform(get(VALIDATE_URL)
+                            .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                    .andExpect(status().isNoContent());
+
+            String last = getLastLineFromLog();
+
+            assertNotNull(last);
+            assertTrue(last.contains("[INFO]"));
+            assertTrue(last.contains("Code= 204"));
+            assertTrue(last.contains("User with ID"));
+            assertTrue(last.contains(USER_ID_1.toString()));
+            assertTrue(last.contains(token.substring(token.length() - 3)));
+
+            clearRedis(USER_ID_1, Collections.singleton(token));
+            removeLastLogLine();
+            waitForRateLimitReset();
+        }
+
+        @Test
+        public void validate_token_should_return_400_when_token_is_wrong() throws Exception {
+            String token = "test1";
+            MvcResult result = mockMvc.perform(get(VALIDATE_URL)
+                            .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                    .andExpect(status().isBadRequest())
+                    .andReturn();
+
+            String jsonResponse = result.getResponse().getContentAsString();
+            ErrorResponse responseDto = mapper.readValue(jsonResponse, ErrorResponse.class);
+
+            assertEquals(HttpStatus.BAD_REQUEST.value(), responseDto.getStatus());
+
+            String last = getLastLineFromLog();
+
+            assertNotNull(last);
+            assertTrue(last.contains("[ERROR]"));
+            assertTrue(last.contains(DEFAULT_SET_VALUE));
+            assertTrue(last.contains("Code= 400"));
+
+            removeLastLogLine();
+            waitForRateLimitReset();
+        }
+
+        @Test
+        public void validate_token_should_return_400_when_token_is_null() throws Exception {
+            MvcResult result = mockMvc.perform(get(VALIDATE_URL))
+                    .andExpect(status().isBadRequest())
+                    .andReturn();
+
+            String jsonResponse = result.getResponse().getContentAsString();
+            ErrorResponse responseDto = mapper.readValue(jsonResponse, ErrorResponse.class);
+
+            assertEquals(HttpStatus.BAD_REQUEST.value(), responseDto.getStatus());
+
+            String last = getLastLineFromLog();
+
+            assertNotNull(last);
+            assertTrue(last.contains("[ERROR]"));
+            assertTrue(last.contains(DEFAULT_SET_VALUE));
+            assertTrue(last.contains("Code= 400"));
+
+            removeLastLogLine();
+            waitForRateLimitReset();
+        }
+
+        @Test
+        public void validate_token_should_return_400_when_header_authorization_is_not_bearer() throws Exception {
+            String token = "test1";
+            MvcResult result = mockMvc.perform(get(VALIDATE_URL)
+                            .header(HttpHeaders.AUTHORIZATION, "TEst " + token))
+                    .andExpect(status().isBadRequest())
+                    .andReturn();
+
+            String jsonResponse = result.getResponse().getContentAsString();
+            ErrorResponse responseDto = mapper.readValue(jsonResponse, ErrorResponse.class);
+
+            assertEquals(HttpStatus.BAD_REQUEST.value(), responseDto.getStatus());
+
+            String last = getLastLineFromLog();
+
+            assertNotNull(last);
+            assertTrue(last.contains("[ERROR]"));
+            assertTrue(last.contains(DEFAULT_SET_VALUE));
+            assertTrue(last.contains("Code= 400"));
+
+            removeLastLogLine();
+            waitForRateLimitReset();
+        }
+
+        @Test
+        public void validate_token_should_return_401_when_token_isnt_valid() throws Exception {
+
+            mockMvc.perform(get(VALIDATE_URL)
+                            .header(HttpHeaders.AUTHORIZATION, "Bearer " + UUID.randomUUID()))
+                    .andExpect(status().isUnauthorized());
+
+            String last = getLastLineFromLog();
+
+            assertNotNull(last);
+            assertTrue(last.contains("[ERROR]"));
+            assertTrue(last.contains(DEFAULT_SET_VALUE));
+            assertTrue(last.contains("Code= 401"));
+
+            removeLastLogLine();
+            waitForRateLimitReset();
+        }
+
+        @Test
+        public void validate_token_should_return_429__when_too_many_requests() throws Exception {
+
+            String token = getNewToken(USER_ID_1, USER_KEY_1, false);
+            removeLastLogLine();
+
+            mockMvc.perform(get(VALIDATE_URL)
+                            .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                    .andExpect(status().isNoContent());
+            removeLastLogLine();
+            for (int i = 0; i < 3; i++) {
+                MvcResult result = mockMvc.perform(get(VALIDATE_URL)
+                                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                        .andExpect(status().isTooManyRequests())
+                        .andReturn();
+
+                String jsonResponse = result.getResponse().getContentAsString();
+                ErrorResponse responseDto = mapper.readValue(jsonResponse, ErrorResponse.class);
+
+                assertEquals(HttpStatus.TOO_MANY_REQUESTS.value(), responseDto.getStatus());
+                String last = getLastLineFromLog();
+
+                assertNotNull(last);
+                assertTrue(last.contains("[ERROR]"));
+                assertTrue(last.contains("User with ID"));
+                assertTrue(last.contains("Code= 429"));
+
+                removeLastLogLine();
+            }
+            clearRedis(USER_ID_1, Collections.singleton(token));
+            waitForRateLimitReset();
+        }
+
+        @Test
+        void validate_token_should_return_500_when_service_throws_exception() throws Exception {
+            try {
+                doThrow(new RuntimeException("Temporary service error."))
+                        .when(tokenService).validateToken(any());
+                waitForRateLimitReset(issueRequestLimitIntervalMs);
+                String token = getNewToken();
+                removeLastLogLine();
+                waitForRateLimitReset(issueRequestLimitIntervalMs);
+                MvcResult result = mockMvc.perform(get(VALIDATE_URL)
+                                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                        .andExpect(status().isInternalServerError())
+                        .andReturn();
+
+                String jsonResponse = result.getResponse().getContentAsString();
+                ErrorResponse responseDto = mapper.readValue(jsonResponse, ErrorResponse.class);
+
+                assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), responseDto.getStatus());
+                String last = getLastLineFromLog();
+
+                assertNotNull(last);
+                assertTrue(last.contains("[ERROR]"));
+                assertTrue(last.contains("User with ID"));
+                assertTrue(last.contains("Code= 500"));
+
+                clearRedis(USER_ID_1, Collections.singleton(token));
+
+                removeLastLogLine();
+
+            } finally {
+                reset(tokenService);
+                waitForRateLimitReset();
             }
         }
     }

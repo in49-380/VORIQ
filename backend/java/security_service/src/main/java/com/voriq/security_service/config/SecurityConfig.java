@@ -63,12 +63,19 @@ public class SecurityConfig {
 
     /** Relative URL for issuing tokens (mounted under the global context path, e.g. "/api"). */
     public static final String ISSUE_URL = "/v1/tokens/issue";
+    /** Relative URL for validating tokens (mounted under the global context path, e.g. "/api"). */
+    public static final String VALIDATE_URL = "/v1/tokens/validate";
 
     /**
      * Builds the main security filter chain.
      *
-     * <p>CSRF disabled, CORS enabled, stateless sessions. Swagger & OpenAPI paths and
-     * {@link #ISSUE_URL} (POST) are allowed anonymously; everything else requires authentication.</p>
+     * <p>CSRF disabled, CORS enabled, stateless sessions. Swagger/OpenAPI endpoints and
+     * {@link #ISSUE_URL} (POST) and {@link #VALIDATE_URL} (GET) are allowed anonymously; all other
+     * requests require authentication. Custom {@code AuthenticationEntryPoint} and
+     * {@code AccessDeniedHandler} are configured; HTTP Basic is disabled.</p>
+     *
+     * <p>The {@code tokenRateLimitFilter} is added before {@link UsernamePasswordAuthenticationFilter}
+     * so that rate limiting runs before authentication components read the request body.</p>
      *
      * @param http the {@link HttpSecurity} builder
      * @return configured {@link SecurityFilterChain}
@@ -84,6 +91,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/error").permitAll()
                         .requestMatchers(HttpMethod.POST, ISSUE_URL).permitAll()
+                        .requestMatchers(HttpMethod.GET, VALIDATE_URL).permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(AbstractHttpConfigurer::disable)
