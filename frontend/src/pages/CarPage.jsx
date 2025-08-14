@@ -1,10 +1,10 @@
 
 import React from 'react';
-import usePageUrl from '../hooks/usePageUrl';
+// import usePageUrl from '../hooks/usePageUrl';
 import {useTranslation} from 'react-i18next'
 
 const CarPage = () => {
-  usePageUrl('/cars')
+  // usePageUrl('/cars')
   const {t}=useTranslation()
   return (
     
