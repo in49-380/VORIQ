@@ -13,6 +13,9 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.voriq.security_service.service.TokenStoreStrategy.DelegatingTokenStoreStrategy.DEFAULT_SET_VALUE;
+import static com.voriq.security_service.service.token_utilities.TokenUtilities.isUuid;
+
 /**
  * In-memory fallback implementation of {@link TokenStoreStrategy}.
  *
@@ -114,10 +117,20 @@ public class InMemoryTokenStoreStrategy implements TokenStoreStrategy {
     }
 
     /**
-     * Checks whether a token is currently valid (not expired and known).
-     * Expired tokens are lazily purged.
+     * Checks whether a token is currently valid (known and not expired).
+     * <p>
+     * Semantics:
+     * <ul>
+     *   <li>Looks up absolute expiration time (epoch millis) in {@code tokenExpiry}.</li>
+     *   <li>If no entry exists → returns {@code false}.</li>
+     *   <li>If {@code exp < now} → lazily purges the entry via {@link #expireToken(String, long)} and returns {@code false}.</li>
+     *   <li>Otherwise returns {@code true}.</li>
+     * </ul>
+     * </p>
      *
-     * @param token token to check
+     * <p>Side effects: expired entries are removed on read (“lazy purge”).</p>
+     *
+     * @param token token to check (must not be {@code null})
      * @return {@code true} if the token exists and has not expired; {@code false} otherwise
      */
     @Override
@@ -130,6 +143,28 @@ public class InMemoryTokenStoreStrategy implements TokenStoreStrategy {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Returns the user identifier associated with the given key, or {DEFAULT_SET_VALUE}
+     * if the key is not a UUID or there is no mapping.
+     *
+     * <p>Semantics:</p>
+     * <ul>
+     *   <li>Validates the key via {@code isUuid(key)}; non-UUID keys yield {DEFAULT_SET_VALUE}.</li>
+     *   <li>Performs a non-destructive lookup in {@code tokenToUser} (does not modify the store).</li>
+     *   <li>If a mapping exists, returns the {@code UUID} as a string; otherwise returns {DEFAULT_SET_VALUE}.</li>
+     * </ul>
+     *
+     * @param key logical key to look up (expected token; must not be {@code null})
+     * @return the associated user id as a string, or {DEFAULT_SET_VALUE} if absent/invalid
+     */
+    @Override
+    public String getSetValueByKey(String key) {
+        if (!isUuid(key)) return DEFAULT_SET_VALUE;
+
+        UUID userId = tokenToUser.get(key);
+        return (userId != null) ? userId.toString() : DEFAULT_SET_VALUE;
     }
 
     /**

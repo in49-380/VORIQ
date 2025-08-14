@@ -34,7 +34,6 @@ import java.util.UUID;
  */
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class BlockServiceImpl implements BlockService {
 
     @Value("${token.access-token-expiration-ms}")
@@ -46,14 +45,35 @@ public class BlockServiceImpl implements BlockService {
     private final StringRedisTemplate redis;
 
     /**
-     * Blocks the user by setting a Redis key with a TTL equal to the access token expiration.
+     * Blocks the given user by writing a marker key to Redis with a TTL equal to the access-token expiration.
      *
-     * @param userId user to block
+     * <p>Semantics:</p>
+     * <ul>
+     *   <li>Key: {@code getKey(userId)}; Value: {@code "blocked"}.</li>
+     *   <li>TTL: {@code accessExpirationMs} milliseconds.</li>
+     *   <li>Returns {@code true} if the Redis write succeeds; {@code false} if any Redis error occurs.</li>
+     *   <li>Idempotent with respect to value; repeated calls refresh (reset) the TTL.</li>
+     * </ul>
+     *
+     * <p>Notes:</p>
+     * <ul>
+     *   <li>Exceptions from the Redis client are caught and not propagated.</li>
+     *   <li>Callers may apply a fallback (e.g., in-memory block) when {@code false} is returned.</li>
+     * </ul>
+     *
+     * @param userId identifier of the user to block (must not be {@code null})
+     * @return {@code true} on successful write; {@code false} on failure
      */
+
     @Override
-    public void block(UUID userId) {
-        redis.opsForValue().set(getKey(userId), "blocked", Duration.ofMillis(accessExpirationMs));
-        log.warn("User {} was blocked for {} seconds", userId, accessExpirationMs / 1000);
+    public boolean block(UUID userId) {
+        try{
+            redis.opsForValue().set(getKey(userId), "blocked", Duration.ofMillis(accessExpirationMs));
+            return true;
+        }
+        catch (Exception ex){
+            return false;
+        }
     }
 
     /**

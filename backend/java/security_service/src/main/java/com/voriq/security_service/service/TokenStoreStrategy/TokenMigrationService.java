@@ -58,65 +58,82 @@ public class TokenMigrationService {
      * @return {@code true} if there is nothing to migrate (neither tokens nor block flags).
      */
     public boolean isInMemoryEmpty() {
+
         return inMem.getByUser().isEmpty() && inMem.getBlacklistUntil().isEmpty();
     }
 
     /**
      * Migrates all pending in-memory blocks and tokens to Redis, preserving remaining TTLs.
-     * <p>
-     * Steps:
+     *
+     * <p>Steps:</p>
      * <ol>
-     *   <li>For each entry in {@code blacklistUntil}: compute remaining TTL and set {@code blockedPrefix+userId} in Redis.</li>
-     *   <li>For each token per user in {@code byUser}: compute remaining TTL and:
+     *   <li>For each entry in {@code blacklistUntil}: compute remaining TTL and set
+     *       {@code blockedPrefix + userId} in Redis with value {@code "blocked"} and that TTL.</li>
+     *   <li>For each user in {@code byUser}, and for each token:
      *     <ul>
-     *       <li>add {@code userId} to Redis Set keyed by {@code token};</li>
-     *       <li>apply {@code expire(token, TTL)};</li>
-     *       <li>add {@code token} to the user's index Set keyed by {@code userId.toString()}.</li>
+     *       <li>Add {@code userId} to the Redis <b>Set</b> keyed by the <b>token</b> (token existence == validity).</li>
+     *       <li>Apply {@code expire(token, TTL)} using the remaining time.</li>
+     *       <li>Add the <b>token</b> to the user's index <b>Set</b> keyed by {@code userId.toString()}.</li>
      *     </ul>
      *   </li>
-     *   <li>Clear the in-memory storage via {@link InMemoryTokenStoreStrategy#clearMigrated()}.</li>
+     *   <li>After successful migration of all entries, clear the in-memory storage via
+     *       {@link InMemoryTokenStoreStrategy#clearMigrated()}.</li>
      * </ol>
-     * </p>
      *
-     * @throws RuntimeException if Redis operations fail (caller is expected to retry later)
+     * <p><b>Notes:</b></p>
+     * <ul>
+     *   <li>Remaining TTLs are calculated as {@code liveTime - now}; entries with non-positive TTL are skipped.</li>
+     *   <li>The operation is not transactional across Redis operations; in case of an error, some data may have been written
+     *       to Redis, but in-memory data is <i>not</i> cleared (safe partial migration).</li>
+     *   <li>Exceptions are caught inside; callers should check the boolean return value.</li>
+     * </ul>
+     *
+     * @return {@code true} if all steps complete and in-memory data is cleared; {@code false} if an error occurs
      */
-    public void migrateToRedis() {
-        final ConcurrentHashMap<UUID, ConcurrentHashMap<String, Long>> byUser = inMem.getByUser();
-        final ConcurrentHashMap<UUID, Long> blacklistUntil = inMem.getBlacklistUntil();
 
-        long now = System.currentTimeMillis();
+    public boolean migrateToRedis() {
+        try {
+            final ConcurrentHashMap<UUID, ConcurrentHashMap<String, Long>> byUser = inMem.getByUser();
+            final ConcurrentHashMap<UUID, Long> blacklistUntil = inMem.getBlacklistUntil();
 
-        // 1) migrate block flags
-        for (Map.Entry<UUID, Long> e : blacklistUntil.entrySet()) {
-            UUID userId = e.getKey();
-            long liveTime = e.getValue();
-            long ttlMs = liveTime - now;
-            if (ttlMs > 0) {
-                redis.opsForValue().set(blockedPrefix + userId, "blocked", Duration.ofMillis(ttlMs));
-            }
-        }
+            long now = System.currentTimeMillis();
 
-        // 2) migrate tokens and user index
-        for (Map.Entry<UUID, ConcurrentHashMap<String, Long>> e : byUser.entrySet()) {
-            UUID userId = e.getKey();
-            ConcurrentHashMap<String, Long> tokens = e.getValue();
-
-            for (Map.Entry<String, Long> t : tokens.entrySet()) {
-                String token = t.getKey();
-                long liveTime = t.getValue();
+            // 1) migrate block flags
+            for (Map.Entry<UUID, Long> e : blacklistUntil.entrySet()) {
+                UUID userId = e.getKey();
+                long liveTime = e.getValue();
                 long ttlMs = liveTime - now;
                 if (ttlMs > 0) {
-                    // token key (existence == token validity)
-                    redis.opsForSet().add(token, userId.toString());
-                    redis.expire(token, Duration.ofMillis(ttlMs));
-
-                    // user index
-                    redis.opsForSet().add(userId.toString(), token);
+                    redis.opsForValue().set(blockedPrefix + userId, "blocked", Duration.ofMillis(ttlMs));
                 }
             }
-        }
 
-        // 3) clear local copies after successful migration
-        inMem.clearMigrated();
+            // 2) migrate tokens and user index
+            for (Map.Entry<UUID, ConcurrentHashMap<String, Long>> e : byUser.entrySet()) {
+                UUID userId = e.getKey();
+                ConcurrentHashMap<String, Long> tokens = e.getValue();
+
+                for (Map.Entry<String, Long> t : tokens.entrySet()) {
+                    String token = t.getKey();
+                    long liveTime = t.getValue();
+                    long ttlMs = liveTime - now;
+                    if (ttlMs > 0) {
+                        // token key (existence == token validity)
+                        redis.opsForSet().add(token, userId.toString());
+                        redis.expire(token, Duration.ofMillis(ttlMs));
+
+                        // user index
+                        redis.opsForSet().add(userId.toString(), token);
+                    }
+                }
+            }
+
+            // 3) clear local copies after successful migration
+            inMem.clearMigrated();
+            return true;
+        }
+        catch (Exception e){
+           return false;
+        }
     }
 }

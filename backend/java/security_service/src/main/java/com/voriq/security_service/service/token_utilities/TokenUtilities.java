@@ -28,9 +28,23 @@ public class TokenUtilities {
     }
 
     public static String getMaskedUuid(UUID uuid) {
+        return getMaskedUuid(uuid.toString());
+    }
+
+    public static String getMaskedUuid(String uuid) {
         String mask = "********";
         if (uuid == null) return mask;
-        String uuidString = uuid.toString();
+        String uuidString = uuid;
         return mask + uuidString.substring(uuidString.length() - 3);
+    }
+
+    public static boolean isUuid(String s) {
+        if (s == null) return false;
+        try {
+            UUID.fromString(s);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 }
