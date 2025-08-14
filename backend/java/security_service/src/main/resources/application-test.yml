@@ -42,6 +42,8 @@ prefix:
   blocked: "test-block:"
 
 rate:
-  limit: 3000
+  limit-ms:
+    issue: 3000
+    validate: 300
 
 

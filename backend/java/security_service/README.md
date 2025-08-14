@@ -1,279 +1,227 @@
-# VORIQ Security Service
+# Security Service
 
-A Spring Boot 3 service for issuing and validating access tokens. Active sessions are stored in **Redis**; if Redis becomes unavailable the service transparently falls back to **in‑memory** storage and migrates accumulated data back to Redis once it is reachable again. The service also enforces per‑user **rate limiting** and a **max active tokens** policy with temporary blocking.
+Production‑ready Spring Boot 3 service for authentication and token management (JDK 17, Maven). Ships with PostgreSQL (JPA/Hibernate), Redis (for caching/blacklist), rate‑limiting, CORS, and OpenAPI.
+
+> **Base URL**: all endpoints are served under the application context path `"/api"` and the HTTP port defined by `PORT` (default mapping in container: `8081`).
 
 ---
 
 ## Table of Contents
-- [Overview](#overview)
-- [Requirements](#requirements)
-- [Environment Variables](#environment-variables)
-- [How to Run](#how-to-run)
-  - [Run PostgreSQL (docker-compose)](#run-postgresql-docker-compose)
-  - [Run Redis](#run-redis)
-  - [Run the Application (dev profile)](#run-the-application-dev-profile)
-  - [Build a Jar](#build-a-jar)
-- [API](#api)
-  - [Issue Token](#issue-token)
-  - [Swagger / OpenAPI](#swagger--openapi)
-- [Rate Limiting & Blocking](#rate-limiting--blocking)
-- [Storage Strategies & Migration](#storage-strategies--migration)
-- [Logging](#logging)
-- [Profiles](#profiles)
-- [Testing](#testing)
-- [Troubleshooting](#troubleshooting)
+
+* [What’s new in this version](#whats-new-in-this-version)
+* [Features](#features)
+* [Requirements](#requirements)
+* [Quick start (Docker)](#quick-start-docker)
+* [Configuration](#configuration)
+* [Logging](#logging)
+* [API endpoints](#api-endpoints)
+
+    * [Issue token — ](#issue-token--post-apitokenissue)[`POST /api/v1/tokens/issue`](#issue-token--post-apitokenissue)
+    * [Validate token — ](#validate-token--get-apitokenvalidate)[`GET /api/v1/tokens/validate`](#validate-token--get-apitokenvalidate)
+    * [Docs & health](#docs--health)
+* [New endpoint](#new-endpoint)
+* [Health checks](#health-checks)
+* [Troubleshooting](#troubleshooting)
+* [Security notes](#security-notes)
+* [License](#license)
 
 ---
 
-## Overview
+## What’s new in this version
 
-**Base context path:** `/api`  
-**Main endpoint:** `/v1/tokens/issue`
+* Endpoint docs corrected: `validate` is **GET**; removed `/api/v1/tokens/block-prefix`; clarified that the project uses **Maven**.
 
-Components:
-- **Token issuing** (`TokenController` → `TokenServiceImpl`)
-- **Token storage** via strategies:
-  - `RedisTokenStoreStrategy` (primary)
-  - `InMemoryTokenStoreStrategy` (fallback when Redis is down)
-  - `DelegatingTokenStoreStrategy` orchestrates selection and triggers migration back to Redis
-- **Rate limiting filter** (`TokenRateLimitFilter`) on the issue endpoint
-- **Global error handling** (`RestExceptionHandler`)
-- **AOP logging** (`GlobalLoggingAspect`) for successful operations and handled errors
+* **Docker Compose** flow documented (build, run, env). No YAML embedded here, just the steps.
+
+* **File logging option** documented (log to host disk without keeping logs inside the container).
+
+* **API endpoints** section added with descriptions and examples.
+
+* **Table of Contents** added for quicker navigation.
+
+* **New endpoint** placeholder kept (see below) — send the exact path/body/response and we’ll finalize it.
+
+---
+
+## Features
+
+* Token **issue**/**validate** flows with configurable TTL.
+* Redis‑backed token blacklist; configurable prefix blocking via `BLOCKED_PREFIX`.
+* **Rate limits** per endpoint (`ISSUE_RATE_LIMIT`, `VALIDATE_RATE_LIMIT`).
+* OpenAPI/Swagger UI available under `/swagger-ui.html` with docs at `/v3/api-docs`.
+* Health checks and graceful startup ordering (DB/Redis first, then the app).
 
 ---
 
 ## Requirements
 
-- **JDK 17**
-- **Maven 3.9+** (or use the included `mvnw` wrapper)
-- **PostgreSQL 15** (see `docker-compose.yml` in the repo)
-- **Redis 7+**
+* Docker / Docker Compose
+* Maven 3.9+ (the project uses Maven)
+* (Optional) JDK 17 if you plan to run locally without containers
 
 ---
 
-## Environment Variables
+## Quick start (Docker)
 
-> These are referenced in `src/main/resources/application.yml` and the `*-dev.yml/test.yml` profiles.
+1. Copy the example environment file and adjust values:
 
-### Core service
-| Variable | Description | Example |
-|---|---|---|
-| `PORT` | HTTP server port | `8080` |
-| `ALLOWED_ORIGINS` | Comma-separated CORS origins | `http://localhost:3000` |
+    * `cp .env.example .env` (or create `.env` with values from the **Configuration** section below).
+2. Build and start the stack:
 
-### PostgreSQL
-| Variable | Description | Example |
-|---|---|---|
-| `DB_HOST` | PostgreSQL host | `localhost` |
-| `DB_PORT` | PostgreSQL port | `5432` |
-| `DB_NAME` | Database name | `securitydb` |
-| `DB_USERNAME` | Database user | `postgres` |
-| `DB_PASSWORD` | Database password | `secret` |
+    * `docker compose up -d --build`
+3. Open the API:
 
-> The **users** table must exist. With JPA `ddl-auto=update` it will be created automatically; otherwise create it manually:
+    * Swagger UI → `http://localhost:<PORT>/api/swagger-ui.html`
 
-```sql
-CREATE TABLE IF NOT EXISTS users (
-  id BIGSERIAL PRIMARY KEY,
-  user_id UUID NOT NULL UNIQUE,
-  "key"   UUID NOT NULL UNIQUE
-);
-```
-
-### Redis
-| Variable | Description | Example |
-|---|---|---|
-| `SPRING_DATA_REDIS_HOST` | Redis host | `localhost` |
-| `SPRING_DATA_REDIS_PORT` | Redis port | `6379` |
-| `SPRING_DATA_REDIS_PASSWORD` | Redis password (optional) | *(unset or value)* |
-
-### Token & limits
-| Variable | Description | Example |
-|---|---|---|
-| `ACCESS_TOKEN_EXPIRATION_MS` | Access token TTL (also used for temp blocking) | `600000` |
-| `MAX_TOKEN` | Max simultaneous tokens per user | `4` |
-| `BLOCKED_PREFIX` | Redis key prefix for user blocking | `blocked:` |
-| `RATE_LIMIT` | Min interval between `/issue` requests per user (ms) | `5000` |
+> **Note on host DB access from containers**: if you run Postgres outside of Compose, you may need to map `host.docker.internal` to the host gateway so the container can reach services on your machine. Inside Compose (single network) use the service name (e.g., `postgres`) instead of `localhost`.
 
 ---
 
-## How to Run
+## Configuration
 
-### Run PostgreSQL (docker-compose)
+Set via `.env` or your CI/CD environment. The app reads them at startup.
 
-The repo provides a simple PostgreSQL + pgAdmin stack:
+| Variable                                                      | Description                                                                                                              |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `SPRING_PROFILES_ACTIVE`                                      | Active Spring profile, e.g. `dev` / `prod`                                                                               |
+| `PORT`                                                        | HTTP port the app binds to inside the container (exposed to host by Compose)                                             |
+| `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USERNAME`, `DB_PASSWORD` | PostgreSQL connection details                                                                                            |
+| `REDIS_HOST`, `REDIS_PORT`                                    | Redis connection details                                                                                                 |
+| `ALLOWED_ORIGINS`                                             | CORS allowed origins (comma‑separated)                                                                                   |
+| `ACCESS_TOKEN_EXPIRATION_MS`                                  | Access token lifetime in milliseconds                                                                                    |
+| `MAX_TOKEN`                                                   | Max number of tokens per principal (enforced by the service)                                                             |
+| `ISSUE_RATE_LIMIT`, `VALIDATE_RATE_LIMIT`                     | Rate limit window (ms) for issue/validate endpoints                                                                      |
+| `BLOCKED_PREFIX`                                              | Token prefix to block (useful for emergency revocation)                                                                  |
+| `LOG_PATH`                                                    | **Optional**: absolute path inside the container for file logging (see **Logging**). Leave unset to disable file logging |
+| `JAVA_OPTS`                                                   | Custom JVM flags (e.g., memory settings)                                                                                 |
 
-```bash
-docker compose up -d postgres pgadmin
-```
-
-Environment in `docker-compose.yml`:
-- DB: `securitydb`, user: `postgres`, password: <Your password>
-- pgAdmin on `http://localhost:8082` (email `admin@admin.com`, password <Your password>)
-
-### Run Redis
-
-If you don’t have Redis locally, run it via Docker:
-
-```bash
-docker run -d --name redis -p 6379:6379 redis:7-alpine
-```
-
-### Run the Application (dev profile)
-
-Set environment variables (see above), then:
-
-```bash
-./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
-```
-
-### Build a Jar
-
-```bash
-./mvnw clean package -DskipTests
-java -jar target/security_service-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev
-```
-
----
-
-## API
-
-**Base URL:** `http://localhost:${PORT}/api`
-
-### Issue Token
-
-**POST** `/v1/tokens/issue`  
-Request body:
-```json
-{
-  "userId": "11111111-1111-1111-1111-111111111111",
-  "key": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
-}
-```
-
-Example:
-```bash
-curl -X POST "http://localhost:8080/api/v1/tokens/issue"   -H "Content-Type: application/json"   -d '{"userId":"11111111-1111-1111-1111-111111111111","key":"aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"}'
-```
-
-Success **200**:
-```json
-{ "accessToken": "d3cc8ac7-38d6-4f6c-83c8-ecf37c843e8a" }
-```
-
-Error codes:
-- **400** – validation error (missing/invalid fields)
-- **404** – user not found / not active
-- **403** – user temporarily blocked (exceeded `MAX_TOKEN`)
-- **429** – too many requests (rate limited by `RATE_LIMIT`)
-- **503** – backend unavailable (e.g., DB connection)
-- **500** – internal server error
-
-### Swagger / OpenAPI
-
-### How to open Swagger UI (step‑by‑step)
-
-1. **Export required env vars** (at least `PORT`; see [Environment Variables](#environment-variables)):
-   ```bash
-   export PORT=8080
-   # optional: others like DB_*, SPRING_DATA_REDIS_*, etc.
-   ```
-
-2. **Run the app** (dev profile):
-   ```bash
-   ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
-   # or: java -jar target/security_service-*.jar --spring.profiles.active=dev
-   ```
-
-3. **Open Swagger UI** in your browser:
-   - UI: `http://localhost:${PORT}/api/swagger-ui/index.html` (e.g., http://localhost:8080/api/swagger-ui/index.html)
-   - OpenAPI JSON: `http://localhost:${PORT}/api/v3/api-docs`
-
-4. **Verify via curl** (optional):
-   ```bash
-   curl -s http://localhost:8080/api/v3/api-docs | head
-   ```
-
-> Notes
-> - The base context path is `/api`. If you change it (`server.servlet.context-path`), the Swagger paths will shift accordingly.
-> - Springdoc is already configured in `SwaggerConfig`. Docs path is `/v3/api-docs`.
-> - If you see **401/403**, ensure your security config permits:
->   `/v3/api-docs/**`, `/swagger-ui/**`, `/swagger-ui.html`.
-> - If you see **404**, double‑check `PORT` and that the app is running.
-
-
-- UI: `http://localhost:${PORT}/api/swagger-ui/index.html`
-- Docs JSON: `http://localhost:${PORT}/api/v3/api-docs`
-
-Springdoc is configured via `SwaggerConfig` and `application*.yml`.
-
----
-
-## Rate Limiting & Blocking
-
-- `TokenRateLimitFilter` enforces a **per-user** delay between token issuance requests. The interval is controlled by `RATE_LIMIT` (ms). Violations return **429**.
-- The token store strategies enforce **max active tokens** per user (`MAX_TOKEN`). When the limit is reached, old sessions may be revoked and the user is **temporarily blocked** for `ACCESS_TOKEN_EXPIRATION_MS` (a block key is kept under `BLOCKED_PREFIX + <userId>` in Redis).
-
----
-
-## Storage Strategies & Migration
-
-- Primary storage: **Redis** (`RedisTokenStoreStrategy`)
-- Fallback: **In-memory** (`InMemoryTokenStoreStrategy`) used when Redis is down
-- `DelegatingTokenStoreStrategy`:
-  - selects the first applicable strategy
-  - detects when Redis becomes active again
-  - triggers migration of accumulated in-memory tokens back to Redis via `TokenMigrationService`
-
-The migration is idempotent and runs only when Redis transitions to the active role and the in-memory buffer is not empty.
+> **Important:** When running everything with Compose, set `DB_HOST=postgres` and `REDIS_HOST=redis` (service names on the Compose network), **not** `localhost`.
 
 ---
 
 ## Logging
 
-Logback is configured in `logback-spring.xml`.
+You have two options:
 
-- Console logs (root logger)
-- Aspect logs (`com.voriq.security_service.aop`) both to console **and** a rolling file: `logs/voriq_token.YYYY-MM-DD.log`
+1. **Console (default)**
+   When `LOG_PATH` is **unset**, the app logs to stdout/stderr only. This is the simplest, container‑native setup (use `docker logs`, or forward to your log stack).
 
-The `GlobalLoggingAspect` logs:
-- successful issuance (`INFO`, Code=200)
-- handled errors (`ERROR` with an HTTP code, user id and message)
+2. **File logging to host disk**
+   If your Logback config points at `${LOG_PATH}`, you can enable file logging **without keeping logs inside the container**:
 
----
+    * Pick a directory on the **host**, e.g. `/var/log/security-service` (or `C:\voriq\logs` on Windows).
+    * Mount it into the container at `/opt/app/logs` (Compose volume binding).
+    * Set `LOG_PATH=/opt/app/logs/app.log` in your environment.
 
-## Profiles
+With this setup, all log files are created on the host. If you remove the bind mount but keep `LOG_PATH` set, the app will create files **inside** the container — avoid this by either keeping the mount or unsetting `LOG_PATH`.
 
-- **dev** – local development (reads env vars from your shell)
-- **test** – testing profile (uses H2 for DB in tests; Redis must be available or mocked)
-
-Run with a specific profile:
-```bash
-java -jar target/security_service-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev
-```
+> Tip: rotate/ship logs using your platform’s log driver or an external agent on the host.
 
 ---
 
-## Testing
+## API endpoints
 
-Run all tests:
-```bash
-./mvnw test
+> **The canonical schemas are published via OpenAPI** at `/api/v3/api-docs` (Swagger UI at `/api/swagger-ui.html`). Below are concise descriptions only — no examples or code.
+
+### Issue token — POST /api/v1/token/issue
+
+* **Purpose:** Issue a short‑lived access token for a principal.
+* **Method & Path:** `POST /api/v1/tokens/issue`
+* **Auth:** Not required (credentials are provided in the request body).
+* **Request:** JSON payload with principal credentials (e.g., login identifier and secret). Optional context fields (such as device or client metadata) may be included if supported by the service configuration.
+* **Processing:** Enforces per‑endpoint rate limit defined by `ISSUE_RATE_LIMIT` and validates the principal.
+* **Success (200 OK):** Returns an access token (JSON).
+* **
+
+### Validate token — GET /api/v1/token/validate
+
+* **Purpose:** Validate a bearer token and return its status and key claims.
+* **Method & Path:** `GET /api/v1/tokens/validate`
+* **Auth:** `Authorization: Bearer <token>` header is required.
+* **Request:** No body; token is supplied via the `Authorization` header.
+* **Processing:** Verifies signature/format, expiry, blacklist/prefix rules, and enforces `VALIDATE_RATE_LIMIT`.
+* **Success (204 NO CONTENT):** 
+### Docs & health
+
+* **Swagger UI:** `GET api/swagger-ui/index.html`
+* **OpenAPI JSON:** `GET /api/v3/api-docs`
+* **Health:** `GET /actuator/health` (for orchestrator probes)
+
+## New endpoint
+
+Document your new API here in the same style as the existing ones.
+
+**Summary**
+*Brief one‑liner of what the endpoint does.*
+
+**Method & Path**
+`<METHOD> /api/<resource>`
+
+**Headers**
+
+* `Authorization: Bearer <token>` *(if required)*
+* `Content-Type: application/json`
+
+**Request body**
+
+```jsonc
+{
+  // TODO: add fields
+}
 ```
 
-Notes:
-- Integration tests assume a reachable Redis (configure `SPRING_DATA_REDIS_*`).
-- For DB‑unavailable scenarios the global exception handler maps to **503**.
-- Some tests use per‑test waiting (`Awaitility` is recommended) to avoid flakiness instead of raw `Thread.sleep`.
+**Success response** `200` (example)
+
+```jsonc
+{
+  "success": true,
+  "data": {
+    // TODO: add fields
+  }
+}
+```
+
+**Error responses**
+
+* `400 Bad Request` – validation error (payload details in body)
+* `401 Unauthorized` – missing/invalid credentials
+* `429 Too Many Requests` – rate limit exceeded (respect `Retry-After` header)
+* `5xx` – server‑side issues
+
+**Example (curl)**
+
+```bash
+curl -X <METHOD> \
+  "http://localhost:<PORT>/api/<resource>" \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{ /* request body */ }'
+```
+
+> **Rate limiting**: If applicable, configure the relevant `*_RATE_LIMIT` variables.
+
+---
+
+## Health checks
+
+* Liveness/Readiness are enabled by default (via Spring Boot Actuator). Use them in your orchestrator.
+* The application starts only after DB and Redis are reachable (Compose uses health‑checks to order startup).
 
 ---
 
 ## Troubleshooting
 
-- **Cannot connect to Redis**: verify `SPRING_DATA_REDIS_HOST/PORT` and that Redis is running (Docker or local).
-- **DB connection errors**: verify `DB_*` variables and that the database exists (`securitydb` by default in `docker-compose.yml`).
-- **CORS errors in browser**: set `ALLOWED_ORIGINS` to your frontend origin(s).
-- **429 Too Many Requests**: you’re hitting the `RATE_LIMIT` window—wait and retry.
-- **User frequently blocked**: you may be exceeding `MAX_TOKEN`; adjust values or revoke stale sessions.
+* **Connection to** `localhost` **refused**: inside containers, `localhost` means the container itself. Use the Compose service name (`postgres`) or expose an external port and point to the host.
+* **Hibernate dialect/datasource errors**: confirm all DB env vars are set; the JDBC URL is assembled from `DB_*` vars.
+* **Logs appear inside the container**: either `LOG_PATH` points to a non‑mounted path or the volume mount is missing. Mount a host directory to `/opt/app/logs` or unset `LOG_PATH`.
+* **CORS blocked in browser**: set `ALLOWED_ORIGINS` with the exact scheme/host/port of your frontend.
 
 ---
+
+## Security notes
+
+* Keep secrets (`DB_PASSWORD`, tokens) out of Git. Provide them through `.env` in dev and a secret manager in prod.
+* Limit token lifetimes and enable prefix blocking for incident response.
+
+---
+

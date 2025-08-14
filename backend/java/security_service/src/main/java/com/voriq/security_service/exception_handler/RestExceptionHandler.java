@@ -6,6 +6,7 @@ import com.voriq.security_service.exception_handler.exception.RateLimitExceededE
 import com.voriq.security_service.exception_handler.exception.RestException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -14,8 +15,12 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -67,6 +72,41 @@ public class RestExceptionHandler {
                 .collect(Collectors.toSet());
 
         HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(status.value())
+                .error(status.getReasonPhrase())
+                .message(Set.of("The error of validation of the request"))
+                .validationErrors(validationErrors)
+                .path(request.getRequestURI())
+                .build();
+
+        return new ResponseEntity<>(errorResponse, status);
+    }
+
+    /**
+     * Handles method parameter validation failures (e.g., constraints on controller method
+     * arguments validated via {@code @Validated}).
+     *
+     * <p>Triggered by {@link HandlerMethodValidationException} when Spring validates controller
+     * method parameters. Produces a 400 Bad Request with collected {@link ValidationError}s.</p>
+     *
+     * @param ex      validation exception carrying parameter validation results
+     * @param request current HTTP request (used to fill {@code path})
+     * @return 400 Bad Request with a list of {@link ValidationError}s
+     */
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ResponseEntity<ErrorResponse> handleValidationException(HandlerMethodValidationException ex, HttpServletRequest request) {
+
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        Set<ValidationError> validationErrors = ex.getParameterValidationResults().stream()
+                .flatMap(result -> result.getResolvableErrors().stream()
+                        .map(err -> ValidationError.builder()//
+                                .message(err.getDefaultMessage())
+                                .build()))
+                .collect(Collectors.toSet());
 
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .timestamp(LocalDateTime.now())

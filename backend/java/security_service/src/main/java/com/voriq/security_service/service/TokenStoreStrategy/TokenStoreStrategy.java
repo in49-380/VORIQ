@@ -37,11 +37,8 @@ public interface TokenStoreStrategy {
      *
      * @param token  a non-null token string
      * @param userId the owner's UUID
-     *
-     * @throws com.voriq.security_service.exception_handler.exception.RestException
-     *         if business rules are violated (blocked user, max active tokens, etc.)
-     * @throws RuntimeException
-     *         if an infrastructure error occurs (e.g., backend is unavailable)
+     * @throws com.voriq.security_service.exception_handler.exception.RestException if business rules are violated (blocked user, max active tokens, etc.)
+     * @throws RuntimeException                                                     if an infrastructure error occurs (e.g., backend is unavailable)
      */
     void saveToken(String token, UUID userId);
 
@@ -50,9 +47,24 @@ public interface TokenStoreStrategy {
      *
      * @param token token to check
      * @return {@code true} if the token is known and valid; {@code false} otherwise
-     *
-     * @throws RuntimeException
-     *         if an infrastructure error occurs while accessing the backend
+     * @throws RuntimeException if an infrastructure error occurs while accessing the backend
      */
     boolean isValid(String token);
+
+    /**
+     * Retrieves a single member from the set-like collection stored under the given {@code key}
+     * (e.g., a Redis Set), without modifying the collection.
+     *
+     * <p>Semantics:</p>
+     * <ul>
+     *   <li>Non-destructive: the returned value is not removed from the set.</li>
+     *   <li>If multiple members exist, the selection is implementation-defined (e.g., first/any/random).</li>
+     *   <li>If the key does not exist or the set is empty, returns {@code null}.</li>
+     * </ul>
+     *
+     * @param key non-null logical key identifying the set/collection
+     * @return a set member if present; {@code null} if absent or empty
+     * @throws RuntimeException if an infrastructure/backend error occurs while accessing the storage
+     */
+    String getSetValueByKey(String key);
 }

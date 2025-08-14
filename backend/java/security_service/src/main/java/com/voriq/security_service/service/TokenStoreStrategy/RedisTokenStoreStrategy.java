@@ -5,12 +5,16 @@ import com.voriq.security_service.service.interfaces.BlockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.util.Set;
 import java.util.UUID;
+
+import static com.voriq.security_service.service.TokenStoreStrategy.DelegatingTokenStoreStrategy.DEFAULT_SET_VALUE;
+import static com.voriq.security_service.service.token_utilities.TokenUtilities.isUuid;
 
 /**
  * Primary {@link TokenStoreStrategy} backed by Redis.
@@ -109,32 +113,50 @@ public class RedisTokenStoreStrategy implements TokenStoreStrategy {
     }
 
     /**
-     * Removes from the user index all tokens whose token key no longer exists (expired/evicted).
+     * Token is considered valid iff its key exists in Redis (i.e., the TTL has not expired yet).
      *
-     * @param userId user whose index to clean
-     */
-    private void cleanupExpiredTokens(UUID userId) {
-        String idxKey = userId.toString();
-        Set<String> tokens = redisTemplate.opsForSet().members(idxKey);
-        if (tokens == null || tokens.isEmpty()) return;
-
-        for (String t : tokens) {
-            boolean exists = Boolean.TRUE.equals(redisTemplate.hasKey(t));
-            if (!exists) {
-                redisTemplate.opsForSet().remove(idxKey, t);
-            }
-        }
-    }
-
-    /**
-     * Token is valid iff its token key exists in Redis (TTL not expired).
+     * <p>Semantics:</p>
+     * <ul>
+     *   <li>Uses {@code EXISTS} via {@link org.springframework.data.redis.core.RedisTemplate#hasKey(Object)}.</li>
+     *   <li>No destructive/read-modify side effects.</li>
+     * </ul>
      *
-     * @param token token to check
+     * @param token token key to check (must not be {@code null})
      * @return {@code true} if the token key exists; {@code false} otherwise
+     * @throws RuntimeException if a Redis access error occurs (e.g., connection issues).
+     *                          (Spring Data may throw a {@code DataAccessException}, which is a {@code RuntimeException}.)
      */
     @Override
     public boolean isValid(String token) {
         return Boolean.TRUE.equals(redisTemplate.hasKey(token));
+    }
+
+    /**
+     * Retrieves a single (random) member from the Redis Set stored under the given {@code key}.
+     *
+     * <p>Semantics:</p>
+     * <ul>
+     *   <li>First validates the key format; non-UUID keys yield {@link DelegatingTokenStoreStrategy#DEFAULT_SET_VALUE}.</li>
+     *   <li>Uses {@code SRANDMEMBER} (non-destructive) via {@link org.springframework.data.redis.core.SetOperations#randomMember(Object)}.</li>
+     *   <li>If the returned member is a valid UUID string, it is returned as-is; otherwise
+     *       {@link DelegatingTokenStoreStrategy#DEFAULT_SET_VALUE} is returned.</li>
+     *   <li>Backend (Redis) access errors are swallowed and mapped to
+     *       {@link DelegatingTokenStoreStrategy#DEFAULT_SET_VALUE}.</li>
+     * </ul>
+     *
+     * @param key Redis key expected to point to a Set (must not be {@code null}); only UUID-formatted keys are accepted
+     * @return a UUID string from the Set if present and valid; otherwise {@link DelegatingTokenStoreStrategy#DEFAULT_SET_VALUE}
+     */
+    @Override
+    public String getSetValueByKey(String key) {
+        if (!isUuid(key)) return DEFAULT_SET_VALUE;
+
+        try {
+            String value = redisTemplate.opsForSet().randomMember(key);
+            return isUuid(value) ? value : DEFAULT_SET_VALUE;
+        } catch (DataAccessException e) {
+            return DEFAULT_SET_VALUE;
+        }
     }
 
     /**
@@ -151,6 +173,24 @@ public class RedisTokenStoreStrategy implements TokenStoreStrategy {
             redisTemplate.delete(t);
         }
         redisTemplate.delete(idxKey);
+    }
+
+    /**
+     * Removes from the user index all tokens whose token key no longer exists (expired/evicted).
+     *
+     * @param userId user whose index to clean
+     */
+    private void cleanupExpiredTokens(UUID userId) {
+        String idxKey = userId.toString();
+        Set<String> tokens = redisTemplate.opsForSet().members(idxKey);
+        if (tokens == null || tokens.isEmpty()) return;
+
+        for (String t : tokens) {
+            boolean exists = Boolean.TRUE.equals(redisTemplate.hasKey(t));
+            if (!exists) {
+                redisTemplate.opsForSet().remove(idxKey, t);
+            }
+        }
     }
 
     /**

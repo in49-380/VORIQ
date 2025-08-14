@@ -2,7 +2,9 @@ package com.voriq.security_service.service;
 
 import com.voriq.security_service.domain.dto.TokenRequestDto;
 import com.voriq.security_service.domain.dto.TokensDto;
+import com.voriq.security_service.exception_handler.exception.BadRequestException;
 import com.voriq.security_service.exception_handler.exception.ServiceUnavailableException;
+import com.voriq.security_service.exception_handler.exception.UnauthorizedException;
 import com.voriq.security_service.exception_handler.exception.UserNotFoundException;
 import com.voriq.security_service.repository.UserRepository;
 import com.voriq.security_service.service.TokenStoreStrategy.TokenStoreStrategy;
@@ -10,6 +12,7 @@ import com.voriq.security_service.service.interfaces.TokenService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -75,6 +78,40 @@ public class TokenServiceImpl implements TokenService {
         tokenStoreStrategy.saveToken(tokensDto.getAccessToken(), id);
 
         return tokensDto;
+    }
+
+    /**
+     * Validates the provided access token (expected as a UUID string).
+     *
+     * <p>Flow:</p>
+     * <ol>
+     *   <li>Verify that {@code token} is a valid UUID string; if not, throw {@link BadRequestException}.</li>
+     *   <li>Delegate validation to {@link TokenStoreStrategy#isValid(String)}.</li>
+     *   <li>If the token is not valid, throw {@link UnauthorizedException}.</li>
+     * </ol>
+     *
+     * <p>Notes:</p>
+     * <ul>
+     *   <li>The raw token must not be logged; mask it if needed.</li>
+     *   <li>Backend/IO issues during validation may bubble up as {@code 5xx} via the underlying strategy.</li>
+     * </ul>
+     *
+     * @param token access token to validate (UUID string)
+     * @throws BadRequestException           if the token has an invalid format (not a UUID)
+     * @throws UnauthorizedException         if the token is invalid, expired, or revoked
+     * @throws ServiceUnavailableException   if validation cannot be performed due to backend issues
+     * @throws RuntimeException              if the token-store backend fails unexpectedly
+     */
+
+    @Override
+    public void validateToken(String token) {
+        try{
+            UUID.fromString(token);
+        }catch (Exception e){
+            throw new BadRequestException("Token format is wrong.");
+        }
+       if(!tokenStoreStrategy.isValid(token))
+           throw new UnauthorizedException("Token is invalid.");
     }
 
     /**
