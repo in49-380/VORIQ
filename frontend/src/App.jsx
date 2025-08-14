@@ -26,9 +26,9 @@ function App() {
   const { token } = useContext(AuthContext);
   const { currentScreen, setCurrentScreen } = useScreen('cars');
 
-  // if (!token && currentScreen !== 'login') {
-  //   setCurrentScreen('login');
-  // }
+  if (!token && currentScreen !== 'login') {
+    setCurrentScreen('login');
+  }
 
   // console.log('===currentScreen', currentScreen); 
 
