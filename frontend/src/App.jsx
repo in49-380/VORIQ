@@ -8,6 +8,8 @@ import CarPage from './pages/CarPage';
 import KlaroConsentModal from './components/CookieConsent/KlaroConsentModal';
 import KlaroConsentButton from './components/CookieConsent/KlaroConsentButton';
 import IconButton from './components/IconButton';
+import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
 import { useScreen } from './hooks/useScreen';
 
 const screenPage = {
@@ -24,26 +26,22 @@ function App() {
   const { token } = useContext(AuthContext);
   const { currentScreen, setCurrentScreen } = useScreen('cars');
 
-  if (!token && currentScreen !== 'login') {
-    setCurrentScreen('login');
-  }
+  // if (!token && currentScreen !== 'login') {
+  //   setCurrentScreen('login');
+  // }
 
-  console.log('===currentScreen', currentScreen); 
+  // console.log('===currentScreen', currentScreen); 
 
   return (
     <>
       {/* hier kommt header */}
+      
       <Header/>
-      <IconButton 
-        onClick={()=>window.open('https://github.com/in49-380/VORIQ', '_blank')}
-        title='GitHub'
-        className="fixed top-4 right-4"  
-      />
       {/* main */}
+      <KlaroConsentModal/>
       <main>
         {screenPage[currentScreen]}
       </main>
-      <KlaroConsentModal/>
       {/* hier kommt Footer */}
       <Footer/>
       <KlaroConsentButton/>
