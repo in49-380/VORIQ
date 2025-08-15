@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 
 import './App.css'
 import LogoutButton from './components/oauth/LogoutButton'
@@ -23,13 +23,22 @@ const screenPage = {
 
 function App() {
   const { token } = useContext(AuthContext);
-  console.log('===token',token)
-  const { currentScreen, setCurrentScreen } = useScreen('cars');
+  const { currentScreen, setCurrentScreen } = useScreen();
   console.log('===currentScreen1', currentScreen); 
 
-  if (!token && currentScreen !== 'login') {
+  // if (!token && currentScreen !== 'login') {
+  //   setCurrentScreen('login');
+  // }
+
+  useEffect(() => {
+
+  if (!token) {
     setCurrentScreen('login');
+  } else if (currentScreen === 'login') {
+    setCurrentScreen('cars'); 
   }
+}, [token, currentScreen, setCurrentScreen]);
+
 
   console.log('===currentScreen2', currentScreen); 
 

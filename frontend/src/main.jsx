@@ -10,6 +10,7 @@ import i18nInit from './components/i18n/i18nInit.js';
 import './index.css'
 
 const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+const URI='https://voriq.info'
 console.log(import.meta.env.VITE_GOOGLE_CLIENT_ID);
 
 const render=()=>{
