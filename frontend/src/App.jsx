@@ -23,13 +23,15 @@ const screenPage = {
 
 function App() {
   const { token } = useContext(AuthContext);
+  console.log('===token',token)
   const { currentScreen, setCurrentScreen } = useScreen('cars');
+  console.log('===currentScreen1', currentScreen); 
 
   if (!token && currentScreen !== 'login') {
     setCurrentScreen('login');
   }
 
-  // console.log('===currentScreen', currentScreen); 
+  console.log('===currentScreen2', currentScreen); 
 
   return (
     <>
