@@ -12,7 +12,7 @@
  
     "cookieModal":{
            "title":"Cookies & Privacy Settings",
-           "desctiption": "We use cookies to enhance your experience. You can accept, reject, or customize them.",
+           "description": "We use cookies to enhance your experience. You can accept, reject, or customize them.",
         "cookieButton":{
             "decline":"Decline",
             "acceptAll":"Accept all",

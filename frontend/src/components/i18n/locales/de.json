@@ -11,7 +11,7 @@
          "cookieSettings": "Cookie-Einstellungen",
          "cookieModal": {
             "title": "Cookies & Datenschutzeinstellungen",
-            "desctiption": "Wir verwenden Cookies, um Ihre Erfahrung zu verbessern. Sie können diese akzeptieren, ablehnen oder anpassen.",
+            "description": "Wir verwenden Cookies, um Ihre Erfahrung zu verbessern. Sie können diese akzeptieren, ablehnen oder anpassen.",
             "cookieButton": {
               "decline": "Ablehnen",
               "acceptAll": "Alle akzeptieren",

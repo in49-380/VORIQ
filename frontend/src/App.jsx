@@ -41,7 +41,9 @@ function App() {
         <CarPage/>
         <LogoutButton/>
         </>}
-    {/* hier kommt Futer */}
+
+        
+    {/* hier kommt Footer */}
     <KlaroConsentButton/>
  </> 
 }
