@@ -1,10 +1,10 @@
-package com.voriq.security_service;
+package com.voriq.parser_service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SecurityServiceApplicationTests {
+class ParserServiceApplicationTests {
 
 	@Test
 	void contextLoads() {
