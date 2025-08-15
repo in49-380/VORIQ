@@ -8,12 +8,12 @@ const LoaderModal=({isLoading})=>{
             open={isLoading}
             fullscreen={true}
         >
-        <Spinner 
-        size='80px'
-        borderWidth='10px'
-        color='blue'
-        speed={1}
-        />
+            <Spinner 
+            size='80px'
+            borderWidth='10px'
+            color='blue'
+            speed={1}
+            />
         </Modal>
     )
 }
