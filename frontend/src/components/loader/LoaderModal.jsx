@@ -11,7 +11,7 @@ const LoaderModal=({isLoading})=>{
             <Spinner 
             size='80px'
             borderWidth='10px'
-            color='blue'
+            color='green'
             speed={1}
             />
         </Modal>
