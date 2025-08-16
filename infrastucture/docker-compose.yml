@@ -1,1 +1,37 @@
 
+# services:
+#   frontend:
+#     build:
+#       context: ../frontend
+#       dockerfile: Dockerfile
+#     container_name: voriq-frontend
+#     ports:
+#       - "8000:80"    # Nginx
+#       - "3000:3000"  # dev-сервер Node/Vite
+#     env_file:
+#       - ../frontend/.env
+#     environment:
+#       - NODE_ENV=development             
+services:
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+      target: build  
+    container_name: voriq-frontend
+    ports:
+      - "8000:80"
+  
+  frontend-dev:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+      target: dev  
+    container_name: voriq-frontend-dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../frontend:/app
+    environment:
+      - NODE_ENV=development
+

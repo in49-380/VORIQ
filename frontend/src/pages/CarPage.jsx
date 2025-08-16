@@ -15,7 +15,7 @@ const CarPage = () => {
      // test
         setTimeout(() => {
          setIsLoading(false);
-       }, 30000); 
+       }, 3000); 
 
   }
 
