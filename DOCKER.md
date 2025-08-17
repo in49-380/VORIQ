@@ -12,4 +12,5 @@ sudo docker compose logs -f frontend
 sudo docker compose -f ../infrastucture/docker-compose.yml up -d
 sudo docker compose -f ../infrastucture/docker-compose.yml down
 
-
+sudo exec -it <id> sh
+docker compose exec frontend-dev env | grep VITE_GOOGLE_CLIENT_ID

@@ -12,26 +12,38 @@
 #       - ../frontend/.env
 #     environment:
 #       - NODE_ENV=development             
-services:
+ services:
   frontend:
+    # env_file1:
+    #   - path: ../frontend/.env
     build:
       context: ../frontend
       dockerfile: Dockerfile
-      target: build  
+      target: nginx
+      args:
+        VITE_GOOGLE_CLIENT_ID: ${VITE_GOOGLE_CLIENT_ID}
     container_name: voriq-frontend
     ports:
       - "8000:80"
+    env_file:
+      - .env
+
   
   frontend-dev:
+    # env_file1:
+    #   - path: ../frontend/.env
     build:
       context: ../frontend
       dockerfile: Dockerfile
-      target: dev  
+      target: dev
+      # args:
+      #   VITE_GOOGLE_CLIENT_ID: ${VITE_GOOGLE_CLIENT_ID}
     container_name: voriq-frontend-dev
     ports:
       - "3000:3000"
     volumes:
       - ../frontend:/app
-    environment:
-      - NODE_ENV=development
-
+    env_file:
+     - .env
+    # environment:
+    #   - NODE_ENV=development
