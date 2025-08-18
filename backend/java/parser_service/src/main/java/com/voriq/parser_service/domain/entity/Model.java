@@ -24,7 +24,7 @@ public class Model {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH},
             fetch = FetchType.LAZY)
     @JoinColumn(name = "brand_id", referencedColumnName = "id")
-    @JsonIgnore
+    //@JsonIgnore
     private Brand brand;
 
     @Override

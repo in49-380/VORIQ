@@ -24,19 +24,16 @@ public class Car {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH},
             fetch = FetchType.LAZY)
     @JoinColumn(name = "engine_id", referencedColumnName = "id")
-    @JsonIgnore
     private Engine engine;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH},
-            fetch = FetchType.LAZY)
+            fetch = FetchType.EAGER)
     @JoinColumn(name = "fuel_type_id", referencedColumnName = "id")
-    @JsonIgnore
-    private FuelType fuelTypeId;
+    private FuelType fuelType;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH},
             fetch = FetchType.LAZY)
     @JoinColumn(name = "model_id", referencedColumnName = "id")
-    @JsonIgnore
     private Model model;
 
     @Override
@@ -48,7 +45,7 @@ public class Car {
 
         if (!id.equals(car.id)) return false;
         if (!engine.equals(car.engine)) return false;
-        if (!fuelTypeId.equals(car.fuelTypeId)) return false;
+        if (!fuelType.equals(car.fuelType)) return false;
         return model.equals(car.model);
     }
 
@@ -56,7 +53,7 @@ public class Car {
     public int hashCode() {
         int result = id.hashCode();
         result = 31 * result + engine.hashCode();
-        result = 31 * result + fuelTypeId.hashCode();
+        result = 31 * result + fuelType.hashCode();
         result = 31 * result + model.hashCode();
         return result;
     }

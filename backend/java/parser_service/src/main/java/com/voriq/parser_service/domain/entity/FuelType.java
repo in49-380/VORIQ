@@ -23,6 +23,10 @@ public class FuelType {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
+    @OneToMany(mappedBy = "fuelType", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Car> cars;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

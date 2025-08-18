@@ -1,18 +1,15 @@
 package com.voriq.parser_service.domain.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @Builder
-//@Schema(name = "Tokens dto", description = "Return new tokens")
+//@Schema(name = "X dto", description = "Return new X")
 public class BrandDto {
 
-    //@Schema(description = "Access token", example = "d3cc8ac7-38d6-4f6c-83c8-ecf37c843e8a")
+    //@Schema(description = "description", example = "example")
     private Long id;
     private String name;
 }
