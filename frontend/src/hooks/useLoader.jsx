@@ -1,13 +1,4 @@
-import { useState } from "react"
+import { useContext } from "react"
+import LoaderContext from "../components/loader/LoaderContext"
 
-const useLoader=()=>{
-    const [isLoading, setIsLoading]=useState(false)
-    const showLoader=()=>{
-        setIsLoading(true)
-    }
-    const hideLoader=()=>{
-        setIsLoading(false)
-    }
-    return {isLoading, showLoader, hideLoader}
-}
-export default useLoader
+export const useLoader=()=>useContext(LoaderContext)

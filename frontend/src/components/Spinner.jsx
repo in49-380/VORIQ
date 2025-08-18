@@ -33,10 +33,10 @@ const Spinner = ({
         </linearGradient>
       </defs>
       <path
-        d={`M${startX} ${startY} A${radius} ${radius} 0 1 1 ${endX} ${endY}-1 `}
+        d={`M${startX} ${startY} A${radius} ${radius} 0 1 1 ${endX} ${endY} `}
         fill='none'
         stroke="url(#gradient)"
-        stroke-width={borderWidth}
+        strokeWidth={borderWidth}
       /> 
       
       <style>{`
