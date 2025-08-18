@@ -16,10 +16,12 @@ const CarPage = () => {
   const handleOnClick=async()=>
    { const result=await  runWithLoader(()=>asyncFunc())
     setRes(result.answer)
+
   }
 
 
   return (
+
     <div className="min-h-screen flex flex-col items-center justify-center bg-blue-100">
       <h1 className="text-4xl font-semibold text-blue-700">
         {t('carPage')}
@@ -35,6 +37,7 @@ const CarPage = () => {
 
      { res && <h2 className='text-red-500 text-2xl'>The asynchronous function is {res}</h2>}
     {/* /////////////////////////////////////// */}
+
     </div>
   );
 };
