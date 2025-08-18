@@ -1,6 +1,6 @@
 export const asyncFunc = async () => {
     
-    await new Promise((resolve) => setTimeout(resolve, 20000));
+    await new Promise((resolve) => setTimeout(resolve, 39999));
   
     return {
       success: true,

@@ -1,23 +1,27 @@
-import React, { createContext, useState} from 'react';
+import React, { createContext, useState, useRef} from 'react';
 
 const LoaderContext=createContext()
 
 export const LoaderProvider=({children})=>{
 const [isLoading, setIsLoading]=useState(false)
 const [isTooLongLoading,setIsTooLongLoading]=useState(false)
-let longLoadingTimer
+
+ const longLoadingTimer = useRef(null);
+const delayStartTimer = useRef(null);
 
 const waitLonger=()=>{
     setIsLoading(true)
     setIsTooLongLoading(false)
-    longLoadingTimer=setTimeout(()=>
-        setIsTooLongLoading(true)
-        ,20000)
-}
+    clearTimeout(longLoadingTimer.current);
+    longLoadingTimer.current = setTimeout(() => setIsTooLongLoading(true), 20000);
+  }
 
 const runWithLoader=async(asyncFunction)=>{
-    let delayStartTimer=setTimeout(()=>setIsLoading(true),200)
-    longLoadingTimer=setTimeout(()=>
+    clearTimeout(delayStartTimer.current);
+    delayStartTimer.current=setTimeout(()=>setIsLoading(true),200)
+
+    if (longLoadingTimer.current) clearTimeout(longLoadingTimer.current);
+    longLoadingTimer.current=setTimeout(()=>
         setIsTooLongLoading(true)
         ,20000)
 
@@ -25,11 +29,11 @@ const runWithLoader=async(asyncFunction)=>{
        { return await asyncFunction() }
        
     finally {
-        clearTimeout(delayStartTimer)
-        // setIsLoading(false)
-        setTimeout(()=>setIsTooLongLoading(false),1000) 
-        setTimeout(()=>setIsLoading(false),500) 
-        clearTimeout (longLoadingTimer)
+      clearTimeout(delayStartTimer.current);
+      clearTimeout(longLoadingTimer.current);
+
+      setIsTooLongLoading(false);
+      setTimeout(() => setIsLoading(false), 500);
     }
 }
     return(
