@@ -18,22 +18,22 @@ jobs:
       - name: Deploy to Server
         uses: appleboy/ssh-action@v0.1.7
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.CICD_SSH_HOST }}
+          username: ${{ secrets.CICD_SSH_USER }}
+          key: ${{ secrets.CICD_SSH_PRIVATE_KEY }}
           script: |
 
             # Ensure the VORIQ directory exists
-            mkdir -p /home/${{ secrets.SSH_USER }}/VORIQ
+            mkdir -p /home/${{ secrets.CICD_SSH_USER }}/VORIQ
             
             # Copy new files
-            rsync -avz . /home/${{ secrets.SSH_USER }}/VORIQ/
+            rsync -avz . /home/${{ secrets.CICD_SSH_USER }}/VORIQ/
 
             # go to the frontend project directory
-            cd /home/${{ secrets.SSH_USER }}/VORIQ/frontend/
+            cd /home/${{ secrets.CICD_SSH_USER }}/VORIQ/frontend/
 
             # build the frontend container
-            docker image build -t dev_front_node:latest -f /home/${{ secrets.SSH_USER }}/VORIQ/devops/frontend/Dockerfile.front .
+            docker image build -t dev_front_node:latest -f /home/${{ secrets.CICD_SSH_USER }}/VORIQ/devops/frontend/Dockerfile.front .
 
             # remove old container if exists
             docker container rm -f dev_front_node || true
