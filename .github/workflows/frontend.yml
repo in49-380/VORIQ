@@ -24,17 +24,18 @@ jobs:
           script: |
 
             # Ensure the VORIQ directory exists
-            #mkdir -p /home/${{ secrets.CICD_SSH_USER }}/VORIQ
-            
-            ls -al 
+            mkdir -p /home/${{ secrets.CICD_SSH_USER }}/VORIQ
+
+            cd /home/${{ secrets.CICD_SSH_USER }}/VORIQ
 
             # Copy new files
-            rsync -avz . /home/${{ secrets.CICD_SSH_USER }}/VORIQ/
-
-            echo ${{ secrets.DEV_FRONT_GOOGLE_CLIENT_ID }} > .env
+            rsync -avz --delete --exclude='.git/' /home/runner/work/VORIQ/VORIQ/ .
+            #rsync -avz . /home/${{ secrets.CICD_SSH_USER }}/VORIQ/
 
             # go to the frontend project directory
             cd /home/${{ secrets.CICD_SSH_USER }}/VORIQ/frontend/
+
+            echo ${{ secrets.DEV_FRONT_GOOGLE_CLIENT_ID }} > .env
 
             # build the frontend container
             docker image build -t dev_front_node:latest -f /home/${{ secrets.CICD_SSH_USER }}/VORIQ/devops/frontend/Dockerfile.front .
