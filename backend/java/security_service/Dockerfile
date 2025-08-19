@@ -39,11 +39,14 @@ ENV JAVA_OPTS="--add-opens java.base/java.lang=ALL-UNNAMED \
                --add-exports java.base/jdk.internal.misc=ALL-UNNAMED"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-      ca-certificates tzdata wget \
-  && rm -rf /var/lib/apt/lists/*
+    ca-certificates tzdata wget && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN groupadd --gid 1000 spring-app \
- && useradd  --uid 1000 --gid spring-app --shell /usr/sbin/nologin --create-home spring-app
+RUN groupadd --gid 1000 spring-app && \
+    useradd  --uid 1000 --gid spring-app --shell /usr/sbin/nologin --create-home spring-app && \
+    mkdir -p /opt/app/logs && \
+    chown -R spring-app:spring-app /opt/app && \
+    chmod 755 /opt/app
 
 WORKDIR /opt/app
 
@@ -54,3 +57,4 @@ USER spring-app:spring-app
 
 EXPOSE 8081
 ENTRYPOINT ["sh","-c","exec java $JAVA_OPTS -jar application.jar"]
+

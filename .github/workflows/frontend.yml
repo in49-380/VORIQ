@@ -1,0 +1,43 @@
+name: Deploy Frontend
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - '*''
+    paths:
+      - 'frontend/**'
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+
+            # Ensure the VORIQ directory exists
+            mkdir -p /home/${{ secrets.SSH_USER }}/VORIQ
+            
+            # Copy new files
+            rsync -avz . /home/${{ secrets.SSH_USER }}/VORIQ/
+
+            # go to the frontend project directory
+            cd /home/${{ secrets.SSH_USER }}/VORIQ/frontend/
+
+            # build the frontend container
+            docker image build -t dev_front_node:latest -f /home/${{ secrets.SSH_USER }}/VORIQ/devops/frontend/Dockerfile.front .
+
+            # remove old container if exists
+            docker container rm -f dev_front_node || true
+
+            # running new docker container
+            docker container run -d --rm --name dev_front_node -p 3000:3000 -e NODE_ENV=development -v dev_front_node:/app dev_front_node:latest
+            
