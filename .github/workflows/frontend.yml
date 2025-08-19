@@ -28,11 +28,16 @@ jobs:
 
             cd /home/${{ secrets.CICD_SSH_USER }}
 
-            git clone https://github.com/in49-380/VORIQ.git
+            #rm -rf VORIQ || true
 
+            # Clone the repository if it doesn't exist
+            [ ! -d "VORIQ" ] && git clone https://github.com/in49-380/VORIQ.git
+
+            # Change to the VORIQ directory
             cd /home/${{ secrets.CICD_SSH_USER }}/VORIQ
-
-            git pull
+            
+            # Pull the latest changes
+            git pull origin dev
 
             # Copy new files
             #rsync -avz --delete --exclude='.git/' /home/runner/work/VORIQ/VORIQ/ .
