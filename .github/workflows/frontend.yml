@@ -24,12 +24,18 @@ jobs:
           script: |
 
             # Ensure the VORIQ directory exists
-            mkdir -p /home/${{ secrets.CICD_SSH_USER }}/VORIQ
+            #mkdir -p /home/${{ secrets.CICD_SSH_USER }}/VORIQ
+
+            cd /home/${{ secrets.CICD_SSH_USER }}
+
+            git clone https://github.com/in49-380/VORIQ.git
 
             cd /home/${{ secrets.CICD_SSH_USER }}/VORIQ
 
+            git pull
+
             # Copy new files
-            rsync -avz --delete --exclude='.git/' /home/runner/work/VORIQ/VORIQ/ .
+            #rsync -avz --delete --exclude='.git/' /home/runner/work/VORIQ/VORIQ/ .
             #rsync -avz . /home/${{ secrets.CICD_SSH_USER }}/VORIQ/
 
             # go to the frontend project directory
