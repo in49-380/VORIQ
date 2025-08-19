@@ -49,7 +49,7 @@ jobs:
             echo ${{ secrets.DEV_FRONT_GOOGLE_CLIENT_ID }} > .env
 
             # build the frontend container
-            docker image build -t dev_front_node:latest -f /home/${{ secrets.CICD_SSH_USER }}/VORIQ/devops/frontend/Dockerfile.front .
+            docker image build -t dev_front_node:latest -f /home/${{ secrets.CICD_SSH_USER }}/VORIQ/devops/frontend/Dockerfile.front.develop .
 
             # remove old container if exists
             docker container rm -f dev_front_node || true

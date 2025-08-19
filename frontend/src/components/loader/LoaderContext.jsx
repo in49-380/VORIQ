@@ -16,7 +16,7 @@ const waitLonger=()=>{
     setIsTooLongLoading(false)
     clearTimeout(longLoadingTimer.current);
     longLoadingTimer.current = setTimeout(() =>
-         setIsTooLongLoading(true), 5000);
+         setIsTooLongLoading(true), 15000);
   }
 
 const abort=()=>{
@@ -33,7 +33,7 @@ const runWithLoader=async(asyncFunction)=>{
     clearTimeout(longLoadingTimer.current);
     longLoadingTimer.current=setTimeout(()=>
         setIsTooLongLoading(true)
-        ,5000)
+        ,15000)
 
     controllerRef.current=new AbortController()
     const signal=controllerRef.current.signal    
