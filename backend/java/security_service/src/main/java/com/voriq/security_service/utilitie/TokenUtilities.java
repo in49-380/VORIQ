@@ -1,4 +1,4 @@
-package com.voriq.security_service.service.token_utilities;
+package com.voriq.security_service.utilitie;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;

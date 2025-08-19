@@ -6,6 +6,7 @@ import com.voriq.security_service.domain.dto.TokenRequestDto;
 import com.voriq.security_service.filter.RepeatableBodyRequestWrapper;
 import com.voriq.security_service.filter.TokenRateLimitFilter;
 import com.voriq.security_service.service.TokenStoreStrategy.TokenStoreStrategy;
+import com.voriq.security_service.utilitie.TokenUtilities;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 import static com.voriq.security_service.service.TokenStoreStrategy.DelegatingTokenStoreStrategy.DEFAULT_SET_VALUE;
-import static com.voriq.security_service.service.token_utilities.TokenUtilities.getMaskedUuid;
+import static com.voriq.security_service.utilitie.TokenUtilities.getMaskedUuid;
 
 /**
  * Global AOP logging for token issuance/validation flow and centralized exception handling.
@@ -126,7 +127,7 @@ public class GlobalLoggingAspect {
      *
      * <p>Runs only when the controller's {@code validate(...)} method returns normally.
      * Extracts the first {@code String} argument (assumed to be the bearer token), masks it via
-     * {@link com.voriq.security_service.service.token_utilities.TokenUtilities#getMaskedUuid(String)},
+     * {@link TokenUtilities#getMaskedUuid(String)},
      * and logs at INFO. The HTTP status is read from the returned {@link ResponseEntity}; if
      * {@code result} is {@code null}, the status defaults to {@code 204}.</p>
      *
@@ -157,6 +158,53 @@ public class GlobalLoggingAspect {
         int code = (result != null) ? result.getStatusCode().value() : 204;
 
         log.info("[INFO] {} - User with ID {} validated token {} succeeded. Code= {}", now, userId, masked, code);
+    }
+
+    /**
+     * Pointcut that matches the {@code revoke(...)} method in {@code TokenController}.
+     *
+     * <p>Matches any {@code revoke} method signature in
+     * {@code com.voriq.security_service.controller.TokenController}, regardless of arguments.
+     * Keep this expression in sync if the controller class or method name changes.</p>
+     */
+    @Pointcut("execution(* com.voriq.security_service.controller.TokenController.revoke(..))")
+    public void revokeMethodTokenController() {
+    }
+
+    /**
+     * After-returning advice that logs a successful token revocation.
+     *
+     * <p>Runs only when the controller's {@code revoke(...)} method returns normally.
+     * Extracts the first {@code String} argument (assumed to be the bearer token), masks it via
+     * {@link TokenUtilities#getMaskedUuid(String)},
+     * and logs at INFO. The HTTP status is read from the returned {@link org.springframework.http.ResponseEntity};
+     * if {@code result} is {@code null}, the status defaults to {@code 204}.</p>
+     *
+     * <p><b>Notes:</b></p>
+     * <ul>
+     *   <li>Raw tokens are never logged; only masked values are emitted.</li>
+     *   <li>If the controller accepts a {@code UUID} instead of a {@code String}, adjust the advice accordingly.</li>
+     *   <li>To log failures/exceptions, add a corresponding {@code @AfterThrowing} advice.</li>
+     *   <li>If no {@code String} argument is present, the token is rendered as {@code "<absent>"}.</li>
+     * </ul>
+     *
+     * @param joinPoint join point used to access method arguments (expects a {@code String} token)
+     * @param result    controller response used to derive the HTTP status (typically {@code 204 No Content})
+     */
+    @AfterReturning(pointcut = "revokeMethodTokenController()", returning = "result")
+    public void afterReturningForRevokeMethod(JoinPoint joinPoint, ResponseEntity<?> result) {
+        String now = LocalDateTime.now().format(FMT);
+
+        String token = null;
+        for (Object arg : joinPoint.getArgs()) {
+            if (arg instanceof String u) {
+                token = u;
+                break;
+            }
+        }
+        String masked = (token != null) ? getMaskedUuid(token) : "<absent>";
+        int code = (result != null) ? result.getStatusCode().value() : 204;
+        log.info("[INFO] {} - Token {} revoked succeeded. Code= {}", now, masked, code);
     }
 
     // ===================== Centralized exception logging =====================
@@ -355,6 +403,20 @@ public class GlobalLoggingAspect {
             log.warn("[WARN] {} - User {} was blocked for {} seconds", now, userId, accessExpirationMs / 1000);
         } else {
             log.error("[ERROR] {} - Error blocking user {}.", now, userId);
+        }
+    }
+
+    @Pointcut("execution(boolean com.voriq.security_service.service.interfaces.BlockService.removeBlock(..)) && args(userId,..)")
+    public void removeBlockCall(UUID userId) {
+    }
+
+    @AfterReturning(pointcut = "removeBlockCall(userId)", returning = "result", argNames = "userId,result")
+    public void afterRemoveBlock(UUID userId, boolean result) {
+        String now = LocalDateTime.now().format(FMT);
+        if (result) {
+            log.warn("[INFO] {} - User {} was unblocked.", now, userId);
+        } else {
+            log.error("[ERROR] {} - Error unblocking user {}.", now, userId);
         }
     }
 }

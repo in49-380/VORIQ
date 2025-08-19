@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="30 seconds">
+<!--<property name="LOG_DIR" value="${LOG_DIR}"/>-->
+<springProperty name="LOG_DIR" source="log.dir" defaultValue="logs"/>
 
-    <appender name="ASPECT_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/voriq_token.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>30</maxHistory>
-            <cleanHistoryOnStart>true</cleanHistoryOnStart>
-        </rollingPolicy>
-        <encoder>
-            <pattern>%d{dd.MM.yyyy HH:mm:ss} %-5level - %msg%n</pattern>
-        </encoder>
-    </appender>
+<appender name="ASPECT_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%d{dd.MM.yyyy HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>
-        </encoder>
-    </appender>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <fileNamePattern>${LOG_DIR}/voriq_token.%d{yyyy-MM-dd}.log</fileNamePattern>
+        <maxHistory>30</maxHistory>
+        <cleanHistoryOnStart>true</cleanHistoryOnStart>
+    </rollingPolicy>
+    <encoder>
+        <pattern>%d{dd.MM.yyyy HH:mm:ss} %-5level - %msg%n</pattern>
+    </encoder>
+</appender>
 
-    <logger name="com.voriq.security_service.aop" level="INFO" additivity="false">
-        <appender-ref ref="ASPECT_FILE"/>
-        <appender-ref ref="STDOUT"/>
-    </logger>
+<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+        <pattern>%d{dd.MM.yyyy HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>
+    </encoder>
+</appender>
 
-    <root level="INFO">
-        <appender-ref ref="STDOUT"/>
-    </root>
+<logger name="com.voriq.security_service.aop" level="INFO" additivity="false">
+    <appender-ref ref="ASPECT_FILE"/>
+    <appender-ref ref="STDOUT"/>
+</logger>
 
+<root level="INFO">
+    <appender-ref ref="STDOUT"/>
+</root>
 </configuration>

@@ -47,3 +47,11 @@ rate:
   limit-ms:
     issue: ${ISSUE_RATE_LIMIT}
     validate: ${VALIDATE_RATE_LIMIT}
+
+log:
+  dir: ${LOG_DIR}
+
+archive:
+  schedule:
+    fixed-delay-ms: ${FIXED_DELAY_MS}
+    initial-delay-ms: ${INITIAL_DELAY_MS}

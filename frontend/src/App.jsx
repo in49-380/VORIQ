@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 
 import './App.css'
 import LogoutButton from './components/oauth/LogoutButton'
@@ -7,7 +7,6 @@ import RegistrationPage from './pages/StartPage';
 import CarPage from './pages/CarPage';
 import KlaroConsentModal from './components/CookieConsent/KlaroConsentModal';
 import KlaroConsentButton from './components/CookieConsent/KlaroConsentButton';
-import IconButton from './components/IconButton';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import { useScreen } from './hooks/useScreen';
@@ -24,25 +23,33 @@ const screenPage = {
 
 function App() {
   const { token } = useContext(AuthContext);
-  const { currentScreen, setCurrentScreen } = useScreen('cars');
+  const { currentScreen, setCurrentScreen } = useScreen();
+  console.log('===currentScreen1', currentScreen); 
 
-  if (!token && currentScreen !== 'login') {
+  // if (!token && currentScreen !== 'login') {
+  //   setCurrentScreen('login');
+  // }
+
+  useEffect(() => {
+
+  if (!token) {
     setCurrentScreen('login');
+  } else if (currentScreen === 'login') {
+    setCurrentScreen('cars'); 
   }
+}, [token, currentScreen, setCurrentScreen]);
 
-  // console.log('===currentScreen', currentScreen); 
+
+  console.log('===currentScreen2', currentScreen); 
 
   return (
     <>
-      {/* hier kommt header */}
-      
       <Header/>
       {/* main */}
       <KlaroConsentModal/>
       <main>
         {screenPage[currentScreen]}
       </main>
-      {/* hier kommt Footer */}
       <Footer/>
       <KlaroConsentButton/>
     </> 

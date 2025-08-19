@@ -7,4 +7,6 @@ public interface BlockService {
     boolean block(UUID userId);
 
     boolean isBlocked(UUID userId);
+
+    boolean removeBlock(UUID userid);
 }

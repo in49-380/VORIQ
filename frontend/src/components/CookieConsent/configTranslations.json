@@ -1,129 +1,158 @@
 {
-    "en": {
-      "privacyPolicyUrl": "/privacy",
-      "consentModal": {
-        "title": "<u>title</u>",
-        "description": "Here you can see and customize the information that we collect about you. Entries marked as \"Example\" are just for demonstration purposes and are not really used on this website."
-      },
-      "inlineTracker": {
-        "description": "Example of an inline tracking script"
-      },
-      "externalTracker": {
-        "description": "Example of an external tracking script"
-      },
-      "adsense": {
-        "description": "Displaying of advertisements (just an example)",
-        "title": "Google Adsense Advertisement"
-      },
-      "matomo": {
-        "description": "Collecting of visitor statistics"
-      },
-      "camera": {
-        "description": "A surveillance camera (just an example for an IMG tag)"
-      },
-      "cloudflare": {
-        "description": "Protection against DDoS attacks"
-      },
-      "intercom": {
-        "description": "Chat widget & collecting of visitor statistics (just an example)"
-      },
-      "mouseflow": {
-        "description": "Real-Time user analytics (just an example)"
-      },
-      "googleFonts": {
-        "description": "Web fonts hosted by Google"
-      },
-      "purposes": {
-        "analytics": "Analytics",
-        "security": "Security",
-        "livechat": "Livechat",
-        "advertising": "Advertising",
-        "styling": "Styling"
-      }
+  "en": {
+    "privacyPolicyUrl": "/privacy",
+    "consentModal": {
+      "title": "<u><b>Privacy Settings</b></u>",
+      "description": "Here you can see and customize the information that we collect about you. Entries marked as \"Example\" are just for demonstration purposes and are not really used on this website."
     },
-    "de": {
-      "privacyPolicyUrl": "/datenschutz",
-      "consentModal": {
-        "title": "<u>Titel</u>",
-        "description": "Hier können Sie einsehen und anpassen, welche Informationen wir über Sie sammeln. Einträge, die als \"Beispiel\" gekennzeichnet sind, dienen nur Demonstrationszwecken und werden auf dieser Website nicht wirklich verwendet."
-      },
-      "inlineTracker": {
-        "description": "Beispiel für ein Inline-Tracking-Skript"
-      },
-      "externalTracker": {
-        "description": "Beispiel für ein externes Tracking-Skript"
-      },
-      "adsense": {
-        "description": "Anzeigen von Werbung (nur ein Beispiel)",
-        "title": "Google Adsense Werbung"
-      },
-      "matomo": {
-        "description": "Sammeln von Besucherstatistiken"
-      },
-      "camera": {
-        "description": "Eine Überwachungskamera (nur ein Beispiel für ein IMG-Tag)"
-      },
-      "cloudflare": {
-        "description": "Schutz gegen DDoS-Angriffe"
-      },
-      "intercom": {
-        "description": "Chat-Widget & Sammlung von Besucherstatistiken (nur ein Beispiel)"
-      },
-      "mouseflow": {
-        "description": "Echtzeit-Benutzeranalysen (nur ein Beispiel)"
-      },
-      "googleFonts": {
-        "description": "Webfonts, die von Google gehostet werden"
-      },
-      "purposes": {
-        "analytics": "Analyse",
-        "security": "Sicherheit",
-        "livechat": "Livechat",
-        "advertising": "Werbung",
-        "styling": "Styling"
-      }
+    "inlineTracker": {
+      "description": "Example of an inline tracking script"
     },
-    "uk": {
-      "privacyPolicyUrl": "/privacy",
-      "consentModal": {
-        "title": "<u>Заголовок</u>",
-        "description": "Тут ви можете переглянути та налаштувати інформацію, яку ми збираємо про вас. Записи, позначені як \"Приклад\", призначені лише для демонстрації і насправді не використовуються на цьому вебсайті."
-      },
-      "inlineTracker": {
-        "description": "Приклад вбудованого скрипта відстеження"
-      },
-      "externalTracker": {
-        "description": "Приклад зовнішнього скрипта відстеження"
-      },
-      "adsense": {
-        "description": "Відображення реклами (тільки приклад)",
-        "title": "Оголошення Google Adsense"
-      },
-      "matomo": {
-        "description": "Збір статистики відвідувань"
-      },
-      "camera": {
-        "description": "Камера спостереження (тільки приклад для тега IMG)"
-      },
-      "cloudflare": {
-        "description": "Захист від DDoS-атак"
-      },
-      "intercom": {
-        "description": "Віджет чату та збір статистики відвідувачів (тільки приклад)"
-      },
-      "mouseflow": {
-        "description": "Аналітика користувачів у реальному часі (тільки приклад)"
-      },
-      "googleFonts": {
-        "description": "Веб-шрифти, розміщені Google"
-      },
-      "purposes": {
-        "analytics": "Аналітика",
-        "security": "Безпека",
-        "livechat": "Онлайн-чат",
-        "advertising": "Реклама",
-        "styling": "Оформлення"
-      }
+    "externalTracker": {
+      "description": "Example of an external tracking script"
+    },
+    "adsense": {
+      "description": "Displaying of advertisements (just an example)",
+      "title": "Google Adsense Advertisement"
+    },
+    "matomo": {
+      "description": "Collecting of visitor statistics"
+    },
+    "camera": {
+      "description": "A surveillance camera (just an example for an IMG tag)"
+    },
+    "cloudflare": {
+      "description": "Protection against DDoS attacks"
+    },
+    "intercom": {
+      "description": "Chat widget & collecting of visitor statistics (just an example)"
+    },
+    "mouseflow": {
+      "description": "Real-Time user analytics (just an example)"
+    },
+    "googleFonts": {
+      "description": "Web fonts hosted by Google"
+    },
+    "purposes": {
+      "analytics": "Analytics",
+      "security": "Security",
+      "livechat": "Livechat",
+      "advertising": "Advertising",
+      "styling": "Styling"
     }
+  },
+  "de": {
+    "privacyPolicyUrl": "/datenschutz",
+    "consentModal": {
+      "title": "<u><b>Datenschutzeinstellungen</b></u>",
+      "description": "Hier können Sie einsehen und anpassen, welche Informationen wir über Sie sammeln. Einträge, die als \"Beispiel\" gekennzeichnet sind, dienen nur Demonstrationszwecken und werden auf dieser Website nicht wirklich verwendet."
+    },
+    "inlineTracker": {
+      "description": "Beispiel für ein Inline-Tracking-Skript"
+    },
+    "externalTracker": {
+      "description": "Beispiel für ein externes Tracking-Skript"
+    },
+    "adsense": {
+      "description": "Anzeigen von Werbung (nur ein Beispiel)",
+      "title": "Google Adsense Werbung"
+    },
+    "matomo": {
+      "description": "Sammeln von Besucherstatistiken"
+    },
+    "camera": {
+      "description": "Eine Überwachungskamera (nur ein Beispiel für ein IMG-Tag)"
+    },
+    "cloudflare": {
+      "description": "Schutz gegen DDoS-Angriffe"
+    },
+    "intercom": {
+      "description": "Chat-Widget & Sammlung von Besucherstatistiken (nur ein Beispiel)"
+    },
+    "mouseflow": {
+      "description": "Echtzeit-Benutzeranalysen (nur ein Beispiel)"
+    },
+    "googleFonts": {
+      "description": "Webfonts, die von Google gehostet werden"
+    },
+    "purposes": {
+      "analytics": "Analyse",
+      "security": "Sicherheit",
+      "livechat": "Livechat",
+      "advertising": "Werbung",
+      "styling": "Styling"
+    }
+  },
+  "uk": {
+    "privacyPolicyUrl": "/privacy",
+    "privacyPolicy": {
+      "text": "прайвеси"
+    },
+    "consentModal": {
+      "title": "<u><b>Налаштування конфіденційності</b></u>",
+      "description": "Тут ви можете переглянути та налаштувати інформацію, яку ми збираємо про вас. Записи, позначені як \"Приклад\", призначені лише для демонстрації і насправді не використовуються на цьому вебсайті."
+    },
+    "inlineTracker": {
+      "description": "Приклад вбудованого скрипта відстеження"
+    },
+    "externalTracker": {
+      "description": "Приклад зовнішнього скрипта відстеження"
+    },
+    "adsense": {
+      "description": "Відображення реклами (тільки приклад)",
+      "title": "Оголошення Google Adsense"
+    },
+    "matomo": {
+      "description": "Збір статистики відвідувань"
+    },
+    "camera": {
+      "description": "Камера спостереження (тільки приклад для тега IMG)"
+    },
+    "cloudflare": {
+      "description": "Захист від DDoS-атак"
+    },
+    "intercom": {
+      "description": "Віджет чату та збір статистики відвідувачів (тільки приклад)"
+    },
+    "mouseflow": {
+      "description": "Аналітика користувачів у реальному часі (тільки приклад)"
+    },
+    "googleFonts": {
+      "description": "Веб-шрифти, розміщені Google"
+    },
+    "purposeItem": {
+      "services": "сервіси",
+      "service": "сервіс"
+    },
+    "purposes": {
+      "performance": {
+        "title": "Оптимізація продуктивності",
+        "description": "Ці служби обробляють персональні дані для оптимізації сервісу, що пропонується цим сайтом."
+      },
+      "analytics": "Аналітика",
+      "security": "Безпека",
+      "livechat": "Онлайн-чат",
+      "advertising": "Реклама",
+      "styling": "Оформлення"
+    },
+
+    "service": {
+      "purposes": "призначення",
+      "purpose": "призначення",
+      "disableAll": {
+        "title": "Увімкнути або вимкнути всі сервіси",
+        "description": "Використовуйте цей перемикач, щоб увімкнути або вимкнути всі сервіси"
+      },
+      "required":{
+        "title":"(завжди активні)"
+      }
+    },
+
+    "save": "Зберегти",
+    "poweredBy": "Реалізовано за допомогою Klaro!",
+    "decline":"Відмовляюся",
+    "acceptAll":"Прийняти обране",
+    "acceptSelected":"Прийняти все"
   }
-  
+}
+

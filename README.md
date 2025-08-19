@@ -90,21 +90,21 @@ We welcome contributions! Please see [CONTRIBUTING](./CONTRIBUTING.md) for detai
 
 - ✅ Define the project idea  
 - ⚠️ Market / audience research  
-- ⬜ Write the technical specification (Tech Spec)  
-- ⬜ Design system architecture (frontend/backend, DB)  
-- ⬜ Create wireframes / UI prototypes  
-- ⬜ Select technology stack  
-- ⬜ Set up environment and repo  
-- ⬜ Develop backend API  
-- ⬜ Develop frontend interface  
-- ⬜ Set up database and migrations  
+- ✅ Write the technical specification (Tech Spec)  
+- ✅ Design system architecture (frontend/backend, DB)  
+- ⚠️ Create wireframes / UI prototypes  
+- ✅ Select technology stack  
+- ⚠️ Set up environment and repo  
+- ⚠️ Develop backend API  
+- ⚠️ Develop frontend interface  
+- ⚠️ Set up database and migrations  
 - ⬜ Integrate frontend with backend  
 - ⬜ Write unit tests  
 - ⬜ Write integration tests  
-- ⬜ Configure CI/CD pipelines  
+- ⚠️ Configure CI/CD pipelines  
 - ⬜ Perform manual testing  
-- ⬜ Prepare infrastructure  
-- ⬜ Dockerization / orchestration  
+- ⚠️ Prepare infrastructure  
+- ⚠️ Dockerization / orchestration  
 - ⬜ Set up monitoring and logging  
 - ⬜ Final testing and code review  
 - ⬜ Deploy to staging environment  

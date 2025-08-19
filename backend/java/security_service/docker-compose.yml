@@ -79,6 +79,9 @@ services:
       BLOCKED_PREFIX: ${BLOCKED_PREFIX}
       LOG_PATH: ${LOG_PATH}
       JAVA_OPTS: ${JAVA_OPTS}
+      LOG_DIR: ${LOG_DIR}
+      FIXED_DELAY_MS: ${FIXED_DELAY_MS}
+      INITIAL_DELAY_MS: ${INITIAL_DELAY_MS}
     ports:
       - "8081:8081"
     volumes:

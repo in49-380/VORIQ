@@ -2,7 +2,7 @@ package com.voriq.security_service.exception_handler.exception;
 
 import java.util.UUID;
 
-import static com.voriq.security_service.service.token_utilities.TokenUtilities.getMaskedUuid;
+import static com.voriq.security_service.utilitie.TokenUtilities.getMaskedUuid;
 
 public class UserNotFoundException extends NotFoundException {
 

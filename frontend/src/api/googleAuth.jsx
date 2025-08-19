@@ -1,7 +1,7 @@
 export const sendTokenToBackend = async (token) => {
     console.log("Send Token to back:", token);
     
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 500));
   
     return {
       success: true,
