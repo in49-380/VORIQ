@@ -4,7 +4,7 @@ import Spinner from "../Spinner";
 import { useLoader } from "../../hooks/useLoader";
 
 const LoaderModal=({isLoading, isTooLongLoading})=>{
-const {waitLonger}=useLoader()
+const {waitLonger, abort}=useLoader()
 
     return (
         <Modal
@@ -21,7 +21,8 @@ const {waitLonger}=useLoader()
                     />
                     <Button 
                     children={'Abort'}
-                    className="bg-gray-300 text-green-600 font-bold"    
+                    className="bg-gray-300 text-green-600 font-bold"
+                    onClick={abort}    
                     />
                 </div>
             ) : (

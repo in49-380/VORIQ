@@ -14,9 +14,8 @@ const CarPage = () => {
   const {t}=useTranslation()
   
   const handleOnClick=async()=>
-   { const result=await  runWithLoader(()=>asyncFunc())
-    setRes(result.answer)
-
+   { const result=await  runWithLoader(asyncFunc)
+    setRes(result.answer||result.err)
   }
 
 
