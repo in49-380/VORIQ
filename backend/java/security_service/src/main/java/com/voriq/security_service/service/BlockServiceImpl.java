@@ -2,7 +2,6 @@ package com.voriq.security_service.service;
 
 import com.voriq.security_service.service.interfaces.BlockService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -67,22 +66,50 @@ public class BlockServiceImpl implements BlockService {
 
     @Override
     public boolean block(UUID userId) {
-        try{
+        try {
             redis.opsForValue().set(getKey(userId), "blocked", Duration.ofMillis(accessExpirationMs));
             return true;
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             return false;
         }
     }
 
     /**
-     * @param userId user to check
+     * Checks whether a block entry exists for the given user.
+     *
+     * <p><strong>Semantics:</strong></p>
+     * <ul>
+     *   <li>Read-only existence check in Redis (equivalent to {@code EXISTS key}).</li>
+     *   <li>Non-destructive: does not create/modify the key or its TTL.</li>
+     *   <li>Null-safe: uses {@code Boolean.TRUE.equals(...)} to guard against {@code null} responses.</li>
+     * </ul>
+     *
+     * @param userId user to check (must not be {@code null})
      * @return {@code true} if the block key exists; {@code false} otherwise
+     * @throws org.springframework.dao.DataAccessException if Redis access fails
      */
     @Override
     public boolean isBlocked(UUID userId) {
         return Boolean.TRUE.equals(redis.hasKey(getKey(userId)));
+    }
+
+    /**
+     * Removes (unblocks) the block entry for the given user.
+     *
+     * <p><strong>Semantics:</strong></p>
+     * <ul>
+     *   <li>Deletes the user's block key in Redis (equivalent to {@code DEL key}).</li>
+     *   <li>Idempotent: returns {@code false} if the key was already absent; {@code true} iff a key was deleted.</li>
+     *   <li>Null-safe: wraps the Redis boolean result with {@code Boolean.TRUE.equals(...)}.</li>
+     * </ul>
+     *
+     * @param userid user to unblock (must not be {@code null})
+     * @return {@code true} if the key existed and was removed; {@code false} otherwise
+     * @throws org.springframework.dao.DataAccessException if Redis access fails
+     */
+    @Override
+    public boolean removeBlock(UUID userid) {
+        return Boolean.TRUE.equals(redis.delete(getKey(userid)));
     }
 
     private String getKey(UUID userId) {

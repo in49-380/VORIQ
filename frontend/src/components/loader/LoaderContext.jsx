@@ -50,7 +50,7 @@ const runWithLoader=async(asyncFunction)=>{
       clearTimeout(delayStartTimer.current);
       clearTimeout(longLoadingTimer.current);
 
-      setTimeout(()=>setIsTooLongLoading(false),1000);
+    setIsTooLongLoading(false);
       setTimeout(() => setIsLoading(false), 500);
       controllerRef.current = null;
     }
@@ -61,6 +61,7 @@ const runWithLoader=async(asyncFunction)=>{
     return(
         <LoaderContext.Provider
          value={{isLoading, isTooLongLoading, runWithLoader, waitLonger, abort}}>
+
             {children}
         </LoaderContext.Provider>
     )

@@ -123,6 +123,26 @@ public class DelegatingTokenStoreStrategy implements TokenStoreStrategy {
     }
 
     /**
+     * Revokes (invalidates) the given token using the first applicable strategy.
+     *
+     * <p>Delegates to underlying {@code TokenStoreStrategy} implementations via
+     * {@code executeWithFallback(...)} in precedence order. If the current strategy
+     * fails due to infrastructure issues (e.g., network/Redis/DB outage), the next
+     * applicable strategy is attempted. Functional "not found" semantics are left to
+     * the strategy implementation but the operation should be idempotent.</p>
+     *
+     * @param token non-null token identifier to revoke/blacklist
+     * @return {@code true} if the chosen strategy reports the token was revoked/blacklisted;
+     * {@code false} if nothing changed (e.g., token already absent or unknown)
+     * @throws StrategyNotFoundException if no applicable strategy is available
+     * @throws RuntimeException          if all applicable strategies fail with infrastructure errors
+     */
+    @Override
+    public boolean revokeToken(String token) {
+        return executeWithFallback(s -> s.revokeToken(token));
+    }
+
+    /**
      * Functional operation executed against a chosen {@link TokenStoreStrategy}.
      *
      * @param <T> result type

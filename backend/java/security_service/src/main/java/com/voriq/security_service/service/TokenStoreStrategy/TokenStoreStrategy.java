@@ -67,4 +67,21 @@ public interface TokenStoreStrategy {
      * @throws RuntimeException if an infrastructure/backend error occurs while accessing the storage
      */
     String getSetValueByKey(String key);
+
+    /**
+     * Revokes (invalidates) the given token in the underlying store.
+     *
+     * <p>Semantics:</p>
+     * <ul>
+     *   <li>If the token exists, it is removed/blacklisted and any auxiliary mappings
+     *       (e.g., expiry entries, per-user indexes) are cleaned up as defined by the implementation.</li>
+     *   <li>If the token does not exist, no changes are made and {@code false} is returned.</li>
+     *   <li>Idempotent: repeated calls for the same token after a successful revocation return {@code false}.</li>
+     * </ul>
+     *
+     * @param token non-null token identifier to revoke
+     * @return {@code true} if the token existed and was revoked; {@code false} otherwise
+     * @throws RuntimeException if an infrastructure/backend error occurs while accessing the storage
+     */
+    boolean revokeToken(String token);
 }

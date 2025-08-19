@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import static com.voriq.security_service.service.TokenStoreStrategy.DelegatingTokenStoreStrategy.DEFAULT_SET_VALUE;
-import static com.voriq.security_service.service.token_utilities.TokenUtilities.isUuid;
+import static com.voriq.security_service.utilitie.TokenUtilities.isUuid;
 
 /**
  * Primary {@link TokenStoreStrategy} backed by Redis.
@@ -110,6 +110,7 @@ public class RedisTokenStoreStrategy implements TokenStoreStrategy {
 
         // link token from user index
         redisTemplate.opsForSet().add(idxKey, token);
+        redisTemplate.expire(idxKey, Duration.ofMillis(accessExpirationMs));
     }
 
     /**
@@ -160,6 +161,52 @@ public class RedisTokenStoreStrategy implements TokenStoreStrategy {
     }
 
     /**
+     * Revokes (blacklists) the given token from Redis and cleans up reverse indexes.
+     *
+     * <p><strong>Semantics:</strong></p>
+     * <ul>
+     *   <li>Resolves reverse-index keys via {@code SMEMBERS token} using
+     *       {@link org.springframework.data.redis.core.SetOperations#members(Object)}; result may be {@code null} or empty.</li>
+     *   <li>For each index {@code i}:
+     *     <ul>
+     *       <li>Removes the token from the set: {@code SREM i token} via
+     *           {@link org.springframework.data.redis.core.SetOperations#remove(Object, Object...)}.</li>
+     *       <li>If {@code i} is a valid UUID, invokes {@code blockService.removeBlock(UUID.fromString(i))} to clear related blocks.</li>
+     *     </ul>
+     *   </li>
+     *   <li>Deletes the token key itself via {@code DEL token} using {@link org.springframework.data.redis.core.RedisTemplate#delete(Object)}.</li>
+     *   <li>Returns {@code true} iff Redis reports the token key was deleted (i.e., {@code DEL} &gt; 0); otherwise {@code false}.</li>
+     * </ul>
+     *
+     * <p><strong>Notes:</strong></p>
+     * <ul>
+     *   <li><em>Non-atomic:</em> index removals and the final {@code DEL} are not wrapped in a transaction/pipeline; transient races are possible.</li>
+     *   <li><em>Idempotent:</em> if the token/indexes are already absent, operations become no-ops; the method then returns {@code false}.</li>
+     *   <li><em>Null safety:</em> guards against {@code null} from {@code members(token)}.</li>
+     *   <li>Caller must ensure {@code token} is neither {@code null} nor blank.</li>
+     * </ul>
+     *
+     * @param token Redis key representing the token (must not be {@code null} or blank)
+     * @return {@code true} if the token key existed and was removed; {@code false} otherwise
+     * @throws org.springframework.dao.DataAccessException if a Redis access error occurs
+     */
+    @Override
+    public boolean revokeToken(String token) {
+
+        Set<String> idx = redisTemplate.opsForSet().members(token);
+        if (idx != null && !idx.isEmpty()) {
+            for (String i : idx) {
+                redisTemplate.opsForSet().remove(i, token);
+                if (isUuid(i)) {
+                    blockService.removeBlock(UUID.fromString(i));
+                }
+            }
+        }
+        Boolean deleted = redisTemplate.delete(token);
+        return Boolean.TRUE.equals(deleted);
+    }
+
+    /**
      * Deletes all token keys referenced by the user's index and removes the index itself.
      *
      * @param userId user whose tokens to revoke
@@ -168,10 +215,7 @@ public class RedisTokenStoreStrategy implements TokenStoreStrategy {
         String idxKey = userId.toString();
         Set<String> tokens = redisTemplate.opsForSet().members(idxKey);
         if (tokens == null || tokens.isEmpty()) return;
-
-        for (String t : tokens) {
-            redisTemplate.delete(t);
-        }
+        redisTemplate.delete(tokens);
         redisTemplate.delete(idxKey);
     }
 

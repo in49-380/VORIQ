@@ -131,9 +131,8 @@ public class TokenMigrationService {
             // 3) clear local copies after successful migration
             inMem.clearMigrated();
             return true;
-        }
-        catch (Exception e){
-           return false;
+        } catch (Exception e) {
+            return false;
         }
     }
 }

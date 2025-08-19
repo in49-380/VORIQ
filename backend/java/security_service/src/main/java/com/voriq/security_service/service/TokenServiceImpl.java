@@ -2,17 +2,13 @@ package com.voriq.security_service.service;
 
 import com.voriq.security_service.domain.dto.TokenRequestDto;
 import com.voriq.security_service.domain.dto.TokensDto;
-import com.voriq.security_service.exception_handler.exception.BadRequestException;
-import com.voriq.security_service.exception_handler.exception.ServiceUnavailableException;
-import com.voriq.security_service.exception_handler.exception.UnauthorizedException;
-import com.voriq.security_service.exception_handler.exception.UserNotFoundException;
+import com.voriq.security_service.exception_handler.exception.*;
 import com.voriq.security_service.repository.UserRepository;
 import com.voriq.security_service.service.TokenStoreStrategy.TokenStoreStrategy;
 import com.voriq.security_service.service.interfaces.TokenService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -58,9 +54,9 @@ public class TokenServiceImpl implements TokenService {
      *
      * @param dto request containing {@code userId} and {@code key}
      * @return DTO with the newly generated access token
-     * @throws UserNotFoundException        if user does not exist or key mismatch
-     * @throws ServiceUnavailableException  if user resolution fails due to backend issues
-     * @throws RuntimeException             if the token store backend is unavailable (delegator may fallback)
+     * @throws UserNotFoundException       if user does not exist or key mismatch
+     * @throws ServiceUnavailableException if user resolution fails due to backend issues
+     * @throws RuntimeException            if the token store backend is unavailable (delegator may fallback)
      */
     @Override
     public TokensDto createTokens(TokenRequestDto dto) {
@@ -97,21 +93,57 @@ public class TokenServiceImpl implements TokenService {
      * </ul>
      *
      * @param token access token to validate (UUID string)
-     * @throws BadRequestException           if the token has an invalid format (not a UUID)
-     * @throws UnauthorizedException         if the token is invalid, expired, or revoked
-     * @throws ServiceUnavailableException   if validation cannot be performed due to backend issues
-     * @throws RuntimeException              if the token-store backend fails unexpectedly
+     * @throws BadRequestException         if the token has an invalid format (not a UUID)
+     * @throws UnauthorizedException       if the token is invalid, expired, or revoked
+     * @throws ServiceUnavailableException if validation cannot be performed due to backend issues
+     * @throws RuntimeException            if the token-store backend fails unexpectedly
      */
 
     @Override
     public void validateToken(String token) {
-        try{
+        try {
             UUID.fromString(token);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new BadRequestException("Token format is wrong.");
         }
-       if(!tokenStoreStrategy.isValid(token))
-           throw new UnauthorizedException("Token is invalid.");
+        if (!tokenStoreStrategy.isValid(token))
+            throw new UnauthorizedException("Token is invalid.");
+    }
+
+    /**
+     * Revokes the provided access token (expected as a UUID string).
+     *
+     * <p>Flow:</p>
+     * <ol>
+     *   <li>Verify that {@code token} is a valid UUID string; if not, throw {@link BadRequestException}.</li>
+     *   <li>Call {@link #validateToken(String)} to ensure the token currently exists and is valid.</li>
+     *   <li>Delegate revocation to {@link TokenStoreStrategy#revokeToken(String)}.</li>
+     *   <li>If the strategy reports failure (e.g., token absent/already revoked), throw {@link ServerException}.</li>
+     * </ol>
+     *
+     * <p>Notes:</p>
+     * <ul>
+     *   <li>The raw token must not be logged; mask it if needed.</li>
+     *   <li>Operation is intended to be idempotent from the caller’s perspective; repeated calls may result in
+     *       {@link ServerException} if the token is already revoked/unknown, depending on strategy behavior.</li>
+     *   <li>Backend/IO issues during revocation may bubble up as {@code 5xx} (e.g., {@link ServiceUnavailableException}).</li>
+     * </ul>
+     *
+     * @param token access token to revoke (UUID string)
+     * @throws BadRequestException         if the token has an invalid format (not a UUID)
+     * @throws UnauthorizedException       if the token is invalid, expired, or already revoked (via {@link #validateToken(String)})
+     * @throws ServerException        if a valid token could not be revoked
+     * @throws ServiceUnavailableException if revocation cannot be performed due to backend issues
+     * @throws RuntimeException            if the token-store backend fails unexpectedly
+     */
+
+    @Override
+    public void revokeToken(String token) {
+        validateToken(token);
+        boolean isRevoked = tokenStoreStrategy.revokeToken(token);
+        if (!isRevoked) {
+            throw new ServerException("The token could not be revoked. Try again later.");
+        }
     }
 
     /**

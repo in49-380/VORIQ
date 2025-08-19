@@ -18,3 +18,4 @@ export const asyncFunc = async ({signal}) => {
     return { success: false, answer: err.message };
   }
 }
+

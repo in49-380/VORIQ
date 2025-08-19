@@ -7,7 +7,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import static com.voriq.security_service.service.token_utilities.TokenUtilities.extractTokenFromRequest;
+import static com.voriq.security_service.utilitie.TokenUtilities.extractTokenFromRequest;
 
 
 @Component
