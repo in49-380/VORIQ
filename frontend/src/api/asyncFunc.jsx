@@ -1,9 +1,21 @@
-export const asyncFunc = async () => {
+export const asyncFunc = async ({signal}) => {
     
-    await new Promise((resolve) => setTimeout(resolve, 39999));
-  
-    return {
-      success: true,
-      answer: 'successful',
-      };
-  };
+   try {
+        await new Promise((resolve, reject) => {
+        const timeout=setTimeout(()=>{
+        resolve()
+        }, 500)
+       
+      signal?.addEventListener('abort', () => {
+        clearTimeout(timeout);
+        reject(new Error('canceled by User'));
+      });
+    })
+    
+    return {answer: 'successful'}
+
+  } catch (err) {
+    return { success: false, answer: err.message };
+  }
+}
+
