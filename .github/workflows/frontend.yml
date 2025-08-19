@@ -24,12 +24,12 @@ jobs:
           script: |
 
             # Ensure the VORIQ directory exists
-            mkdir -p /home/${{ secrets.CICD_SSH_USER }}/VORIQ
+            #mkdir -p /home/${{ secrets.CICD_SSH_USER }}/VORIQ
             
             ls -al 
 
             # Copy new files
-            rsync -avz . /home/${{ secrets.CICD_SSH_USER }}/
+            rsync -avz . /home/${{ secrets.CICD_SSH_USER }}/VORIQ/
 
             echo ${{ secrets.DEV_FRONT_GOOGLE_CLIENT_ID }} > .env
 
