@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - '*''
+      - '*'
     paths:
       - 'frontend/**'
 
@@ -40,4 +40,3 @@ jobs:
 
             # running new docker container
             docker container run -d --rm --name dev_front_node -p 3000:3000 -e NODE_ENV=development -v dev_front_node:/app dev_front_node:latest
-            
