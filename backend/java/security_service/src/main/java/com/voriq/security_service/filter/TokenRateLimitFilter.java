@@ -23,8 +23,8 @@ import java.util.function.BiFunction;
 
 import static com.voriq.security_service.config.SecurityConfig.ISSUE_URL;
 import static com.voriq.security_service.config.SecurityConfig.VALIDATE_URL;
-import static com.voriq.security_service.service.token_utilities.TokenUtilities.extractTokenFromRequest;
-import static com.voriq.security_service.service.token_utilities.TokenUtilities.isUuid;
+import static com.voriq.security_service.utilitie.TokenUtilities.extractTokenFromRequest;
+import static com.voriq.security_service.utilitie.TokenUtilities.isUuid;
 
 /**
  * Per-user rate limiting filter for the token issue endpoint.

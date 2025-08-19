@@ -11,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.UUID;
-
 @RestController
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -29,6 +27,12 @@ public class TokenController implements TokenAPI {
     @Override
     public ResponseEntity<Void> validate(String token) {
         tokenService.validateToken(token);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity<Void> revoke(String token) {
+        tokenService.revokeToken(token);
         return ResponseEntity.noContent().build();
     }
 }

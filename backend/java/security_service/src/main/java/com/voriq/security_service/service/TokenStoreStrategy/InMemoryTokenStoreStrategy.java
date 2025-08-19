@@ -14,7 +14,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.voriq.security_service.service.TokenStoreStrategy.DelegatingTokenStoreStrategy.DEFAULT_SET_VALUE;
-import static com.voriq.security_service.service.token_utilities.TokenUtilities.isUuid;
+import static com.voriq.security_service.utilitie.TokenUtilities.isUuid;
 
 /**
  * In-memory fallback implementation of {@link TokenStoreStrategy}.
@@ -165,6 +165,53 @@ public class InMemoryTokenStoreStrategy implements TokenStoreStrategy {
 
         UUID userId = tokenToUser.get(key);
         return (userId != null) ? userId.toString() : DEFAULT_SET_VALUE;
+    }
+
+    /**
+     * Revokes (invalidates) the given token from the in-memory store.
+     *
+     * <p><strong>Semantics:</strong></p>
+     * <ul>
+     *   <li>Rejects {@code null} or blank tokens with {@code false} (no-op).</li>
+     *   <li>Removes the {@code token -> userId} mapping from {@code tokenToUser}.</li>
+     *   <li>Removes the token from {@code tokenExpiry}.</li>
+     *   <li>Removes the token from the per-user map {@code byUser}; if the user’s set becomes empty, the user entry is removed.</li>
+     *   <li>If the user has no remaining tokens, clears any {@code blacklistUntil} entry for that user.</li>
+     *   <li>Returns {@code true} iff a mapping existed and was removed; otherwise {@code false}.</li>
+     * </ul>
+     *
+     * <p><strong>Notes:</strong></p>
+     * <ul>
+     *   <li>Idempotent: subsequent calls for the same (already removed) token return {@code false}.</li>
+     *   <li>Thread-safety: uses {@link java.util.concurrent.ConcurrentHashMap}; composite updates employ
+     *       {@code compute} / {@code computeIfPresent} to avoid race conditions.</li>
+     * </ul>
+     *
+     * @param token token identifier to revoke (must not be {@code null} or blank)
+     * @return {@code true} if the token mapping was present and removed; {@code false} otherwise
+     */
+    @Override
+    public boolean revokeToken(String token) {
+        if (token == null || token.isBlank()) {
+            return false;
+        }
+
+        UUID userId = tokenToUser.remove(token);
+        if (userId == null) {
+            tokenExpiry.remove(token);
+            return false;
+        }
+        tokenExpiry.remove(token);
+        byUser.compute(userId, (uid, tokens) -> {
+            if (tokens == null) return null;
+            tokens.remove(token);
+            return tokens.isEmpty() ? null : tokens;
+        });
+
+        blacklistUntil.computeIfPresent(userId,
+                (uid, until) -> byUser.containsKey(uid) ? until : null);
+
+        return true;
     }
 
     /**

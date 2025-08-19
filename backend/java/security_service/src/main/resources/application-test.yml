@@ -46,4 +46,10 @@ rate:
     issue: 3000
     validate: 300
 
+log:
+  dir: logs
 
+archive:
+  schedule:
+    fixed-delay-ms: 259200000
+    initial-delay-ms: 5000

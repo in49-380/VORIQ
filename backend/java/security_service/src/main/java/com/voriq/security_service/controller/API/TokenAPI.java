@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -117,6 +118,41 @@ public interface TokenAPI {
     )
     @GetMapping("/validate")
     ResponseEntity<Void> validate(
+            @BearerToken
+            @Parameter(hidden = true)
+            @NotNull(message = "Bearer token cannot be null")
+            String token);
+
+    @Operation(
+            summary = "Token revoker",
+            description = "Revoke the bearer token received in the header."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Successful revoke"
+            ),
+            @ApiResponse(responseCode = "400",
+                    description = "Bad request.",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorResponse.class)
+                    )),
+            @ApiResponse(responseCode = "401",
+                    description = "Invalid token",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorResponse.class)
+                    )),
+            @ApiResponse(responseCode = "500",
+                    description = "Temporary service error.",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorResponse.class)
+                    ))}
+    )
+    @DeleteMapping("/revoke")
+    ResponseEntity<Void> revoke(
             @BearerToken
             @Parameter(hidden = true)
             @NotNull(message = "Bearer token cannot be null")

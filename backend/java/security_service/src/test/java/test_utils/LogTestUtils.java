@@ -63,20 +63,20 @@ public final class LogTestUtils {
 
     public static void removeLastLogLine() throws Exception {
         Path logPath = todaysLog();
-//
-//        List<String> allLines = Files.readAllLines(logPath, StandardCharsets.UTF_8);
-//
-//        int lastIndex = -1;
-//        for (int i = allLines.size() - 1; i >= 0; i--) {
-//            if (!allLines.get(i).trim().isEmpty()) {
-//                lastIndex = i;
-//                break;
-//            }
-//        }
-//        if (lastIndex >= 0) {
-//            allLines.remove(lastIndex);
-//        }
-//        Files.write(logPath, allLines, StandardCharsets.UTF_8, StandardOpenOption.TRUNCATE_EXISTING);
+
+        List<String> allLines = Files.readAllLines(logPath, StandardCharsets.UTF_8);
+
+        int lastIndex = -1;
+        for (int i = allLines.size() - 1; i >= 0; i--) {
+            if (!allLines.get(i).trim().isEmpty()) {
+                lastIndex = i;
+                break;
+            }
+        }
+        if (lastIndex >= 0) {
+            allLines.remove(lastIndex);
+        }
+        Files.write(logPath, allLines, StandardCharsets.UTF_8, StandardOpenOption.TRUNCATE_EXISTING);
     }
 
     private static void waitFor(Check check, Duration timeout, String failMsg) throws Exception {

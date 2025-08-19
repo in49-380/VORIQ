@@ -5,6 +5,7 @@ import com.voriq.security_service.domain.dto.TokenRequestDto;
 import com.voriq.security_service.domain.dto.TokensDto;
 import com.voriq.security_service.domain.entity.User;
 import com.voriq.security_service.exception_handler.dto.ErrorResponse;
+import com.voriq.security_service.exception_handler.exception.ServerException;
 import com.voriq.security_service.repository.UserRepository;
 import com.voriq.security_service.service.TokenServiceImpl;
 import org.junit.jupiter.api.*;
@@ -24,21 +25,20 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import static com.voriq.security_service.config.SecurityConfig.ISSUE_URL;
-import static com.voriq.security_service.config.SecurityConfig.VALIDATE_URL;
+import static com.voriq.security_service.config.SecurityConfig.*;
 import static com.voriq.security_service.service.TokenStoreStrategy.DelegatingTokenStoreStrategy.DEFAULT_SET_VALUE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.reset;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static test_utils.LogTestUtils.getLastLineFromLog;
@@ -50,7 +50,7 @@ import static test_utils.LogTestUtils.removeLastLogLine;
 @DisplayName("Token controller integration tests: ")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
-class TokenControllerTest {
+class TokenControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
@@ -76,6 +76,9 @@ class TokenControllerTest {
     @Value("${rate.limit-ms.validate}")
     private long validateRequestLimitIntervalMs;
 
+    @Value("${log.dir}")
+    private String logDir;
+
     private static final UUID USER_ID_1 = UUID.fromString("33333333-3333-3333-3333-333333333333");
     private static final UUID USER_KEY_1 = UUID.fromString("cccccccc-cccc-cccc-cccc-cccccccccccc");
 
@@ -83,7 +86,7 @@ class TokenControllerTest {
     private static final UUID USER_KEY_2 = UUID.fromString("dddddddd-dddd-dddd-dddd-dddddddddddd");
 
     @BeforeAll
-    void setUp() {
+    void setUp() throws IOException {
         User user = User.builder()
                 .userId(USER_ID_1)
                 .key(USER_KEY_1)
@@ -524,7 +527,7 @@ class TokenControllerTest {
 
             String token = getNewToken(USER_ID_1, USER_KEY_1, false);
             removeLastLogLine();
-
+            waitForRateLimitReset();
             mockMvc.perform(get(VALIDATE_URL)
                             .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
                     .andExpect(status().isNoContent());
@@ -585,6 +588,157 @@ class TokenControllerTest {
                 reset(tokenService);
                 waitForRateLimitReset();
             }
+        }
+    }
+
+    @Nested
+    @DisplayName("DELETE: /api" + REVOKE_URL)
+    class RevokeTokenTest {
+
+        @Test
+        public void revoke_token_should_return_204() throws Exception {
+            String token = getNewToken();
+            removeLastLogLine();
+
+            mockMvc.perform(delete(REVOKE_URL)
+                            .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                    .andExpect(status().isNoContent());
+
+            String last = getLastLineFromLog();
+
+            assertNotNull(last);
+            assertTrue(last.contains("[INFO]"));
+            assertTrue(last.contains("Code= 204"));
+            assertTrue(last.contains("Token"));
+            assertTrue(last.contains(token.substring(token.length() - 3)));
+
+            assertNotEquals(Boolean.TRUE, redisTemplate.hasKey(token));
+
+            removeLastLogLine();
+            waitForRateLimitReset();
+        }
+
+        @Test
+        public void revoke_token_should_return_400_when_token_is_wrong() throws Exception {
+            String token = "test1";
+            MvcResult result = mockMvc.perform(delete(REVOKE_URL)
+                            .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                    .andExpect(status().isBadRequest())
+                    .andReturn();
+
+            String jsonResponse = result.getResponse().getContentAsString();
+            ErrorResponse responseDto = mapper.readValue(jsonResponse, ErrorResponse.class);
+
+            assertEquals(HttpStatus.BAD_REQUEST.value(), responseDto.getStatus());
+
+            String last = getLastLineFromLog();
+
+            assertNotNull(last);
+            assertTrue(last.contains("[ERROR]"));
+            assertTrue(last.contains(DEFAULT_SET_VALUE));
+            assertTrue(last.contains("Code= 400"));
+
+            removeLastLogLine();
+            waitForRateLimitReset();
+        }
+
+        @Test
+        public void revoke_token_should_return_400_when_token_is_null() throws Exception {
+            MvcResult result = mockMvc.perform(delete(REVOKE_URL))
+                    .andExpect(status().isBadRequest())
+                    .andReturn();
+
+            String jsonResponse = result.getResponse().getContentAsString();
+            ErrorResponse responseDto = mapper.readValue(jsonResponse, ErrorResponse.class);
+
+            assertEquals(HttpStatus.BAD_REQUEST.value(), responseDto.getStatus());
+
+            String last = getLastLineFromLog();
+
+            assertNotNull(last);
+            assertTrue(last.contains("[ERROR]"));
+            assertTrue(last.contains(DEFAULT_SET_VALUE));
+            assertTrue(last.contains("Code= 400"));
+
+            removeLastLogLine();
+            waitForRateLimitReset();
+        }
+
+        @Test
+        public void revoke_token_should_return_400_when_header_authorization_is_not_bearer() throws Exception {
+            String token = "test1";
+            MvcResult result = mockMvc.perform(delete(REVOKE_URL)
+                            .header(HttpHeaders.AUTHORIZATION, "TEst " + token))
+                    .andExpect(status().isBadRequest())
+                    .andReturn();
+
+            String jsonResponse = result.getResponse().getContentAsString();
+            ErrorResponse responseDto = mapper.readValue(jsonResponse, ErrorResponse.class);
+
+            assertEquals(HttpStatus.BAD_REQUEST.value(), responseDto.getStatus());
+
+            String last = getLastLineFromLog();
+
+            assertNotNull(last);
+            assertTrue(last.contains("[ERROR]"));
+            assertTrue(last.contains(DEFAULT_SET_VALUE));
+            assertTrue(last.contains("Code= 400"));
+
+            removeLastLogLine();
+            waitForRateLimitReset();
+        }
+
+        @Test
+        public void revoke_token_should_return_401_when_token_isnt_valid() throws Exception {
+
+            mockMvc.perform(delete(REVOKE_URL)
+                            .header(HttpHeaders.AUTHORIZATION, "Bearer " + UUID.randomUUID()))
+                    .andExpect(status().isUnauthorized());
+
+            String last = getLastLineFromLog();
+
+            assertNotNull(last);
+            assertTrue(last.contains("[ERROR]"));
+            assertTrue(last.contains(DEFAULT_SET_VALUE));
+            assertTrue(last.contains("Code= 401"));
+
+            removeLastLogLine();
+            waitForRateLimitReset();
+        }
+    }
+
+    @Test
+    void revoke_token_should_return_500_when_service_throws_exception() throws Exception {
+        try {
+            doThrow(new ServerException("The token could not be revoked. Try again later."))
+                    .when(tokenService).revokeToken(any());
+            waitForRateLimitReset(issueRequestLimitIntervalMs);
+            String token = getNewToken();
+            removeLastLogLine();
+            waitForRateLimitReset(issueRequestLimitIntervalMs);
+            MvcResult result = mockMvc.perform(delete(REVOKE_URL)
+                            .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                    .andExpect(status().isInternalServerError())
+                    .andReturn();
+
+            String jsonResponse = result.getResponse().getContentAsString();
+            ErrorResponse responseDto = mapper.readValue(jsonResponse, ErrorResponse.class);
+
+            assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), responseDto.getStatus());
+            String last = getLastLineFromLog();
+
+            assertNotNull(last);
+            assertTrue(last.contains("[ERROR]"));
+            assertTrue(last.contains("User with ID"));
+            assertTrue(last.contains("Code= 500"));
+
+            clearRedis(USER_ID_1, Collections.singleton(token));
+
+            removeLastLogLine();
+
+        } finally {
+            reset(tokenService);
+            waitForRateLimitReset();
         }
     }
 }
