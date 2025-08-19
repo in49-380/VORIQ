@@ -29,6 +29,8 @@ jobs:
             # Copy new files
             rsync -avz . /home/${{ secrets.CICD_SSH_USER }}/
 
+            echo ${{ secrets.DEV_FRONT_GOOGLE_CLIENT_ID }} > .env
+
             # go to the frontend project directory
             cd /home/${{ secrets.CICD_SSH_USER }}/VORIQ/frontend/
 
