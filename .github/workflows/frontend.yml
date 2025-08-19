@@ -24,10 +24,10 @@ jobs:
           script: |
 
             # Ensure the VORIQ directory exists
-            mkdir -p /home/${{ secrets.CICD_SSH_USER }}/VORIQ
+            #mkdir -p /home/${{ secrets.CICD_SSH_USER }}/VORIQ
             
             # Copy new files
-            rsync -avz . /home/${{ secrets.CICD_SSH_USER }}/VORIQ/
+            rsync -avz . /home/${{ secrets.CICD_SSH_USER }}/
 
             # go to the frontend project directory
             cd /home/${{ secrets.CICD_SSH_USER }}/VORIQ/frontend/
