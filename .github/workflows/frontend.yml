@@ -15,6 +15,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Get branch name
+        id: get_branch
+        run: |
+          if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
+            BRANCH_NAME=${GITHUB_HEAD_REF}
+          else
+            BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          fi
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+
       - name: Deploy to Server
         uses: appleboy/ssh-action@v0.1.7
         with:
@@ -39,12 +49,6 @@ jobs:
             # Pull the latest changes
             git pull
 
-            if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
-              BRANCH_NAME=${GITHUB_HEAD_REF}
-            else
-              BRANCH_NAME=${GITHUB_REF#refs/heads/}
-            fi
-
             git checkout $BRANCH_NAME
 
             # Copy new files
@@ -64,3 +68,6 @@ jobs:
 
             # running new docker container
             docker container run -d --rm --name dev_front_node -p 3000:3000 -e NODE_ENV=development -v dev_front_node:/app dev_front_node:latest
+
+          env: 
+          BRANCH_NAME: ${{ env.BRANCH_NAME }}
