@@ -27,7 +27,7 @@ export const abortTest= async({signal})=>{
   return fetch('https://httpbin.org/delay/10', { signal })
     .then((res) => {
         console.log (res)
-      return { answer: 'successful' };
+      return { answer: 'successfuly' };
     })
     .catch(() => {
       return { err: 'canceled by User' };
