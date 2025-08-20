@@ -44,7 +44,6 @@ jobs:
             # go to the backend project directory
             cd /home/${{ secrets.CICD_SSH_USER }}/VORIQ/backend/java/security_service
 
-            #echo ${{ secrets.??? }} > .env
 
             # build the backend container
             docker image build -t voriq/security_service:latest -f /home/${{ secrets.CICD_SSH_USER }}/VORIQ/devops/backend/java/security_service/Dockerfile .
