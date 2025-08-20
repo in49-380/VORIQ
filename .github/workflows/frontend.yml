@@ -1,12 +1,12 @@
 name: Deploy Frontend
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - '*'
     paths:
       - 'frontend/**'
+  workflow_dispatch:
 
 jobs:
   build_and_deploy:
@@ -37,7 +37,15 @@ jobs:
             cd /home/${{ secrets.CICD_SSH_USER }}/VORIQ
             
             # Pull the latest changes
-            git pull origin dev
+            git pull
+
+            if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
+              BRANCH_NAME=${GITHUB_HEAD_REF}
+            else
+              BRANCH_NAME=${GITHUB_REF#refs/heads/}
+            fi
+
+            git checkout $BRANCH_NAME
 
             # Copy new files
             #rsync -avz --delete --exclude='.git/' /home/runner/work/VORIQ/VORIQ/ .
