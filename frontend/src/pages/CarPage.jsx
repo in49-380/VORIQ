@@ -4,7 +4,7 @@ import React, { Children, useState } from 'react';
 import {useTranslation} from 'react-i18next'
 import LoaderModal from '../components/loader/LoaderModal';
 import {useLoader} from '../hooks/useLoader';
-import { asyncFunc } from '../api/asyncFunc.jsx';
+import {  asyncFunc } from '../api/asyncFunc.jsx';
 import Button from '../components/Button.jsx';
 
 const CarPage = () => {
@@ -17,6 +17,9 @@ const CarPage = () => {
    { const result=await  runWithLoader(asyncFunc)
     setRes(result.answer||result.err)
   }
+  //  { const result=await  runWithLoader(asyncFunc)
+  //   setRes(result.answer||result.err)
+  // }
 
 
   return (
@@ -30,7 +33,7 @@ const CarPage = () => {
     {/*test***********test***********test****  */}
     <Button 
       onClick={handleOnClick}
-      className='bg-blue-500 text-white'
+      className='bg-red-500 text-white'
       children='Start Loader'
       />
 
