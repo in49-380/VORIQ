@@ -49,7 +49,7 @@ jobs:
             # Pull the latest changes
             git pull
 
-            git checkout $BRANCH_NAME
+            git checkout ${{GITHUB_REF#refs/heads/}}
 
             # Copy new files
             #rsync -avz --delete --exclude='.git/' /home/runner/work/VORIQ/VORIQ/ .
@@ -68,6 +68,3 @@ jobs:
 
             # running new docker container
             docker container run -d --rm --name dev_front_node -p 3000:3000 -e NODE_ENV=development -v dev_front_node:/app dev_front_node:latest
-
-          env: 
-          BRANCH_NAME: ${{ env.BRANCH_NAME }}
