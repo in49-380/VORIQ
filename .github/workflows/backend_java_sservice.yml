@@ -1,0 +1,78 @@
+name: Deploy Backend Java Security Service
+
+on:
+  push:
+    branches:
+      - '*'
+    paths:
+      - 'backend/java/security_service**'
+  workflow_dispatch:
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.CICD_SSH_HOST }}
+          username: ${{ secrets.CICD_SSH_USER }}
+          key: ${{ secrets.CICD_SSH_PRIVATE_KEY }}
+          script: |
+
+            # Ensure the VORIQ directory exists
+            #mkdir -p /home/${{ secrets.CICD_SSH_USER }}/VORIQ
+
+            cd /home/${{ secrets.CICD_SSH_USER }}
+
+            #rm -rf VORIQ || true
+
+            # Clone the repository if it doesn't exist
+            [ ! -d "VORIQ" ] && git clone https://github.com/in49-380/VORIQ.git
+
+            # Change to the VORIQ directory
+            cd /home/${{ secrets.CICD_SSH_USER }}/VORIQ
+            
+            # Pull the latest changes
+            git pull
+
+            git checkout ${{ GITHUB.REF_NAME }}
+
+            # go to the backend project directory
+            cd /home/${{ secrets.CICD_SSH_USER }}/VORIQ/backend/java/security_service
+
+            #echo ${{ secrets.??? }} > .env
+
+            # build the backend container
+            docker image build -t voriq/security_service:latest -f /home/${{ secrets.CICD_SSH_USER }}/VORIQ/devops/backend/java/security_service/Dockerfile .
+
+            # remove old container if exists
+            docker container rm -f dev_security_service || true
+
+            # running new docker container
+            docker container run -d --restart unless-stopped --name dev_security_service -p 8081:8081 \
+            -v dev_security_service_log:/opt/app/logs \
+            -e SPRING_PROFILES_ACTIVE=dev \
+            -e PORT=8081 \
+            -e DB_HOST=db_pg01 \
+            -e DB_PORT=5432 \
+            -e DB_NAME=${{ secrets.DB_NAME_SSERVICE }} \
+            -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
+            -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+            -e REDIS_HOST=dev_redis \
+            -e REDIS_PORT=6379 \
+            -e ALLOWED_ORIGINS=http://localhost:8080,http://127.0.0.1:8080 \
+            -e ACCESS_TOKEN_EXPIRATION_MS=900000 \
+            -e MAX_TOKEN=5 \
+            -e ISSUE_RATE_LIMIT=5000 \
+            -e VALIDATE_RATE_LIMIT=300 \
+            -e BLOCKED_PREFIX=block: \
+            -e LOG_PATH=/opt/app/logs \
+            -e JAVA_OPTS="-XX:+ExitOnOutOfMemoryError -XX:MaxRAMPercentage=75 -XX:+UseStringDeduplication -Duser.timezone=Europe/Berlin" \
+            voriq/security_service:latest && \
+            docker network connect dbnetwork dev_security_service
+
+            
