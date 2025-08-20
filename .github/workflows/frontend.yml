@@ -1,12 +1,12 @@
 name: Deploy Frontend
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - '*'
     paths:
       - 'frontend/**'
+  workflow_dispatch:
 
 jobs:
   build_and_deploy:
@@ -37,7 +37,7 @@ jobs:
             cd /home/${{ secrets.CICD_SSH_USER }}/VORIQ
             
             # Pull the latest changes
-            git pull origin dev
+            git pull
 
             # Copy new files
             #rsync -avz --delete --exclude='.git/' /home/runner/work/VORIQ/VORIQ/ .
