@@ -10,6 +10,7 @@ const LogoutButton=()=>{
     const {t}=useTranslation()
     const handleOnClick=()=>{logout()}
     
+    
     return token?(
         <Button onClick={handleOnClick} 
                 children={t('logout')} 
