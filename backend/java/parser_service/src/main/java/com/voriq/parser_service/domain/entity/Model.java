@@ -1,47 +1,51 @@
 package com.voriq.parser_service.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Objects;
+
 @Entity
-@Table(name = "models")
+@Table(
+        name = "models",
+        uniqueConstraints = @UniqueConstraint(
+                name = "uq_models_brand_name",
+                columnNames = {"brand_id", "name"}
+        )
+)
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
+@ToString(onlyExplicitlyIncluded = true)
 public class Model {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false, unique = true)
+    @ToString.Include
+    @Column(name = "name", nullable = false) // БЕЗ unique=true
     private String name;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH},
-            fetch = FetchType.LAZY)
-    @JoinColumn(name = "brand_id", referencedColumnName = "id")
-    //@JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY, optional = false,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "brand_id", nullable = false,
+            foreignKey = @ForeignKey(name = "fk_model_brand"))
+    @ToString.Exclude
     private Brand brand;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Model model = (Model) o;
-
-        if (!id.equals(model.id)) return false;
-        return name.equals(model.name);
+        if (!(o instanceof Model other)) return false;
+        String b1 = brand != null ? brand.getName() : null;
+        String b2 = other.brand != null ? other.brand.getName() : null;
+        return Objects.equals(name, other.name) && Objects.equals(b1, b2);
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + name.hashCode();
-        return result;
+        return Objects.hash(name, brand != null ? brand.getName() : null);
     }
 }

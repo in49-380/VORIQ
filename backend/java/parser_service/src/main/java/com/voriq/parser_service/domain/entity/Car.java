@@ -1,6 +1,5 @@
 package com.voriq.parser_service.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,14 +26,14 @@ public class Car {
     private Engine engine;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH},
-            fetch = FetchType.EAGER)
-    @JoinColumn(name = "fuel_type_id", referencedColumnName = "id")
-    private FuelType fuelType;
-
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH},
             fetch = FetchType.LAZY)
     @JoinColumn(name = "model_id", referencedColumnName = "id")
     private Model model;
+
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH},
+            fetch = FetchType.LAZY)
+    @JoinColumn(name = "year_id", referencedColumnName = "id")
+    private Year year;
 
     @Override
     public boolean equals(Object o) {
@@ -45,7 +44,6 @@ public class Car {
 
         if (!id.equals(car.id)) return false;
         if (!engine.equals(car.engine)) return false;
-        if (!fuelType.equals(car.fuelType)) return false;
         return model.equals(car.model);
     }
 
@@ -53,7 +51,6 @@ public class Car {
     public int hashCode() {
         int result = id.hashCode();
         result = 31 * result + engine.hashCode();
-        result = 31 * result + fuelType.hashCode();
         result = 31 * result + model.hashCode();
         return result;
     }

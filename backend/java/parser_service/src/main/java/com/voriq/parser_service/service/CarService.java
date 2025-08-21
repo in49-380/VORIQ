@@ -1,10 +1,8 @@
 package com.voriq.parser_service.service;
 
-import com.voriq.parser_service.domain.dto.BrandDto;
 import com.voriq.parser_service.domain.dto.CarDto;
 import com.voriq.parser_service.mapper.CarMapper;
 import com.voriq.parser_service.repository.CarRepository;
-
 import com.voriq.parser_service.service.interfaces.ReadOnlyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +14,7 @@ import java.util.List;
 public class CarService implements ReadOnlyService<CarDto, Long> {
 
     private final CarRepository carRepository;
+
     private final CarMapper carMapper;
 
     @Override

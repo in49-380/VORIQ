@@ -4,44 +4,58 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
-@Table(name = "engines")
+@Table(
+        name = "engines",
+        uniqueConstraints = @UniqueConstraint(
+                name = "uq_engines_type_fuel",
+                columnNames = {"type", "fuel_type_id"}
+        )
+)
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
+@ToString(onlyExplicitlyIncluded = true)
 public class Engine {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "type", nullable = false, unique = true)
+    @ToString.Include
+    @Column(name = "type", nullable = false) // БЕЗ unique=true
     private String type;
 
-    @OneToMany(mappedBy = "engine", cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "fuel_type_id", nullable = false,
+            foreignKey = @ForeignKey(name = "fk_engine_fuel_type"))
+    @ToString.Exclude
+    private FuelType fuelType;
+
+    @OneToMany(mappedBy = "engine", cascade = CascadeType.PERSIST)
     @JsonIgnore
-    private List<Car> cars;
+    @ToString.Exclude
+    private Set<Car> cars = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Engine engine = (Engine) o;
-
-        if (!id.equals(engine.id)) return false;
-        return type.equals(engine.type);
+        if (!(o instanceof Engine other)) return false;
+        return Objects.equals(type, other.type)
+                && Objects.equals(
+                fuelType != null ? fuelType.getName() : null,
+                other.fuelType != null ? other.fuelType.getName() : null);
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + type.hashCode();
-        return result;
+        return Objects.hash(type, fuelType != null ? fuelType.getName() : null);
     }
 }
+
