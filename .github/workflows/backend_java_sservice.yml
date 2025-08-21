@@ -71,6 +71,9 @@ jobs:
             -e BLOCKED_PREFIX=block: \
             -e LOG_PATH=/opt/app/logs \
             -e JAVA_OPTS="-XX:+ExitOnOutOfMemoryError -XX:MaxRAMPercentage=75 -XX:+UseStringDeduplication -Duser.timezone=Europe/Berlin" \
+            -e LOG_DIR=/opt/app/logs \
+            -e FIXED_DELAY_MS=259200000 \
+            -e INITIAL_DELAY_MS=60000 \
             voriq/security_service:latest && \
             docker network connect dbnetwork dev_security_service
 
