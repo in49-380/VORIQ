@@ -46,7 +46,7 @@ jobs:
 
 
             # build the backend container
-            docker image build -t voriq/security_service:latest -f /home/${{ secrets.CICD_SSH_USER }}/VORIQ/devops/backend/java/security_service/Dockerfile .
+            docker image build --no-cache -t voriq/security_service:latest -f /home/${{ secrets.CICD_SSH_USER }}/VORIQ/devops/backend/java/security_service/Dockerfile .
 
             # remove old container if exists
             docker container rm -f dev_security_service || true
