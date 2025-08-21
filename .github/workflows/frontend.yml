@@ -26,17 +26,13 @@ jobs:
           key: ${{ secrets.CICD_SSH_PRIVATE_KEY }}
           script: |
             set -euo pipefail
+            BRANCH="${{ github.ref_name }}"
+            REPO_DIR="/home/${{ secrets.CICD_SSH_USER }}/VORIQ"
+            IMAGE="dev_front_node"
+            TAG="${{ github.sha }}"
+            CONTAINER="dev_front_node"
 
-            BRANCH=${{ github.ref_name }}
-            REPO_DIR=/home/${{ secrets.CICD_SSH_USER }}/VORIQ
-            IMAGE=dev_front_node
-            TAG=${{ github.sha }}
-            CONTAINER=dev_front_node
-
-            if [ ! -d "$REPO_DIR/.git" ]; then
-              git clone https://github.com/in49-380/VORIQ.git "$REPO_DIR"
-            fi
-
+            [ -d "$REPO_DIR/.git" ] || git clone https://github.com/in49-380/VORIQ.git "$REPO_DIR"
             cd "$REPO_DIR"
             git fetch --all --prune
             git checkout -B "$BRANCH" "origin/$BRANCH"
@@ -45,17 +41,16 @@ jobs:
 
             cd "$REPO_DIR/frontend"
 
+        
+            echo '${{ secrets.DEV_FRONT_GOOGLE_CLIENT_ID }}' > .env
+
             docker build --pull --no-cache \
               -t "$IMAGE:$TAG" \
               -f "$REPO_DIR/devops/frontend/Dockerfile.front.develop" .
 
             docker rm -f "$CONTAINER" || true
-
             docker run -d --name "$CONTAINER" --restart unless-stopped \
               -p 3000:3000 \
-              -e NODE_ENV=development \
-              -e DEV_FRONT_GOOGLE_CLIENT_ID='${{ secrets.DEV_FRONT_GOOGLE_CLIENT_ID }}' \
               "$IMAGE:$TAG"
-
 
             docker image prune -f
