@@ -4,7 +4,7 @@ export const asyncFunc = async ({signal}) => {
         await new Promise((resolve, reject) => {
         const timeout=setTimeout(()=>{
         resolve()
-        }, 500)
+        }, 25000)
        
       signal?.addEventListener('abort', () => {
         clearTimeout(timeout);
@@ -19,3 +19,17 @@ export const asyncFunc = async ({signal}) => {
   }
 }
 
+export const abortTest= async({signal})=>{
+     signal.addEventListener('abort', () => {
+    console.log('Abort event fired');
+  });
+
+  return fetch('https://httpbin.org/delay/10', { signal })
+    .then((res) => {
+        console.log (res)
+      return { answer: 'successful' };
+    })
+    .catch(() => {
+      return { err: 'canceled by User' };
+    });
+};
