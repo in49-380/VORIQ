@@ -13,9 +13,13 @@ const CarPage = () => {
   const {isLoading, isTooLongLoading,runWithLoader}=useLoader()
   const {t}=useTranslation()
   
-  const handleOnClick=async()=>
+  const handleOnClickLoad=async()=>
    { const result=await  runWithLoader(asyncFunc)
     setRes(result.answer||result.err)
+  }
+
+  const handleOnClickError=()=>{
+    console.log('Error button clicked')
   }
 
 
@@ -29,12 +33,19 @@ const CarPage = () => {
 
     {/*test***********test***********test****  */}
     <Button 
-      onClick={handleOnClick}
-      className='bg-blue-500 text-white'
+      onClick={handleOnClickLoad}
+      className='bg-red-500 text-white'
       children='Start Loader'
       />
 
      { res && <h2 className='text-red-500 text-2xl'>The asynchronous function is {res}</h2>}
+
+     {/* //////////////////////////////////////////// */}
+     <Button 
+      onClick={handleOnClickError}
+      className='bg-red-500 text-white'
+      children='Error Occured'
+      />
     {/* /////////////////////////////////////// */}
 
     </div>

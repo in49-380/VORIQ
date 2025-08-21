@@ -18,6 +18,13 @@
             "acceptAll":"Accept all",
             "customize":"Customize"
         }
+    },
+
+    "errorModal":{
+        "messageTitle":"Whoops! An unexpected error occurred",
+        "messageBody": "An unexpected error has occurred",
+        "retry":"Retry",
+        "cancel":"Cancel"
     }
     
   }

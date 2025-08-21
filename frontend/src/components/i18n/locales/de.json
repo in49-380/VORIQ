@@ -8,15 +8,23 @@
         "notFound": "Seite nicht gefunden",
         "server": "Serverfehler"
     },
-         "cookieSettings": "Cookie-Einstellungen",
-         "cookieModal": {
-            "title": "Cookies & Datenschutzeinstellungen",
-            "description": "Wir verwenden Cookies, um Ihre Erfahrung zu verbessern. Sie können diese akzeptieren, ablehnen oder anpassen.",
-            "cookieButton": {
-              "decline": "Ablehnen",
-              "acceptAll": "Alle akzeptieren",
-              "customize": "Anpassen"
-            }}
+
+    "cookieSettings": "Cookie-Einstellungen",
+    "cookieModal": {
+      "title": "Cookies & Datenschutzeinstellungen",
+      "description": "Wir verwenden Cookies, um Ihre Erfahrung zu verbessern. Sie können diese akzeptieren, ablehnen oder anpassen.",
+      "cookieButton": {
+        "decline": "Ablehnen",
+        "acceptAll": "Alle akzeptieren",
+        "customize": "Anpassen"
+      }},
+
+    "errorModal":{
+        "messageTitle":"Ups… Etwas ist schiefgelaufen",
+        "messageBody": "Unerwarteter Fehler ist aufgetreten",
+        "retry":"Wiederholen",
+        "cancel":"Abbrechen"
+    }
         
   }
   

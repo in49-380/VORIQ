@@ -11,7 +11,7 @@ const {waitLonger, abort}=useLoader()
             open={isLoading||isTooLongLoading}
             fullscreen={true}
         >
-            {isTooLongLoading ? (
+            {isTooLongLoading ? ( 
                 <div >
                     <p className="text-green-600 text-2xl">The operation is taking too long</p>
                     <Button 
