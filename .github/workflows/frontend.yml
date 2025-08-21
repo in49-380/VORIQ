@@ -2,60 +2,60 @@ name: Deploy Frontend
 
 on:
   push:
-    branches:
-      - '*'
+    branches: ['**']
     paths:
       - 'frontend/**'
+      - 'devops/frontend/**'
   workflow_dispatch:
+
+concurrency:
+  group: deploy-frontend-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Deploy to Server
+      - name: Deploy over SSH
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.CICD_SSH_HOST }}
           username: ${{ secrets.CICD_SSH_USER }}
           key: ${{ secrets.CICD_SSH_PRIVATE_KEY }}
           script: |
+            set -euo pipefail
 
-            # Ensure the VORIQ directory exists
-            #mkdir -p /home/${{ secrets.CICD_SSH_USER }}/VORIQ
+            BRANCH=${{ github.ref_name }}
+            REPO_DIR=/home/${{ secrets.CICD_SSH_USER }}/VORIQ
+            IMAGE=dev_front_node
+            TAG=${{ github.sha }}
+            CONTAINER=dev_front_node
 
-            cd /home/${{ secrets.CICD_SSH_USER }}
+            if [ ! -d "$REPO_DIR/.git" ]; then
+              git clone https://github.com/in49-380/VORIQ.git "$REPO_DIR"
+            fi
 
-            #rm -rf VORIQ || true
+            cd "$REPO_DIR"
+            git fetch --all --prune
+            git checkout -B "$BRANCH" "origin/$BRANCH"
+            git reset --hard "origin/$BRANCH"
+            git clean -fdx
 
-            # Clone the repository if it doesn't exist
-            [ ! -d "VORIQ" ] && git clone https://github.com/in49-380/VORIQ.git
+            cd "$REPO_DIR/frontend"
 
-            # Change to the VORIQ directory
-            cd /home/${{ secrets.CICD_SSH_USER }}/VORIQ
-            
-            # Pull the latest changes
-            git pull
+            docker build --pull --no-cache \
+              -t "$IMAGE:$TAG" \
+              -f "$REPO_DIR/devops/frontend/Dockerfile.front.develop" .
 
-            git checkout ${{ GITHUB.REF_NAME }}
+            docker rm -f "$CONTAINER" || true
 
-            # Copy new files
-            #rsync -avz --delete --exclude='.git/' /home/runner/work/VORIQ/VORIQ/ .
-            #rsync -avz . /home/${{ secrets.CICD_SSH_USER }}/VORIQ/
+            docker run -d --name "$CONTAINER" --restart unless-stopped \
+              -p 3000:3000 \
+              -e NODE_ENV=development \
+              -e DEV_FRONT_GOOGLE_CLIENT_ID='${{ secrets.DEV_FRONT_GOOGLE_CLIENT_ID }}' \
+              "$IMAGE:$TAG"
 
-            # go to the frontend project directory
-            cd /home/${{ secrets.CICD_SSH_USER }}/VORIQ/frontend/
 
-            echo ${{ secrets.DEV_FRONT_GOOGLE_CLIENT_ID }} > .env
-
-            # build the frontend container
-            docker image build -t dev_front_node:latest -f /home/${{ secrets.CICD_SSH_USER }}/VORIQ/devops/frontend/Dockerfile.front.develop .
-
-            # remove old container if exists
-            docker container rm -f dev_front_node || true
-
-            # running new docker container
-            docker container run -d --rm --name dev_front_node -p 3000:3000 -e NODE_ENV=development -v dev_front_node:/app dev_front_node:latest
-            
+            docker image prune -f
