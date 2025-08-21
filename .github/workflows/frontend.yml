@@ -26,31 +26,50 @@ jobs:
           key: ${{ secrets.CICD_SSH_PRIVATE_KEY }}
           script: |
             set -euo pipefail
+
+            # set veriables
             BRANCH="${{ github.ref_name }}"
             REPO_DIR="/home/${{ secrets.CICD_SSH_USER }}/VORIQ"
             IMAGE="dev_front_node"
-            TAG="${{ github.sha }}"
+            #TAG="${{ github.sha }}"
+            TAG="latest"
             CONTAINER="dev_front_node"
 
+            # Ensure the VORIQ directory exists
             [ -d "$REPO_DIR/.git" ] || git clone https://github.com/in49-380/VORIQ.git "$REPO_DIR"
+
             cd "$REPO_DIR"
+
+            # get the latest changes
             git fetch --all --prune
             git checkout -B "$BRANCH" "origin/$BRANCH"
             git reset --hard "origin/$BRANCH"
             git clean -fdx
 
             cd "$REPO_DIR/frontend"
-
         
             echo '${{ secrets.DEV_FRONT_GOOGLE_CLIENT_ID }}' > .env
 
-            docker build --pull --no-cache \
+            # build new frontend container image
+            docker build --no-cache \
               -t "$IMAGE:$TAG" \
               -f "$REPO_DIR/devops/frontend/Dockerfile.front.develop" .
 
-            docker rm -f "$CONTAINER" || true
-            docker run -d --name "$CONTAINER" --restart unless-stopped \
+            # remove old container if exists
+            #docker container stop "$CONTAINER"
+            #docker container rm -f "$CONTAINER" || true
+
+            # restart container with new image
+            docker container run -d --rm \
+              --name "$CONTAINER" \
+              --restart unless-stopped \
               -p 3000:3000 \
               "$IMAGE:$TAG"
 
-            docker image prune -f
+            # clean up old images to save space
+            docker image prune -f 
+            # if images wont be deleted, uncomment the next line
+            #docker image ls "$IMAGE" -q | xargs -n 1 docker rmi -f
+            # remove dangling images
+            #docker image prune -f --filter "dangling=true"
+
