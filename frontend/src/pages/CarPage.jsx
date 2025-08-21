@@ -30,9 +30,7 @@ const CarPage = () => {
     {/*test***********test***********test****  */}
     <Button 
       onClick={handleOnClick}
-
       className='bg-yellow-500 text-black'
-
       children='Start Loader'
       />
 

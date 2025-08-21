@@ -13,7 +13,7 @@ const LogoutButton=()=>{
     return token?(
         <Button onClick={handleOnClick} 
                 children={t('logout')} 
-                style={'fixed top-4 right-4'}/>
+                style='fixed top-4 right-4'/>
     ):(null)
 }
 export default LogoutButton
