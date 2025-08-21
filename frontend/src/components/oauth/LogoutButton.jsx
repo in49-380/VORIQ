@@ -6,9 +6,10 @@ import {useTranslation} from 'react-i18next'
 
 const LogoutButton=()=>{
     const {token}=useContext(AuthContext);
-    const {logout}=useGoogleAuth()
+    const {logout}=useGoogleAuth() || {}
     const {t}=useTranslation()
     const handleOnClick=()=>{logout()}
+    
     
     return token?(
         <Button onClick={handleOnClick} 
