@@ -1,5 +1,6 @@
-from utils.decorators import logger
-from utils.save_load_data import load_json, save_json
+
+from .decorators import logger
+from .save_load_data import load_json, save_json
 
 
 def process_db_brands():
