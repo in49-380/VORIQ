@@ -1,5 +1,5 @@
 
-import React, {useState } from 'react';
+import React, {useEffect, useState } from 'react';
 // import usePageUrl from '../hooks/usePageUrl';
 import {useTranslation} from 'react-i18next'
 import Button from '../components/Button.jsx';
@@ -13,7 +13,7 @@ const CarPage = () => {
   // usePageUrl('/cars')
   const [res,setRes]=useState()
   const {t}=useTranslation()
-  const {runApi, errorMessage}=useLoader()
+  const {runApi, resultMessage}=useLoader()
   
 
 //   const handleOnClickError = async () => {
@@ -21,15 +21,11 @@ const CarPage = () => {
 //   setRes(result.answer || result.err);
 // }
   const handleOnClickError = async () => {
-  const result = await runApi(asyncRandomError);
-  const display =
-    result?.success ? result.success :
-    result?.error?.code ? `Error code: ${result.error.code}` :
-    result?.error?.message ? `Error: ${result.error.message}` :
-    errorMessage || 'Unknown error';
-
-  setRes(display);
+  await runApi(asyncRandomError);
 }
+ useEffect(()=>{
+   setRes(resultMessage);
+ },[resultMessage])
 //   const handleOnClickError = async () => {
 //   const result = await runApi(asyncHttpErrorTest);
 //   setRes(result.answer || result.err);

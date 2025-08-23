@@ -6,8 +6,8 @@ export const useRunApi=()=>{
 const [isLoading, setIsLoading]=useState(false)
 const [isTimeOutError, setIsTimeOutError]=useState(false)
 
-const [errorMessage, setErrorMessage]=useState(null)
-useEffect(()=>{console.log('error message:',errorMessage)},[errorMessage])
+const [resultMessage, setResultMessage]=useState(null)
+useEffect(()=>{console.log('result message:',resultMessage)},[resultMessage])
 
 const delayTime=200
 
@@ -64,18 +64,19 @@ const runApi=async(asyncFunction)=>{
     clearAllTimeOut()
     setTimeout(()=>setIsLoading(false),500)
     console.log('result', result)
-    if (signal.aborted) {
-    setErrorMessage('Request canceled or timed out');
+    if (result.success) {setResultMessage ('successful')
+    } else if (signal.aborted) {
+    setResultMessage('Request canceled or timed out');
   } else if (result.error) {
-    setErrorMessage(result.error.code || `Error: ${result.error.status || 'unknown'}`);
+    setResultMessage(result.error.code || `Error: ${result.error.status || 'unknown'}`);
     setIsTimeOutError(true)
   } else {
-    setErrorMessage(null);
+    setResultMessage(null);
   }
   
     return result;
    } finally {controllerRef.current=null}
   }
-    return({runApi, retry, cancel, isLoading, isTimeOutError, errorMessage})
+    return({runApi, retry, cancel, isLoading, isTimeOutError, resultMessage})
 }
 
