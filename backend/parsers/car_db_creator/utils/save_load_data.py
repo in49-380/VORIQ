@@ -7,20 +7,6 @@ from utils.decorators import save_error_handler_json, load_error_handler_json
 
 def find_project_root(marker_file='main.py'):
     """
-    Поиск корня проекта по файлу-маркеру.
-
-    Поднимается вверх по дереву директорий, пока не найдёт указанный файл.
-    Используется для построения абсолютных путей от корня проекта.
-
-    Args:
-        marker_file (str): Имя файла, по которому определяется корень проекта.
-
-    Returns:
-        Path: Путь к корневой директории проекта.
-
-    Raises:
-        FileNotFoundError: Если файл-маркер не найден в иерархии директорий.
-
     Searches for the project root directory using a marker file.
 
     Traverses upward through the directory tree until the specified file is found.
@@ -50,17 +36,6 @@ def find_project_root(marker_file='main.py'):
 @save_error_handler_json
 def save_json(data, file_name, subfolder=None):
     """
-    Сохраняет данные в JSON-файл по указанному пути.
-
-    Args:
-        data (list | dict): Данные для сохранения.
-        file_name (str): Имя файла JSON.
-        subfolder (str | None): Подпапка внутри 'files_json' (например, 'db_json').
-                                Если None — сохраняет прямо в 'files_json'.
-
-    Returns:
-        None
-
     Saves data to a JSON file at the specified path.
 
     Args:
@@ -88,20 +63,6 @@ def save_json(data, file_name, subfolder=None):
 @load_error_handler_json
 def load_json(file_name, subfolder=None):
     """
-    Загружает данные из JSON-файла по указанному пути.
-
-    Args:
-        subfolder (str | None): Подпапка внутри 'files_json' (например, 'db_json').
-                                Если None — загружает из 'files_json'.
-        file_name (str): Имя файла JSON.
-
-    Returns:
-        Any: Загруженные данные (обычно список или словарь).
-
-    Raises:
-        FileNotFoundError: Если файл не найден.
-        json.JSONDecodeError: Если файл повреждён или невалидный JSON.
-
     Loads data from a JSON file at the specified path.
 
     Args:
@@ -129,18 +90,6 @@ def load_json(file_name, subfolder=None):
 
 def append_to_json_file(new_data, filename="models_url.json"):
     """
-    Добавляет новые данные в существующий JSON-файл или создаёт новый.
-
-    Если файл существует — данные читаются и расширяются.
-    Если файл повреждён или отсутствует — создаётся новый список.
-
-    Args:
-        new_data (list): Список новых данных для добавления.
-        filename (str): Имя JSON-файла (по умолчанию "models_url.json").
-
-    Returns:
-        None
-
     Appends new data to an existing JSON file or creates a new one.
 
     If the file exists, its contents are read and extended.

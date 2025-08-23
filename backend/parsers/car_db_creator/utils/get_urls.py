@@ -1,19 +1,5 @@
 def get_urls_models(data, url):
     """
-    Формирует список URL-ов для моделей на основе входных данных.
-
-    Каждому элементу присваивается ID, имя и URL, сформированный из базового URL и `id_infocar`.
-
-    Args:
-        data (list[dict]): Список словарей с данными моделей. Каждый элемент должен содержать ключи:
-            - "id": уникальный идентификатор модели
-            - "name": название модели
-            - "id_infocar": идентификатор для формирования ссылки
-        url (str): Базовый URL, к которому добавляется `id_infocar`.
-
-    Returns:
-        list[dict]: Список словарей с ключами "id", "name", "url".
-
     Generates a list of URLs for car models based on input data.
 
     Each item is assigned an ID, name, and a URL constructed from the base URL and `id_infocar`.
@@ -41,22 +27,6 @@ def get_urls_models(data, url):
 
 def get_urls_cars(data, url):
     """
-    Формирует список URL-ов для автомобилей на основе входных данных.
-
-    Каждому элементу присваивается бренд, модель, год и URL, сформированный из `id_model_infocar`.
-
-    Args:
-        data (list[dict]): Список словарей с данными автомобилей. Каждый элемент должен содержать ключи:
-            - "brand_id": ID бренда
-            - "model": название модели
-            - "year": год выпуска
-            - "id_model_infocar": идентификатор модели для формирования ссылки
-        url (str): Базовый URL, к которому добавляется `id_model_infocar` и расширение `.html`.
-
-    Returns:
-        list[dict]: Список словарей с ключами "id", "name", "year", "url".
-
-
     Generates a list of URLs for cars based on input data.
 
     Each item is assigned a brand, model, year, and a URL constructed using `id_model_infocar`.

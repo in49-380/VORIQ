@@ -15,11 +15,6 @@ from utils.save_load_data import (
 
 def fetch_brand_dict():
     """
-    Получает HTML-страницу с информацией о брендах автомобилей,
-    извлекает список брендов и формирует словарь с ID и названием каждого бренда.
-
-    :return: Словарь брендов вида {id: название}
-
     Fetches an HTML page containing car brand information,
     extracts the list of brands, and builds a dictionary with each brand's ID and name.
 
@@ -33,12 +28,6 @@ def fetch_brand_dict():
 
 def process_brands(brands):
     """
-    Преобразует словарь брендов в список словарей с дополнительными полями
-    и сохраняет его в файл "brands.json".
-
-    :param brands: Словарь брендов вида {id: название}
-    :return: None
-
     Converts a dictionary of car brands into a list of dictionaries with additional fields
     and saves it to the "brands.json" file.
 
@@ -59,12 +48,6 @@ def process_brands(brands):
 
 def process_models():
     """
-    Загружает список брендов, формирует URL-адреса моделей,
-    запрашивает данные по каждой модели, фильтрует по году (>=2015)
-    и сохраняет результат в "models.json".
-
-    :return: None
-
     Loads the list of car brands, constructs model URLs,
     fetches data for each model, filters by year (>=2015),
     and saves the result to "models.json".
@@ -110,11 +93,6 @@ def process_models():
 
 def process_cars():
     """
-    Загружает список моделей, формирует URL-адреса автомобилей,
-    извлекает характеристики каждого авто из HTML-страницы
-    и сохраняет их в "cars.json".
-
-    :return: None
 
     Loads the list of car models, constructs URLs for individual cars,
     extracts specifications of each car from the HTML page,
@@ -156,10 +134,6 @@ def process_cars():
 
 def export_to_db():
     """
-    Вызывает функции экспорта данных из промежуточных JSON-файлов в базу данных.
-
-    :return: None
-
     Calls functions to export data from intermediate JSON files into the database.
 
     :return: None
@@ -174,11 +148,6 @@ def export_to_db():
 
 def main():
     """
-    Основная точка входа: запускает последовательную обработку брендов, моделей,
-    автомобилей и экспорт в базу.
-
-    :return: None
-
     Main entry point: initiates sequential processing of brands, models,
     cars, and exports the data to the database.
 

@@ -4,14 +4,6 @@ from utils.save_load_data import load_json, save_json
 
 def process_db_brands():
     """
-    Обрабатывает список брендов и сохраняет его в формате базы данных.
-
-    Загружает данные из 'brands.json', извлекает поля 'id' и 'name',
-    и сохраняет результат в 'brands_db.json'.
-
-    Returns:
-        bool: True, если сохранение прошло успешно, иначе False.
-
     Processes the list of car brands and saves it in a database-friendly format.
 
     Loads data from 'brands.json', extracts the 'id' and 'name' fields,
@@ -33,14 +25,6 @@ def process_db_brands():
 
 def process_db_models():
     """
-    Обрабатывает список моделей и сохраняет его в формате базы данных.
-
-    Загружает данные из 'models.json', присваивает уникальный ID каждой модели,
-    и сохраняет результат в 'models_db.json'.
-
-    Returns:
-        bool: True, если сохранение прошло успешно, иначе False.
-
     Processes the list of car models and saves it in a database-friendly format.
 
     Loads data from 'models.json', assigns a unique ID to each model,
@@ -63,14 +47,6 @@ def process_db_models():
 
 def process_db_year():
     """
-    Извлекает уникальные года выпуска из моделей и сохраняет их в базу.
-
-    Загружает 'models.json', собирает уникальные года, сортирует их,
-    и сохраняет в 'years_db.json'.
-
-    Returns:
-        bool: True, если сохранение прошло успешно, иначе False.
-
     Extracts unique production years from car models and saves them to the database.
 
     Loads data from 'models.json', collects unique years, sorts them,
@@ -96,13 +72,6 @@ def process_db_year():
 
 def process_db_fuel_typs():
     """
-    Формирует список типов топлива и сохраняет его в базу.
-
-    Предопределённый список включает бензин, дизель, газ и электро.
-
-    Returns:
-        bool: True, если сохранение прошло успешно, иначе False.
-
     Generates a list of fuel types and saves it to the database.
 
     The predefined list includes petrol, diesel, gas, and electric.
@@ -121,13 +90,6 @@ def process_db_fuel_typs():
 
 def process_db_engines():
     """
-    Формирует список типов двигателей и сохраняет его в базу.
-
-    Каждому типу двигателя соответствует fuel_type_id.
-
-    Returns:
-        bool: True, если сохранение прошло успешно, иначе False.
-
     Generates a list of engine types and saves it to the database.
 
     Each engine type is associated with a corresponding fuel_type_id.
@@ -149,15 +111,6 @@ def process_db_engines():
 
 def process_db_cars():
     """
-    Обрабатывает данные автомобилей и формирует финальную структуру для базы данных.
-
-    Загружает вспомогательные данные (бренды, модели, двигатели, топливо, года),
-    сопоставляет их с исходными данными автомобилей, определяет недостающие поля
-    (например, тип топлива), и сохраняет результат в файл `cars_db.json`.
-
-    Returns:
-        bool: True, если данные успешно сохранены, иначе False.
-
     Processes car data and builds the final structure for the database.
 
     Loads auxiliary data (brands, models, engines, fuel types, years),
@@ -186,7 +139,7 @@ def process_db_cars():
 
     # for index, model in enumerate(models, start=1):
     for index, car in enumerate(cars_time, start=1):
-        logger.info(f"🚗 Обработка машины: {car['name']} (id: {car['id']})")
+        logger.info(f"🚗 Car processing: {car['name']} (id: {car['id']})")
 
         model_id = models_lookup.get(car["name"])
         year_id = years_lookup.get(car["year"])
@@ -195,23 +148,22 @@ def process_db_cars():
         engine_type = car_info.get("Тип двигателя")
         fuel_type_name = car_info.get("Тип топлива")
 
-        # 🔧 Подстановка топлива, если оно отсутствует
         if not fuel_type_name:
             if engine_type and engine_type.lower() != "ДВС" or "Гибрид":
                 fuel_type_name = "Электро"
-                logger.info(f"⚡ Автоматически установлен тип топлива: '{fuel_type_name}'")
+                logger.info(f"Fuel type set automatically: '{fuel_type_name}'")
             else:
                 fuel_type_name = "Бензин"
-                logger.info(f"⛽ Тип топлива не указан, установлен по умолчанию: '{fuel_type_name}'")
+                logger.info(f"Fuel type not specified, default value applied: '{fuel_type_name}'")
 
         fuel_type_id = fuels_lookup.get(fuel_type_name)
         if fuel_type_id is None:
-            logger.warning(f"❌ Не найден fuel_type_id для '{fuel_type_name}'")
+            logger.warning(f"❌ fuel_type_id not found for '{fuel_type_name}'")
             continue
 
         engine_id = engines_lookup.get((engine_type, fuel_type_id))
         if engine_id is None:
-            logger.warning(f"❌ Не найден engine_id для пары: ({engine_type}, {fuel_type_id})")
+            logger.warning(f"❌ “No engine_id found for the specified pair: ({engine_type}, {fuel_type_id})")
             continue
 
         car_entry = {
@@ -220,8 +172,8 @@ def process_db_cars():
             "engine_id": engine_id,
             "year_id": year_id
         }
-        logger.info(f"✅ Добавлена запись: {car_entry}")
+        logger.info(f"✅ Entry added: {car_entry}")
         cars.append(car_entry)
 
-    logger.info(f"\n📦 Всего обработано машин: {len(cars)}")
+    logger.info(f"Total number of cars processed”: {len(cars)}")
     return save_json(cars, "cars_db.json", "db_json")
