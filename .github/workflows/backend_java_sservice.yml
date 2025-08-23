@@ -46,7 +46,7 @@ jobs:
 
 
             # build the backend container
-            docker image build -t voriq/security_service:latest -f /home/${{ secrets.CICD_SSH_USER }}/VORIQ/devops/backend/java/security_service/Dockerfile .
+            docker image build --no-cache -t voriq/security_service:latest -f /home/${{ secrets.CICD_SSH_USER }}/VORIQ/devops/backend/java/security_service/Dockerfile .
 
             # remove old container if exists
             docker container rm -f dev_security_service || true
@@ -71,6 +71,9 @@ jobs:
             -e BLOCKED_PREFIX=block: \
             -e LOG_PATH=/opt/app/logs \
             -e JAVA_OPTS="-XX:+ExitOnOutOfMemoryError -XX:MaxRAMPercentage=75 -XX:+UseStringDeduplication -Duser.timezone=Europe/Berlin" \
+            -e LOG_DIR=/opt/app/logs \
+            -e FIXED_DELAY_MS=259200000 \
+            -e INITIAL_DELAY_MS=60000 \
             voriq/security_service:latest && \
             docker network connect dbnetwork dev_security_service
 

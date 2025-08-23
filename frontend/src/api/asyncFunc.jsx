@@ -34,7 +34,6 @@ export const asyncFunc = async ({signal}) => {
 
 }
 
-
 export const abortTest= async({signal})=>{
     
   return fetch('https://httpbin.org/delay/5',{signal})
