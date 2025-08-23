@@ -2,7 +2,7 @@ import json
 import os
 from pathlib import Path
 
-from utils.decorators import save_error_handler_json, load_error_handler_json
+from .decorators import save_error_handler_json, load_error_handler_json
 
 
 def find_project_root(marker_file='main.py'):
