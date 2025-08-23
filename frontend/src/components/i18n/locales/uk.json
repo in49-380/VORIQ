@@ -25,8 +25,12 @@
     "errorModal":{
         "messageTitle":"Ой… щось пішло не так",
         "messageBody":"Сталася несподівана помилка",
+        "messageBodyString2":"Бажаєте спробувати ще раз?",
         "retry":"Повторити",
         "cancel":"Скасувати"
+    } ,
+    "loaderModal":{
+      "wait": "Почекати"
     }
       
   }

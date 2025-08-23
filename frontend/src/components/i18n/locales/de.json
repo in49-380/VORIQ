@@ -22,8 +22,13 @@
     "errorModal":{
         "messageTitle":"Ups… Etwas ist schiefgelaufen",
         "messageBody": "Unerwarteter Fehler ist aufgetreten",
+        "messageBodyString2": "Noch einmal versuchen?",
         "retry":"Wiederholen",
         "cancel":"Abbrechen"
+        
+    },
+    "loaderModal":{
+      "wait": "Warten"
     }
         
   }

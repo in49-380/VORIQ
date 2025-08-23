@@ -22,9 +22,14 @@
 
     "errorModal":{
         "messageTitle":"Whoops! An unexpected error occurred",
-        "messageBody": "An unexpected error has occurred",
+        "messageBody": "Error ",
+        "messageBodyString2": "Would you like to try again?",
         "retry":"Retry",
         "cancel":"Cancel"
+    }
+    ,
+    "loaderModal":{
+      "wait": "Wait"
     }
     
   }

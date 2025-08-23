@@ -6,7 +6,7 @@ const Button=({ref, onClick, children, className=''})=>{
         tabIndex='0'
         ref={ref}
         onClick={onClick}
-        className={`h-10 px-4 py-2 text-white rounded transition ${classOnFocus} ${className}`} >
+        className={`h-10 px-4 py-2 rounded transition ${classOnFocus} ${className}`} >
         {children}</button>
     )
 }

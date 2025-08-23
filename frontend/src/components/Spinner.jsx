@@ -17,7 +17,7 @@ const Spinner = ({
     
       
     return (
-        <svg
+      <svg
       width={size}
       height={size}
       viewBox={`0 0 ${size} ${size}`}

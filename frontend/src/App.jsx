@@ -10,6 +10,8 @@ import KlaroConsentButton from './components/CookieConsent/KlaroConsentButton';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import { useScreen } from './hooks/useScreen';
+import LoaderModal from './components/error_loaderModal/LoaderModal';
+import ErrorModal from './components/error_loaderModal/ErrorModal';
 
 const screenPage = {
   login: <RegistrationPage />,
@@ -24,14 +26,12 @@ const screenPage = {
 function App() {
   const { token } = useContext(AuthContext);
   const { currentScreen, setCurrentScreen } = useScreen();
-  console.log('===currentScreen1', currentScreen); 
 
   // if (!token && currentScreen !== 'login') {
   //   setCurrentScreen('login');
   // }
 
   useEffect(() => {
-
   if (!token) {
     setCurrentScreen('login');
   } else if (currentScreen === 'login') {
@@ -40,14 +40,14 @@ function App() {
 }, [token, currentScreen, setCurrentScreen]);
 
 
-  console.log('===currentScreen2', currentScreen); 
-
   return (
     <>
       <Header/>
       {/* main */}
       <KlaroConsentModal/>
       <main>
+        <LoaderModal/>
+        <ErrorModal/>
         {screenPage[currentScreen]}
       </main>
       <Footer/>

@@ -1,26 +1,39 @@
 
-import React, { Children, useState } from 'react';
+import React, {useState } from 'react';
 // import usePageUrl from '../hooks/usePageUrl';
 import {useTranslation} from 'react-i18next'
-import LoaderModal from '../components/loader/LoaderModal';
-import {useLoader} from '../hooks/useLoader';
-import { asyncFunc } from '../api/asyncFunc.jsx';
 import Button from '../components/Button.jsx';
+import { useLoader } from '../hooks/useLoader.jsx';
+
+import {asyncRandomError} from '../api/asyncFunc.jsx';
+// import { abortTest} from '../api/asyncFunc.jsx';
+// import {asyncHttpErrorTest} from '../api/asyncFunc.jsx';
 
 const CarPage = () => {
   // usePageUrl('/cars')
   const [res,setRes]=useState()
-  const {isLoading, isTooLongLoading,runWithLoader}=useLoader()
   const {t}=useTranslation()
+  const {runApi, errorMessage}=useLoader()
   
-  const handleOnClickLoad=async()=>
-   { const result=await  runWithLoader(asyncFunc)
-    setRes(result.answer||result.err)
-  }
 
-  const handleOnClickError=()=>{
-    console.log('Error button clicked')
-  }
+//   const handleOnClickError = async () => {
+//   const result = await runApi(abortTest);
+//   setRes(result.answer || result.err);
+// }
+  const handleOnClickError = async () => {
+  const result = await runApi(asyncRandomError);
+  const display =
+    result?.success ? result.success :
+    result?.error?.code ? `Error code: ${result.error.code}` :
+    result?.error?.message ? `Error: ${result.error.message}` :
+    errorMessage || 'Unknown error';
+
+  setRes(display);
+}
+//   const handleOnClickError = async () => {
+//   const result = await runApi(asyncHttpErrorTest);
+//   setRes(result.answer || result.err);
+// }
 
 
   return (
@@ -29,24 +42,13 @@ const CarPage = () => {
       <h1 className="text-4xl font-semibold text-blue-700">
         {t('carPage')}
       </h1>
-    <LoaderModal isLoading={isLoading} isTooLongLoading={isTooLongLoading}/>
 
-    {/*test***********test***********test****  */}
-    <Button 
-      onClick={handleOnClickLoad}
-      className='bg-red-500 text-white'
-      children='Start Loader'
-      />
-
-     { res && <h2 className='text-red-500 text-2xl'>The asynchronous function is {res}</h2>}
-
-     {/* //////////////////////////////////////////// */}
      <Button 
       onClick={handleOnClickError}
-      className='bg-red-500 text-white'
-      children='Error Occured'
+      className='bg-red-500 text-white h-auto'
+      children={<>Error Occured <br />It's a TEST-button</>}
       />
-    {/* /////////////////////////////////////// */}
+     { res && <h2 className='text-red-500 text-2xl'>The asynchronous function is {res}</h2>}
 
     </div>
   );
