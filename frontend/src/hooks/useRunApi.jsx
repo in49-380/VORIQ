@@ -63,7 +63,7 @@ const runApi=async(asyncFunction)=>{
     const result = await asyncFunction({ signal});
     clearAllTimeOut()
     setTimeout(()=>setIsLoading(false),500)
-    console.log('result', result)
+    // console.log('result', result)
     if (result.success) {setResultMessage ('successful')
     } else if (signal.aborted) {
     setResultMessage('Request canceled or timed out');

@@ -8,7 +8,7 @@
   font-weight: 400;
   
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color: black;
   background-color: #c0bebe;
   
   font-synthesis: none;
@@ -125,3 +125,8 @@ button {
   transition: border-color 0.25s;
 }
 
+select {
+  appearance: none;
+  background: transparent;
+  border: none;
+}

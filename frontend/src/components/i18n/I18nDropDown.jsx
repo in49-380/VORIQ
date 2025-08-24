@@ -7,10 +7,8 @@ const I18nDropDown=()=>{
 
     const onLanguageChange=(newValue)=>{
         setValue(newValue);
-        console.log('newValue', newValue)
         i18next.changeLanguage(newValue)
         localStorage.setItem('Language', newValue)
-        console.log('hier kommt i18n-code')
     }
     const Languages=[
         {
@@ -31,9 +29,9 @@ const I18nDropDown=()=>{
 
     return (
         <DropDown
-            value={value}
-            onOptionChange={onLanguageChange}
+            selectValue={value}
             options={Languages}
+            onOptionChange={onLanguageChange}
             className={selectClassName}
         />
     )
