@@ -9,7 +9,7 @@ import Button from '../components/Button.jsx';
 import DropDown from '../components/DropDown.jsx'
 
 import {requestFromVehicleSelectors} from '../api/dbRequest.jsx'
-// import {asyncRandomError} from '../api/asyncFunc.jsx';
+import {asyncRandomError} from '../api/asyncFunc.jsx';
 // import { abortTest} from '../api/asyncFunc.jsx';
 // import {asyncHttpErrorTest} from '../api/asyncFunc.jsx';
 
@@ -18,6 +18,8 @@ const CarPage = () => {
   const [res,setRes]=useState()
   const {t}=useTranslation()
   
+  // const {runApi}=useLoader()
+  const {runApi, resultMessage}=useLoader()
 
   
   //   const handleOnClickError = async () => {
@@ -28,16 +30,14 @@ const CarPage = () => {
   //   const result = await runApi(asyncHttpErrorTest);
   //   setRes(result.answer || result.err);
   // }
-  // const handleOnClickError = async () => {
-//   await runApi(asyncRandomError);
-// }
+  const handleOnClickError = async () => {
+  await runApi(asyncRandomError);
+}
 
-// useEffect(()=>{
-// setRes(resultMessage);
-// },[resultMessage])
-// const {runApi, resultMessage}=useLoader()
+useEffect(()=>{
+setRes(resultMessage);
+},[resultMessage])
 // *******************************************************
-const {runApi}=useLoader()
 
 const brand=useSelectState(false)
 const model=useSelectState (true)
