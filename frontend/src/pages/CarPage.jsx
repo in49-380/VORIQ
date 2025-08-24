@@ -1,5 +1,5 @@
 
-import React, {lazy, useEffect, useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import Select from 'react-select';
 // import usePageUrl from '../hooks/usePageUrl';
 import {useTranslation} from 'react-i18next'

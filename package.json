@@ -2,7 +2,6 @@
   "dependencies": {
     "i18next": "^25.3.3",
     "i18next-http-backend": "^3.0.2",
-    "react-i18next": "^15.6.1",
-    "react-select": "^5.10.2"
+    "react-i18next": "^15.6.1"
   }
 }
