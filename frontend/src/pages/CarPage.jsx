@@ -168,12 +168,12 @@ const onEngineChange=(newValue)=>{
 return (
   
   <div className="min-h-screen flex flex-col items-center justify-center bg-blue-100">
-       {/* <Button 
+       <Button 
         onClick={handleOnClickError}
         className='bg-red-500 text-white h-auto'
         children={<>Error Occured <br />It's a TEST-button</>}
-        /> */}
-  {/* { res && <h2 className='text-red-500 text-2xl'>The asynchronous function is {res}</h2>} */}
+        />
+  { res && <h2 className='text-red-500 text-2xl'>The asynchronous function is {res}</h2>}
     <div className="h-[60vh] w-[90vw] flex flex-row items-center justify-around bg-blue-100">
         
         <Select
