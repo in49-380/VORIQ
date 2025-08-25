@@ -15,6 +15,7 @@ const delayStartTimer = useRef(null);
 const errorByTimeOutTimer=useRef(null)
 const controllerRef=useRef(null)
 const lastCallFunction=useRef(null)
+const requestFinished=useRef(null)
 
 
 const clearAllTimeOut = () => {
@@ -29,6 +30,7 @@ const startAllTimeOut = () => {
 
 
   errorByTimeOutTimer.current = setTimeout(() => {
+    if (requestFinished.current) return;
     clearAllTimeOut()
     setIsTimeOutError(true);
     controllerRef.current?.abort()
@@ -61,6 +63,7 @@ const runApi=async(asyncFunction)=>{
 
     try {
     const result = await asyncFunction({ signal});
+    requestFinished.current = true;
     clearAllTimeOut()
     setTimeout(()=>setIsLoading(false),500)
     // console.log('result', result)
