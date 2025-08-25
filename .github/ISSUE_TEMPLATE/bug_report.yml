@@ -1,0 +1,82 @@
+name: "Bug Report"
+description: "Standard template for reporting defects"
+title: "[BUG] Short problem description"
+labels: ["bug", "QA"]
+assignees: []
+body:
+  - type: input
+    id: area
+    attributes:
+      label: Affected Module/Page
+      placeholder: "e.g. /login, Auth API"
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options: ["Blocker", "Critical", "Major", "Minor", "Trivial"]
+      default: 2
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options: ["High", "Medium", "Low"]
+      default: 1
+    validations:
+      required: true
+  - type: textarea
+    id: env
+    attributes:
+      label: Environment
+      placeholder: |
+        OS: macOS Monterey 12
+        Browser: Chrome 138
+        Build: v1.2.0
+        Device: Desktop
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      placeholder: |
+        1) Open /login
+        2) Enter user@example.com / wrong123
+        3) Click "Sign in"
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Result
+      placeholder: "Localized error message is displayed, login is not successful"
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Result
+      placeholder: "Message is in English only, localization missing"
+    validations:
+      required: true
+  - type: checkboxes
+    id: reproducibility
+    attributes:
+      label: Reproducibility
+      options:
+        - label: Always
+        - label: Sometimes
+        - label: Once
+  - type: textarea
+    id: attachments
+    attributes:
+      label: Attachments
+      description: "Screenshots, videos, HAR/log files, dumps, or links to PR/commits"
+      placeholder: "Paste links or attach files"
+  - type: textarea
+    id: links
+    attributes:
+      label: Related Issues
+      description: "Link to related test cases, checklists, or PRs"
+      placeholder: "Fixes #123; Related to #58"
