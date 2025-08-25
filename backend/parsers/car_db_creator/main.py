@@ -12,6 +12,16 @@ from utils.save_load_data import (
     save_json, load_json
 )
 
+"""
+This module contains functions to scrape car data from an external source,
+process the information, and export it into a local database.
+
+The workflow includes:
+1. Fetching car brands.
+2. Processing models and filtering by year.
+3. Scraping detailed car specifications.
+4. Exporting the processed data to a database.
+"""
 
 def fetch_brand_dict():
     """

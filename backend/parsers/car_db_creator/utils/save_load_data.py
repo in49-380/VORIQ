@@ -4,6 +4,12 @@ from pathlib import Path
 
 from .decorators import save_error_handler_json, load_error_handler_json
 
+"""
+This module provides a set of utility functions for managing JSON files.
+It includes functions for finding the project root directory, saving and loading
+JSON data with robust error handling, and appending new data to an existing file.
+The module relies on decorators for consistent logging and error management.
+"""
 
 def find_project_root(marker_file='main.py'):
     """

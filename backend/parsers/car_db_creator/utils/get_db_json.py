@@ -2,6 +2,12 @@
 from .decorators import logger
 from .save_load_data import load_json, save_json
 
+"""
+This module contains a set of functions for processing and transforming raw car data
+into a structured format for database insertion. It handles the processing of brands,
+models, years, fuel types, engines, and combines this information to create a final
+dataset of cars.
+"""
 
 def process_db_brands():
     """

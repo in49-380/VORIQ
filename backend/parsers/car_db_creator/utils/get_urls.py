@@ -1,3 +1,11 @@
+
+"""
+This module provides functions for dynamically generating URLs used in a web scraping
+process. It contains two main functions: one for creating URLs for car models based
+on a base URL and brand IDs, and another for generating URLs for individual car pages
+using model IDs. The module ensures that URLs are structured correctly for data fetching.
+"""
+
 def get_urls_models(data, url):
     """
     Generates a list of URLs for car models based on input data.

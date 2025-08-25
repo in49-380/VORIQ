@@ -3,6 +3,14 @@ import logging
 from functools import wraps
 from pathlib import Path
 
+"""
+This module provides utility functions for handling JSON data with robust logging. 
+It includes decorators to wrap JSON loading and saving operations, ensuring that 
+potential errors (e.g., FileNotFoundError, JSONDecodeError) are caught and logged, 
+while successful operations are also documented. The module is configured with a 
+custom logger to save all events to a designated log file.
+"""
+
 # Configures the path to the log file.
 LOG_DIR = Path("data") / "files_log"
 LOG_FILE = LOG_DIR / "parser.log"
