@@ -21,11 +21,12 @@ const CarPage = () => {
   
   // ***************************************************
   const handleOnClickError = async () => {
-    await runApi(asyncRandomError);
+       await runApi(asyncRandomError);
   }
   // ****************************************************
 
   const [analysResponse, setAnalysResponse]=useState()
+  const [analysButtonIsDisabled, setAnalysButtonIsDisabled]=useState(true)
 
     const brand=useSelectState(false)
     const model=useSelectState (true)
@@ -66,6 +67,7 @@ const CarPage = () => {
     model={model}
     year={year}
     engine={engine}
+    setButtonIsDisabled={setAnalysButtonIsDisabled}
   />
 
   <ButtonBlock
@@ -74,10 +76,10 @@ const CarPage = () => {
     year={year}
     engine={engine}
     onStartAnalysis={setAnalysResponse}
+    buttonIsDisabled={analysButtonIsDisabled}
   />
 
       </div>
     );
   };
-
   export default CarPage;

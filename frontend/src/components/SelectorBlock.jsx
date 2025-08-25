@@ -10,7 +10,7 @@ import brandAnalyse from '../../public/fakeDB/fakeAnalys.jsx';
 import { modelAnalyse, yearAnalyse, engineAnalyse } from '../../public/fakeDB/fakeAnalys.jsx';
 
 
-const SelectorBlock=({brand,model,year,engine})=>{
+const SelectorBlock=({brand,model,year,engine, setButtonIsDisabled})=>{
     // const {t}=useTranslation()
 
     const {runApi}=useLoader()
@@ -101,7 +101,9 @@ const SelectorBlock=({brand,model,year,engine})=>{
 
     const onEngineChange=(newValue)=>{
         engine.setValue(newValue)
+        setButtonIsDisabled(false)
     }
+
     const className= "px-3 py-1.5 w-50 bg-transparent text-sm text-black cursor-pointer outline-none hover:bg-black/5 focus:bg-black/10 appearance-none";
     const optionClassName= "mt-1 w-full bg-transparent shadow-none border-none outline-none";
 
