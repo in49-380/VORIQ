@@ -1,4 +1,4 @@
-export const getAnalyse=async(payload)=>{
+export const getAnalyse=async(payload,{signal})=>{
 const url='https://httpbin.org/post'
 try{
     const options={
@@ -7,19 +7,20 @@ try{
             'accept':'application/json',
             'content-type':'application/json'
         },
-        body:payload
+        body:payload,
+        signal
     }
     const response=await fetch(url, options)
     if (!response.ok) {
-        const errorMessage=await response.text()
-        console.log('Error Message:', errorMessage)
-        throw new Error ('unexpexted error')
+        throw new Error('data is not avaible')
     }
     const data=await response.json()
-    console.log('data',data.json)
-    return data.json
-}catch(error){
-    console.log(error)
-    return null
+        console.log('data in post', data)
+      return {response:data.json, success:'success', save: true}
+    }catch(error){
+     if (error.name === "AbortError") {
+            return { error: 'canceled by TimeError' }
+        }
+        return {error: error.message || 'Unknown error'}
 }
 }

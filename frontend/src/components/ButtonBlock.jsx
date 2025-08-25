@@ -2,19 +2,16 @@ import { getAnalyse } from "../api/post"
 import Button from "./Button"
 import {useTranslation} from 'react-i18next'
 import { useLoader } from "../hooks/useLoader"
-import { useEffect } from "react"
 
 
-const ButtonBlock=({brand,model,year,engine, onStartAnalysis, buttonIsDisabled})=>{
+const ButtonBlock=({brand,model,year,engine,buttonIsDisabled})=>{
 
     const {t}=useTranslation()
-    const {runApi}=useLoader()
+    const {runApi, setSuccessResult}=useLoader()
 
-    useEffect(()=>{
-        console.log('isButton', buttonIsDisabled)
-    },[buttonIsDisabled])
-
+    
     const handleOnClickStartAnalysis=async()=>{
+        setSuccessResult(null)
         const payload = {
         brandId: brand.value,
         modelId: model.value,
@@ -22,14 +19,14 @@ const ButtonBlock=({brand,model,year,engine, onStartAnalysis, buttonIsDisabled})
         engineIds: engine.value
         };
         const jsonPayload = JSON.stringify(payload);
-        const response=await runApi(()=>getAnalyse(jsonPayload))
-        onStartAnalysis(response)
+        const response=await runApi((opt)=>getAnalyse(jsonPayload, opt))
+        console.log('response in buttonblock', response)
     }
 
 
-    const handleOnClickNewSearch=()=>{
+    // const handleOnClickNewSearch=()=>{
         
-    }
+    // }
     const handleOnClickAnotherCar=()=>{
 
     }

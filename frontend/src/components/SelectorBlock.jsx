@@ -15,10 +15,9 @@ const SelectorBlock=({brand,model,year,engine, setButtonIsDisabled})=>{
 
     const {runApi}=useLoader()
       
-
     useEffect(()=>{
         const getBrands=async()=>{
-        const data= await runApi(()=>requestFromVehicleSelectors('brands.json'))
+        const data= await runApi((opt)=>requestFromVehicleSelectors('brands.json',opt))
         const result=brandAnalyse(data)
         brand.setOptions(result)
         }
@@ -30,7 +29,7 @@ const SelectorBlock=({brand,model,year,engine, setButtonIsDisabled})=>{
         if (!brand.value) {
         return;
         }
-        const data=await runApi(()=>requestFromVehicleSelectors('models.json'))
+        const data=await runApi((opt)=>requestFromVehicleSelectors('models.json', opt))
         const result=modelAnalyse(data, brand.value)
         model.setOptions(result)
         }
@@ -42,7 +41,7 @@ const SelectorBlock=({brand,model,year,engine, setButtonIsDisabled})=>{
         if (!model.value) {
         return
         }
-        const data=await runApi(()=>requestFromVehicleSelectors('years.json'))
+        const data=await runApi((opt)=>requestFromVehicleSelectors('years.json',opt))
         const result=yearAnalyse(data,model.value)
         year.setOptions(result)
         }
@@ -50,11 +49,11 @@ const SelectorBlock=({brand,model,year,engine, setButtonIsDisabled})=>{
     },[model.value])
 
     useEffect(()=>{
-    const getEngine=async()=>{
+        const getEngine=async()=>{
         if (!year.value) {
         return
         }
-        const data=await runApi(()=>requestFromVehicleSelectors('engines.json'))
+        const data=await runApi((opt)=>requestFromVehicleSelectors('engines.json',opt))
         const result=engineAnalyse(data, year.value)
         engine.setOptions(result)
     }

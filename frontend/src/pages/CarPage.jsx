@@ -14,7 +14,8 @@ const CarPage = () => {
   // const {t}=useTranslation()
   
   const [res,setRes]=useState()
-  const {runApi, resultMessage}=useLoader()
+  const {runApi, resultMessage, successResult}=useLoader()
+
   useEffect(()=>{
     setRes(resultMessage);
   },[resultMessage])
@@ -25,14 +26,14 @@ const CarPage = () => {
   }
   // ****************************************************
 
-  const [analysResponse, setAnalysResponse]=useState()
   const [analysButtonIsDisabled, setAnalysButtonIsDisabled]=useState(true)
 
     const brand=useSelectState(false)
     const model=useSelectState (true)
     const year=useSelectState(true)
     const engine=useSelectState(true)  
-    
+
+  
   return (
     
     <div className="min-h-[80vh] flex flex-col items-center justify-center bg-blue-100">
@@ -43,20 +44,21 @@ const CarPage = () => {
           />
 
     { res && <h2 className='text-red-500 text-2xl'>The asynchronous function is {res}</h2>}
-    {analysResponse && 
+    
+    {successResult &&
       <div className='bg-white border-2 border-green-500 flex flex-col items-center justify-center p-4 w-64 h-32 m-4'>
         <h2 className='text-green-500 text-xl'>Result of Analyse:</h2>
       <div>
-        <strong>Brand:</strong> {analysResponse.brandId?.label} (ID: {analysResponse.brandId?.value})
+        <strong>Brand:</strong> {successResult.brandId?.label} (ID: {successResult.brandId?.value})
       </div>
       <div>
-        <strong>Model:</strong> {analysResponse.modelId?.label} (ID: {analysResponse.modelId?.value})
+        <strong>Model:</strong> {successResult.modelId?.label} (ID: {successResult.modelId?.value})
       </div>
       <div>
-        <strong>Years:</strong> {analysResponse.yearIds?.join(', ')}
+        <strong>Years:</strong> {successResult.yearIds?.join(', ')}
       </div>
       <div>
-        <strong>Engine:</strong> {analysResponse.engineIds?.label} (ID: {analysResponse.engineIds?.value})
+        <strong>Engine:</strong> {successResult.engineIds?.label} (ID: {successResult.engineIds?.value})
       </div>
 
       </div>}
@@ -68,6 +70,7 @@ const CarPage = () => {
     year={year}
     engine={engine}
     setButtonIsDisabled={setAnalysButtonIsDisabled}
+
   />
 
   <ButtonBlock
@@ -75,7 +78,6 @@ const CarPage = () => {
     model={model}
     year={year}
     engine={engine}
-    onStartAnalysis={setAnalysResponse}
     buttonIsDisabled={analysButtonIsDisabled}
   />
 
