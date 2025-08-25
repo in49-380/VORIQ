@@ -1,7 +1,7 @@
 
 import { useEffect} from 'react';
 import Select from 'react-select';
-// import {useTranslation} from 'react-i18next'
+import {useTranslation} from 'react-i18next'
 
 
 import { useLoader } from '../hooks/useLoader.jsx';
@@ -11,7 +11,7 @@ import { modelAnalyse, yearAnalyse, engineAnalyse } from '../../public/fakeDB/fa
 
 
 const SelectorBlock=({brand,model,year,engine, setButtonIsDisabled})=>{
-    // const {t}=useTranslation()
+    const {t}=useTranslation()
 
     const {runApi}=useLoader()
       
@@ -111,7 +111,7 @@ const SelectorBlock=({brand,model,year,engine, setButtonIsDisabled})=>{
       <div className="h-[30vh] w-[90vw] flex flex-row items-center justify-around bg-blue-100">
             
             <Select
-              placeholder="Vehicle Brand"
+              placeholder={t('selectorBlock.brand')}
               value={brand.value}
               options={brand.options}
               onChange={onBrandChange}
@@ -122,7 +122,7 @@ const SelectorBlock=({brand,model,year,engine, setButtonIsDisabled})=>{
             />
     
             <Select
-              placeholder={'Vehicle Model'}
+              placeholder={t('selectorBlock.model')}
               value={model.value}
               options={model.options}
               onChange={onModelChange}
@@ -133,7 +133,7 @@ const SelectorBlock=({brand,model,year,engine, setButtonIsDisabled})=>{
             />
     
             <Select
-              placeholder="Year"
+              placeholder={t('selectorBlock.year')}
               value={year.value}
               options={year.options}
               onChange={onYearChange}
@@ -145,7 +145,7 @@ const SelectorBlock=({brand,model,year,engine, setButtonIsDisabled})=>{
             />
     
             <Select
-              placeholder="Engine"
+              placeholder={t('selectorBlock.engine')}
               value={engine.value}
               options={engine.options}
               onChange={onEngineChange}

@@ -31,7 +31,18 @@
     } ,
     "loaderModal":{
       "wait": "Почекати"
-    }
+    },
+    "selectorBlock": {
+    "brand": "Бренд",
+    "model": "Модель",
+    "year": "Рік",
+    "engine": "Двигун"
+     },
+    "buttonBlock": {
+    "analyze": "Аналіз",
+    "addAnotherCar": "Додати ще один автомобіль"
+}
+
       
   }
   

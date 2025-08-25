@@ -30,6 +30,17 @@
     ,
     "loaderModal":{
       "wait": "Wait"
+    },
+    "selectorBlock":{
+      "brand": "Brand",
+      "model": "Model",
+      "year": "Year",
+      "engine": "Engine"
+      
+    },
+    "buttonBlock":{
+      "analyze": "Analyze",
+      "addAnotherCar": "Add another car"
     }
     
   }

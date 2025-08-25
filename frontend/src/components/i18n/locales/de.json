@@ -29,7 +29,17 @@
     },
     "loaderModal":{
       "wait": "Warten"
-    }
-        
+    },
+    "selectorBlock": {
+    "brand": "Marke",
+    "model": "Modell",
+    "year": "Jahr",
+    "engine": "Motor"
+     },
+   "buttonBlock": {
+    "analyze": "Analysieren",
+    "addAnotherCar": "Noch ein Auto hinzufügen"
+}
+
   }
   

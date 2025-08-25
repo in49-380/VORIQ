@@ -44,7 +44,7 @@ const ButtonBlock=({brand,model,year,engine, onStartAnalysis, buttonIsDisabled})
             ${buttonIsDisabled
          ? 'bg-green-200 cursor-not-allowed'
          : 'bg-green-500 hover:bg-green-600 active:bg-green-700 cursor-pointer'}`}
-          children={'Start Analysis'}
+          children={t('buttonBlock.analyze')}
 
           />
          {/* <Button 
@@ -55,7 +55,7 @@ const ButtonBlock=({brand,model,year,engine, onStartAnalysis, buttonIsDisabled})
          <Button 
           onClick={handleOnClickAnotherCar}
           className='bg-green-500 text-white h-auto'
-          children={'Select another car'}
+          children={t('buttonBlock.addAnotherCar')}
           />
         </div>
     )
