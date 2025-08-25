@@ -14,5 +14,4 @@ public class CarDto {
     private ModelDto model;
     private EngineDto engine;
     private FuelTypeDto fuelType;
-    private String pictureCar;
 }

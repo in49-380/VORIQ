@@ -19,6 +19,7 @@ import java.util.*;
 @RequiredArgsConstructor
 @Profile("dev")
 public class DbSeeder implements ApplicationRunner {
+
     private final JdbcTemplate jdbc;
     private final ObjectMapper om = new ObjectMapper();
 
@@ -27,6 +28,7 @@ public class DbSeeder implements ApplicationRunner {
     @Value("classpath:seed/years_db.json")   Resource yearsRes;
     @Value("classpath:seed/engines_db.json") Resource enginesRes;
     @Value("classpath:seed/models_db.json")  Resource modelsRes;
+    @Value("classpath:seed/cars_db.json")    Resource carsRes;
 
     @Override
     @Transactional
@@ -37,6 +39,7 @@ public class DbSeeder implements ApplicationRunner {
         upsertYears(readList(yearsRes));
         upsertEngines(readList(enginesRes), fuelIdMap);
         upsertModels(readList(modelsRes), brandIdMap);
+        upsertCars(readList(carsRes));
     }
 
     private List<Map<String, Object>> readList(Resource res) throws Exception {
@@ -54,7 +57,7 @@ public class DbSeeder implements ApplicationRunner {
             RETURNING id
             """;
         for (Map<String, Object> row : list) {
-            Integer oldId = toInt(row.get("id"));                 // только для карты
+            Integer oldId = toInt(row.get("id"));
             String  name  = String.valueOf(row.get("name")).trim();
 
             Long dbId = jdbc.queryForObject(sql, Long.class, name);
@@ -72,7 +75,7 @@ public class DbSeeder implements ApplicationRunner {
             RETURNING id
             """;
         for (Map<String, Object> row : list) {
-            Integer oldId = toInt(row.get("id"));                 // только для карты
+            Integer oldId = toInt(row.get("id"));
             String  name  = String.valueOf(row.get("name")).trim();
 
             Long dbId = jdbc.queryForObject(sql, Long.class, name);
@@ -88,7 +91,6 @@ public class DbSeeder implements ApplicationRunner {
             ON CONFLICT (year) DO UPDATE SET year = EXCLUDED.year
             """;
         jdbc.batchUpdate(sql, list, 500, (ps, row) -> {
-            // JSON может хранить как строку "2023", так и число 2023
             Integer year = parseYear(row.get("year"));
             ps.setInt(1, Objects.requireNonNull(year, "year is null"));
         });
@@ -130,6 +132,23 @@ public class DbSeeder implements ApplicationRunner {
             }
             jdbc.queryForObject(sql, Long.class, dbBrandId, name);
         }
+    }
+
+    private void upsertCars(List<Map<String, Object>> list) {
+        String sql = """
+            INSERT INTO cars(model_id, engine_id, year_id)
+            VALUES (?, ?, ?)
+            """;
+
+        jdbc.batchUpdate(sql, list, 500, (ps, row) -> {
+            Integer modelId = toInt(row.get("model_id"));
+            Integer engineId = toInt(row.get("engine_id"));
+            Integer yearId = toInt(row.get("year_id"));
+
+            ps.setLong(1, Objects.requireNonNull(modelId, "model_id is null"));
+            ps.setLong(2, Objects.requireNonNull(engineId, "engine_id is null"));
+            ps.setLong(3, Objects.requireNonNull(yearId, "year_id is null"));
+        });
     }
 
     private Integer toInt(Object o) {

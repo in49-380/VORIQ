@@ -2,7 +2,7 @@ server:
   port: ${PORT}
   forward-headers-strategy: framework
   servlet:
-    context-path: /api
+    context-path: /api/v1
 
 spring:
   application:

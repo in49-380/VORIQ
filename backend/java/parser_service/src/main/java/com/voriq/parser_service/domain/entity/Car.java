@@ -17,9 +17,6 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "picture_car")
-    private String pictureCar;
-
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH},
             fetch = FetchType.LAZY)
     @JoinColumn(name = "engine_id", referencedColumnName = "id")

@@ -1,36 +1,36 @@
 [
     {
-        "id": 101,
+        "id": 1,
         "type": "ДВС",
         "fuel_type_id": 1
     },
     {
-        "id": 102,
+        "id": 2,
         "type": "ДВС",
         "fuel_type_id": 2
     },
     {
-        "id": 103,
+        "id": 3,
         "type": "ДВС",
         "fuel_type_id": 3
     },
     {
-        "id": 104,
+        "id": 4,
         "type": "Гибрид",
         "fuel_type_id": 1
     },
     {
-        "id": 105,
+        "id": 5,
         "type": "Гибрид",
         "fuel_type_id": 2
     },
     {
-        "id": 106,
+        "id": 6,
         "type": "Гибрид",
         "fuel_type_id": 3
     },
     {
-        "id": 107,
+        "id": 7,
         "type": "Электро",
         "fuel_type_id": 4
     }

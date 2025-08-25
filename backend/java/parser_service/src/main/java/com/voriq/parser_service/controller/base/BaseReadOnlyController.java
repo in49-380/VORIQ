@@ -36,7 +36,7 @@ public abstract class BaseReadOnlyController<D, ID> {
                     description = "Not found",
                     content = @Content(
                             mediaType = "application/problem+json",
-                            schema = @Schema(implementation = ProblemDetail.class) //TODO - заменить на кастомный клас ошибки
+                            schema = @Schema(implementation = ProblemDetail.class) // заменить на кастомный клас ошибки
                     )
             )
     })
