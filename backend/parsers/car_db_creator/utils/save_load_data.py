@@ -1,0 +1,123 @@
+import json
+import os
+from pathlib import Path
+
+from .decorators import save_error_handler_json, load_error_handler_json
+
+"""
+This module provides a set of utility functions for managing JSON files.
+It includes functions for finding the project root directory, saving and loading
+JSON data with robust error handling, and appending new data to an existing file.
+The module relies on decorators for consistent logging and error management.
+"""
+
+def find_project_root(marker_file='main.py'):
+    """
+    Searches for the project root directory using a marker file.
+
+    Traverses upward through the directory tree until the specified file is found.
+    Used to construct absolute paths relative to the project root.
+
+    Args:
+        marker_file (str): The name of the file that identifies the project root.
+
+    Returns:
+        Path: Path to the project's root directory.
+
+    Raises:
+        FileNotFoundError: If the marker file is not found in the directory hierarchy.
+
+    """
+    current_dir = Path(__file__).resolve().parent
+
+    while not (current_dir / marker_file).exists():
+
+        if current_dir.parent == current_dir:
+            raise FileNotFoundError(f"Не удалось найти корень проекта с маркером '{marker_file}'.")
+        current_dir = current_dir.parent
+
+    return current_dir
+
+
+@save_error_handler_json
+def save_json(data, file_name, subfolder=None):
+    """
+    Saves data to a JSON file at the specified path.
+
+    Args:
+        data (list | dict): The data to be saved.
+        file_name (str): Name of the JSON file.
+        subfolder (str | None): Subfolder inside 'files_json' (e.g., 'db_json').
+                            If None, saves directly into 'files_json'.
+
+    Returns:
+        None
+    """
+    project_root = find_project_root()
+
+    base_path = project_root / 'data' / 'files_json'
+    if subfolder:
+        base_path = base_path / subfolder
+    file_path = base_path / file_name
+
+    file_path.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(file_path, "w", encoding="utf-8") as file:
+        json.dump(data, file, ensure_ascii=False, indent=4)
+
+
+@load_error_handler_json
+def load_json(file_name, subfolder=None):
+    """
+    Loads data from a JSON file at the specified path.
+
+    Args:
+        subfolder (str | None): Subfolder inside 'files_json' (e.g., 'db_json').
+                            If None, loads from 'files_json' directly.
+        file_name (str): Name of the JSON file.
+
+    Returns:
+        Any: Loaded data (typically a list or dictionary).
+
+    Raises:
+        FileNotFoundError: If the file is not found.
+        json.JSONDecodeError: If the file is corrupted or contains invalid JSON.
+    """
+    project_root = find_project_root()
+
+    base_path = project_root / 'data' / 'files_json'
+    if subfolder:
+        base_path = base_path / subfolder
+    file_path = base_path / file_name
+
+    with open(file_path, "r", encoding="utf-8") as file:
+        return json.load(file)
+
+
+def append_to_json_file(new_data, filename="models_url.json"):
+    """
+    Appends new data to an existing JSON file or creates a new one.
+
+    If the file exists, its contents are read and extended.
+    If the file is corrupted or missing, a new list is created.
+
+    Args:
+        new_data (list): List of new data to be added.
+        filename (str): Name of the JSON file (default is "models_url.json").
+
+    Returns:
+        None
+    """
+    if os.path.exists(filename):
+        with open(filename, "r", encoding="utf-8") as f:
+            try:
+                existing_data = json.load(f)
+            except json.JSONDecodeError:
+                existing_data = []
+    else:
+        existing_data = []
+
+    existing_data.extend(new_data)
+
+    with open(filename, "w", encoding="utf-8") as f:
+        json.dump(existing_data, f, ensure_ascii=False, indent=4)

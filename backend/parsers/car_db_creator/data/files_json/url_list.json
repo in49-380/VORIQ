@@ -1,0 +1,487 @@
+[
+    {
+        "id": 1,
+        "name": "Acura",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=229"
+    },
+    {
+        "id": 2,
+        "name": "Alfa Romeo",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=230"
+    },
+    {
+        "id": 3,
+        "name": "ALPINA",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=231"
+    },
+    {
+        "id": 4,
+        "name": "Aston Martin",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=232"
+    },
+    {
+        "id": 5,
+        "name": "Audi",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=233"
+    },
+    {
+        "id": 6,
+        "name": "BAIC",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=2134"
+    },
+    {
+        "id": 7,
+        "name": "BAW",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=450"
+    },
+    {
+        "id": 8,
+        "name": "Bentley",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=234"
+    },
+    {
+        "id": 9,
+        "name": "BMW",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=235"
+    },
+    {
+        "id": 10,
+        "name": "Brilliance",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=437"
+    },
+    {
+        "id": 11,
+        "name": "Buick",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=236"
+    },
+    {
+        "id": 12,
+        "name": "BYD",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=421"
+    },
+    {
+        "id": 13,
+        "name": "Cadillac",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=237"
+    },
+    {
+        "id": 14,
+        "name": "Chana",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=442"
+    },
+    {
+        "id": 15,
+        "name": "Changan",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=1624"
+    },
+    {
+        "id": 16,
+        "name": "Chery",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=316"
+    },
+    {
+        "id": 17,
+        "name": "Chevrolet",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=238"
+    },
+    {
+        "id": 18,
+        "name": "Chrysler",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=239"
+    },
+    {
+        "id": 19,
+        "name": "Citroen",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=240"
+    },
+    {
+        "id": 20,
+        "name": "CUPRA",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=2125"
+    },
+    {
+        "id": 21,
+        "name": "Dacia",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=241"
+    },
+    {
+        "id": 22,
+        "name": "Daewoo",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=242"
+    },
+    {
+        "id": 23,
+        "name": "Daihatsu",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=243"
+    },
+    {
+        "id": 24,
+        "name": "Datsun",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=1845"
+    },
+    {
+        "id": 25,
+        "name": "Detroit Electric",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=2063"
+    },
+    {
+        "id": 26,
+        "name": "Dodge",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=245"
+    },
+    {
+        "id": 27,
+        "name": "DS",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=2098"
+    },
+    {
+        "id": 28,
+        "name": "EXEED",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=2133"
+    },
+    {
+        "id": 29,
+        "name": "FAW",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=328"
+    },
+    {
+        "id": 30,
+        "name": "Ferrari",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=247"
+    },
+    {
+        "id": 31,
+        "name": "Fiat",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=248"
+    },
+    {
+        "id": 32,
+        "name": "Fisker",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=1611"
+    },
+    {
+        "id": 33,
+        "name": "Ford",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=249"
+    },
+    {
+        "id": 34,
+        "name": "Geely",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=332"
+    },
+    {
+        "id": 35,
+        "name": "Genesis",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=2060"
+    },
+    {
+        "id": 36,
+        "name": "GMC",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=250"
+    },
+    {
+        "id": 37,
+        "name": "Great Wall",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=298"
+    },
+    {
+        "id": 38,
+        "name": "Haval",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=2099"
+    },
+    {
+        "id": 39,
+        "name": "Honda",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=252"
+    },
+    {
+        "id": 40,
+        "name": "Hummer",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=253"
+    },
+    {
+        "id": 41,
+        "name": "Hyundai",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=254"
+    },
+    {
+        "id": 42,
+        "name": "Infiniti",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=255"
+    },
+    {
+        "id": 43,
+        "name": "Iran Khodro",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=424"
+    },
+    {
+        "id": 44,
+        "name": "Isuzu",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=256"
+    },
+    {
+        "id": 45,
+        "name": "JAC",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=446"
+    },
+    {
+        "id": 46,
+        "name": "Jaguar",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=257"
+    },
+    {
+        "id": 47,
+        "name": "Jeep",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=258"
+    },
+    {
+        "id": 48,
+        "name": "Jetour",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=2124"
+    },
+    {
+        "id": 49,
+        "name": "KGM",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=2151"
+    },
+    {
+        "id": 50,
+        "name": "KIA",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=259"
+    },
+    {
+        "id": 51,
+        "name": "Lamborghini",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=260"
+    },
+    {
+        "id": 52,
+        "name": "Lancia",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=261"
+    },
+    {
+        "id": 53,
+        "name": "Land Rover",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=262"
+    },
+    {
+        "id": 54,
+        "name": "Lexus",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=263"
+    },
+    {
+        "id": 55,
+        "name": "Lifan",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=444"
+    },
+    {
+        "id": 56,
+        "name": "Lincoln",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=264"
+    },
+    {
+        "id": 57,
+        "name": "Lotus",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=265"
+    },
+    {
+        "id": 58,
+        "name": "Luxgen",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=1851"
+    },
+    {
+        "id": 59,
+        "name": "Maserati",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=267"
+    },
+    {
+        "id": 60,
+        "name": "Mazda",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=268"
+    },
+    {
+        "id": 61,
+        "name": "McLaren",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=358"
+    },
+    {
+        "id": 62,
+        "name": "Mercedes",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=269"
+    },
+    {
+        "id": 63,
+        "name": "MG",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=271"
+    },
+    {
+        "id": 64,
+        "name": "MINI",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=272"
+    },
+    {
+        "id": 65,
+        "name": "Mitsubishi",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=273"
+    },
+    {
+        "id": 66,
+        "name": "Nissan",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=274"
+    },
+    {
+        "id": 67,
+        "name": "Opel",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=276"
+    },
+    {
+        "id": 68,
+        "name": "Peugeot",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=277"
+    },
+    {
+        "id": 69,
+        "name": "Polestar",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=2112"
+    },
+    {
+        "id": 70,
+        "name": "Porsche",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=280"
+    },
+    {
+        "id": 71,
+        "name": "Qoros",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=1738"
+    },
+    {
+        "id": 72,
+        "name": "Ravon",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=1986"
+    },
+    {
+        "id": 73,
+        "name": "Renault",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=282"
+    },
+    {
+        "id": 74,
+        "name": "Rivian",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=2129"
+    },
+    {
+        "id": 75,
+        "name": "Rolls-Royce",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=283"
+    },
+    {
+        "id": 76,
+        "name": "Saab",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=285"
+    },
+    {
+        "id": 77,
+        "name": "Saipa",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=1651"
+    },
+    {
+        "id": 78,
+        "name": "Samsung",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=433"
+    },
+    {
+        "id": 79,
+        "name": "Scion",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=1798"
+    },
+    {
+        "id": 80,
+        "name": "SEAT",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=287"
+    },
+    {
+        "id": 81,
+        "name": "Skoda",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=289"
+    },
+    {
+        "id": 82,
+        "name": "smart",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=290"
+    },
+    {
+        "id": 83,
+        "name": "SsangYong",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=291"
+    },
+    {
+        "id": 84,
+        "name": "Subaru",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=292"
+    },
+    {
+        "id": 85,
+        "name": "Suzuki",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=293"
+    },
+    {
+        "id": 86,
+        "name": "Tata",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=381"
+    },
+    {
+        "id": 87,
+        "name": "Tesla",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=479"
+    },
+    {
+        "id": 88,
+        "name": "Toyota",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=294"
+    },
+    {
+        "id": 89,
+        "name": "Volkswagen",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=295"
+    },
+    {
+        "id": 90,
+        "name": "Volvo",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=296"
+    },
+    {
+        "id": 91,
+        "name": "Wey",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=2111"
+    },
+    {
+        "id": 92,
+        "name": "Zotye",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=1989"
+    },
+    {
+        "id": 93,
+        "name": "Богдан",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=391"
+    },
+    {
+        "id": 94,
+        "name": "ВАЗ",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=223"
+    },
+    {
+        "id": 95,
+        "name": "ГАЗ",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=224"
+    },
+    {
+        "id": 96,
+        "name": "ЗАЗ",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=225"
+    },
+    {
+        "id": 97,
+        "name": "УАЗ",
+        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=228"
+    }
+]
