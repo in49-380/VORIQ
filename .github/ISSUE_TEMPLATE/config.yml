@@ -12,3 +12,7 @@ contact_links:
   - name: Contribution guidelines
     url: https://github.com/in49-380/VORIQ/blob/main/CONTRIBUTING.md
     about: Read how we work, branch/commit rules, and PR expectations.
+
+  - name: QA Process Questions
+    url: https://github.com/in49-380/VORIQ/qa
+    about: General questions about QA workflow and Projects board
