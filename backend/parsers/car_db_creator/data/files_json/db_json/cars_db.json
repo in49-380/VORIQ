@@ -1,0 +1,602 @@
+[
+    {
+        "id": 1,
+        "model_id": 1,
+        "engine_id": 101,
+        "year_id": 11
+    },
+    {
+        "id": 2,
+        "model_id": 2,
+        "engine_id": 101,
+        "year_id": 1
+    },
+    {
+        "id": 3,
+        "model_id": 3,
+        "engine_id": 101,
+        "year_id": 4
+    },
+    {
+        "id": 4,
+        "model_id": 4,
+        "engine_id": 101,
+        "year_id": 8
+    },
+    {
+        "id": 5,
+        "model_id": 5,
+        "engine_id": 101,
+        "year_id": 2
+    },
+    {
+        "id": 6,
+        "model_id": 6,
+        "engine_id": 101,
+        "year_id": 6
+    },
+    {
+        "id": 7,
+        "model_id": 7,
+        "engine_id": 104,
+        "year_id": 1
+    },
+    {
+        "id": 8,
+        "model_id": 8,
+        "engine_id": 101,
+        "year_id": 2
+    },
+    {
+        "id": 9,
+        "model_id": 9,
+        "engine_id": 101,
+        "year_id": 4
+    },
+    {
+        "id": 10,
+        "model_id": 10,
+        "engine_id": 101,
+        "year_id": 7
+    },
+    {
+        "id": 11,
+        "model_id": 11,
+        "engine_id": 104,
+        "year_id": 3
+    },
+    {
+        "id": 12,
+        "model_id": 12,
+        "engine_id": 104,
+        "year_id": 3
+    },
+    {
+        "id": 13,
+        "model_id": 13,
+        "engine_id": 101,
+        "year_id": 3
+    },
+    {
+        "id": 14,
+        "model_id": 14,
+        "engine_id": 101,
+        "year_id": 6
+    },
+    {
+        "id": 15,
+        "model_id": 15,
+        "engine_id": 107,
+        "year_id": 9
+    },
+    {
+        "id": 16,
+        "model_id": 16,
+        "engine_id": 101,
+        "year_id": 1
+    },
+    {
+        "id": 17,
+        "model_id": 17,
+        "engine_id": 101,
+        "year_id": 2
+    },
+    {
+        "id": 18,
+        "model_id": 18,
+        "engine_id": 101,
+        "year_id": 2
+    },
+    {
+        "id": 19,
+        "model_id": 19,
+        "engine_id": 104,
+        "year_id": 10
+    },
+    {
+        "id": 20,
+        "model_id": 20,
+        "engine_id": 107,
+        "year_id": 10
+    },
+    {
+        "id": 21,
+        "model_id": 21,
+        "engine_id": 101,
+        "year_id": 2
+    },
+    {
+        "id": 22,
+        "model_id": 22,
+        "engine_id": 101,
+        "year_id": 3
+    },
+    {
+        "id": 23,
+        "model_id": 23,
+        "engine_id": 101,
+        "year_id": 8
+    },
+    {
+        "id": 24,
+        "model_id": 24,
+        "engine_id": 101,
+        "year_id": 6
+    },
+    {
+        "id": 25,
+        "model_id": 25,
+        "engine_id": 101,
+        "year_id": 6
+    },
+    {
+        "id": 26,
+        "model_id": 26,
+        "engine_id": 101,
+        "year_id": 6
+    },
+    {
+        "id": 27,
+        "model_id": 27,
+        "engine_id": 101,
+        "year_id": 6
+    },
+    {
+        "id": 28,
+        "model_id": 28,
+        "engine_id": 101,
+        "year_id": 5
+    },
+    {
+        "id": 29,
+        "model_id": 29,
+        "engine_id": 101,
+        "year_id": 7
+    },
+    {
+        "id": 30,
+        "model_id": 30,
+        "engine_id": 101,
+        "year_id": 6
+    },
+    {
+        "id": 31,
+        "model_id": 31,
+        "engine_id": 101,
+        "year_id": 6
+    },
+    {
+        "id": 32,
+        "model_id": 32,
+        "engine_id": 102,
+        "year_id": 6
+    },
+    {
+        "id": 33,
+        "model_id": 33,
+        "engine_id": 102,
+        "year_id": 6
+    },
+    {
+        "id": 34,
+        "model_id": 34,
+        "engine_id": 101,
+        "year_id": 6
+    },
+    {
+        "id": 35,
+        "model_id": 35,
+        "engine_id": 102,
+        "year_id": 7
+    },
+    {
+        "id": 36,
+        "model_id": 36,
+        "engine_id": 101,
+        "year_id": 2
+    },
+    {
+        "id": 37,
+        "model_id": 37,
+        "engine_id": 101,
+        "year_id": 4
+    },
+    {
+        "id": 38,
+        "model_id": 38,
+        "engine_id": 101,
+        "year_id": 4
+    },
+    {
+        "id": 39,
+        "model_id": 39,
+        "engine_id": 101,
+        "year_id": 6
+    },
+    {
+        "id": 40,
+        "model_id": 40,
+        "engine_id": 101,
+        "year_id": 4
+    },
+    {
+        "id": 41,
+        "model_id": 41,
+        "engine_id": 101,
+        "year_id": 1
+    },
+    {
+        "id": 42,
+        "model_id": 42,
+        "engine_id": 101,
+        "year_id": 5
+    },
+    {
+        "id": 43,
+        "model_id": 43,
+        "engine_id": 101,
+        "year_id": 1
+    },
+    {
+        "id": 44,
+        "model_id": 44,
+        "engine_id": 101,
+        "year_id": 4
+    },
+    {
+        "id": 45,
+        "model_id": 45,
+        "engine_id": 101,
+        "year_id": 2
+    },
+    {
+        "id": 46,
+        "model_id": 46,
+        "engine_id": 101,
+        "year_id": 2
+    },
+    {
+        "id": 47,
+        "model_id": 47,
+        "engine_id": 101,
+        "year_id": 2
+    },
+    {
+        "id": 48,
+        "model_id": 48,
+        "engine_id": 102,
+        "year_id": 6
+    },
+    {
+        "id": 49,
+        "model_id": 49,
+        "engine_id": 102,
+        "year_id": 10
+    },
+    {
+        "id": 50,
+        "model_id": 50,
+        "engine_id": 101,
+        "year_id": 2
+    },
+    {
+        "id": 51,
+        "model_id": 51,
+        "engine_id": 102,
+        "year_id": 6
+    },
+    {
+        "id": 52,
+        "model_id": 52,
+        "engine_id": 101,
+        "year_id": 10
+    },
+    {
+        "id": 53,
+        "model_id": 53,
+        "engine_id": 104,
+        "year_id": 2
+    },
+    {
+        "id": 54,
+        "model_id": 54,
+        "engine_id": 103,
+        "year_id": 3
+    },
+    {
+        "id": 55,
+        "model_id": 55,
+        "engine_id": 101,
+        "year_id": 1
+    },
+    {
+        "id": 56,
+        "model_id": 56,
+        "engine_id": 101,
+        "year_id": 4
+    },
+    {
+        "id": 57,
+        "model_id": 57,
+        "engine_id": 102,
+        "year_id": 5
+    },
+    {
+        "id": 58,
+        "model_id": 58,
+        "engine_id": 102,
+        "year_id": 2
+    },
+    {
+        "id": 59,
+        "model_id": 59,
+        "engine_id": 102,
+        "year_id": 5
+    },
+    {
+        "id": 60,
+        "model_id": 60,
+        "engine_id": 101,
+        "year_id": 1
+    },
+    {
+        "id": 61,
+        "model_id": 61,
+        "engine_id": 101,
+        "year_id": 4
+    },
+    {
+        "id": 62,
+        "model_id": 62,
+        "engine_id": 102,
+        "year_id": 5
+    },
+    {
+        "id": 63,
+        "model_id": 63,
+        "engine_id": 101,
+        "year_id": 3
+    },
+    {
+        "id": 64,
+        "model_id": 64,
+        "engine_id": 101,
+        "year_id": 10
+    },
+    {
+        "id": 65,
+        "model_id": 65,
+        "engine_id": 101,
+        "year_id": 10
+    },
+    {
+        "id": 66,
+        "model_id": 66,
+        "engine_id": 102,
+        "year_id": 3
+    },
+    {
+        "id": 67,
+        "model_id": 67,
+        "engine_id": 102,
+        "year_id": 5
+    },
+    {
+        "id": 68,
+        "model_id": 68,
+        "engine_id": 102,
+        "year_id": 2
+    },
+    {
+        "id": 69,
+        "model_id": 69,
+        "engine_id": 102,
+        "year_id": 5
+    },
+    {
+        "id": 70,
+        "model_id": 70,
+        "engine_id": 102,
+        "year_id": 3
+    },
+    {
+        "id": 71,
+        "model_id": 71,
+        "engine_id": 103,
+        "year_id": 5
+    },
+    {
+        "id": 72,
+        "model_id": 72,
+        "engine_id": 101,
+        "year_id": 3
+    },
+    {
+        "id": 73,
+        "model_id": 73,
+        "engine_id": 101,
+        "year_id": 4
+    },
+    {
+        "id": 74,
+        "model_id": 74,
+        "engine_id": 101,
+        "year_id": 11
+    },
+    {
+        "id": 75,
+        "model_id": 75,
+        "engine_id": 102,
+        "year_id": 5
+    },
+    {
+        "id": 76,
+        "model_id": 76,
+        "engine_id": 102,
+        "year_id": 4
+    },
+    {
+        "id": 77,
+        "model_id": 77,
+        "engine_id": 101,
+        "year_id": 11
+    },
+    {
+        "id": 78,
+        "model_id": 78,
+        "engine_id": 107,
+        "year_id": 10
+    },
+    {
+        "id": 79,
+        "model_id": 79,
+        "engine_id": 102,
+        "year_id": 3
+    },
+    {
+        "id": 80,
+        "model_id": 80,
+        "engine_id": 101,
+        "year_id": 3
+    },
+    {
+        "id": 81,
+        "model_id": 81,
+        "engine_id": 102,
+        "year_id": 8
+    },
+    {
+        "id": 82,
+        "model_id": 82,
+        "engine_id": 107,
+        "year_id": 4
+    },
+    {
+        "id": 83,
+        "model_id": 83,
+        "engine_id": 107,
+        "year_id": 7
+    },
+    {
+        "id": 84,
+        "model_id": 84,
+        "engine_id": 107,
+        "year_id": 6
+    },
+    {
+        "id": 85,
+        "model_id": 85,
+        "engine_id": 107,
+        "year_id": 6
+    },
+    {
+        "id": 86,
+        "model_id": 86,
+        "engine_id": 107,
+        "year_id": 5
+    },
+    {
+        "id": 87,
+        "model_id": 87,
+        "engine_id": 101,
+        "year_id": 2
+    },
+    {
+        "id": 88,
+        "model_id": 88,
+        "engine_id": 101,
+        "year_id": 6
+    },
+    {
+        "id": 89,
+        "model_id": 89,
+        "engine_id": 101,
+        "year_id": 1
+    },
+    {
+        "id": 90,
+        "model_id": 90,
+        "engine_id": 101,
+        "year_id": 4
+    },
+    {
+        "id": 91,
+        "model_id": 91,
+        "engine_id": 102,
+        "year_id": 11
+    },
+    {
+        "id": 92,
+        "model_id": 92,
+        "engine_id": 101,
+        "year_id": 5
+    },
+    {
+        "id": 93,
+        "model_id": 93,
+        "engine_id": 107,
+        "year_id": 7
+    },
+    {
+        "id": 94,
+        "model_id": 94,
+        "engine_id": 107,
+        "year_id": 7
+    },
+    {
+        "id": 95,
+        "model_id": 95,
+        "engine_id": 102,
+        "year_id": 2
+    },
+    {
+        "id": 96,
+        "model_id": 96,
+        "engine_id": 102,
+        "year_id": 6
+    },
+    {
+        "id": 97,
+        "model_id": 97,
+        "engine_id": 101,
+        "year_id": 10
+    },
+    {
+        "id": 98,
+        "model_id": 98,
+        "engine_id": 102,
+        "year_id": 6
+    },
+    {
+        "id": 99,
+        "model_id": 99,
+        "engine_id": 101,
+        "year_id": 10
+    },
+    {
+        "id": 100,
+        "model_id": 100,
+        "engine_id": 107,
+        "year_id": 10
+    }
+]

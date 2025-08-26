@@ -1,0 +1,80 @@
+name: "QA Test Case"
+description: "Template for describing a single test case"
+title: "[QA][TC] Short test case title"
+labels: ["QA", "test-case"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: "Please fill in the fields — one issue = one test case."
+  - type: input
+    id: scope
+    attributes:
+      label: Component/Module
+      placeholder: "e.g. Auth → Login"
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: "What exactly are we testing and why?"
+      placeholder: "Verify handling of invalid password during login"
+    validations:
+      required: true
+  - type: textarea
+    id: preconditions
+    attributes:
+      label: Preconditions
+      placeholder: |
+        - User account exists
+        - Access to staging environment
+  - type: textarea
+    id: data
+    attributes:
+      label: Test Data
+      placeholder: |
+        login: user@example.com
+        password: wrong123
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps
+      placeholder: |
+        1) Open /login
+        2) Enter login / wrong password
+        3) Click "Sign in"
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Result
+      placeholder: "Error message is displayed, login is not successful"
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Result
+      description: "To be filled after execution"
+      placeholder: "—"
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options: ["High", "Medium", "Low"]
+      default: 1
+  - type: checkboxes
+    id: env
+    attributes:
+      label: Environment
+      options:
+        - label: Web (Chrome)
+        - label: Web (Firefox)
+        - label: Mobile (Android)
+        - label: Mobile (iOS)
+  - type: textarea
+    id: artifacts
+    attributes:
+      label: Artifacts
+      description: "Screenshots, logs, videos, or links to automated tests"
+      placeholder: "Paste links or attach files"
