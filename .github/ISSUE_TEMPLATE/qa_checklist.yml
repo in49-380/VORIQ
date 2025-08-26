@@ -1,0 +1,39 @@
+name: "QA Checklist"
+description: "Template for creating a checklist of multiple test checks"
+title: "[QA][CL] Short checklist title"
+labels: ["QA", "checklist"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: "One issue = one checklist. Use markdown checkboxes to track progress."
+  - type: input
+    id: scope
+    attributes:
+      label: Scope / Release / Feature
+      placeholder: "e.g. Onboarding v1.2"
+  - type: textarea
+    id: preconditions
+    attributes:
+      label: Preconditions
+      placeholder: |
+        - Build v1.2.0 deployed
+        - Test user created
+  - type: textarea
+    id: checklist
+    attributes:
+      label: Checklist Items
+      description: "Write each check as a markdown checkbox. Example below."
+      placeholder: |
+        - [ ] UI: Login button is visible
+        - [ ] Valid credentials → successful login
+        - [ ] Invalid password → correct error message
+        - [ ] Language switch updates UI texts immediately
+        - [ ] Language choice persists after reload
+        - [ ] Consent modal appears only on first visit
+        - [ ] External links (/terms, /privacy, /cookies) open in a new tab
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes and Issues
+      placeholder: "Briefly record deviations. Create separate bug reports and link them here."
