@@ -1,9 +1,13 @@
 import DropDown from "../DropDown";
-import { useState } from "react";
+import { useEffect, useState} from "react";
 import i18next from "i18next";
+import { useTranslation } from "react-i18next";
 
 const I18nDropDown=()=>{
-    const [value, setValue]=useState(localStorage.getItem('Language')||'en')
+    const {i18n}=useTranslation()
+    // const browserLang = navigator.language?.split('-')[0] 
+    // const [value, setValue]=useState(localStorage.getItem('Language')||browserLang||'en')
+    const [value, setValue]=useState(i18n.language)
 
     const onLanguageChange=(newValue)=>{
         setValue(newValue);

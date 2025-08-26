@@ -18,7 +18,8 @@ return i18next
    .use(initReactI18next)
     .init({
       debug:true,
-      lng: savedLanguage,  // if you're using a language detector, do not define the lng option
+      // if you're using a language detector, do not define the lng option
+      lng: savedLanguage,  
       fallbackLng: "en",
 
       ns:[...BASE_NS,...REMOTE_NS],
