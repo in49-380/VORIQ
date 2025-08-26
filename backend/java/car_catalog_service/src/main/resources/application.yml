@@ -1,0 +1,26 @@
+server:
+  port: ${PORT}
+  forward-headers-strategy: framework
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: car_catalog_service
+
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      connect-timeout: 200ms
+      timeout: 200ms
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+  api-docs:
+    path: /v3/api-docs
+
+cors:
+  allowed-origins: ${ALLOWED_ORIGINS}

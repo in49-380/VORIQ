@@ -18,6 +18,29 @@
             "acceptAll":"Accept all",
             "customize":"Customize"
         }
+    },
+
+    "errorModal":{
+        "messageTitle":"Whoops! An unexpected error occurred",
+        "messageBody": "Error ",
+        "messageBodyString2": "Would you like to try again?",
+        "retry":"Retry",
+        "cancel":"Cancel"
+    }
+    ,
+    "loaderModal":{
+      "wait": "Wait"
+    },
+    "selectorBlock":{
+      "brand": "Brand",
+      "model": "Model",
+      "year": "Year",
+      "engine": "Engine"
+      
+    },
+    "buttonBlock":{
+      "analyze": "Analyze",
+      "addAnotherCar": "Add another car"
     }
     
   }

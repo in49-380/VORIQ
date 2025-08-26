@@ -1,0 +1,41 @@
+services:
+  car-catalog-service:
+    build:
+      context: .
+      args:
+        RELEASE: 17
+    image: car-catalog-service:latest
+    container_name: car-catalog-service
+    env_file:
+      - .env
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      PORT: ${PORT}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${DB_NAME}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
+      LOG_PATH: ${LOG_PATH}
+      JAVA_OPTS: ${JAVA_OPTS}
+      LOG_DIR: ${LOG_DIR}
+    ports:
+      - "8084:8084"
+    logging:
+      driver: "local"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    tmpfs:
+      - /tmp
+
+volumes:
+  pg_data:
+  pgadmin_data:
+  redis_data:

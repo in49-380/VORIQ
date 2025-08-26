@@ -1,0 +1,37 @@
+server:
+  port: ${PORT:8084}
+  forward-headers-strategy: framework
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: car_catalog_service
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:cars}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      connect-timeout: 200ms
+      timeout: 200ms
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+  api-docs:
+    path: /v3/api-docs
+
+cors:
+  allowed-origins: ${ALLOWED_ORIGINS:http://localhost:8080,http://127.0.0.1:8080}
