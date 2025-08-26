@@ -7,7 +7,7 @@ import uk from './locales/uk.json'
 import de from './locales/de.json'
 
 
-const browserLang = navigator.langukge?.split('-')[0] 
+const browserLang = navigator.language?.split('-')[0] 
 const savedLanguage=localStorage.getItem('Language')||browserLang||'en';
 const REMOTE_NS = ['remoteA', 'remoteB', 'remoteC']; //must renamed
 const BASE_NS = ['translation']; 
