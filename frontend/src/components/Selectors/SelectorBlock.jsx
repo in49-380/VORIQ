@@ -1,19 +1,22 @@
 
 import { useEffect} from 'react';
-import Select from 'react-select';
 import {useTranslation} from 'react-i18next'
+import Select from 'react-select';
+// import { motion, AnimatePresence } from "framer-motion";
 
 
-import { useLoader } from '../hooks/useLoader.jsx';
-import {requestFromVehicleSelectors} from '../api/dbRequest.jsx'
-import brandAnalyse from '../../public/fakeDB/fakeAnalys.jsx';
-import { modelAnalyse, yearAnalyse, engineAnalyse } from '../../public/fakeDB/fakeAnalys.jsx';
+import { useLoader } from '../../hooks/useLoader.jsx';
+import useSelect from '../../hooks/useSelect.jsx';
+
+import {requestFromVehicleSelectors} from '../../api/dbRequest.jsx'
+import brandAnalyse from '../../../public/fakeDB/fakeAnalys.jsx';
+import { modelAnalyse, yearAnalyse, engineAnalyse } from '../../../public/fakeDB/fakeAnalys.jsx';
 
 
-const SelectorBlock=({brand,model,year,engine, setButtonIsDisabled})=>{
+const SelectorBlock=({brand,model,year,engine})=>{
     const {t}=useTranslation()
-
     const {runApi}=useLoader()
+    const {setAnalysButtonIsDisabled}=useSelect()
       
     useEffect(()=>{
         const getBrands=async()=>{
@@ -100,7 +103,7 @@ const SelectorBlock=({brand,model,year,engine, setButtonIsDisabled})=>{
 
     const onEngineChange=(newValue)=>{
         engine.setValue(newValue)
-        setButtonIsDisabled(false)
+        setAnalysButtonIsDisabled(false)
     }
 
     const className= "px-3 py-1.5 w-50 bg-transparent text-sm text-black cursor-pointer outline-none hover:bg-black/5 focus:bg-black/10 appearance-none";

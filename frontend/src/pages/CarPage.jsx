@@ -2,12 +2,13 @@
 import React, {useEffect, useState } from 'react';
 // import {useTranslation} from 'react-i18next'
 import { useLoader } from '../hooks/useLoader.jsx';
+import useSelect from '../hooks/useSelect.jsx';
 import useSelectState from '../hooks/useSelectState.jsx';
 
 import Button from '../components/Button.jsx';
 import {asyncRandomError} from '../api/asyncFunc.jsx';
-import SelectorBlock from '../components/SelectorBlock.jsx';
-import ButtonBlock from '../components/ButtonBlock.jsx';
+import SelectorBlock from '../components/Selectors/SelectorBlock.jsx';
+import ButtonBlock from '../components/Selectors/ButtonBlock.jsx';
 
 const CarPage = () => {
   // usePageUrl('/cars')
@@ -15,18 +16,21 @@ const CarPage = () => {
   
   const [res,setRes]=useState()
   const {runApi, resultMessage, successResult}=useLoader()
+  const {isNewSelectorSetVisible}=useSelect()
 
   useEffect(()=>{
     setRes(resultMessage);
   },[resultMessage])
+
+  useEffect(()=>{
+    console.log('visible', isNewSelectorSetVisible);
+  },[isNewSelectorSetVisible])
   
   // ***************************************************
   const handleOnClickError = async () => {
        await runApi(asyncRandomError);
   }
   // ****************************************************
-
-  const [analysButtonIsDisabled, setAnalysButtonIsDisabled]=useState(true)
 
     const brand=useSelectState(false)
     const model=useSelectState (true)
@@ -64,24 +68,21 @@ const CarPage = () => {
       </div>}
 
 
-    <SelectorBlock
-    brand={brand}
-    model={model}
-    year={year}
-    engine={engine}
-    setButtonIsDisabled={setAnalysButtonIsDisabled}
-
-  />
+        <SelectorBlock
+          brand={brand}
+          model={model}
+          year={year}
+          engine={engine}
+        />
 
   <ButtonBlock
     brand={brand}
     model={model}
     year={year}
     engine={engine}
-    buttonIsDisabled={analysButtonIsDisabled}
   />
 
-      </div>
+ </div>
     );
   };
   export default CarPage;

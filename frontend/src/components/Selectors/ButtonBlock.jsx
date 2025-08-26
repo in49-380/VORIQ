@@ -1,13 +1,16 @@
-import { getAnalyse } from "../api/post"
-import Button from "./Button"
+import { getAnalyse } from "../../api/post"
+import Button from "../Button"
 import {useTranslation} from 'react-i18next'
-import { useLoader } from "../hooks/useLoader"
+import { useLoader } from "../../hooks/useLoader"
+import useSelect from "../../hooks/useSelect"
 
 
-const ButtonBlock=({brand,model,year,engine,buttonIsDisabled})=>{
+const ButtonBlock=({brand,model,year,engine})=>{
 
     const {t}=useTranslation()
     const {runApi, setSuccessResult}=useLoader()
+    const {analysButtonIsDisabled, setIsNewSelectorSetVisible}=useSelect()
+    const {addButtonIsDisabled, setAddButtonIsDisabled}=useSelect()
 
     
     const handleOnClickStartAnalysis=async()=>{
@@ -20,6 +23,7 @@ const ButtonBlock=({brand,model,year,engine,buttonIsDisabled})=>{
         };
         const jsonPayload = JSON.stringify(payload);
         const response=await runApi((opt)=>getAnalyse(jsonPayload, opt))
+        setAddButtonIsDisabled(false)
         console.log('response in buttonblock', response)
     }
 
@@ -28,17 +32,16 @@ const ButtonBlock=({brand,model,year,engine,buttonIsDisabled})=>{
         
     // }
     const handleOnClickAnotherCar=()=>{
-
+        setIsNewSelectorSetVisible(true)
     }
 
 
     return(
         <div className='flex flex-row w-[90vw] items-center justify-around'>
          <Button 
-          onClick={!buttonIsDisabled?  handleOnClickStartAnalysis:null}
-          buttonIsDisabled={buttonIsDisabled}
+          onClick={!analysButtonIsDisabled?  handleOnClickStartAnalysis:null}
           className={`px-4 py-2 rounded-lg font-medium text-white transition-colors duration-200
-            ${buttonIsDisabled
+            ${analysButtonIsDisabled
          ? 'bg-green-200 cursor-not-allowed'
          : 'bg-green-500 hover:bg-green-600 active:bg-green-700 cursor-pointer'}`}
           children={t('buttonBlock.analyze')}
@@ -51,7 +54,10 @@ const ButtonBlock=({brand,model,year,engine,buttonIsDisabled})=>{
           /> */}
          <Button 
           onClick={handleOnClickAnotherCar}
-          className='bg-green-500 text-white h-auto'
+         className={`px-4 py-2 rounded-lg font-medium text-white transition-colors duration-200
+            ${addButtonIsDisabled
+         ? 'bg-green-200 cursor-not-allowed'
+         : 'bg-green-500 hover:bg-green-600 active:bg-green-700 cursor-pointer'}`}
           children={t('buttonBlock.addAnotherCar')}
           />
         </div>

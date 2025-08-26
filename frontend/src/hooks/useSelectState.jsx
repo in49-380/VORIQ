@@ -7,6 +7,8 @@ const useSelectState=(isDisabled)=>{
   const [value, setValue]=useState(null)
   const [disabled, setDisabled]=useState(isDisabled)
 
+  
+
   const clear=()=>{
     setOptions([])
     setValue(null)
@@ -21,7 +23,8 @@ const useSelectState=(isDisabled)=>{
     {options, setOptions,
     value,setValue,
     disabled,setDisabled,
-    clear, softClear}
+    clear, softClear,
+    }
   )
 }
 export default useSelectState
