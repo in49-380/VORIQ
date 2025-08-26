@@ -1,0 +1,43 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Test/debug artifacts
+.coverage
+*.log
+*.pot
+*.mo
+
+# =========================
+# Virtual environments
+# =========================
+venv/
+.venv/
+
+# =========================
+# IDE: PyCharm
+# =========================
+.idea/
+
+# =========================
+# ОС: Windows / macOS / Linux
+# =========================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+*.swp
+
+# =========================
+# Secrets and configs
+# =========================
+.env
+.env.*
+*.sqlite3

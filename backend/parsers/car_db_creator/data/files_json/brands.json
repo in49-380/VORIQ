@@ -1,0 +1,487 @@
+[
+    {
+        "id": 1,
+        "name": "Acura",
+        "id_infocar": "229"
+    },
+    {
+        "id": 2,
+        "name": "Alfa Romeo",
+        "id_infocar": "230"
+    },
+    {
+        "id": 3,
+        "name": "ALPINA",
+        "id_infocar": "231"
+    },
+    {
+        "id": 4,
+        "name": "Aston Martin",
+        "id_infocar": "232"
+    },
+    {
+        "id": 5,
+        "name": "Audi",
+        "id_infocar": "233"
+    },
+    {
+        "id": 6,
+        "name": "BAIC",
+        "id_infocar": "2134"
+    },
+    {
+        "id": 7,
+        "name": "BAW",
+        "id_infocar": "450"
+    },
+    {
+        "id": 8,
+        "name": "Bentley",
+        "id_infocar": "234"
+    },
+    {
+        "id": 9,
+        "name": "BMW",
+        "id_infocar": "235"
+    },
+    {
+        "id": 10,
+        "name": "Brilliance",
+        "id_infocar": "437"
+    },
+    {
+        "id": 11,
+        "name": "Buick",
+        "id_infocar": "236"
+    },
+    {
+        "id": 12,
+        "name": "BYD",
+        "id_infocar": "421"
+    },
+    {
+        "id": 13,
+        "name": "Cadillac",
+        "id_infocar": "237"
+    },
+    {
+        "id": 14,
+        "name": "Chana",
+        "id_infocar": "442"
+    },
+    {
+        "id": 15,
+        "name": "Changan",
+        "id_infocar": "1624"
+    },
+    {
+        "id": 16,
+        "name": "Chery",
+        "id_infocar": "316"
+    },
+    {
+        "id": 17,
+        "name": "Chevrolet",
+        "id_infocar": "238"
+    },
+    {
+        "id": 18,
+        "name": "Chrysler",
+        "id_infocar": "239"
+    },
+    {
+        "id": 19,
+        "name": "Citroen",
+        "id_infocar": "240"
+    },
+    {
+        "id": 20,
+        "name": "CUPRA",
+        "id_infocar": "2125"
+    },
+    {
+        "id": 21,
+        "name": "Dacia",
+        "id_infocar": "241"
+    },
+    {
+        "id": 22,
+        "name": "Daewoo",
+        "id_infocar": "242"
+    },
+    {
+        "id": 23,
+        "name": "Daihatsu",
+        "id_infocar": "243"
+    },
+    {
+        "id": 24,
+        "name": "Datsun",
+        "id_infocar": "1845"
+    },
+    {
+        "id": 25,
+        "name": "Detroit Electric",
+        "id_infocar": "2063"
+    },
+    {
+        "id": 26,
+        "name": "Dodge",
+        "id_infocar": "245"
+    },
+    {
+        "id": 27,
+        "name": "DS",
+        "id_infocar": "2098"
+    },
+    {
+        "id": 28,
+        "name": "EXEED",
+        "id_infocar": "2133"
+    },
+    {
+        "id": 29,
+        "name": "FAW",
+        "id_infocar": "328"
+    },
+    {
+        "id": 30,
+        "name": "Ferrari",
+        "id_infocar": "247"
+    },
+    {
+        "id": 31,
+        "name": "Fiat",
+        "id_infocar": "248"
+    },
+    {
+        "id": 32,
+        "name": "Fisker",
+        "id_infocar": "1611"
+    },
+    {
+        "id": 33,
+        "name": "Ford",
+        "id_infocar": "249"
+    },
+    {
+        "id": 34,
+        "name": "Geely",
+        "id_infocar": "332"
+    },
+    {
+        "id": 35,
+        "name": "Genesis",
+        "id_infocar": "2060"
+    },
+    {
+        "id": 36,
+        "name": "GMC",
+        "id_infocar": "250"
+    },
+    {
+        "id": 37,
+        "name": "Great Wall",
+        "id_infocar": "298"
+    },
+    {
+        "id": 38,
+        "name": "Haval",
+        "id_infocar": "2099"
+    },
+    {
+        "id": 39,
+        "name": "Honda",
+        "id_infocar": "252"
+    },
+    {
+        "id": 40,
+        "name": "Hummer",
+        "id_infocar": "253"
+    },
+    {
+        "id": 41,
+        "name": "Hyundai",
+        "id_infocar": "254"
+    },
+    {
+        "id": 42,
+        "name": "Infiniti",
+        "id_infocar": "255"
+    },
+    {
+        "id": 43,
+        "name": "Iran Khodro",
+        "id_infocar": "424"
+    },
+    {
+        "id": 44,
+        "name": "Isuzu",
+        "id_infocar": "256"
+    },
+    {
+        "id": 45,
+        "name": "JAC",
+        "id_infocar": "446"
+    },
+    {
+        "id": 46,
+        "name": "Jaguar",
+        "id_infocar": "257"
+    },
+    {
+        "id": 47,
+        "name": "Jeep",
+        "id_infocar": "258"
+    },
+    {
+        "id": 48,
+        "name": "Jetour",
+        "id_infocar": "2124"
+    },
+    {
+        "id": 49,
+        "name": "KGM",
+        "id_infocar": "2151"
+    },
+    {
+        "id": 50,
+        "name": "KIA",
+        "id_infocar": "259"
+    },
+    {
+        "id": 51,
+        "name": "Lamborghini",
+        "id_infocar": "260"
+    },
+    {
+        "id": 52,
+        "name": "Lancia",
+        "id_infocar": "261"
+    },
+    {
+        "id": 53,
+        "name": "Land Rover",
+        "id_infocar": "262"
+    },
+    {
+        "id": 54,
+        "name": "Lexus",
+        "id_infocar": "263"
+    },
+    {
+        "id": 55,
+        "name": "Lifan",
+        "id_infocar": "444"
+    },
+    {
+        "id": 56,
+        "name": "Lincoln",
+        "id_infocar": "264"
+    },
+    {
+        "id": 57,
+        "name": "Lotus",
+        "id_infocar": "265"
+    },
+    {
+        "id": 58,
+        "name": "Luxgen",
+        "id_infocar": "1851"
+    },
+    {
+        "id": 59,
+        "name": "Maserati",
+        "id_infocar": "267"
+    },
+    {
+        "id": 60,
+        "name": "Mazda",
+        "id_infocar": "268"
+    },
+    {
+        "id": 61,
+        "name": "McLaren",
+        "id_infocar": "358"
+    },
+    {
+        "id": 62,
+        "name": "Mercedes",
+        "id_infocar": "269"
+    },
+    {
+        "id": 63,
+        "name": "MG",
+        "id_infocar": "271"
+    },
+    {
+        "id": 64,
+        "name": "MINI",
+        "id_infocar": "272"
+    },
+    {
+        "id": 65,
+        "name": "Mitsubishi",
+        "id_infocar": "273"
+    },
+    {
+        "id": 66,
+        "name": "Nissan",
+        "id_infocar": "274"
+    },
+    {
+        "id": 67,
+        "name": "Opel",
+        "id_infocar": "276"
+    },
+    {
+        "id": 68,
+        "name": "Peugeot",
+        "id_infocar": "277"
+    },
+    {
+        "id": 69,
+        "name": "Polestar",
+        "id_infocar": "2112"
+    },
+    {
+        "id": 70,
+        "name": "Porsche",
+        "id_infocar": "280"
+    },
+    {
+        "id": 71,
+        "name": "Qoros",
+        "id_infocar": "1738"
+    },
+    {
+        "id": 72,
+        "name": "Ravon",
+        "id_infocar": "1986"
+    },
+    {
+        "id": 73,
+        "name": "Renault",
+        "id_infocar": "282"
+    },
+    {
+        "id": 74,
+        "name": "Rivian",
+        "id_infocar": "2129"
+    },
+    {
+        "id": 75,
+        "name": "Rolls-Royce",
+        "id_infocar": "283"
+    },
+    {
+        "id": 76,
+        "name": "Saab",
+        "id_infocar": "285"
+    },
+    {
+        "id": 77,
+        "name": "Saipa",
+        "id_infocar": "1651"
+    },
+    {
+        "id": 78,
+        "name": "Samsung",
+        "id_infocar": "433"
+    },
+    {
+        "id": 79,
+        "name": "Scion",
+        "id_infocar": "1798"
+    },
+    {
+        "id": 80,
+        "name": "SEAT",
+        "id_infocar": "287"
+    },
+    {
+        "id": 81,
+        "name": "Skoda",
+        "id_infocar": "289"
+    },
+    {
+        "id": 82,
+        "name": "smart",
+        "id_infocar": "290"
+    },
+    {
+        "id": 83,
+        "name": "SsangYong",
+        "id_infocar": "291"
+    },
+    {
+        "id": 84,
+        "name": "Subaru",
+        "id_infocar": "292"
+    },
+    {
+        "id": 85,
+        "name": "Suzuki",
+        "id_infocar": "293"
+    },
+    {
+        "id": 86,
+        "name": "Tata",
+        "id_infocar": "381"
+    },
+    {
+        "id": 87,
+        "name": "Tesla",
+        "id_infocar": "479"
+    },
+    {
+        "id": 88,
+        "name": "Toyota",
+        "id_infocar": "294"
+    },
+    {
+        "id": 89,
+        "name": "Volkswagen",
+        "id_infocar": "295"
+    },
+    {
+        "id": 90,
+        "name": "Volvo",
+        "id_infocar": "296"
+    },
+    {
+        "id": 91,
+        "name": "Wey",
+        "id_infocar": "2111"
+    },
+    {
+        "id": 92,
+        "name": "Zotye",
+        "id_infocar": "1989"
+    },
+    {
+        "id": 93,
+        "name": "Богдан",
+        "id_infocar": "391"
+    },
+    {
+        "id": 94,
+        "name": "ВАЗ",
+        "id_infocar": "223"
+    },
+    {
+        "id": 95,
+        "name": "ГАЗ",
+        "id_infocar": "224"
+    },
+    {
+        "id": 96,
+        "name": "ЗАЗ",
+        "id_infocar": "225"
+    },
+    {
+        "id": 97,
+        "name": "УАЗ",
+        "id_infocar": "228"
+    }
+]
