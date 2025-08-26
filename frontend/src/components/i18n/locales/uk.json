@@ -20,7 +20,29 @@
         "acceptAll": "Прийняти всі",
         "customize": "Налаштувати"
       }
-  }
+  },
+
+    "errorModal":{
+        "messageTitle":"Ой… щось пішло не так",
+        "messageBody":"Сталася несподівана помилка",
+        "messageBodyString2":"Бажаєте спробувати ще раз?",
+        "retry":"Повторити",
+        "cancel":"Скасувати"
+    } ,
+    "loaderModal":{
+      "wait": "Почекати"
+    },
+    "selectorBlock": {
+    "brand": "Бренд",
+    "model": "Модель",
+    "year": "Рік",
+    "engine": "Двигун"
+     },
+    "buttonBlock": {
+    "analyze": "Аналіз",
+    "addAnotherCar": "Додати ще один автомобіль"
+}
+
       
   }
   

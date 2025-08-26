@@ -1,44 +1,88 @@
 
-import React, { Children, useState } from 'react';
-// import usePageUrl from '../hooks/usePageUrl';
-import {useTranslation} from 'react-i18next'
-import LoaderModal from '../components/loader/LoaderModal';
-import {useLoader} from '../hooks/useLoader';
-import { asyncFunc } from '../api/asyncFunc.jsx';
+import React, {useEffect, useState } from 'react';
+// import {useTranslation} from 'react-i18next'
+import { useLoader } from '../hooks/useLoader.jsx';
+import useSelect from '../hooks/useSelect.jsx';
+import useSelectState from '../hooks/useSelectState.jsx';
+
 import Button from '../components/Button.jsx';
+import {asyncRandomError} from '../api/asyncFunc.jsx';
+import SelectorBlock from '../components/Selectors/SelectorBlock.jsx';
+import ButtonBlock from '../components/Selectors/ButtonBlock.jsx';
 
 const CarPage = () => {
   // usePageUrl('/cars')
-  const [res,setRes]=useState()
-  const {isLoading, isTooLongLoading,runWithLoader}=useLoader()
-  const {t}=useTranslation()
+  // const {t}=useTranslation()
   
-  const handleOnClick=async()=>
-   { const result=await  runWithLoader(asyncFunc)
-    setRes(result.answer||result.err)
+  const [res,setRes]=useState()
+  const {runApi, resultMessage, successResult}=useLoader()
+  const {isNewSelectorSetVisible}=useSelect()
+
+  useEffect(()=>{
+    setRes(resultMessage);
+  },[resultMessage])
+
+  useEffect(()=>{
+    console.log('visible', isNewSelectorSetVisible);
+  },[isNewSelectorSetVisible])
+  
+  // ***************************************************
+  const handleOnClickError = async () => {
+       await runApi(asyncRandomError);
   }
+  // ****************************************************
 
+    const brand=useSelectState(false)
+    const model=useSelectState (true)
+    const year=useSelectState(true)
+    const engine=useSelectState(true)  
 
+  
   return (
+    
+    <div className="min-h-[80vh] flex flex-col items-center justify-center bg-blue-100">
+        <Button 
+          onClick={handleOnClickError}
+          className='bg-red-500 text-white h-auto'
+          children={<>Error Occured <br />It's a TEST-button</>}
+          />
 
-    <div className="min-h-screen flex flex-col items-center justify-center bg-blue-100">
-      <h1 className="text-4xl font-semibold text-blue-700">
-        {t('carPage')}
-      </h1>
-    <LoaderModal isLoading={isLoading} isTooLongLoading={isTooLongLoading}/>
+    { res && <h2 className='text-red-500 text-2xl'>The asynchronous function is {res}</h2>}
+    
+    {successResult &&
+      <div className='bg-white border-2 border-green-500 flex flex-col items-center justify-center p-4 w-64 h-32 m-4'>
+        <h2 className='text-green-500 text-xl'>Result of Analyse:</h2>
+      <div>
+        <strong>Brand:</strong> {successResult.brandId?.label} (ID: {successResult.brandId?.value})
+      </div>
+      <div>
+        <strong>Model:</strong> {successResult.modelId?.label} (ID: {successResult.modelId?.value})
+      </div>
+      <div>
+        <strong>Years:</strong> {successResult.yearIds?.join(', ')}
+      </div>
+      <div>
+        <strong>Engine:</strong> {successResult.engineIds?.label} (ID: {successResult.engineIds?.value})
+      </div>
 
-    {/*test***********test***********test****  */}
-    <Button 
-      onClick={handleOnClick}
-      className='bg-red-500 text-black'
-      children='Start Loader'
-      />
+      </div>}
 
-     { res && <h2 className='text-red-500 text-2xl'>The asynchronous function is {res}</h2>}
-    {/* /////////////////////////////////////// */}
 
-    </div>
-  );
-};
+        <SelectorBlock
+          brand={brand}
+          model={model}
+          year={year}
+          engine={engine}
+        />
 
-export default CarPage;
+  <ButtonBlock
+    brand={brand}
+    model={model}
+    year={year}
+    engine={engine}
+  />
+
+ </div>
+    );
+  };
+  export default CarPage;

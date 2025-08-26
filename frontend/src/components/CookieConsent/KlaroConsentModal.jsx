@@ -65,7 +65,7 @@ export default function KlaroConsent() {
         </Button>
         <Button onClick={handleAccept}
                 ref={button=>button&&button.focus()}
-                className={`bg-blue-600 hover:bg-blue-700 ${fontSize}`} >
+                className={`bg-blue-600 hover:bg-blue-700 text-white ${fontSize}`} >
           {t('cookieModal.cookieButton.acceptAll')}
         </Button>
       </div>

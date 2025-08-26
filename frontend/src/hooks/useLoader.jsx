@@ -1,5 +1,7 @@
-import { useContext } from "react"
-import LoaderContext from "../components/loader/LoaderContext"
+import { createContext, useContext } from "react";
 
-export const useLoader=()=>useContext(LoaderContext)
+export const LoaderContext=createContext()
 
+export const useLoader=()=>{
+    return useContext(LoaderContext)
+}
