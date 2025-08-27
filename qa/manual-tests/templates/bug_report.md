@@ -3,7 +3,7 @@ Bug Report
 ## description
 Standard template for reporting defects
 ## title
-[BUG] Short problem description
+[BUG] Short  problem description
 ## labels
 ```yaml
 - bug
