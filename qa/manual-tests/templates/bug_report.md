@@ -1,4 +1,4 @@
-## name
+ ## name
 Bug Report
 ## description
 Standard template for reporting defects
