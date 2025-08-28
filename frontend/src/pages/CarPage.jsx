@@ -16,27 +16,6 @@ const CarPage = () => {
   // const {t}=useTranslation()
   
   
-  const openSwagger = async () => {
-    try {
-    const token = 'e8c1a3f5-27de-4f45-bc78-3a4b8f6d92d1';
-    const swaggerUrl = `http://dev_car_catalog_service:8084/api/swagger-ui/index.html`;
-    const res = await fetch(swaggerUrl, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (!res.ok) {
-      throw new Error("loading error Swagger HTML");
-    }
-    const html = await res.text();
-    const blob = new Blob([html], { type: "text/html" });
-    const url = URL.createObjectURL(blob);
-    window.open(url, "_blank");
-  } catch (err) {
-    console.error("error:", err);
-  }
-};
-
 
   const [res,setRes]=useState()
   const {runApi, resultMessage, successResult}=useLoader()
