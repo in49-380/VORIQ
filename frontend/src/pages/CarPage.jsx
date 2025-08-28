@@ -10,25 +10,34 @@ import {asyncRandomError} from '../api/asyncFunc.jsx';
 import SelectorBlock from '../components/Selectors/SelectorBlock.jsx';
 import ButtonBlock from '../components/Selectors/ButtonBlock.jsx';
 
+import axios from "axios";
+
 const CarPage = () => {
   // usePageUrl('/cars')
   // const {t}=useTranslation()
   
-  const openSwagger = () => {
+  
+  const openSwagger = async () => {
+    try {
     const token = 'e8c1a3f5-27de-4f45-bc78-3a4b8f6d92d1';
-    const url = `http://dev_car_catalog_service:8084/api/swagger-ui/index.html?auth=${token}`;
-    const swaggerWindow = window.open(url, "_blank");
-     const timer = setInterval(() => {
-    if (swaggerWindow && swaggerWindow.document.readyState === "complete") {
-      swaggerWindow.postMessage(
-        { type: "SET_TOKEN", token: token },
-        "*"
-      );
-      clearInterval(timer);
+    const url = `http://dev_car_catalog_service:8084/api/swagger-ui/index.html`;
+    const res = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      responseType: "text",
+    });
+
+    const swaggerWindow = window.open("", "_blank");
+    if (swaggerWindow) {
+      swaggerWindow.document.open();
+      swaggerWindow.document.write(res.data);
+      swaggerWindow.document.close();
     }
-  }, 100);
-  };
-;
+  } catch (err) {
+    console.error("error:", err);
+  }
+};
 
 
   const [res,setRes]=useState()
