@@ -15,9 +15,18 @@ const CarPage = () => {
   // const {t}=useTranslation()
   
   const openSwagger = () => {
-    const token = '6b5f3d92-4b8c-4f2a-9f88-1a6b2c8a1b1d';
+    const token = 'e8c1a3f5-27de-4f45-bc78-3a4b8f6d92d1';
     const url = `http://dev_car_catalog_service:8084/api/swagger-ui/index.html?auth=${token}`;
-    window.open(url, '_blank');
+    const swaggerWindow = window.open(url, "_blank");
+     const timer = setInterval(() => {
+    if (swaggerWindow && swaggerWindow.document.readyState === "complete") {
+      swaggerWindow.postMessage(
+        { type: "SET_TOKEN", token: token },
+        "*"
+      );
+      clearInterval(timer);
+    }
+  }, 100);
   };
 ;
 
