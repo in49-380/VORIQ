@@ -1,6 +1,5 @@
 package com.voriq.car_catalog_service.config.initialaler;
 
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -32,64 +31,61 @@ public class DbInitializer implements ApplicationRunner {
     }
 
     private void createSchemaIfNotExists() {
-        // PostgreSQL
         jdbc.execute("""
-                    CREATE TABLE IF NOT EXISTS brands (
-                      id   BIGINT PRIMARY KEY,
-                      name VARCHAR(255) NOT NULL UNIQUE
-                    );
-                """);
+            CREATE TABLE IF NOT EXISTS brands (
+              id   BIGINT PRIMARY KEY,
+              name VARCHAR(255) NOT NULL UNIQUE
+            );
+        """);
 
         jdbc.execute("""
-                    CREATE TABLE IF NOT EXISTS fuel_types (
-                      id   BIGINT PRIMARY KEY,
-                      name VARCHAR(64) NOT NULL UNIQUE
-                    );
-                """);
+            CREATE TABLE IF NOT EXISTS fuel_types (
+              id   BIGINT PRIMARY KEY,
+              name VARCHAR(64) NOT NULL UNIQUE
+            );
+        """);
 
         jdbc.execute("""
-                    CREATE TABLE IF NOT EXISTS engines (
-                      id            BIGINT PRIMARY KEY,
-                      type          VARCHAR(64) NOT NULL,
-                      fuel_type_id  BIGINT NOT NULL REFERENCES fuel_types(id)
-                    );
-                """);
+            CREATE TABLE IF NOT EXISTS engines (
+              id            BIGINT PRIMARY KEY,
+              type          VARCHAR(64) NOT NULL,
+              fuel_type_id  BIGINT NOT NULL REFERENCES fuel_types(id)
+            );
+        """);
 
         jdbc.execute("""
-                    CREATE TABLE IF NOT EXISTS years (
-                      id   BIGINT PRIMARY KEY,
-                      year INTEGER NOT NULL
-                    );
-                """);
+            CREATE TABLE IF NOT EXISTS years (
+              id         BIGINT PRIMARY KEY,
+              year_value INTEGER NOT NULL
+            );
+        """);
 
         jdbc.execute("""
-                    CREATE TABLE IF NOT EXISTS models (
-                      id        BIGINT PRIMARY KEY,
-                      brand_id  BIGINT NOT NULL REFERENCES brands(id),
-                      name      VARCHAR(255) NOT NULL
-                    );
-                """);
+            CREATE TABLE IF NOT EXISTS models (
+              id        BIGINT PRIMARY KEY,
+              brand_id  BIGINT NOT NULL REFERENCES brands(id),
+              name      VARCHAR(255) NOT NULL
+            );
+        """);
 
         jdbc.execute("""
-                    CREATE TABLE IF NOT EXISTS cars (
-                      id          BIGINT PRIMARY KEY,
-                      model_id    BIGINT NOT NULL REFERENCES models(id),
-                      engine_id   BIGINT NOT NULL REFERENCES engines(id),
-                      year_id     BIGINT NOT NULL REFERENCES years(id)
-                    );
-                """);
+            CREATE TABLE IF NOT EXISTS cars (
+              id          BIGINT PRIMARY KEY,
+              model_id    BIGINT NOT NULL REFERENCES models(id),
+              engine_id   BIGINT NOT NULL REFERENCES engines(id),
+              year_id     BIGINT NOT NULL REFERENCES years(id)
+            );
+        """);
 
-        // Индексы (ускоряют фильтры/сортировку)
         jdbc.execute("CREATE INDEX IF NOT EXISTS idx_brands_name_lower ON brands ((lower(trim(name))));");
         jdbc.execute("CREATE INDEX IF NOT EXISTS idx_models_brand_id ON models (brand_id);");
         jdbc.execute("CREATE INDEX IF NOT EXISTS idx_models_name_lower ON models ((lower(trim(name))));");
         jdbc.execute("CREATE INDEX IF NOT EXISTS idx_engines_fuel ON engines (fuel_type_id);");
-        jdbc.execute("CREATE INDEX IF NOT EXISTS idx_years_year ON years (year);");
+        jdbc.execute("CREATE INDEX IF NOT EXISTS idx_years_year ON years (year_value);");
         jdbc.execute("CREATE INDEX IF NOT EXISTS idx_cars_refs ON cars (model_id, engine_id, year_id);");
     }
 
     private void seedIfEmpty() throws Exception {
-        // загружаем по порядку зависимостей
         if (count("fuel_types") == 0) {
             List<Map<String, Object>> fuels = readJson("seed/fuels_db.json");
             batchUpsertFuels(fuels);
@@ -115,7 +111,7 @@ public class DbInitializer implements ApplicationRunner {
             batchUpsertCars(cars);
         }
 
-        System.out.println("✅ Test database initialized");
+        System.out.println("✅ Dev database initialized");
     }
 
     private long count(String table) {
@@ -126,17 +122,16 @@ public class DbInitializer implements ApplicationRunner {
     private List<Map<String, Object>> readJson(String classpath) throws Exception {
         ClassPathResource res = new ClassPathResource(classpath);
         try (InputStream is = res.getInputStream()) {
-            return objectMapper.readValue(is, new TypeReference<List<Map<String, Object>>>() {
-            });
+            return objectMapper.readValue(is, new TypeReference<List<Map<String, Object>>>() {});
         }
     }
 
     private void batchUpsertFuels(List<Map<String, Object>> rows) {
         jdbc.batchUpdate("""
-                    INSERT INTO fuel_types (id, name)
-                    VALUES (?, ?)
-                    ON CONFLICT (id) DO UPDATE SET name = EXCLUDED.name
-                """, rows, 500, (ps, row) -> {
+            INSERT INTO fuel_types (id, name)
+            VALUES (?, ?)
+            ON CONFLICT (id) DO UPDATE SET name = EXCLUDED.name
+        """, rows, 500, (ps, row) -> {
             ps.setLong(1, toLong(row.get("id")));
             ps.setString(2, toStr(row.get("name")));
         });
@@ -144,10 +139,10 @@ public class DbInitializer implements ApplicationRunner {
 
     private void batchUpsertBrands(List<Map<String, Object>> rows) {
         jdbc.batchUpdate("""
-                    INSERT INTO brands (id, name)
-                    VALUES (?, ?)
-                    ON CONFLICT (id) DO UPDATE SET name = EXCLUDED.name
-                """, rows, 500, (ps, row) -> {
+            INSERT INTO brands (id, name)
+            VALUES (?, ?)
+            ON CONFLICT (id) DO UPDATE SET name = EXCLUDED.name
+        """, rows, 500, (ps, row) -> {
             ps.setLong(1, toLong(row.get("id")));
             ps.setString(2, toStr(row.get("name")));
         });
@@ -155,22 +150,21 @@ public class DbInitializer implements ApplicationRunner {
 
     private void batchUpsertYears(List<Map<String, Object>> rows) {
         jdbc.batchUpdate("""
-                    INSERT INTO years (id, year)
-                    VALUES (?, CAST(? AS INT))
-                    ON CONFLICT (id) DO UPDATE SET year = EXCLUDED.year
-                """, rows, 500, (ps, row) -> {
+            INSERT INTO years (id, year_value)
+            VALUES (?, CAST(? AS INT))
+            ON CONFLICT (id) DO UPDATE SET year_value = EXCLUDED.year_value
+        """, rows, 500, (ps, row) -> {
             ps.setLong(1, toLong(row.get("id")));
-            // В твоём JSON year — строка, приводим к INT в SQL
-            ps.setString(2, toStr(row.get("year")));
+            ps.setString(2, toStr(row.get("year"))); // из JSON "year" -> в БД year_value
         });
     }
 
     private void batchUpsertEngines(List<Map<String, Object>> rows) {
         jdbc.batchUpdate("""
-                    INSERT INTO engines (id, type, fuel_type_id)
-                    VALUES (?, ?, ?)
-                    ON CONFLICT (id) DO UPDATE SET type = EXCLUDED.type, fuel_type_id = EXCLUDED.fuel_type_id
-                """, rows, 500, (ps, row) -> {
+            INSERT INTO engines (id, type, fuel_type_id)
+            VALUES (?, ?, ?)
+            ON CONFLICT (id) DO UPDATE SET type = EXCLUDED.type, fuel_type_id = EXCLUDED.fuel_type_id
+        """, rows, 500, (ps, row) -> {
             ps.setLong(1, toLong(row.get("id")));
             ps.setString(2, toStr(row.get("type")));
             ps.setLong(3, toLong(row.get("fuel_type_id")));
@@ -179,10 +173,10 @@ public class DbInitializer implements ApplicationRunner {
 
     private void batchUpsertModels(List<Map<String, Object>> rows) {
         jdbc.batchUpdate("""
-                    INSERT INTO models (id, brand_id, name)
-                    VALUES (?, ?, ?)
-                    ON CONFLICT (id) DO UPDATE SET brand_id = EXCLUDED.brand_id, name = EXCLUDED.name
-                """, rows, 500, (ps, row) -> {
+            INSERT INTO models (id, brand_id, name)
+            VALUES (?, ?, ?)
+            ON CONFLICT (id) DO UPDATE SET brand_id = EXCLUDED.brand_id, name = EXCLUDED.name
+        """, rows, 500, (ps, row) -> {
             ps.setLong(1, toLong(row.get("id")));
             ps.setLong(2, toLong(row.get("brand_id")));
             ps.setString(3, toStr(row.get("name")));
@@ -191,10 +185,10 @@ public class DbInitializer implements ApplicationRunner {
 
     private void batchUpsertCars(List<Map<String, Object>> rows) {
         jdbc.batchUpdate("""
-                    INSERT INTO cars (id, model_id, engine_id, year_id)
-                    VALUES (?, ?, ?, ?)
-                    ON CONFLICT (id) DO UPDATE SET model_id = EXCLUDED.model_id, engine_id = EXCLUDED.engine_id, year_id = EXCLUDED.year_id
-                """, rows, 500, (ps, row) -> {
+            INSERT INTO cars (id, model_id, engine_id, year_id)
+            VALUES (?, ?, ?, ?)
+            ON CONFLICT (id) DO UPDATE SET model_id = EXCLUDED.model_id, engine_id = EXCLUDED.engine_id, year_id = EXCLUDED.year_id
+        """, rows, 500, (ps, row) -> {
             ps.setLong(1, toLong(row.get("id")));
             ps.setLong(2, toLong(row.get("model_id")));
             ps.setLong(3, toLong(row.get("engine_id")));
@@ -212,4 +206,3 @@ public class DbInitializer implements ApplicationRunner {
         return v == null ? null : v.toString();
     }
 }
-

@@ -22,6 +22,9 @@ services:
       LOG_PATH: ${LOG_PATH}
       JAVA_OPTS: ${JAVA_OPTS}
       LOG_DIR: ${LOG_DIR}
+      TMP_TOKEN_1: ${TMP_TOKEN_1}
+      TMP_TOKEN_2: ${TMP_TOKEN_2}
+      TMP_TOKEN_3: ${TMP_TOKEN_3}
     ports:
       - "8084:8084"
     logging:

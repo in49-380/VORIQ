@@ -60,21 +60,21 @@ public class SecurityConfig {
     @Value("${cors.allowed-origins}")
     private String allowedOrigins;
 
-    private static final String BRANDS_URL = "/v1/brands";
+    public static final String BRANDS_URL = "/v1/brands";
 
-    private static final String ENGINES_URL = "/v1/engines";
+    public static final String ENGINES_URL = "/v1/engines";
 
-    private static final String FUEL_TYPE_URL = "/v1/fuel-types";
+    public static final String FUEL_TYPE_URL = "/v1/fuel-types";
 
-    private static final String CAR_ALL_URL = "/v1/cars";
+    public static final String CAR_ALL_URL = "/v1/cars";
 
-    private static final String CAR_ID_URL = "/v1/cars/by-id/{id}";
+    public static final String CAR_ID_URL = "/v1/cars/by-id/{id}";
 
-    private static final String MODEL_BRAND_URL = "/v1/models/by-brand/{brand}";
+    public static final String MODEL_BRAND_URL = "/v1/models/by-brand/{brand}";
 
-    private static final String YEAR_URL = "/v1/years";
+    public static final String YEAR_URL = "/v1/years";
 
-    private static final String TEST_DELAY_URL = "/v1/test/delay-ms";
+    public static final String TEST_DELAY_URL = "/v1/test/delay-ms";
 
     @Bean
     public SecurityFilterChain configureAuth(HttpSecurity http) throws Exception {

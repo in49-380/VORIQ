@@ -2,9 +2,9 @@ package com.voriq.car_catalog_service.service;
 
 import com.voriq.car_catalog_service.domain.dto.CarResponseDto;
 import com.voriq.car_catalog_service.domain.dto.PageCarResponseDto;
+import com.voriq.car_catalog_service.exception_handler.exception.ServiceUnavailableException;
 import com.voriq.car_catalog_service.repository.CarJdbcRepository;
 import com.voriq.car_catalog_service.service.interfaces.CarService;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -23,15 +23,15 @@ public class CarServiceImpl implements CarService {
     private final CarJdbcRepository repository;
 
     private static final Map<String, String> SORT_MAP = Map.of(
-            "brand",      "b.name",
-            "model",      "m.name",
-            "year",       "y.year",
+            "brand", "b.name",
+            "model", "m.name",
+            "year", "y.year",
             "engineType", "e.name",
-            "fuelType",   "f.name",
-            "id",         "c.id"
+            "fuelType", "f.name",
+            "id", "c.id"
     );
 
-@Override
+    @Override
     public PageCarResponseDto searchCars(String brand,
                                          String model,
                                          String fuelType,
@@ -40,12 +40,18 @@ public class CarServiceImpl implements CarService {
                                          Integer yearTo,
                                          Pageable pageable) {
 
-            String orderBy = buildOrderBy(pageable.getSort(), "b.name");
+        String orderBy = buildOrderBy(pageable.getSort(), "b.name");
 
-            int limit  = pageable.getPageSize();
+        int limit = pageable.getPageSize();
         int offset = (int) pageable.getOffset();
 
-            List<CarResponseDto> content = repository.search(brand, model, fuelType, engineType, yearFrom, yearTo, orderBy, limit, offset);
+        List<CarResponseDto> content;
+        try {
+            content = repository.search(brand, model, fuelType, engineType, yearFrom, yearTo, orderBy, limit, offset);
+        } catch (Exception ex) {
+            throw new ServiceUnavailableException(
+                    "The server is currently overloaded or under maintenance. Please try again later.", ex);
+        }
         long total = repository.count(brand, model, fuelType, engineType, yearFrom, yearTo);
 
         Page<CarResponseDto> page = new PageImpl<>(content, pageable, total);
@@ -54,7 +60,14 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public CarResponseDto getById(Long id) {
-        return repository.getById(id);
+        CarResponseDto dto;
+        try {
+            dto = repository.getById(id);
+        } catch (Exception ex) {
+            throw new ServiceUnavailableException(
+                    "The server is currently overloaded or under maintenance. Please try again later.", ex);
+        }
+        return dto;
     }
 
     private String buildOrderBy(Sort sort, String defaultColumn) {
@@ -72,7 +85,7 @@ public class CarServiceImpl implements CarService {
         if (parts.isEmpty()) {
             parts.add(defaultColumn + " ASC");
         }
-             parts.add("c.id ASC");
+        parts.add("c.id ASC");
         return String.join(", ", parts);
     }
 }
