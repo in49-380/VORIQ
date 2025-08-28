@@ -32,12 +32,12 @@ function App() {
   // }
 
   useEffect(() => {
-  if (!token) {
-    setCurrentScreen('login');
-  } else if (currentScreen === 'login') {
-    setCurrentScreen('cars'); 
-  }
-}, [token, currentScreen, setCurrentScreen]);
+    if (!token) {
+      setCurrentScreen('login');
+    } else if (currentScreen === 'login') {
+      setCurrentScreen('cars'); 
+    }
+  }, [token, currentScreen, setCurrentScreen]);
 
 
   return (

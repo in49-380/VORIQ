@@ -2,7 +2,7 @@
 import React from 'react';
 import GoogleAuthButton from '../components/oauth/GoogleAuthButton';
 // import usePageUrl from '../hooks/usePageUrl';
-import {useTranslation} from 'react-i18next'
+import {useTranslation} from 'react-i18next';
 
 const RegistrationPage = () => {
   // usePageUrl('/login')
