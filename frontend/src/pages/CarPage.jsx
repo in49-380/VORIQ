@@ -50,11 +50,11 @@ const CarPage = () => {
           children={<>Error Occured <br />It's a TEST-button</>}
           />
 
-          <Button
+          {/* <Button
           onClick={openSwagger}
           className='bg-blue-500 text-white h-auto'
           children={'Swagger'}
-          />
+          /> */}
 
     { res && <h2 className='text-red-500 text-2xl'>The asynchronous function is {res}</h2>}
     
