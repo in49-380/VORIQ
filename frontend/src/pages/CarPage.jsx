@@ -14,6 +14,14 @@ const CarPage = () => {
   // usePageUrl('/cars')
   // const {t}=useTranslation()
   
+  const openSwagger = () => {
+    const token = '6b5f3d92-4b8c-4f2a-9f88-1a6b2c8a1b1d';
+    const url = `http://dev_car_catalog_service:8084/api/swagger-ui/index.html?auth=${token}`;
+    window.open(url, '_blank');
+  };
+;
+
+
   const [res,setRes]=useState()
   const {runApi, resultMessage, successResult}=useLoader()
   const {isNewSelectorSetVisible}=useSelect()
@@ -45,6 +53,12 @@ const CarPage = () => {
           onClick={handleOnClickError}
           className='bg-red-500 text-white h-auto'
           children={<>Error Occured <br />It's a TEST-button</>}
+          />
+
+          <Button
+          onClick={openSwagger}
+          className='bg-blue-500 text-white h-auto'
+          children={'Swagger'}
           />
 
     { res && <h2 className='text-red-500 text-2xl'>The asynchronous function is {res}</h2>}
