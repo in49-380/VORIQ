@@ -10,7 +10,6 @@ import {asyncRandomError} from '../api/asyncFunc.jsx';
 import SelectorBlock from '../components/Selectors/SelectorBlock.jsx';
 import ButtonBlock from '../components/Selectors/ButtonBlock.jsx';
 
-import axios from "axios";
 
 const CarPage = () => {
   // usePageUrl('/cars')
@@ -20,20 +19,19 @@ const CarPage = () => {
   const openSwagger = async () => {
     try {
     const token = 'e8c1a3f5-27de-4f45-bc78-3a4b8f6d92d1';
-    const url = `http://dev_car_catalog_service:8084/api/swagger-ui/index.html`;
-    const res = await axios.get(url, {
+    const swaggerUrl = `http://dev_car_catalog_service:8084/api/swagger-ui/index.html`;
+    const res = await fetch(swaggerUrl, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      responseType: "text",
     });
-
-    const swaggerWindow = window.open("", "_blank");
-    if (swaggerWindow) {
-      swaggerWindow.document.open();
-      swaggerWindow.document.write(res.data);
-      swaggerWindow.document.close();
+    if (!res.ok) {
+      throw new Error("loading error Swagger HTML");
     }
+    const html = await res.text();
+    const blob = new Blob([html], { type: "text/html" });
+    const url = URL.createObjectURL(blob);
+    window.open(url, "_blank");
   } catch (err) {
     console.error("error:", err);
   }
