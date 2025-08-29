@@ -1,8 +1,9 @@
-name: Deploy Frontend
+name: Deploy Frontend Node
 
 on:
   push:
-    branches: ['**']
+    branches:
+      - '**'
     paths:
       - 'frontend/**'
       - 'devops/frontend/**'
@@ -16,45 +17,69 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Deploy over SSH
+      - name: Deploy frontend to server over SSH
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.CICD_SSH_HOST }}
           username: ${{ secrets.CICD_SSH_USER }}
           key: ${{ secrets.CICD_SSH_PRIVATE_KEY }}
           script: |
-            set -Eeuo pipefail
 
+            set -euo pipefail
+
+            # set veriables
             BRANCH="${{ github.ref_name }}"
             REPO_DIR="/home/${{ secrets.CICD_SSH_USER }}/VORIQ"
+            #SERVICE_DIR="devops/frontend"
             IMAGE="dev_front_node"
-            SHA_TAG="${{ github.sha }}"
-   
-            BRANCH_TAG="$(echo "$BRANCH" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9_.-]+#-#g' | sed -E 's#^-+|-+$##g' | cut -c1-120)-latest"
+            #TAG_SHA="${{ github.sha }}"
+            #TAG_BRANCH="$(echo "$BRANCH" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9_.-]+#-#g' | sed -E 's#^-+|-+$##g' | cut -c1-120)-latest"
+            TAG_LAT="latest"
             CONTAINER="dev_front_node"
 
+            # Ensure the VORIQ directory exists
             [ -d "$REPO_DIR/.git" ] || git clone https://github.com/in49-380/VORIQ.git "$REPO_DIR"
+
+            # Change to the VORIQ directory
             cd "$REPO_DIR"
+
+            # get the latest changes
             git fetch --all --prune
             git checkout -B "$BRANCH" "origin/$BRANCH"
             git reset --hard "origin/$BRANCH"
             git clean -fdx
 
+            # go to the code directory  
             cd "$REPO_DIR/frontend"
+        
             echo '${{ secrets.DEV_FRONT_GOOGLE_CLIENT_ID }}' > .env
+            echo "VITE_SWAGGER_DOMAIN=http://172.17.0.8" >> .env
+            echo "VITE_SWAGGER_PORT=8084" >> .env
 
-            docker build --pull --no-cache \
-              -t "$IMAGE:$SHA_TAG" \
+            # build new image
+            docker image build --no-cache \
+              -t "$IMAGE:$TAG_LAT" \
               -f "$REPO_DIR/devops/frontend/Dockerfile.front.develop" .
 
-            docker tag "$IMAGE:$SHA_TAG" "$IMAGE:$BRANCH_TAG"
-            docker tag "$IMAGE:$SHA_TAG" "$IMAGE:latest"
+            #docker tag "$IMAGE:$TAG_SHA" "$IMAGE:$TAG_BRANCH"
+            #docker tag "$IMAGE:$TAG_SHA" "$IMAGE:TAG_LAT"
 
-            docker rm -f "$CONTAINER" 2>/dev/null || true
-            docker run -d --name "$CONTAINER" --restart unless-stopped \
+            # remove old container if exists
+            #docker container stop "$CONTAINER"
+            #docker container rm -f "$CONTAINER" || true
+
+            # restart container with new image
+            docker container run -d \
+              --name "$CONTAINER" \
+              --restart unless-stopped \
               -p 3000:3000 \
-              "$IMAGE:$SHA_TAG"
+              "$IMAGE:$TAG_LAT"
 
-            docker image prune -f
+            # clean up old images to save space
+            docker image prune -f 
+            # remove dangling images
+            #docker image prune -f --filter "dangling=true"
+            # if images wont be deleted, uncomment the next line
+            #docker image ls "$IMAGE" -q | xargs -n 1 docker rmi -f
+
+
