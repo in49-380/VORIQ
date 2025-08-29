@@ -1,3 +1,4 @@
+import time
 import json
 import logging
 from functools import wraps
@@ -63,26 +64,45 @@ def load_error_handler_json(func):
 # Decorator for safe JSON saving.
 def save_error_handler_json(func):
     """
-    Wraps a JSON saving function with error handling.
-
-    Logs successful saves and any exceptions that may occur.
-
-    Args:
-        func (Callable): The JSON saving function to be wrapped.
-
-    Returns:
-        Callable: The wrapped function with error handling.
+    Wraps a JSON saving function with error handling and logs filename and execution time.
     """
-
     @wraps(func)
     def wrapper(*args, **kwargs):
+        filename = kwargs.get("filename") or (args[1] if len(args) > 1 else "unknown")
+        start_time = time.time()
+
         try:
             result = func(*args, **kwargs)
-            logger.info("✅ Data saved successfully.")
+            duration = time.time() - start_time
+            logger.info(f"✅ Data saved successfully to '{filename}' in {duration:.2f} seconds")
             return result
         except IOError as e:
-            logger.error(f"❌ Input/output error: {e}")
+            logger.error(f"❌ Input/output error while saving '{filename}': {e}")
         except Exception as e:
-            logger.exception(f"❌ Error while saving JSON: {e}")
+            logger.exception(f"❌ Error while saving JSON to '{filename}': {e}")
+
+    return wrapper
+
+def log_execution(func):
+    """
+    Logs the start, end, and execution time of a function.
+
+    Args:
+        func (Callable): The function to be wrapped.
+
+    Returns:
+        Callable: The wrapped function with logging.
+    """
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        logger.info(f"🚀 Starting: {func.__name__}")
+        start_time = time.time()
+
+        result = func(*args, **kwargs)
+
+        end_time = time.time()
+        duration = end_time - start_time
+        logger.info(f"✅ Finished: {func.__name__} in {duration:.2f} seconds")
+        return result
 
     return wrapper

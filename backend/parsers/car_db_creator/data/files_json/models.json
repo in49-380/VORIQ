@@ -3215,6 +3215,13 @@
     {
         "brand_name": "Citroen",
         "brand_id": 19,
+        "model": "C5 Aircross 2025",
+        "year": "2025",
+        "id_model_infocar": "7316"
+    },
+    {
+        "brand_name": "Citroen",
+        "brand_id": 19,
         "model": "C5 X 2022",
         "year": "2022",
         "id_model_infocar": "6842"
@@ -3323,6 +3330,13 @@
         "model": "e-C4 X 2024",
         "year": "2024",
         "id_model_infocar": "7168"
+    },
+    {
+        "brand_name": "Citroen",
+        "brand_id": 19,
+        "model": "e-C5 Aircross 2025",
+        "year": "2025",
+        "id_model_infocar": "7317"
     },
     {
         "brand_name": "Citroen",
@@ -7436,6 +7450,20 @@
     {
         "brand_name": "KIA",
         "brand_id": 50,
+        "model": "EV4 2025",
+        "year": "2025",
+        "id_model_infocar": "7319"
+    },
+    {
+        "brand_name": "KIA",
+        "brand_id": 50,
+        "model": "EV4 Fastback 2025",
+        "year": "2025",
+        "id_model_infocar": "7320"
+    },
+    {
+        "brand_name": "KIA",
+        "brand_id": 50,
         "model": "EV6 2021",
         "year": "2021",
         "id_model_infocar": "6655"
@@ -7627,14 +7655,14 @@
         "brand_id": 50,
         "model": "Picanto 2015",
         "year": "2015",
-        "id_model_infocar": "4569"
+        "id_model_infocar": "4387"
     },
     {
         "brand_name": "KIA",
         "brand_id": 50,
         "model": "Picanto 2015",
         "year": "2015",
-        "id_model_infocar": "4387"
+        "id_model_infocar": "4569"
     },
     {
         "brand_name": "KIA",
@@ -7732,13 +7760,6 @@
         "brand_id": 50,
         "model": "Rio Hatchback 2015",
         "year": "2015",
-        "id_model_infocar": "4337"
-    },
-    {
-        "brand_name": "KIA",
-        "brand_id": 50,
-        "model": "Rio Hatchback 2015",
-        "year": "2015",
         "id_model_infocar": "4464"
     },
     {
@@ -7747,6 +7768,13 @@
         "model": "Rio Hatchback 2015",
         "year": "2015",
         "id_model_infocar": "4332"
+    },
+    {
+        "brand_name": "KIA",
+        "brand_id": 50,
+        "model": "Rio Hatchback 2015",
+        "year": "2015",
+        "id_model_infocar": "4337"
     },
     {
         "brand_name": "KIA",
@@ -7774,14 +7802,14 @@
         "brand_id": 50,
         "model": "Rio Sedan 2017",
         "year": "2017",
-        "id_model_infocar": "5436"
+        "id_model_infocar": "5222"
     },
     {
         "brand_name": "KIA",
         "brand_id": 50,
         "model": "Rio Sedan 2017",
         "year": "2017",
-        "id_model_infocar": "5222"
+        "id_model_infocar": "5436"
     },
     {
         "brand_name": "KIA",
@@ -7887,6 +7915,13 @@
         "model": "Sportage 2021",
         "year": "2021",
         "id_model_infocar": "6764"
+    },
+    {
+        "brand_name": "KIA",
+        "brand_id": 50,
+        "model": "Sportage 2025",
+        "year": "2025",
+        "id_model_infocar": "7318"
     },
     {
         "brand_name": "KIA",
@@ -12975,14 +13010,14 @@
         "brand_id": 84,
         "model": "Impreza 2017",
         "year": "2017",
-        "id_model_infocar": "5079"
+        "id_model_infocar": "5080"
     },
     {
         "brand_name": "Subaru",
         "brand_id": 84,
         "model": "Impreza 2017",
         "year": "2017",
-        "id_model_infocar": "5080"
+        "id_model_infocar": "5079"
     },
     {
         "brand_name": "Subaru",
