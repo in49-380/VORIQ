@@ -12,5 +12,18 @@ export default defineConfig({
     host: true,
     allowedHosts: ["voriq.info"], 
     port: 3000, 
+    proxy: {
+      '/swagger': {
+        target: 'http://172.17.0.8:8084/api/swagger-ui/',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/swagger/, ''),
+      },
+      '/api/v3/api-docs': {
+        target: 'http://172.17.0.8:8084',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
 })
