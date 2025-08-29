@@ -7,6 +7,7 @@ export default defineConfig(({ mode }) => {
   
   // Default swagger URL
   let swaggerUrl = 'http://voriq.info:8084';
+  
   if (env.VITE_SWAGGER_DOMAIN && env.VITE_SWAGGER_PORT) {
     swaggerUrl = `${env.VITE_SWAGGER_DOMAIN}:${env.VITE_SWAGGER_PORT}`;
   }
