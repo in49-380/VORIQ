@@ -65,8 +65,8 @@ jobs:
             #docker tag "$IMAGE:$TAG_SHA" "$IMAGE:TAG_LAT"
 
             # remove old container if exists
-            #docker container stop "$CONTAINER"
-            #docker container rm -f "$CONTAINER" || true
+            docker container stop "$CONTAINER"
+            docker container rm -f "$CONTAINER" || true
 
             # restart container with new image
             docker container run -d \
