@@ -7655,14 +7655,14 @@
         "brand": "Kia",
         "name": "Picanto 2015",
         "year": "2015",
-        "url": "https://www.infocar.ua/compare/do/4387-4387.html"
+        "url": "https://www.infocar.ua/compare/do/4569-4569.html"
     },
     {
         "id": 50,
         "brand": "Kia",
         "name": "Picanto 2015",
         "year": "2015",
-        "url": "https://www.infocar.ua/compare/do/4569-4569.html"
+        "url": "https://www.infocar.ua/compare/do/4387-4387.html"
     },
     {
         "id": 50,
@@ -7760,6 +7760,13 @@
         "brand": "Kia",
         "name": "Rio hatchback 2015",
         "year": "2015",
+        "url": "https://www.infocar.ua/compare/do/4337-4337.html"
+    },
+    {
+        "id": 50,
+        "brand": "Kia",
+        "name": "Rio hatchback 2015",
+        "year": "2015",
         "url": "https://www.infocar.ua/compare/do/4464-4464.html"
     },
     {
@@ -7768,13 +7775,6 @@
         "name": "Rio hatchback 2015",
         "year": "2015",
         "url": "https://www.infocar.ua/compare/do/4332-4332.html"
-    },
-    {
-        "id": 50,
-        "brand": "Kia",
-        "name": "Rio hatchback 2015",
-        "year": "2015",
-        "url": "https://www.infocar.ua/compare/do/4337-4337.html"
     },
     {
         "id": 50,
@@ -7802,14 +7802,14 @@
         "brand": "Kia",
         "name": "Rio sedan 2017",
         "year": "2017",
-        "url": "https://www.infocar.ua/compare/do/5222-5222.html"
+        "url": "https://www.infocar.ua/compare/do/5436-5436.html"
     },
     {
         "id": 50,
         "brand": "Kia",
         "name": "Rio sedan 2017",
         "year": "2017",
-        "url": "https://www.infocar.ua/compare/do/5436-5436.html"
+        "url": "https://www.infocar.ua/compare/do/5222-5222.html"
     },
     {
         "id": 50,
@@ -14894,138 +14894,5 @@
         "name": "Z700 2015",
         "year": "2015",
         "url": "https://www.infocar.ua/compare/do/4650-4650.html"
-    },
-    {
-        "id": 94,
-        "brand": "Ваз",
-        "name": "Lada 4x4 bronto 2017",
-        "year": "2017",
-        "url": "https://www.infocar.ua/compare/do/5368-5368.html"
-    },
-    {
-        "id": 94,
-        "brand": "Ваз",
-        "name": "Lada 4x4 urban 5-дверная 2016",
-        "year": "2016",
-        "url": "https://www.infocar.ua/compare/do/4791-4791.html"
-    },
-    {
-        "id": 94,
-        "brand": "Ваз",
-        "name": "Lada granta 2018",
-        "year": "2018",
-        "url": "https://www.infocar.ua/compare/do/5604-5604.html"
-    },
-    {
-        "id": 94,
-        "brand": "Ваз",
-        "name": "Lada granta cross 2019",
-        "year": "2019",
-        "url": "https://www.infocar.ua/compare/do/5895-5895.html"
-    },
-    {
-        "id": 94,
-        "brand": "Ваз",
-        "name": "Lada granta drive active 2019",
-        "year": "2019",
-        "url": "https://www.infocar.ua/compare/do/6071-6071.html"
-    },
-    {
-        "id": 94,
-        "brand": "Ваз",
-        "name": "Lada granta hatchback 2018",
-        "year": "2018",
-        "url": "https://www.infocar.ua/compare/do/5606-5606.html"
-    },
-    {
-        "id": 94,
-        "brand": "Ваз",
-        "name": "Lada granta liftback 2018",
-        "year": "2018",
-        "url": "https://www.infocar.ua/compare/do/5605-5605.html"
-    },
-    {
-        "id": 94,
-        "brand": "Ваз",
-        "name": "Lada granta sw 2018",
-        "year": "2018",
-        "url": "https://www.infocar.ua/compare/do/5607-5607.html"
-    },
-    {
-        "id": 94,
-        "brand": "Ваз",
-        "name": "Lada kalina nfr 2015",
-        "year": "2015",
-        "url": "https://www.infocar.ua/compare/do/4731-4731.html"
-    },
-    {
-        "id": 94,
-        "brand": "Ваз",
-        "name": "Lada niva travel 2021",
-        "year": "2021",
-        "url": "https://www.infocar.ua/compare/do/6703-6703.html"
-    },
-    {
-        "id": 94,
-        "brand": "Ваз",
-        "name": "Lada vesta 2015",
-        "year": "2015",
-        "url": "https://www.infocar.ua/compare/do/4619-4619.html"
-    },
-    {
-        "id": 94,
-        "brand": "Ваз",
-        "name": "Lada vesta cross 2018",
-        "year": "2018",
-        "url": "https://www.infocar.ua/compare/do/5530-5530.html"
-    },
-    {
-        "id": 94,
-        "brand": "Ваз",
-        "name": "Lada vesta sport 2018",
-        "year": "2018",
-        "url": "https://www.infocar.ua/compare/do/5786-5786.html"
-    },
-    {
-        "id": 94,
-        "brand": "Ваз",
-        "name": "Lada vesta sw 2017",
-        "year": "2017",
-        "url": "https://www.infocar.ua/compare/do/5352-5352.html"
-    },
-    {
-        "id": 94,
-        "brand": "Ваз",
-        "name": "Lada vesta sw cross 2017",
-        "year": "2017",
-        "url": "https://www.infocar.ua/compare/do/5353-5353.html"
-    },
-    {
-        "id": 94,
-        "brand": "Ваз",
-        "name": "Lada xray 2016",
-        "year": "2016",
-        "url": "https://www.infocar.ua/compare/do/4657-4657.html"
-    },
-    {
-        "id": 94,
-        "brand": "Ваз",
-        "name": "Lada xray cross 2018",
-        "year": "2018",
-        "url": "https://www.infocar.ua/compare/do/5635-5635.html"
-    },
-    {
-        "id": 97,
-        "brand": "Уаз",
-        "name": "Патриот 2017",
-        "year": "2017",
-        "url": "https://www.infocar.ua/compare/do/5122-5122.html"
-    },
-    {
-        "id": 97,
-        "brand": "Уаз",
-        "name": "Пикап 2017",
-        "year": "2017",
-        "url": "https://www.infocar.ua/compare/do/5123-5123.html"
     }
 ]

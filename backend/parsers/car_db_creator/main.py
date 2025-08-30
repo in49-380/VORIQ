@@ -1,4 +1,5 @@
 import requests
+import re
 from lxml import html
 
 from utils.get_db_json import (
@@ -35,7 +36,12 @@ def fetch_brand_dict():
     response = requests.get(info_car, headers=headers)
     tree = html.fromstring(response.content)
     brands = tree.xpath('//select[@class="smark mui-select"]/option')
-    return {b.get("value"): b.text_content() for b in brands}
+    cyrillic_pattern = re.compile('[\u0400-\u04FF]+')
+    return {
+        b.get("value"): b.text_content()
+        for b in brands
+        if not cyrillic_pattern.search(b.text_content())
+    }
 
 @log_execution
 def process_brands(brands):
@@ -144,6 +150,14 @@ def process_cars():
 
 @log_execution
 def process_cars_en(input_file="cars.json", output_file="cars_en.json"):
+    """
+    Loads a list of car dictionaries from a JSON file, translates the 'car_info' field into English,
+    and saves the updated list to a new JSON file.
+
+    :param input_file: Name of the input JSON file containing car data in Russian.
+    :param output_file: Name of the output JSON file to save translated car data.
+    :return: None
+    """
 
     cars_ru = load_json(input_file)
     cars_en = []

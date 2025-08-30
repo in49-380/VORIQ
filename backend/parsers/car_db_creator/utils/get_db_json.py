@@ -1,7 +1,7 @@
 
 from .decorators import logger, log_execution
 from .save_load_data import load_json, save_json
-# from .translator import translate
+
 
 """
 This module contains a set of functions for processing and transforming raw car data
@@ -146,7 +146,7 @@ def process_db_cars():
         for engine in engines
     }
 
-    # for index, model in enumerate(models, start=1):
+
     for index, car in enumerate(cars_time, start=1):
         logger.info(f"🚗 Car processing: {car['name']} (id: {car['id']})")
 
@@ -155,9 +155,8 @@ def process_db_cars():
         car_info = car.get("car_info", {})
 
         engine_type = car_info.get("Engine type")
-        # engine_type_en = translate(engine_type)
         fuel_type_name = car_info.get("Fuel type")
-        # fuel_type_name_en = translate(fuel_type_name)
+
 
         if not fuel_type_name:
             if engine_type and engine_type.lower() not in ["ICE", "Hybrid"]:
