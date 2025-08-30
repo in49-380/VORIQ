@@ -24,4 +24,5 @@
   { "id": 23, "brand_id": 9, "name": "Passat" },
   { "id": 24, "brand_id": 10, "name": "Sportage" },
   { "id": 25, "brand_id": 10, "name": "Sorento" }
+
 ]

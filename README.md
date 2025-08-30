@@ -94,17 +94,17 @@ We welcome contributions! Please see [CONTRIBUTING](./CONTRIBUTING.md) for detai
 - ✅ Design system architecture (frontend/backend, DB)  
 - ⚠️ Create wireframes / UI prototypes  
 - ✅ Select technology stack  
-- ⚠️ Set up environment and repo  
+- ✅ Set up environment and repo  
 - ⚠️ Develop backend API  
 - ⚠️ Develop frontend interface  
-- ⚠️ Set up database and migrations  
-- ⬜ Integrate frontend with backend  
-- ⬜ Write unit tests  
-- ⬜ Write integration tests  
-- ⚠️ Configure CI/CD pipelines  
-- ⬜ Perform manual testing  
-- ⚠️ Prepare infrastructure  
-- ⚠️ Dockerization / orchestration  
+- ✅ Set up database and migrations  
+- ⚠️ Integrate frontend with backend  
+- ⚠️ Write unit tests  
+- ⚠️ Write integration tests  
+- ✅ Configure CI/CD pipelines  
+- ⚠️ Perform manual testing  
+- ✅ Prepare infrastructure  
+- ✅ Dockerization / orchestration  
 - ⬜ Set up monitoring and logging  
 - ⬜ Final testing and code review  
 - ⬜ Deploy to staging environment  

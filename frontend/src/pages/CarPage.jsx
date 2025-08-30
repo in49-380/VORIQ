@@ -14,6 +14,7 @@ import HintBox from '../components/HintTour/HintBox.jsx';
 
 
 const CarPage = () => {
+
   // usePageUrl('/cars')
   // const {t}=useTranslation()
 
@@ -45,6 +46,7 @@ const CarPage = () => {
   return (
     
 <div className="relative h-[100vh] flex flex-col items-center justify-center bg-blue-100">
+
         <Button 
           onClick={handleOnClickError}
           className='bg-red-500 text-white h-auto'
@@ -99,6 +101,7 @@ const CarPage = () => {
       />
 
 </div>
+
     );
   };
   export default CarPage;
