@@ -10,7 +10,7 @@ export const SelectProvider = ({ children }) => {
     <SelectContext.Provider value={{
     analysButtonIsDisabled, setAnalysButtonIsDisabled,
     addButtonIsDisabled, setAddButtonIsDisabled,
-    isNewSelectorSetVisible, setIsNewSelectorSetVisible
+    isNewSelectorSetVisible, setIsNewSelectorSetVisible,
     }}>
       {children}
     </SelectContext.Provider>

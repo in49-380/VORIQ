@@ -11,7 +11,6 @@ const ButtonBlock=({brand,model,year,engine})=>{
     const {runApi, setSuccessResult}=useLoader()
     const {analysButtonIsDisabled, setIsNewSelectorSetVisible}=useSelect()
     const {addButtonIsDisabled, setAddButtonIsDisabled}=useSelect()
-
     
     const handleOnClickStartAnalysis=async()=>{
         setSuccessResult(null)
@@ -39,6 +38,7 @@ const ButtonBlock=({brand,model,year,engine})=>{
     return(
         <div className='flex flex-row w-[90vw] items-center justify-around'>
          <Button 
+          id='b5'
           onClick={!analysButtonIsDisabled?  handleOnClickStartAnalysis:null}
           className={`px-4 py-2 rounded-lg font-medium text-white transition-colors duration-200
             ${analysButtonIsDisabled
@@ -53,6 +53,7 @@ const ButtonBlock=({brand,model,year,engine})=>{
           children={'New search'}
           /> */}
          <Button 
+          id='b6'
           onClick={handleOnClickAnotherCar}
          className={`px-4 py-2 rounded-lg font-medium text-white transition-colors duration-200
             ${addButtonIsDisabled

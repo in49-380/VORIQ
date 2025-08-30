@@ -8,7 +8,7 @@ const brandAnalyse=(data)=>{
 
 export const modelAnalyse=(data, parentValue)=>{
     const result= data
-    .filter(item=>item.brandId===Number(parentValue.value))
+    .filter(item=>item.brand_id===Number(parentValue.value))
     .map(item=>({
       value:item.id,
       label:item.name
