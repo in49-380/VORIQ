@@ -13,10 +13,13 @@ import brandAnalyse from '../../../public/fakeDB/fakeAnalys.jsx';
 import { modelAnalyse, yearAnalyse, engineAnalyse } from '../../../public/fakeDB/fakeAnalys.jsx';
 
 
-const SelectorBlock=({brand,model,year,engine})=>{
+const SelectorBlock=({brand,model,year,engine, setCurrentStep})=>{
     const {t}=useTranslation()
     const {runApi}=useLoader()
     const {setAnalysButtonIsDisabled}=useSelect()
+    const goToStep=(s)=>{
+      setCurrentStep(s)
+    }
       
     useEffect(()=>{
         const getBrands=async()=>{
@@ -75,6 +78,7 @@ const SelectorBlock=({brand,model,year,engine})=>{
             engine.softClear()
             brand.setValue(newValue)
             model.setDisabled(false)
+            goToStep(2)
         }
     }
 
@@ -87,6 +91,7 @@ const SelectorBlock=({brand,model,year,engine})=>{
             year.softClear()
             model.setValue(newValue)
             year.setDisabled(false)
+            goToStep(3)
     }
     }
 
@@ -98,13 +103,16 @@ const SelectorBlock=({brand,model,year,engine})=>{
             engine.softClear()
             year.setValue(newValue)
             engine.setDisabled(false)
+            goToStep(4)
         }   
     }
 
     const onEngineChange=(newValue)=>{
         engine.setValue(newValue)
         setAnalysButtonIsDisabled(false)
+        goToStep(5)
     }
+
 
     const className= "px-3 py-1.5 w-50 bg-transparent text-sm text-black cursor-pointer outline-none hover:bg-black/5 focus:bg-black/10 appearance-none";
     const optionClassName= "mt-1 w-full bg-transparent shadow-none border-none outline-none";
@@ -112,7 +120,9 @@ const SelectorBlock=({brand,model,year,engine})=>{
   return(
       <div className="h-[30vh] w-[90vw] flex flex-row items-center justify-around bg-blue-100">
             
+            
             <Select
+              id='s1'
               placeholder={t('selectorBlock.brand')}
               value={brand.value}
               options={brand.options}
@@ -122,8 +132,10 @@ const SelectorBlock=({brand,model,year,engine})=>{
               className={className}
               optionClassName={optionClassName}
             />
-    
+      
+
             <Select
+              id='s2'
               placeholder={t('selectorBlock.model')}
               value={model.value}
               options={model.options}
@@ -135,6 +147,7 @@ const SelectorBlock=({brand,model,year,engine})=>{
             />
     
             <Select
+              id='s3'
               placeholder={t('selectorBlock.year')}
               value={year.value}
               options={year.options}
@@ -147,6 +160,8 @@ const SelectorBlock=({brand,model,year,engine})=>{
             />
     
             <Select
+              id='s4'
+
               placeholder={t('selectorBlock.engine')}
               value={engine.value}
               options={engine.options}
