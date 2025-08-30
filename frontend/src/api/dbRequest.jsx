@@ -1,3 +1,4 @@
+// const BASE_URL = "/fakeDB";
 const BASE_URL = "/fakeDB";
 
 export const requestFromVehicleSelectors =async(url,{signal})=>{

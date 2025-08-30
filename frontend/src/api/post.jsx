@@ -3,6 +3,8 @@ const url='https://httpbin.org/post'
 try{
     const options={
         method: 'POST',
+        mode: 'cors',
+        credential:'include',
         headers:{
             'accept':'application/json',
             'content-type':'application/json'
