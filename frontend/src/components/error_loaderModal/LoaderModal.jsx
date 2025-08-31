@@ -10,6 +10,7 @@ const LoaderModal=()=>{
     return (
         <Modal open={!isTimeOutError && isLoading} fullscreen={true} >
                  <Spinner 
+                    id='cust1'
                     size='80px'
                     borderWidth='10px'
                     color='blue'

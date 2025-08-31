@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {useState} from 'react'
 import useHintBox from '../../hooks/useHintBox'
 import Button from "../Button";
-import {changeLanguage } from "i18next";
+// import {changeLanguage } from "i18next";
 import { SelectContext } from "../../hooks/useSelect";
 
 const HintBox=({width, height, top, left, currentStep, setCurrentStep})=>{
@@ -76,16 +76,16 @@ const HintBox=({width, height, top, left, currentStep, setCurrentStep})=>{
             <div className="flex flex-row"> 
               
                 {currentStep>1 && 
-                <Button
+                <Button id='b14'
                 onClick={onPrevClick}
                 children={'prev'}/>}
                 
                 {currentStep<5 && 
-                <Button
+                <Button id='b15'
                 onClick={onNextClick}
                 children={'next'}/>}
 
-                <Button
+                <Button id='b16'
                 onClick={onCloseClick}
                 children={'close'}
                 />

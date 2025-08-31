@@ -2,7 +2,6 @@ import {useState} from "react";
 import i18next from "i18next";
 import { useTranslation } from "react-i18next";
 import Select, {components as RSComponents} from 'react-select';
-// import "flag-icons/css/flag-icons.min.css";
 
 
 const I18nDropDown=()=>{

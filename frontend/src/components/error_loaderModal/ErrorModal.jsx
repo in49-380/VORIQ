@@ -18,11 +18,13 @@ const ErrorModal=()=>{
         >
             <p>{t('errorModal.messageBodyString2')}</p>
             <div className='flex flex-row gap-4'>
-                <Button children={t('errorModal.retry')}
+                <Button id='b10'
+                        children={t('errorModal.retry')}
                         onClick={retry}
                         className={'text-red-700'}
                 />
-                <Button children={t('errorModal.cancel')}
+                <Button id='b11'
+                        children={t('errorModal.cancel')}
                         onClick={cancel}
                 />
             </div>

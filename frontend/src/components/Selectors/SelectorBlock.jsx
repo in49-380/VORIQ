@@ -121,10 +121,12 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
       return (
       <RSComponents.DropdownIndicator {...props}>
           <svg
-            style={{ fill: props.isDisabled ? 'var(--color-light)' : 'var(--color-primary)' }}
-            height="20" width="20" viewBox="0 0 20 20"
+            style={{ stroke: props.isDisabled ? 'var(--color-light)' : 'var(--color-primary)', 
+            fill:'none',
+            strokeWidth:'2px'}}
+            height="2rem" width="2rem" viewBox="0 0 20 20"
           >
-            <path d="M7 7l3 3 3-3" />
+            <path d="M4 6 L10 13 L16 6"  />
           </svg>
       </RSComponents.DropdownIndicator>
   );
@@ -199,7 +201,7 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
               isClearable
               isDisabled={brand.disabled}
               styles={customStyles}
-              // components={{DropdownIndicator}}
+              components={{DropdownIndicator}}
             />
       
 
@@ -212,6 +214,8 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
               isClearable
               isDisabled={model.disabled}
               styles={customStyles}
+              components={{DropdownIndicator}}
+
 
             />
     
@@ -225,6 +229,8 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
               isMulti
               isDisabled={year.disabled}
               styles={customStyles}
+              components={{DropdownIndicator}}
+
 
             />
     
@@ -238,6 +244,8 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
               isClearable
               isDisabled={engine.disabled}
               styles={customStyles}
+              components={{DropdownIndicator}}
+
 
             />
           

@@ -7,7 +7,8 @@ const KlaroConsentButton=()=>{
     return(
         <>
             <KlaroInit/>    
-            <Button onClick={()=> window.klaro.show()} 
+            <Button id='b1'
+                    onClick={()=> window.klaro.show()} 
                     children={t("cookieSettings")}/>
         </>
     )

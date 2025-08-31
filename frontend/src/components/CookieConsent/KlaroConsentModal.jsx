@@ -58,22 +58,22 @@ export default function KlaroConsent() {
       description={t('cookieModal.description')}
     >
       <div className="cookie_modal_container">
-        <Button onClick={handleDecline}>
+        <Button id='b2' onClick={handleDecline}>
           {t('cookieModal.cookieButton.decline')}
         </Button>
-        <Button onClick={handleCustomize}>
+        <Button  id='b3'onClick={handleCustomize}>
         {t('cookieModal.cookieButton.customize')}
         </Button>
-        <Button onClick={handleAccept}
+        <Button id='b4' onClick={handleAccept}
                 ref={button=>button&&button.focus()}
                 className={`${fontSize}`} >
           {t('cookieModal.cookieButton.acceptAll')}
         </Button>
       </div>
       <div className='policy_container'>
-        <Button><a href="http://api/meta/terms" target="_blank" rel="noopener noreferrer">Therms of use</a></Button>
-        <Button><a href="http://api/meta/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a></Button>
-        <Button><a href="http://api/meta/cookies" target="_blank" rel="noopener noreferrer">Cookie Policy</a></Button>
+        <Button id='b7'><a href="http://api/meta/terms" target="_blank" rel="noopener noreferrer">Therms of use</a></Button>
+        <Button id='b8'><a href="http://api/meta/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a></Button>
+        <Button id='b9' ><a href="http://api/meta/cookies" target="_blank" rel="noopener noreferrer">Cookie Policy</a></Button>
       </div>
     </Modal>
     </> 

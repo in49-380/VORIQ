@@ -12,7 +12,8 @@ const LogoutButton=()=>{
     
     
     return token?(
-        <Button onClick={handleOnClick} 
+        <Button id='b18'
+                onClick={handleOnClick} 
                 children={t('logout')} 
                 className="logout-button"
         />
