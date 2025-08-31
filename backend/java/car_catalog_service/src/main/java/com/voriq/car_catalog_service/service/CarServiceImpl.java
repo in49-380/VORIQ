@@ -46,13 +46,14 @@ public class CarServiceImpl implements CarService {
         int offset = (int) pageable.getOffset();
 
         List<CarResponseDto> content;
+        long total;
         try {
             content = repository.search(brand, model, fuelType, engineType, yearFrom, yearTo, orderBy, limit, offset);
+            total = repository.count(brand, model, fuelType, engineType, yearFrom, yearTo);
         } catch (Exception ex) {
             throw new ServiceUnavailableException(
                     "The server is currently overloaded or under maintenance. Please try again later.", ex);
         }
-        long total = repository.count(brand, model, fuelType, engineType, yearFrom, yearTo);
 
         Page<CarResponseDto> page = new PageImpl<>(content, pageable, total);
         return new PageCarResponseDto(page);

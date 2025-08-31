@@ -7,7 +7,7 @@ import uk from './locales/uk.json'
 import de from './locales/de.json'
 
 
-const browserLang = navigator.langukge?.split('-')[0] 
+const browserLang = navigator.language?.split('-')[0] 
 const savedLanguage=localStorage.getItem('Language')||browserLang||'en';
 const REMOTE_NS = ['remoteA', 'remoteB', 'remoteC']; //must renamed
 const BASE_NS = ['translation']; 
@@ -18,7 +18,8 @@ return i18next
    .use(initReactI18next)
     .init({
       debug:true,
-      lng: savedLanguage,  // if you're using a language detector, do not define the lng option
+      // if you're using a language detector, do not define the lng option
+      lng: savedLanguage,  
       fallbackLng: "en",
 
       ns:[...BASE_NS,...REMOTE_NS],

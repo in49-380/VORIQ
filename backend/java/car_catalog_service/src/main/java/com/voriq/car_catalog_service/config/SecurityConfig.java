@@ -96,7 +96,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, MODEL_BRAND_URL).authenticated()
                         .requestMatchers(HttpMethod.GET, YEAR_URL).authenticated()
                         .requestMatchers(HttpMethod.GET, TEST_DELAY_URL).permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().denyAll()
                 )
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .exceptionHandling(ex -> ex
