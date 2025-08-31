@@ -1,0 +1,184 @@
+@use 'variables' as v;
+@use 'mixins' as m;
+
+// *****<Button>******************
+// *******************************
+button{
+    padding: 5px;
+    border-radius: 0.25rem;
+    font-size: 1.6rem;
+    transition: border-color 0.25s;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--background-secondary);
+  outline-offset:2px
+}
+// *****************************************
+// *****************************************
+// ******************************************
+FaGithub{
+    color: var(--color-primary)
+}
+
+.google-auth-button{
+    @include m.size(240px, 240px)
+}
+
+.logout-button{
+}
+// **********************************************
+// **********welcom-Page*************************
+// **********************************************
+.split{
+    @include m.size(80%, 80%, var(--background-secondary));
+    @include m.flex-row(5, center, center);
+    border-radius:3rem;
+}
+
+.split > .welcome, 
+.split > .google{
+    flex:1;
+    @include m.flex-col (n, center, center);
+    @include m.size(100%, 100%);
+
+}
+
+.split > .welcome{
+    border-top-left-radius: 3rem;
+    border-bottom-left-radius: 3rem;
+    text-align: center;
+}
+.split > .google{
+    border-top-right-radius: 3rem;
+    border-bottom-right-radius: 3rem;
+    background-color: var(--background-light);
+}
+
+.big-title{
+    @include m.font(5rem, var(--color-title), bold);
+}
+
+.welcome>.subtitle{
+    @include m.font(2rem, var(--color-secondary), bold);
+    margin-top: 1rem;
+}
+// ******************************
+//******* ModalWindow ***********
+// ********************************
+
+.dialog-overlay{
+    @include m.position(fixed,0,7rem,0,0);
+    background-color: var(--background-dark);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+   }
+
+.dialog-content{
+    background-color:var(--background-light);
+    z-index:50
+}   
+
+.dialog-content.fullscreen{
+    @include m.position(fixed,0,0,0,0);
+    @include m.flex-col(n,center,center);
+}
+
+.dialog-content.small{
+    @include m.hvcenter(fixed);
+    max-width: 50rem;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: var(--box-shadow)
+
+}
+
+.dialog-title{
+    @include m.font(2rem, var(--color-title), bold);
+    text-align:center;
+    margin-bottom: 2rem;
+}
+.dialog-description{
+    margin-bottom: 2rem;
+    color: var(--color-secondary)
+}
+
+// ********************************************
+// ********CookiesConsent Modal Window*********
+// ********************************************
+.cookie_modal_container{
+    @include m.flex-row(center, space-between);
+    width: 100%;
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.cookie_modal_container > :nth-child(1),
+.cookie_modal_container > :nth-child(2),
+.cookie_modal_container > :nth-child(3){
+    @include m.font(1.5rem, white, n);
+    @include m.size(27%, 4rem)
+}
+
+.cookie_modal_container > :nth-child(1){
+    background-color: v.$red-button;
+}
+.cookie_modal_container > :nth-child(2){
+    background-color: v.$gray-button;
+}
+.cookie_modal_container > :nth-child(3){
+    background-color: v.$green-button;
+}
+.cookie_modal_container > :nth-child(1):hover{
+    background-color: v.$red-button-hover;
+}
+.cookie_modal_container > :nth-child(2):hover{
+    background-color: v.$gray-button-hover;
+}
+.cookie_modal_container > :nth-child(3):hover{
+    background-color: v.$green-button-hover;
+}
+
+.cookie_modal_container > :nth-child(3).smallChar{
+    @include m.font(1.2rem, white, n);
+
+    // text-sm whitespace-nowrapsmal
+}
+.langInCookieModal{
+    @include m.position(absolute,0,0, null, null)
+}
+
+.policy_container{
+    @include m.flex-row(2rem, start, end);
+    width: 100%;
+    position: relative;
+}
+
+.policy_container>button,
+.policy_container>button{
+    @include m.font(1.3rem, var(--color-light),n);
+
+}
+.policy_container>button:hover,
+.policy_container>button:active{
+    color: var(--color-primary)
+}
+// *************************************
+// ************language switcher**********
+// ***************************************
+
+
+// ******************************************
+.car-container{
+    position: relative;
+    
+}
+
+
+
+
+
+// *************************************************
+
+
+

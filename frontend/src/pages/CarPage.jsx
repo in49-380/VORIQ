@@ -18,24 +18,24 @@ const CarPage = () => {
   // usePageUrl('/cars')
   // const {t}=useTranslation()
 
-  const [res,setRes]=useState()
+  // const [res,setRes]=useState()
   const {runApi, resultMessage, successResult}=useLoader()
   const {isNewSelectorSetVisible}=useSelect()
   const [currentStep, setCurrentStep]=useState(1)
   
 
-  useEffect(()=>{
-    setRes(resultMessage);
-  },[resultMessage])
+  // useEffect(()=>{
+  //   setRes(resultMessage);
+  // },[resultMessage])
 
   useEffect(()=>{
     console.log('visible', isNewSelectorSetVisible);
   },[isNewSelectorSetVisible])
   
   // ***************************************************
-  const handleOnClickError = async () => {
-       await runApi(asyncRandomError);
-  }
+  // const handleOnClickError = async () => {
+  //      await runApi(asyncRandomError);
+  // }
   // ****************************************************
 
     const brand=useSelectState(false)
@@ -45,9 +45,9 @@ const CarPage = () => {
   
   return (
     
-<div className="relative h-[100vh] flex flex-col items-center justify-center bg-blue-100">
+<div className="main-container car-container">
 
-        <Button 
+        {/* <Button 
           onClick={handleOnClickError}
           className='bg-red-500 text-white h-auto'
           children={<>Error Occured <br />It's a TEST-button</>}
@@ -59,7 +59,7 @@ const CarPage = () => {
         />
 
     { res && <h2 className='text-red-500 text-2xl'>The asynchronous function is {res}</h2>}
-    
+     */}
     {successResult &&
       <div className='bg-white border-2 border-green-500 flex flex-col items-center justify-center p-4 w-64 h-32 m-4'>
             <h2 className='text-green-500 text-xl'>Result of Analyse:</h2>

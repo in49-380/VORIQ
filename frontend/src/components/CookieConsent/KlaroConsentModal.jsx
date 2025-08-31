@@ -3,6 +3,7 @@ import Modal from '../Modal'
 import Button from '../Button'
 import KlaroInit from './KlaroInit'
 import {useTranslation} from 'react-i18next'
+import I18nDropDown from '../i18n/I18nDropDown'
 
 export default function KlaroConsent() {
   const [isVisible, setIsVisible] = useState(false)
@@ -12,7 +13,7 @@ export default function KlaroConsent() {
 
   const currentLanguage=i18n.language;
   const fontSize=currentLanguage==='en'?
-    'text-base':'text-sm whitespace-nowrap'
+    'baseChar':'smallChar'
 
   useEffect(() => {
     const klaroManager = window.klaro?.getManager?.()
@@ -56,18 +57,23 @@ export default function KlaroConsent() {
       title={t('cookieModal.title')}
       description={t('cookieModal.description')}
     >
-      <div className="flex justify-end space-x-4 mt-6">
-        <Button onClick={handleDecline} className="bg-red-500 text-white hover:bg-red-600">
+      <div className="cookie_modal_container">
+        <Button onClick={handleDecline}>
           {t('cookieModal.cookieButton.decline')}
         </Button>
-        <Button onClick={handleCustomize} className="bg-gray-300 hover:bg-gray-400">
+        <Button onClick={handleCustomize}>
         {t('cookieModal.cookieButton.customize')}
         </Button>
         <Button onClick={handleAccept}
                 ref={button=>button&&button.focus()}
-                className={`bg-blue-600 hover:bg-blue-700 text-white ${fontSize}`} >
+                className={`${fontSize}`} >
           {t('cookieModal.cookieButton.acceptAll')}
         </Button>
+      </div>
+      <div className='policy_container'>
+        <Button><a href="http://api/meta/terms" target="_blank" rel="noopener noreferrer">Therms of use</a></Button>
+        <Button><a href="http://api/meta/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a></Button>
+        <Button><a href="http://api/meta/cookies" target="_blank" rel="noopener noreferrer">Cookie Policy</a></Button>
       </div>
     </Modal>
     </> 

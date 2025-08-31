@@ -6,7 +6,7 @@ const Header = () => {
     <header>
       <IconButton onClick={()=>window.open('https://github.com/in49-380/VORIQ', '_blank')}
          title='GitHub'
-         className="fixed top-4 right-4"  
+         className="absolute top-4 right-4"  
       />
       <I18nDropDown />       
       <button onClick={()=>{

@@ -1,7 +1,7 @@
 
 import { useEffect} from 'react';
 import {useTranslation} from 'react-i18next'
-import Select from 'react-select';
+import Select, {components as RSComponents} from 'react-select';
 // import { motion, AnimatePresence } from "framer-motion";
 
 
@@ -13,13 +13,11 @@ import brandAnalyse from '../../../public/fakeDB/fakeAnalys.jsx';
 import { modelAnalyse, yearAnalyse, engineAnalyse } from '../../../public/fakeDB/fakeAnalys.jsx';
 
 
-const SelectorBlock=({brand,model,year,engine, setCurrentStep})=>{
+const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
     const {t}=useTranslation()
     const {runApi}=useLoader()
     const {setAnalysButtonIsDisabled}=useSelect()
-    const goToStep=(s)=>{
-      setCurrentStep(s)
-    }
+    const goToStep=(s)=>{setCurrentStep(s)}
       
     useEffect(()=>{
         const getBrands=async()=>{
@@ -113,12 +111,83 @@ const SelectorBlock=({brand,model,year,engine, setCurrentStep})=>{
         goToStep(5)
     }
 
+    // **************select styling******************
+    // **********************************************
 
     const className= "px-3 py-1.5 w-50 bg-transparent text-sm text-black cursor-pointer outline-none hover:bg-black/5 focus:bg-black/10 appearance-none";
     const optionClassName= "mt-1 w-full bg-transparent shadow-none border-none outline-none";
 
+    const DropdownIndicator=(props)=>{
+      return (
+      <RSComponents.DropdownIndicator {...props}>
+          <svg
+            style={{ fill: props.isDisabled ? 'var(--color-light)' : 'var(--color-primary)' }}
+            height="20" width="20" viewBox="0 0 20 20"
+          >
+            <path d="M7 7l3 3 3-3" />
+          </svg>
+      </RSComponents.DropdownIndicator>
+  );
+    }
+    
+    const customStyles={
+        container:(provided)=>({
+          ...provided,
+          width:'20%'
+        }),
+
+        control: (provided, state)=>({
+            ...provided,
+            backgroundColor: 'var(--background-light)',
+            
+            '&:hover': { backgroundColor: 'var(--background-secondary)',
+                         border:'none'   
+             },
+            border:'none',
+            boxShadow: state.isFocused ? '0 0 0 0 transparent' : 'none', 
+        }),
+
+         placeholder : (provided, state) => ({
+            ...provided,
+            color: state.isDisabled
+            ? 'var(--color-light)'
+            : 'var(--color-primary)'
+          }),
+
+        DropdownIndicator:(provided, state)=>({
+           ...provided,
+           svg: {
+              fill: state.isDisabled
+            ? 'var(--color-light)'
+            : 'var(--color-primary)'
+          }
+        }),
+
+        menu: (provided) => ({
+            ...provided,
+           borderRadius: '0.5rem',
+
+        }),
+
+        singleValue: (provided) => ({
+            ...provided,
+            color: 'blue',
+            
+        }),
+
+        option: (provided, state) => ({
+            ...provided,
+            backgroundColor: state.isFocused
+                ? 'var(--background-dark)'
+                : 'var(--background-primary)',
+            color: state.isFocused ? 'var(--color-light)' : 'null',
+            cursor: 'pointer',
+         }),
+
+    }
+
   return(
-      <div className="h-[30vh] w-[90vw] flex flex-row items-center justify-around bg-blue-100">
+      <div className="h-[30vh] w-[90vw] flex flex-row items-center justify-around bg-blue-100 border border-red-500">
             
             
             <Select
@@ -129,8 +198,8 @@ const SelectorBlock=({brand,model,year,engine, setCurrentStep})=>{
               onChange={onBrandChange}
               isClearable
               isDisabled={brand.disabled}
-              className={className}
-              optionClassName={optionClassName}
+              styles={customStyles}
+              // components={{DropdownIndicator}}
             />
       
 
@@ -142,8 +211,8 @@ const SelectorBlock=({brand,model,year,engine, setCurrentStep})=>{
               onChange={onModelChange}
               isClearable
               isDisabled={model.disabled}
-              className={className}
-              optionClassName={optionClassName}
+              styles={customStyles}
+
             />
     
             <Select
@@ -155,8 +224,8 @@ const SelectorBlock=({brand,model,year,engine, setCurrentStep})=>{
               isClearable
               isMulti
               isDisabled={year.disabled}
-              className={className}
-              optionClassName={optionClassName}
+              styles={customStyles}
+
             />
     
             <Select
@@ -168,8 +237,8 @@ const SelectorBlock=({brand,model,year,engine, setCurrentStep})=>{
               onChange={onEngineChange}
               isClearable
               isDisabled={engine.disabled}
-              className={className}
-              optionClassName={optionClassName}
+              styles={customStyles}
+
             />
           
           </div>

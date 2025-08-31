@@ -8,9 +8,9 @@ export const SelectProvider = ({ children }) => {
   const [isNewSelectorSetVisible, setIsNewSelectorSetVisible]=useState(false)
   return (
     <SelectContext.Provider value={{
-    analysButtonIsDisabled, setAnalysButtonIsDisabled,
-    addButtonIsDisabled, setAddButtonIsDisabled,
-    isNewSelectorSetVisible, setIsNewSelectorSetVisible,
+      analysButtonIsDisabled, setAnalysButtonIsDisabled,
+      addButtonIsDisabled, setAddButtonIsDisabled,
+      isNewSelectorSetVisible, setIsNewSelectorSetVisible,
     }}>
       {children}
     </SelectContext.Provider>

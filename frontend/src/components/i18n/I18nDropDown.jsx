@@ -1,43 +1,111 @@
-import DropDown from "../DropDown";
-import { useState} from "react";
+import {useState} from "react";
 import i18next from "i18next";
 import { useTranslation } from "react-i18next";
+import Select, {components as RSComponents} from 'react-select';
+import "flag-icons/css/flag-icons.min.css";
+
 
 const I18nDropDown=()=>{
     const {i18n}=useTranslation()
-    // const browserLang = navigator.language?.split('-')[0] 
-    // const [value, setValue]=useState(localStorage.getItem('Language')||browserLang||'en')
-    const [value, setValue]=useState(i18n.language)
-
-    const onLanguageChange=(newValue)=>{
-        setValue(newValue);
-        i18next.changeLanguage(newValue)
-        localStorage.setItem('Language', newValue)
-    }
     const Languages=[
         {
             value:'en',
-            label:'English'
+            label:'English',
+            icon: '🇬🇧'
+
         },
         {
             value:'de',
-            label:'Deutsch'
+            label:'Deutsch',
+            icon: '🇩🇪' 
+
         },
         {
             value:'uk',
-            label:'Українська'
+            label:'Українська',
+             icon: '🇺🇦'
+
         }
     ]
+   const initialValue=Languages.find(e=>e.value===i18n.language)||Languages[0]
+   
+    const [value, setValue]=useState(initialValue)
 
-    const selectClassName = "px-3 py-1.5 rounded-md bg-transparent text-sm text-gray-700 shadow-inner shadow-[inset_2px_2px_5px_rgba(0,0,0,0.3)]  cursor-pointer outline-none transition-shadow duration-200 hover:shadow-[inset_2px_2px_5px_rgba(0,0,0,0.15)] focus:shadow-[inset_2px_2px_5px_rgba(0,0,0,0.3)] focus:border-blue-500"
+    const onLanguageChange=(newValue)=>{
+        setValue(newValue);
+        i18next.changeLanguage(newValue.value)
+        localStorage.setItem('Language', newValue.value)
+    }
+    
+    const SingleValue = (props) => (
+    <RSComponents.SingleValue {...props}>
+        <span style={{ marginRight: 8 }}>{props.data.icon}</span>
+        {props.data.label}
+    </RSComponents.SingleValue>
+    );
 
+    const Option = (props) => (
+    <RSComponents.Option {...props}>
+        <span style={{ marginRight: 8 }}>{props.data.icon}</span>
+        {props.data.label}
+    </RSComponents.Option>
+    );
+
+    const customStyles={
+        control: (provided, state)=>({
+            ...provided,
+            width:'16rem',
+            backgroundColor: 'var(--background-primary)',
+            
+            '&:hover': { backgroundColor: 'var(--background-secondary)',
+                         border:'none'   
+             },
+            border:'none',
+            boxShadow: state.isFocused ? '0 0 0 0 transparent' : 'none', 
+
+        }),
+
+        menu: (provided) => ({
+            ...provided,
+           borderRadius: '0.5rem',
+
+        }),
+
+         singleValue: (provided) => ({
+            ...provided,
+            color: 'var(--color-secondary)',
+            
+        }),
+
+        option: (provided, state) => ({
+            ...provided,
+            backgroundColor: state.isFocused
+                ? 'var(--background-dark)'
+                : 'var(--background-primary)',
+            color: state.isFocused ? 'var(--color-light)' : 'null',
+            cursor: 'pointer',
+         }),
+
+    }
+   
     return (
-        <DropDown
-            selectValue={value}
-            options={Languages}
-            onOptionChange={onLanguageChange}
-            className={selectClassName}
-        />
+        <>
+             <Select
+                  id='s5'
+                  value={value}
+                  options={Languages}
+                  onChange={onLanguageChange}
+                  styles={customStyles}
+                  isSearchable={false}
+                  components={{
+                    DropdownIndicator: () => null,
+                    IndicatorSeparator: () => null,
+                    Option,
+                    SingleValue
+                    }}
+                    
+                />
+        </>
     )
 }
 export default I18nDropDown

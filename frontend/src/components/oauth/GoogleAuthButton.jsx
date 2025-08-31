@@ -1,8 +1,6 @@
 import  useGoogleAuth from '../../hooks/useGoogleAuth';
 
-import GoogleIcon from '@mui/icons-material/Google';
-// import { useContext } from 'react';
-// import AuthContext from './AuthContext';
+import { FcGoogle } from 'react-icons/fc';
 import Button from '../Button';
 
 
@@ -19,9 +17,10 @@ const GoogleAuthButton=()=>{
     //     </Button>
     //     ):(null)
     return (
-        <Button onClick={login} 
-                className='bg-gray-400'>
-            <GoogleIcon />
+        <Button 
+        onClick={login} 
+        className='google-auth-button'>
+            <FcGoogle size={240} />
         </Button>
         )
     

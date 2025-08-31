@@ -1,0 +1,86 @@
+@mixin flex-col ($gap: 0, $justify: center, $align: center, $wrap: nowrap) {
+      display: flex;
+      flex-direction: column;
+      justify-content: $justify;
+      align-items: $align;
+      flex-wrap: $wrap;
+      gap: $gap
+}
+
+@mixin flex-row ($gap: 0, $justify: center, $align: center, $wrap: nowrap) {
+      display: flex;
+      justify-content: $justify;
+      align-items: $align;
+      flex-wrap: $wrap;
+      gap: $gap
+}
+
+@mixin flex ($gap: 0, $justify: center, $align: center, $wrap: nowrap) {
+      display: flex;
+      justify-content: $justify;
+      align-items: $align;
+      flex-wrap: $wrap;
+      gap: $gap
+}
+
+@mixin position ($position, $left:null, $top:null, $right:null, $bottom:null) {
+      @if $position =='fixed' {
+            position: fixed;
+      }
+
+      @if $position =='absolute' {
+            position: absolute;
+      }
+
+      @if ($left !='null') {
+            left: $left;
+      }
+
+      @if ($top !='null') {
+            top: $top;
+      }
+
+      @if ($right !='null') {
+            right: $right;
+      }
+
+      @if ($bottom !='null') {
+            bottom: $bottom;
+      }
+
+}
+
+@mixin font ($font-size, $color, $font-weight) {
+      font-size: $font-size;
+      color: $color;
+
+      @if $font-weight=='bold' {
+            font-weight: bold;
+      }
+}
+
+@mixin size ($width, $height, $background-color: inherit) {
+      width: $width;
+      height: $height;
+
+      @if $background-color !='none' {
+            @if $background-color =="cover" {
+                  object-fit: 'cover';
+            }
+
+            @else if $background-color =="contain" {
+                  object-fit: 'contain';
+            }
+
+            @else {
+                  background-color: $background-color;
+            }
+      }
+}
+
+@mixin hvcenter($position) {
+      position: $position;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+}

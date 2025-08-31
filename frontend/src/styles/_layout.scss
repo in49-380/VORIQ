@@ -1,0 +1,27 @@
+@use 'variables' as v;
+@use 'mixins' as m;
+
+.main-container {
+  @include m.size(100%, 100vh, var(--background-primary));
+  @include m.flex-col(n,center,center);
+  margin: 0 auto;
+  padding: 0 1.6rem;
+}
+
+header {
+    @include m.size(100%,7rem);
+    @include m.position(fixed,0,0);
+    @include m.flex-row(3rem,start,center);
+    padding: 1.6rem;
+    color: var(--color-secondary);
+    z-index: 100;
+}
+
+footer {
+    @include m.size(100%,7rem, var(--background-secondary));
+    @include m.position(fixed,0,null,null,0);
+    @include m.flex-row(3rem,start,center); 
+    padding: 1.6rem;
+    color: var(--color-secondary);
+    z-index: 100;
+}
