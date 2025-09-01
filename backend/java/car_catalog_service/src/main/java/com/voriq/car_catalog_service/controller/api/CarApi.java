@@ -53,12 +53,6 @@ public interface CarApi {
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ErrorResponse.class)
                     )),
-            @ApiResponse(responseCode = "404",
-                    description = "Content not found.",
-                    content = @Content(
-                            mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
-                    )),
             @ApiResponse(responseCode = "500",
                     description = "Temporary service error.",
                     content = @Content(
