@@ -1,4 +1,7 @@
-$color-primary: rgb(32, 32, 32);
+:root{
+--color-theme-dark: rgb(61, 61, 61);
+--color-theme-light:#cecece;
+--color-theme-blue:#a8ccfc;}
 
 $color-background-primary: #fce4ec;
 $color-background-secondary:#dbeafe;
@@ -13,7 +16,7 @@ $green-button-disabled:rgb(187, 250, 187);
 $gray-button:gray;
 $gray-button-hover:rgb(78, 77, 77);
 
-:root{
+.light{
     --background-primary: #f3f3f3;
     --background-secondary: #cecece;
     --background-light: #fffdfe;

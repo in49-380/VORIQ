@@ -1,4 +1,5 @@
 import IconButton from "../IconButton";
+import ThemeButton from "../ThemeSwitch/ThemeButton";
 import I18nDropDown from "../i18n/I18nDropDown";
 
 const Header = () => {
@@ -24,6 +25,8 @@ const Header = () => {
       }}>
         delete Hint-mark for Test
       </button>
+
+      <ThemeButton/>
     </header>
    );
 }
