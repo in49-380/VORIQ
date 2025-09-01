@@ -33,6 +33,7 @@ const ButtonBlock=({brand,model,year,engine, setCurrentStep})=>{
     const handleOnClickNewSearch=()=>{
         setIsNewSearch(true)
         setSuccessResult(null)
+        localStorage.setItem('hintIsViewed', 'true')
     }
 
     const dis_en= analysButtonIsDisabled

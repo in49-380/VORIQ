@@ -1,5 +1,5 @@
 import React from "react";
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import useHintBox from '../../hooks/useHintBox'
 import Button from "../Button";
 // import {changeLanguage } from "i18next";
@@ -16,11 +16,22 @@ const HintBox=({currentStep, setCurrentStep})=>{
   ]
 
   const {hintBoxData}=useHintBox()
-  const [isHintAvaible, setIsHintAvaible]=useState(currentStep<5)
+  const [isHintAvaible, setIsHintAvaible] = useState(() => {
+    return currentStep < 7 && !localStorage.getItem('hintIsViewed');
+  });
+
+  useEffect(() => {
+  if (currentStep > 6) {
+    setIsHintAvaible(false);
+  } else {
+    if (!localStorage.getItem('hintIsViewed')) setIsHintAvaible(true);
+  }
+  }, [currentStep]);
 
     const currentHint=hintTour
     .find(item=>item.step===currentStep)
 
+    if (!currentHint) return null;
     const currentBoxData=hintBoxData
     .filter(item=>item.id===currentHint.value)
     .map(hint=>({
@@ -34,6 +45,7 @@ const HintBox=({currentStep, setCurrentStep})=>{
       },
       tipOffset:hint.tipOffset
     }))[0]  
+    if (!currentBoxData) return null;
 
     const hintStyle=
           { width: `${currentBoxData?.size?.width}px`, 
@@ -42,7 +54,7 @@ const HintBox=({currentStep, setCurrentStep})=>{
             left:`${currentBoxData?.coord?.left}px` }
 
     const tipStyle={
-      "--tip-Offset":`${currentBoxData?.tipOffset}px`
+      "--tip-offset":`${currentBoxData?.tipOffset}px`
     }        
 
     
@@ -57,7 +69,7 @@ const HintBox=({currentStep, setCurrentStep})=>{
 
     const onCloseClick=(()=>{
       setIsHintAvaible(false)
-      localStorage.setItem('hintIsViewed', true)
+      localStorage.setItem('hintIsViewed', 'true')
     })
 
 

@@ -219,7 +219,7 @@ FaGithub{
 
 .hint_container>.small_element{
     // @include m.hcenter(absolute);
-    @include m.position(absolute, var(--tip-Offset), null,null,-10px);
+    @include m.position(absolute, var(--tip-offset), null,null,-10px);
     // bottom:-10px;
     width: 0;
     height: 0;

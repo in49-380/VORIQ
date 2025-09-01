@@ -40,6 +40,12 @@ const CarPage = () => {
     const model=useSelectState (true)
     const year=useSelectState(true)
     const engine=useSelectState(true)  
+
+    const hasAllValues = brand.value 
+    && model.value 
+    && year.value 
+    && year.value.length > 0 
+    && engine.value;
   
   return (
     
@@ -77,7 +83,7 @@ const CarPage = () => {
       </div>} */}
 
       <div className='topCarSite'>
-       { currentStep>4 && !isNewSearch &&
+       { currentStep>4 && !isNewSearch && hasAllValues &&
         <div className='carData'>
             <h2>You have selected this car:</h2>
             <div>
