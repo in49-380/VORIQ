@@ -1,6 +1,7 @@
 
-from .decorators import logger
+from .decorators import logger, log_execution
 from .save_load_data import load_json, save_json
+
 
 """
 This module contains a set of functions for processing and transforming raw car data
@@ -9,6 +10,7 @@ models, years, fuel types, engines, and combines this information to create a fi
 dataset of cars.
 """
 
+@log_execution
 def process_db_brands():
     """
     Processes the list of car brands and saves it in a database-friendly format.
@@ -29,7 +31,7 @@ def process_db_brands():
         brands_db_list.append(brand_item)
     return save_json(brands_db_list, "brands_db.json", "db_json")
 
-
+@log_execution
 def process_db_models():
     """
     Processes the list of car models and saves it in a database-friendly format.
@@ -51,7 +53,7 @@ def process_db_models():
         models_db_list.append(model_item)
     return save_json(models_db_list, "models_db.json", "db_json")
 
-
+@log_execution
 def process_db_year():
     """
     Extracts unique production years from car models and saves them to the database.
@@ -76,7 +78,7 @@ def process_db_year():
         years_db_list.append(model_item)
     return save_json(years_db_list, "years_db.json", "db_json")
 
-
+@log_execution
 def process_db_fuel_typs():
     """
     Generates a list of fuel types and saves it to the database.
@@ -87,14 +89,14 @@ def process_db_fuel_typs():
         bool: True if saving was successful, otherwise False.
     """
     fuel_types_db_list = [
-        {"id": 1, "name": "Бензин"},
-        {"id": 2, "name": "Дизель"},
-        {"id": 3, "name": "Газ"},
-        {"id": 4, "name": "Электро"}
+        {"id": 1, "name": "Petrol"},
+        {"id": 2, "name": "Diesel"},
+        {"id": 3, "name": "Gas"},
+        {"id": 4, "name": "Electric"}
     ]
     return save_json(fuel_types_db_list, "fuels_db.json", "db_json")
 
-
+@log_execution
 def process_db_engines():
     """
     Generates a list of engine types and saves it to the database.
@@ -105,17 +107,17 @@ def process_db_engines():
         bool: True if saving was successful, otherwise False.
     """
     engines_db_list = [
-        {"id": 101, "type": "ДВС", "fuel_type_id": 1},
-        {"id": 102, "type": "ДВС", "fuel_type_id": 2},
-        {"id": 103, "type": "ДВС", "fuel_type_id": 3},
-        {"id": 104, "type": "Гибрид", "fuel_type_id": 1},
-        {"id": 105, "type": "Гибрид", "fuel_type_id": 2},
-        {"id": 106, "type": "Гибрид", "fuel_type_id": 3},
-        {"id": 107, "type": "Электро", "fuel_type_id": 4}
+        {"id": 101, "type": "ICE", "fuel_type_id": 1},
+        {"id": 102, "type": "ICE", "fuel_type_id": 2},
+        {"id": 103, "type": "ICE", "fuel_type_id": 3},
+        {"id": 104, "type": "Hybrid", "fuel_type_id": 1},
+        {"id": 105, "type": "Hybrid", "fuel_type_id": 2},
+        {"id": 106, "type": "Hybrid", "fuel_type_id": 3},
+        {"id": 107, "type": "Electric", "fuel_type_id": 4}
     ]
     return save_json(engines_db_list, "engines_db.json", "db_json")
 
-
+@log_execution
 def process_db_cars():
     """
     Processes car data and builds the final structure for the database.
@@ -128,7 +130,7 @@ def process_db_cars():
         bool: True if the data was successfully saved, otherwise False.
     """
     cars = []
-    cars_time = load_json("cars.json")
+    cars_time = load_json("cars_en.json")
     brands = load_json("brands_db.json", "db_json")
     years = load_json("years_db.json", "db_json")
     models = load_json("models_db.json", "db_json")
@@ -144,7 +146,7 @@ def process_db_cars():
         for engine in engines
     }
 
-    # for index, model in enumerate(models, start=1):
+
     for index, car in enumerate(cars_time, start=1):
         logger.info(f"🚗 Car processing: {car['name']} (id: {car['id']})")
 
@@ -152,15 +154,16 @@ def process_db_cars():
         year_id = years_lookup.get(car["year"])
         car_info = car.get("car_info", {})
 
-        engine_type = car_info.get("Тип двигателя")
-        fuel_type_name = car_info.get("Тип топлива")
+        engine_type = car_info.get("Engine type")
+        fuel_type_name = car_info.get("Fuel type")
+
 
         if not fuel_type_name:
-            if engine_type and engine_type.lower() != "ДВС" or "Гибрид":
-                fuel_type_name = "Электро"
+            if engine_type and engine_type.lower() not in ["ICE", "Hybrid"]:
+                fuel_type_name = "Electric"
                 logger.info(f"Fuel type set automatically: '{fuel_type_name}'")
             else:
-                fuel_type_name = "Бензин"
+                fuel_type_name = "Petrol"
                 logger.info(f"Fuel type not specified, default value applied: '{fuel_type_name}'")
 
         fuel_type_id = fuels_lookup.get(fuel_type_name)
@@ -182,5 +185,5 @@ def process_db_cars():
         logger.info(f"✅ Entry added: {car_entry}")
         cars.append(car_entry)
 
-    logger.info(f"Total number of cars processed”: {len(cars)}")
+    logger.info(f"Total number of cars processed: {len(cars)}")
     return save_json(cars, "cars_db.json", "db_json")

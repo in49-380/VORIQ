@@ -1,4 +1,5 @@
 import requests
+import re
 from lxml import html
 
 from utils.get_db_json import (
@@ -8,9 +9,11 @@ from utils.get_db_json import (
 from utils.get_list_url import info_car, url_models, url_element_auto
 from utils.get_urls import get_urls_models, get_urls_cars
 from utils.headers import headers
+from utils.translator import translate_car_info
 from utils.save_load_data import (
     save_json, load_json
 )
+from utils.decorators import log_execution
 
 """
 This module contains functions to scrape car data from an external source,
@@ -22,7 +25,7 @@ The workflow includes:
 3. Scraping detailed car specifications.
 4. Exporting the processed data to a database.
 """
-
+@log_execution
 def fetch_brand_dict():
     """
     Fetches an HTML page containing car brand information,
@@ -33,9 +36,14 @@ def fetch_brand_dict():
     response = requests.get(info_car, headers=headers)
     tree = html.fromstring(response.content)
     brands = tree.xpath('//select[@class="smark mui-select"]/option')
-    return {b.get("value"): b.text_content() for b in brands}
+    cyrillic_pattern = re.compile('[\u0400-\u04FF]+')
+    return {
+        b.get("value"): b.text_content()
+        for b in brands
+        if not cyrillic_pattern.search(b.text_content())
+    }
 
-
+@log_execution
 def process_brands(brands):
     """
     Converts a dictionary of car brands into a list of dictionaries with additional fields
@@ -55,7 +63,7 @@ def process_brands(brands):
 
     save_json(brands_list, "brands.json")
 
-
+@log_execution
 def process_models():
     """
     Loads the list of car brands, constructs model URLs,
@@ -100,7 +108,7 @@ def process_models():
 
     save_json(models_list, "models.json")
 
-
+@log_execution
 def process_cars():
     """
 
@@ -116,10 +124,8 @@ def process_cars():
     urls_list = load_json("url_cars_list.json")
     car_data_list = []
 
-    for url_list in urls_list[:100]:
-        id = url_list["id"]
-        name = url_list["name"]
-        year = url_list["year"]
+    for url_list in urls_list[:50]:
+
         response_car = requests.get(url_list["url"], headers=headers)
         tree = html.fromstring(response_car.content)
         cars_elements = tree.xpath('//tbody[@id="cat4"]/tr')
@@ -132,16 +138,39 @@ def process_cars():
             car_data[key] = value
             i += 3
         item = {
-            'id': id,
-            'name': name,
-            'year': year,
+            'id': url_list["id"],
+            'brand': url_list["brand"],
+            'name': url_list["name"],
+            'year': url_list["year"],
             'car_info': car_data
         }
         car_data_list.append(item)
 
     save_json(car_data_list, "cars.json")
 
+@log_execution
+def process_cars_en(input_file="cars.json", output_file="cars_en.json"):
+    """
+    Loads a list of car dictionaries from a JSON file, translates the 'car_info' field into English,
+    and saves the updated list to a new JSON file.
 
+    :param input_file: Name of the input JSON file containing car data in Russian.
+    :param output_file: Name of the output JSON file to save translated car data.
+    :return: None
+    """
+
+    cars_ru = load_json(input_file)
+    cars_en = []
+
+    for car in cars_ru:
+        car_en = car.copy()
+        car_en["car_info"] = translate_car_info(car.get("car_info", {}))
+        cars_en.append(car_en)
+
+    save_json(cars_en, output_file)
+
+
+@log_execution
 def export_to_db():
     """
     Calls functions to export data from intermediate JSON files into the database.
@@ -155,7 +184,7 @@ def export_to_db():
     process_db_year()
     process_db_cars()
 
-
+@log_execution
 def main():
     """
     Main entry point: initiates sequential processing of brands, models,
@@ -167,6 +196,7 @@ def main():
     process_brands(brand_dict)
     process_models()
     process_cars()
+    process_cars_en()
     export_to_db()
 
 
