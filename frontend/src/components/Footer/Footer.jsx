@@ -9,7 +9,7 @@ const Footer = () => {
       <div className="flex flex-wrap items-center gap-2">
         "{/* LogoutButton */}
         <LogoutButton />
-        {/* Cookies (Klaro) */}
+        {/* Cookies */}
         <KlaroConsentButton />
         {/* GitHub */}
         <GitHubButton />
