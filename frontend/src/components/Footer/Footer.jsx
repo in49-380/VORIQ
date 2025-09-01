@@ -7,7 +7,7 @@ const Footer = () => {
     <footer className="fixed bottom-0 left-0 w-full bg-gray-100 p-4 text-center shadow">
       {/* Left part: buttons */}
       <div className="flex flex-wrap items-center gap-2">
-        "{/* LogoutButtongit */}
+        "{/* LogoutButton */}
         <LogoutButton />
         {/* Cookies (Klaro) */}
         <KlaroConsentButton />
