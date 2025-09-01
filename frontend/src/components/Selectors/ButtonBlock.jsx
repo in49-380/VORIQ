@@ -9,7 +9,8 @@ const ButtonBlock=({brand,model,year,engine, setCurrentStep})=>{
 
     const {t}=useTranslation()
     const {runApi, setSuccessResult}=useLoader()
-    const {analysButtonIsDisabled}=useSelect()
+    const {analysButtonIsDisabled, setIsNewSearch}=useSelect()
+
 
     const goToStep=(s)=>{setCurrentStep(s)}
     
@@ -30,7 +31,8 @@ const ButtonBlock=({brand,model,year,engine, setCurrentStep})=>{
     }
 
     const handleOnClickNewSearch=()=>{
-        
+        setIsNewSearch(true)
+        setSuccessResult(null)
     }
 
     const dis_en= analysButtonIsDisabled

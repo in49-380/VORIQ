@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 // import {useTranslation} from 'react-i18next'
 import { useLoader } from '../hooks/useLoader.jsx';
 import useSelectState from '../hooks/useSelectState.jsx';
+import useSelect from '../hooks/useSelect.jsx';
 
 import {asyncRandomError} from '../api/asyncFunc.jsx';
 import SelectorBlock from '../components/Selectors/SelectorBlock.jsx';
@@ -19,6 +20,7 @@ const CarPage = () => {
   // const [res,setRes]=useState()
   const {runApi, resultMessage, successResult}=useLoader()
   const [currentStep, setCurrentStep]=useState(1)
+  const {isNewSearch}=useSelect()
 
   useEffect(()=>{
    console.log("kdjfskjf", successResult);
@@ -75,7 +77,7 @@ const CarPage = () => {
       </div>} */}
 
       <div className='topCarSite'>
-       { currentStep>4 &&
+       { currentStep>4 && !isNewSearch &&
         <div className='carData'>
             <h2>You have selected this car:</h2>
             <div>
@@ -93,7 +95,7 @@ const CarPage = () => {
           <h2>Click <strong>Analyze</strong> and we will collect the data for you.</h2>
         </div>}
 
-       { successResult &&
+       { successResult && !isNewSearch &&
         <div className='resultData'>
             <h1>Here will be the results of the selected car’s analysis.</h1>
             {/* <div>

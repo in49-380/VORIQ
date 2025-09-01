@@ -15,10 +15,15 @@ import { modelAnalyse, yearAnalyse, engineAnalyse } from '../../../public/fakeDB
 
 const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
     const {t}=useTranslation()
-    const {runApi}=useLoader()
-    const {setAnalysButtonIsDisabled}=useSelect()
+    const {runApi, setSuccessResult}=useLoader()
+    const {setAnalysButtonIsDisabled, isNewSearch, setIsNewSearch}=useSelect()
     const goToStep=(s)=>{setCurrentStep(s)}
       
+    const clearForNewSearching=()=>{
+       setSuccessResult(null)
+       setIsNewSearch(false)
+    } 
+
     useEffect(()=>{
         const getBrands=async()=>{
         const data= await runApi((opt)=>requestFromVehicleSelectors('brands.json',opt))
@@ -65,6 +70,8 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
     },[year.value])
 
     const onBrandChange=(newValue)=>{
+       clearForNewSearching()
+
         if (newValue===null){
         model.clear()
         year.clear()
@@ -82,6 +89,8 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
     }
 
     const onModelChange=(newValue)=>{
+       clearForNewSearching()
+
     if (newValue===null){
         year.clear()
         engine.clear()
@@ -96,6 +105,8 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
     }
 
     const onYearChange=(newValue)=>{
+       clearForNewSearching()
+
         if (!newValue || newValue.length === 0){
         engine.clear()
         year.softClear()
@@ -110,6 +121,8 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
     }
 
     const onEngineChange=(newValue)=>{
+      clearForNewSearching()
+
         if (!newValue || newValue.length === 0){
         engine.softClear()
         setAnalysButtonIsDisabled(true)
@@ -120,7 +133,14 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
         }
     }
 
-
+     useEffect(()=>{
+      if(isNewSearch){
+        brand.softClear()
+        model.clear()
+        year.clear()
+        engine.clear()
+      }
+     },[isNewSearch]) 
     // **************select styling******************
     // **********************************************
 
