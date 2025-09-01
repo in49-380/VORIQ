@@ -44,11 +44,11 @@ const put = async (url, data, callback, errorCallback) => {
   return response.data;
 };
 
-const get = async (url, signal, callback, errorCallback) => {
+const get = async (url, signal, save, callback, errorCallback) => {
   // Config is object with signal
   const config = { signal };
   const response = await axiosInstance.get(url, config).then(callback).catch(errorCallback);
-  return response.data;
+  return { response: response.data, success: 'success', save: !!save };
 };
 
 export {
