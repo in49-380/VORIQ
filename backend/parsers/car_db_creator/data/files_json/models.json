@@ -3215,6 +3215,13 @@
     {
         "brand_name": "Citroen",
         "brand_id": 19,
+        "model": "C5 Aircross 2025",
+        "year": "2025",
+        "id_model_infocar": "7316"
+    },
+    {
+        "brand_name": "Citroen",
+        "brand_id": 19,
         "model": "C5 X 2022",
         "year": "2022",
         "id_model_infocar": "6842"
@@ -3323,6 +3330,13 @@
         "model": "e-C4 X 2024",
         "year": "2024",
         "id_model_infocar": "7168"
+    },
+    {
+        "brand_name": "Citroen",
+        "brand_id": 19,
+        "model": "e-C5 Aircross 2025",
+        "year": "2025",
+        "id_model_infocar": "7317"
     },
     {
         "brand_name": "Citroen",
@@ -7436,6 +7450,20 @@
     {
         "brand_name": "KIA",
         "brand_id": 50,
+        "model": "EV4 2025",
+        "year": "2025",
+        "id_model_infocar": "7319"
+    },
+    {
+        "brand_name": "KIA",
+        "brand_id": 50,
+        "model": "EV4 Fastback 2025",
+        "year": "2025",
+        "id_model_infocar": "7320"
+    },
+    {
+        "brand_name": "KIA",
+        "brand_id": 50,
         "model": "EV6 2021",
         "year": "2021",
         "id_model_infocar": "6655"
@@ -7887,6 +7915,13 @@
         "model": "Sportage 2021",
         "year": "2021",
         "id_model_infocar": "6764"
+    },
+    {
+        "brand_name": "KIA",
+        "brand_id": 50,
+        "model": "Sportage 2025",
+        "year": "2025",
+        "id_model_infocar": "7318"
     },
     {
         "brand_name": "KIA",
@@ -12975,14 +13010,14 @@
         "brand_id": 84,
         "model": "Impreza 2017",
         "year": "2017",
-        "id_model_infocar": "5079"
+        "id_model_infocar": "5080"
     },
     {
         "brand_name": "Subaru",
         "brand_id": 84,
         "model": "Impreza 2017",
         "year": "2017",
-        "id_model_infocar": "5080"
+        "id_model_infocar": "5079"
     },
     {
         "brand_name": "Subaru",
@@ -14859,138 +14894,5 @@
         "model": "Z700 2015",
         "year": "2015",
         "id_model_infocar": "4650"
-    },
-    {
-        "brand_name": "ВАЗ",
-        "brand_id": 94,
-        "model": "Lada 4x4 Bronto 2017",
-        "year": "2017",
-        "id_model_infocar": "5368"
-    },
-    {
-        "brand_name": "ВАЗ",
-        "brand_id": 94,
-        "model": "Lada 4x4 Urban 5-дверная 2016",
-        "year": "2016",
-        "id_model_infocar": "4791"
-    },
-    {
-        "brand_name": "ВАЗ",
-        "brand_id": 94,
-        "model": "Lada Granta 2018",
-        "year": "2018",
-        "id_model_infocar": "5604"
-    },
-    {
-        "brand_name": "ВАЗ",
-        "brand_id": 94,
-        "model": "Lada Granta Cross 2019",
-        "year": "2019",
-        "id_model_infocar": "5895"
-    },
-    {
-        "brand_name": "ВАЗ",
-        "brand_id": 94,
-        "model": "Lada Granta Drive Active 2019",
-        "year": "2019",
-        "id_model_infocar": "6071"
-    },
-    {
-        "brand_name": "ВАЗ",
-        "brand_id": 94,
-        "model": "Lada Granta Hatchback 2018",
-        "year": "2018",
-        "id_model_infocar": "5606"
-    },
-    {
-        "brand_name": "ВАЗ",
-        "brand_id": 94,
-        "model": "Lada Granta Liftback 2018",
-        "year": "2018",
-        "id_model_infocar": "5605"
-    },
-    {
-        "brand_name": "ВАЗ",
-        "brand_id": 94,
-        "model": "Lada Granta SW 2018",
-        "year": "2018",
-        "id_model_infocar": "5607"
-    },
-    {
-        "brand_name": "ВАЗ",
-        "brand_id": 94,
-        "model": "Lada Kalina NFR 2015",
-        "year": "2015",
-        "id_model_infocar": "4731"
-    },
-    {
-        "brand_name": "ВАЗ",
-        "brand_id": 94,
-        "model": "Lada Niva Travel 2021",
-        "year": "2021",
-        "id_model_infocar": "6703"
-    },
-    {
-        "brand_name": "ВАЗ",
-        "brand_id": 94,
-        "model": "Lada Vesta 2015",
-        "year": "2015",
-        "id_model_infocar": "4619"
-    },
-    {
-        "brand_name": "ВАЗ",
-        "brand_id": 94,
-        "model": "Lada Vesta Cross 2018",
-        "year": "2018",
-        "id_model_infocar": "5530"
-    },
-    {
-        "brand_name": "ВАЗ",
-        "brand_id": 94,
-        "model": "Lada Vesta Sport 2018",
-        "year": "2018",
-        "id_model_infocar": "5786"
-    },
-    {
-        "brand_name": "ВАЗ",
-        "brand_id": 94,
-        "model": "Lada Vesta SW 2017",
-        "year": "2017",
-        "id_model_infocar": "5352"
-    },
-    {
-        "brand_name": "ВАЗ",
-        "brand_id": 94,
-        "model": "Lada Vesta SW Cross 2017",
-        "year": "2017",
-        "id_model_infocar": "5353"
-    },
-    {
-        "brand_name": "ВАЗ",
-        "brand_id": 94,
-        "model": "Lada Xray 2016",
-        "year": "2016",
-        "id_model_infocar": "4657"
-    },
-    {
-        "brand_name": "ВАЗ",
-        "brand_id": 94,
-        "model": "Lada Xray Cross 2018",
-        "year": "2018",
-        "id_model_infocar": "5635"
-    },
-    {
-        "brand_name": "УАЗ",
-        "brand_id": 97,
-        "model": "Патриот 2017",
-        "year": "2017",
-        "id_model_infocar": "5122"
-    },
-    {
-        "brand_name": "УАЗ",
-        "brand_id": 97,
-        "model": "Пикап 2017",
-        "year": "2017",
-        "id_model_infocar": "5123"
     }
 ]

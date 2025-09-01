@@ -6,8 +6,16 @@ server:
 
 spring:
   application:
-    name: car_catalog_service
+    name: car_catalog_service_test
 
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
   data:
     redis:
       host: localhost
@@ -24,3 +32,9 @@ springdoc:
 
 cors:
   allowed-origins: http://localhost
+
+tmp-token:
+  1: 33333333-3333-3333-3333-333333333333
+  2: 44444444-4444-4444-4444-444444444444
+  3: dddddddd-dddd-dddd-dddd-dddddddddddd
+  prefix: "tmp-token:"

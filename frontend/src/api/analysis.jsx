@@ -3,7 +3,7 @@ import { get } from './api';
 export const analysisAPI = {
   getVehicles({ signal }) {
     // return [{ name: 'Mercedes-Benz' }];
-    return get('vehicle', signal);
+    return get('vehicle', signal, true);
   },
 
   getMeta({ signal }) {

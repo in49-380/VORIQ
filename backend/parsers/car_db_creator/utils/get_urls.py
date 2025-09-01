@@ -1,4 +1,4 @@
-
+from .decorators import log_execution
 """
 This module provides functions for dynamically generating URLs used in a web scraping
 process. It contains two main functions: one for creating URLs for car models based
@@ -6,6 +6,7 @@ on a base URL and brand IDs, and another for generating URLs for individual car 
 using model IDs. The module ensures that URLs are structured correctly for data fetching.
 """
 
+@log_execution
 def get_urls_models(data, url):
     """
     Generates a list of URLs for car models based on input data.
@@ -32,7 +33,7 @@ def get_urls_models(data, url):
         url_list.append(item)
     return url_list
 
-
+@log_execution
 def get_urls_cars(data, url):
     """
     Generates a list of URLs for cars based on input data.
@@ -56,6 +57,7 @@ def get_urls_cars(data, url):
     for element in data:
         item = {
             "id": element["brand_id"],
+            "brand": element["brand_name"].capitalize(),
             "name": element["model"].capitalize(),
             "year": element["year"],
             "url": f"{url}{element['id_model_infocar']}-{element['id_model_infocar']}{elem_url_html}"

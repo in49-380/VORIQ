@@ -35,3 +35,9 @@ springdoc:
 
 cors:
   allowed-origins: ${ALLOWED_ORIGINS:http://localhost:8080,http://127.0.0.1:8080}
+
+tmp-token:
+  1: ${TMP_TOKEN_1}
+  2: ${TMP_TOKEN_2}
+  3: ${TMP_TOKEN_3}
+  prefix: "tmp-token:"

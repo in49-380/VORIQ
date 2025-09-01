@@ -458,30 +458,5 @@
         "id": 92,
         "name": "Zotye",
         "id_infocar": "1989"
-    },
-    {
-        "id": 93,
-        "name": "Богдан",
-        "id_infocar": "391"
-    },
-    {
-        "id": 94,
-        "name": "ВАЗ",
-        "id_infocar": "223"
-    },
-    {
-        "id": 95,
-        "name": "ГАЗ",
-        "id_infocar": "224"
-    },
-    {
-        "id": 96,
-        "name": "ЗАЗ",
-        "id_infocar": "225"
-    },
-    {
-        "id": 97,
-        "name": "УАЗ",
-        "id_infocar": "228"
     }
 ]
