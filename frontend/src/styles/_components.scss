@@ -163,21 +163,117 @@ FaGithub{
 .policy_container>button:active{
     color: var(--color-primary)
 }
+
 // *************************************
-// ************language switcher**********
+// ********Selector-Block*****
 // ***************************************
+.selector_container{
+    @include m.size(90vw,30vh, transparent);
+    @include m.flex-row(center, space-around)
 
-
-// ******************************************
-.car-container{
-    position: relative;
-    
 }
 
+// *************************************
+// ********analyze - newCar Buttons*****
+// ***************************************
+.analyze_button_container{
+    @include m.flex-row(n, space-around, center);
+    width: 40vw;
+    align-self: start;
+}
+.analyze_button_container button{
+    @include m.size(15vw, 5rem);
+    @include m.font (1.5rem, white, bold );
+    padding:1rem;
+}
 
+.analyze_button_container .disabled_button{
+    background-color: v.$green-button-disabled;
+    cursor: not-allowed;
+    transform:none;
+     transition-property: background-color;
+    transition-duration: 200ms;
+}
 
+.analyze_button_container .enabled_button{
+    background-color: v.$green-button;
+    transition-property: background-color;
+    transition-duration: 200ms;
+}
+.analyze_button_container .enabled_button:hover{
+    background-color: v.$green-button-hover;
+}
+// ******************************************
+// ************HintTour**********************
+// ******************************************
+.hint_container{
+    @include m.position(absolute);
+    @include m.flex-col (1rem, center, center);
+    @include m.font(1.4rem, var(--color-title), bold);
+    background-color: var(--background-secondary);
+    border: transparent;
+    border-radius: 5px;
+    padding: 1rem;
+    margin: 0;
+}
 
+.hint_container>.small_element{
+    // @include m.hcenter(absolute);
+    @include m.position(absolute, var(--tip-Offset), null,null,-10px);
+    // bottom:-10px;
+    width: 0;
+    height: 0;
+    border-left:10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px var(--background-secondary) solid;
+}
 
+.hint_container>.hint_buttons_container{
+    @include m.size (100%, 100%, none);
+    @include m.flex-row(4rem, center, center);
+}
+#b16{
+    color: v.$red-button;
+}
+#b16:hover{
+    color: v.$red-button-hover;
+}
+
+// *******************************************
+.car-container{
+    position: relative;
+}
+
+.topCarSite{
+    @include m.flex-row(10rem,space-between, center);
+    @include m.size(100%, 40%);
+}
+// *********************************************
+// *********************************************
+.carData{
+    @include m.size(40%, 90%, transparent);
+    @include m.flex-col(2rem, left, start);
+    margin-left: 2rem;    
+}
+
+.carData>h2{
+    color: v.$green-button;
+}
+
+.resultData{
+    @include m.size(40%, 90%, transparent);
+    @include m.flex-col(2rem, space-between, center);
+    margin-left: 2rem;    
+}
+
+.resultData>h2 {
+    @include m.font(2rem, var(--color-light), normal);
+    text-align: center;
+}
+
+.resultData>h1 {
+    @include m.font(3rem, v.$red-button, normal);
+}
 // *************************************************
 
 

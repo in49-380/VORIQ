@@ -5,63 +5,54 @@ import { useLoader } from "../../hooks/useLoader"
 import useSelect from "../../hooks/useSelect"
 
 
-const ButtonBlock=({brand,model,year,engine})=>{
+const ButtonBlock=({brand,model,year,engine, setCurrentStep})=>{
 
     const {t}=useTranslation()
     const {runApi, setSuccessResult}=useLoader()
-    const {analysButtonIsDisabled, setIsNewSelectorSetVisible}=useSelect()
-    const {addButtonIsDisabled, setAddButtonIsDisabled}=useSelect()
+    const {analysButtonIsDisabled}=useSelect()
+
+    const goToStep=(s)=>{setCurrentStep(s)}
     
     const handleOnClickStartAnalysis=async()=>{
         setSuccessResult(null)
         const payload = {
-        brandId: brand.value,
-        modelId: model.value,
-        yearIds: year.value.map(y => y.value),    
-        engineIds: engine.value
+            brandId: brand.value,
+            modelId: model.value,
+            yearIds: year.value,    
+            engineIds: engine.value
         };
+            console.log('year.value', year.value, 'model.value', model.value)
+
         const jsonPayload = JSON.stringify(payload);
         const response=await runApi((opt)=>getAnalyse(jsonPayload, opt))
-        setAddButtonIsDisabled(false)
         console.log('response in buttonblock', response)
+        goToStep(6)
     }
 
-
-    // const handleOnClickNewSearch=()=>{
+    const handleOnClickNewSearch=()=>{
         
-    // }
-    const handleOnClickAnotherCar=()=>{
-        setIsNewSelectorSetVisible(true)
     }
 
+    const dis_en= analysButtonIsDisabled
+         ? 'disabled_button'
+         : 'enabled_button'
 
     return(
-        <div className='flex flex-row w-[90vw] items-center justify-around'>
+        <div className='analyze_button_container'>
          <Button 
           id='b5'
           onClick={!analysButtonIsDisabled?  handleOnClickStartAnalysis:null}
-          className={`px-4 py-2 rounded-lg font-medium text-white transition-colors duration-200
-            ${analysButtonIsDisabled
-         ? 'bg-green-200 cursor-not-allowed'
-         : 'bg-green-500 hover:bg-green-600 active:bg-green-700 cursor-pointer'}`}
+          className={`${dis_en} transition-colors duration-200`}
           children={t('buttonBlock.analyze')}
-
           />
-         {/* <Button 
+         <Button
+          id='b6' 
           onClick={handleOnClickNewSearch}
-          className='bg-green-500 text-white h-auto'
+          className={`${dis_en} h-auto`}
           children={'New search'}
-          /> */}
-         <Button 
-          id='b6'
-          onClick={handleOnClickAnotherCar}
-         className={`px-4 py-2 rounded-lg font-medium text-white transition-colors duration-200
-            ${addButtonIsDisabled
-         ? 'bg-green-200 cursor-not-allowed'
-         : 'bg-green-500 hover:bg-green-600 active:bg-green-700 cursor-pointer'}`}
-          children={t('buttonBlock.addAnotherCar')}
           />
-        </div>
+        
+        </div> 
     )
 }
 export default ButtonBlock

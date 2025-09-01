@@ -2,10 +2,8 @@
 import React, {useEffect, useState} from 'react';
 // import {useTranslation} from 'react-i18next'
 import { useLoader } from '../hooks/useLoader.jsx';
-import useSelect from '../hooks/useSelect.jsx';
 import useSelectState from '../hooks/useSelectState.jsx';
 
-import Button from '../components/Button.jsx';
 import {asyncRandomError} from '../api/asyncFunc.jsx';
 import SelectorBlock from '../components/Selectors/SelectorBlock.jsx';
 import ButtonBlock from '../components/Selectors/ButtonBlock.jsx';
@@ -20,17 +18,15 @@ const CarPage = () => {
 
   // const [res,setRes]=useState()
   const {runApi, resultMessage, successResult}=useLoader()
-  const {isNewSelectorSetVisible}=useSelect()
   const [currentStep, setCurrentStep]=useState(1)
-  
-
-  // useEffect(()=>{
-  //   setRes(resultMessage);
-  // },[resultMessage])
 
   useEffect(()=>{
-    console.log('visible', isNewSelectorSetVisible);
-  },[isNewSelectorSetVisible])
+   console.log("kdjfskjf", successResult);
+  },[successResult])
+
+  // useEffect(()=>{
+  //   console.log('visible', isNewSelectorSetVisible);
+  // },[isNewSelectorSetVisible])
   
   // ***************************************************
   // const handleOnClickError = async () => {
@@ -60,7 +56,7 @@ const CarPage = () => {
 
     { res && <h2 className='text-red-500 text-2xl'>The asynchronous function is {res}</h2>}
      */}
-    {successResult &&
+    {/* {successResult &&
       <div className='bg-white border-2 border-green-500 flex flex-col items-center justify-center p-4 w-64 h-32 m-4'>
             <h2 className='text-green-500 text-xl'>Result of Analyse:</h2>
           <div>
@@ -76,13 +72,45 @@ const CarPage = () => {
             <strong>Engine:</strong> {successResult.engineIds?.label} (ID: {successResult.engineIds?.value})
           </div>
 
-      </div>}
+      </div>} */}
 
-      
-      <HintBox
-        currentStep={currentStep}
-        setCurrentStep={setCurrentStep}
-      />
+      <div className='topCarSite'>
+       { currentStep>4 &&
+        <div className='carData'>
+            <h2>You have selected this car:</h2>
+            <div>
+            <strong>Brand:</strong> {brand.value.label} 
+          </div>
+          <div>
+            <strong>Model:</strong> {model.value.label} 
+          </div>
+          <div>
+            <strong>Years:</strong> {year.value.map(y=>y.label).join(', ')}
+          </div>
+          <div>
+            <strong>Engine:</strong> {engine.value.label} 
+          </div>
+          <h2>Click <strong>Analyze</strong> and we will collect the data for you.</h2>
+        </div>}
+
+       { successResult &&
+        <div className='resultData'>
+            <h1>Here will be the results of the selected car’s analysis.</h1>
+            {/* <div>
+            <strong>Brand:</strong> {successResult.brandId?.label} 
+          </div>
+          <div>
+            <strong>Model:</strong> {successResult.modelId?.label} 
+          </div>
+          <div>
+            <strong>Years:</strong> {successResult.yearIds?.map(y=>y.label).join(', ')}
+          </div>
+          <div>
+            <strong>Engine:</strong> {successResult.engineIds?.label} 
+          </div> */}
+          <h2>* Not necessarily here — it will depend on the design — but they will be shown.</h2>
+        </div>}
+      </div>
 
       <SelectorBlock
         brand={brand}
@@ -100,6 +128,10 @@ const CarPage = () => {
         setCurrentStep={setCurrentStep}
       />
 
+      <HintBox
+        currentStep={currentStep}
+        setCurrentStep={setCurrentStep}
+      />
 </div>
 
     );

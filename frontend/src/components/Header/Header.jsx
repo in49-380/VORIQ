@@ -9,12 +9,20 @@ const Header = () => {
          title='GitHub'
          className="absolute top-4 right-4"  
       />
-      <I18nDropDown />       
+      <I18nDropDown />    
+
       <button id='b13'
         onClick={()=>{
         localStorage.removeItem('acceptedCookies')
       }}>
         delete Cookies-consent for Test
+      </button>
+
+      <button id='b20'
+        onClick={()=>{
+        localStorage.removeItem('hintIsViewed')
+      }}>
+        delete Hint-mark for Test
       </button>
     </header>
    );

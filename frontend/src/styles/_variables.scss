@@ -9,6 +9,7 @@ $red-button: rgb(226, 84, 84);
 $red-button-hover:red;
 $green-button:rgb(87, 199, 87);
 $green-button-hover:green;
+$green-button-disabled:rgb(187, 250, 187);
 $gray-button:gray;
 $gray-button-hover:rgb(78, 77, 77);
 
@@ -22,7 +23,7 @@ $gray-button-hover:rgb(78, 77, 77);
     --color-primary:rgb(58, 58, 58);
     --color-secondary:rgb(63, 61, 61);
     --color-title:rgb(27, 27, 27);
-    --color-light: #fffefe;
+    --color-light: #ffd6d6;
     
     --box-shadow: 0 10px 15px -3px rgba(36, 8, 18, 0.1), 0 4px 6px -2px rgba(36, 8, 18, 0.05);
     

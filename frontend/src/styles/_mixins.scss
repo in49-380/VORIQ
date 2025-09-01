@@ -84,3 +84,9 @@
       top: 50%;
       transform: translate(-50%, -50%);
 }
+
+@mixin hcenter($position) {
+      position: $position;
+      left: 50%;
+      transform: translate(-50%, 0);
+}

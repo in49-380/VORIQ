@@ -70,6 +70,7 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
         year.clear()
         engine.clear()
         brand.softClear()
+        setAnalysButtonIsDisabled(true)
         } else {
             model.softClear()
             year.softClear()
@@ -85,6 +86,7 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
         year.clear()
         engine.clear()
         model.softClear()
+        setAnalysButtonIsDisabled(true)
     } else {
             year.softClear()
             model.setValue(newValue)
@@ -97,25 +99,30 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
         if (!newValue || newValue.length === 0){
         engine.clear()
         year.softClear()
+        setAnalysButtonIsDisabled(true)
         } else {
             engine.softClear()
             year.setValue(newValue)
             engine.setDisabled(false)
             goToStep(4)
+           
         }   
     }
 
     const onEngineChange=(newValue)=>{
+        if (!newValue || newValue.length === 0){
+        engine.softClear()
+        setAnalysButtonIsDisabled(true)
+        } else {
         engine.setValue(newValue)
         setAnalysButtonIsDisabled(false)
         goToStep(5)
+        }
     }
+
 
     // **************select styling******************
     // **********************************************
-
-    const className= "px-3 py-1.5 w-50 bg-transparent text-sm text-black cursor-pointer outline-none hover:bg-black/5 focus:bg-black/10 appearance-none";
-    const optionClassName= "mt-1 w-full bg-transparent shadow-none border-none outline-none";
 
     const DropdownIndicator=(props)=>{
       return (
@@ -131,17 +138,18 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
       </RSComponents.DropdownIndicator>
   );
     }
+
     
     const customStyles={
         container:(provided)=>({
           ...provided,
-          width:'20%'
+          width:'20%',
         }),
 
         control: (provided, state)=>({
             ...provided,
             backgroundColor: 'var(--background-light)',
-            
+                      
             '&:hover': { backgroundColor: 'var(--background-secondary)',
                          border:'none'   
              },
@@ -171,10 +179,33 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
 
         }),
 
+        menuList: (provided) => ({
+            ...provided,
+            maxHeight: "30rem",
+            "::-webkit-scrollbar": {
+              width: "0.8rem",
+            },
+            "::-webkit-scrollbar-track": {
+              background: "transparent",
+            },
+            "::-webkit-scrollbar-thumb": {
+              background: "var(--background-secondary)",
+              borderRadius: "4px",
+            },
+        }),
+
         singleValue: (provided) => ({
             ...provided,
-            color: 'blue',
+            color: 'var(--color-title)',
             
+        }),
+
+        multiValue: (provided) => ({
+          ...provided,
+          backgroundColor: "none",
+          display: "flex",
+          alignItems: "center",
+          gap: "4px",
         }),
 
         option: (provided, state) => ({
@@ -184,12 +215,17 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
                 : 'var(--background-primary)',
             color: state.isFocused ? 'var(--color-light)' : 'null',
             cursor: 'pointer',
+            userSelect: "none",
+             ":active": {
+              ...provided[":active"],
+              backgroundColor: "var(--backgound-primary)",
+    },
          }),
 
     }
 
   return(
-      <div className="h-[30vh] w-[90vw] flex flex-row items-center justify-around bg-blue-100 border border-red-500">
+      <div className="selector_container">
             
             
             <Select

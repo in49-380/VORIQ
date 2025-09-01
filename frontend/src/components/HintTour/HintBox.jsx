@@ -3,9 +3,8 @@ import {useState} from 'react'
 import useHintBox from '../../hooks/useHintBox'
 import Button from "../Button";
 // import {changeLanguage } from "i18next";
-import { SelectContext } from "../../hooks/useSelect";
 
-const HintBox=({width, height, top, left, currentStep, setCurrentStep})=>{
+const HintBox=({currentStep, setCurrentStep})=>{
 
   const hintTour=[
     { step: 1, value: 's1', content: 'hint1' },
@@ -17,7 +16,6 @@ const HintBox=({width, height, top, left, currentStep, setCurrentStep})=>{
   ]
 
   const {hintBoxData}=useHintBox()
-  // const [currentStep, setCurrentStep]=useState(1)
   const [isHintAvaible, setIsHintAvaible]=useState(currentStep<5)
 
     const currentHint=hintTour
@@ -27,13 +25,14 @@ const HintBox=({width, height, top, left, currentStep, setCurrentStep})=>{
     .filter(item=>item.id===currentHint.value)
     .map(hint=>({
       coord:{
-        top: top||hint.coord.top,
-        left:left||hint.coord.left
+        top: hint.coord.top,
+        left:hint.coord.left
       },
       size:{
-        width:width||hint.size.width,
-        height:height||hint.size.height
-      }
+        width:hint.size.width,
+        height:hint.size.height
+      },
+      tipOffset:hint.tipOffset
     }))[0]  
 
     const hintStyle=
@@ -42,6 +41,9 @@ const HintBox=({width, height, top, left, currentStep, setCurrentStep})=>{
             top: `${currentBoxData?.coord?.top}px`, 
             left:`${currentBoxData?.coord?.left}px` }
 
+    const tipStyle={
+      "--tip-Offset":`${currentBoxData?.tipOffset}px`
+    }        
 
     
             
@@ -66,29 +68,30 @@ const HintBox=({width, height, top, left, currentStep, setCurrentStep})=>{
       <> 
           <div
             key={currentHint?.stepValue}
-            className="absolute  bg-gray-400 rounded-lg flex flex-col items-center justify-center text-black font-bold m-12 mx-auto py-4"
+            className="hint_container"
             style={hintStyle}
           > 
             {currentHint?.content}
             <div
-              className="absolute bottom-[-10px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[10px] border-t-gray-400"
+              className="small_element"
+              style={tipStyle}
             />
-            <div className="flex flex-row"> 
+            <div className="hint_buttons_container"> 
               
+                <Button id='b16'
+                onClick={onCloseClick}
+                children={'close'}/>
+
                 {currentStep>1 && 
                 <Button id='b14'
                 onClick={onPrevClick}
                 children={'prev'}/>}
                 
-                {currentStep<5 && 
+                {currentStep<6 && 
                 <Button id='b15'
                 onClick={onNextClick}
                 children={'next'}/>}
 
-                <Button id='b16'
-                onClick={onCloseClick}
-                children={'close'}
-                />
               </div>
           
           </div>
