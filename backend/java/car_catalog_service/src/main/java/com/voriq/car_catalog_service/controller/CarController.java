@@ -39,9 +39,9 @@ public class CarController implements CarApi {
                 pageable));
     }
 
-
     @Override
     public ResponseEntity<CarResponseDto> getById(Long id) {
+
         return ResponseEntity.ok(service.getById(id));
     }
 }
