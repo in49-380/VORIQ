@@ -73,7 +73,7 @@ jobs:
             # CONTAINER="dev_security_service" && \
             docker container run -d \
             --restart unless-stopped \
-            --name "$CONTAINER" \
+            --name $CONTAINER \
             -p 8081:8081 \
             -v "$CONTAINER"_log:/opt/app/logs \
             -e SPRING_PROFILES_ACTIVE=dev \
@@ -96,12 +96,8 @@ jobs:
             -e LOG_DIR=/opt/app/logs \
             -e FIXED_DELAY_MS=259200000 \
             -e INITIAL_DELAY_MS=60000 \
-            # -e TMP_TOKEN_1=3f2f9b4a-26a7-4b0c-a1b2-7e7e05f3c4d1 \
-            # -e TMP_TOKEN_2=c1a81c55-78db-4df9-9c39-2a9df7e9b46d \
-            # -e TMP_TOKEN_3=8d74f2d1-4c2e-4c90-b58b-1ac9e3c0a527 \
-            #--add-host host.docker.internal:host-gateway \
-            "$IMAGE":"$TAG" \
-            docker network connect dbnetwork "$CONTAINER"
+            $IMAGE:$TAG \
+            docker network connect dbnetwork $CONTAINER
 
             # clean up old images to save space
             #docker image prune -f 
