@@ -7,7 +7,6 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -55,7 +54,7 @@ public class SecurityConfig {
 
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-    private final TmpTokenAuthFilter tmpTokenAuthFilter ;
+    private final TmpTokenAuthFilter tmpTokenAuthFilter;
 
     @Value("${cors.allowed-origins}")
     private String allowedOrigins;
@@ -79,8 +78,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain configureAuth(HttpSecurity http) throws Exception {
 
-
-
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(withDefaults())
@@ -103,7 +100,7 @@ public class SecurityConfig {
                         .authenticationEntryPoint(customAuthenticationEntryPoint)
                         .accessDeniedHandler(customAccessDeniedHandler)
                 )
-                          .addFilterBefore(tmpTokenAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(tmpTokenAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

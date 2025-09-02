@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
@@ -24,6 +25,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import static com.voriq.car_catalog_service.config.SecurityConfig.FUEL_TYPE_URL;
 import static com.voriq.car_catalog_service.config.SecurityConfig.YEAR_URL;
+import static com.voriq.car_catalog_service.config.initialaler.RedisTmpTokenInitializer.removeOldTmpToken;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doThrow;
@@ -42,6 +44,12 @@ class YearControllerIT {
 
     @Value("${tmp-token.1}")
     private String tmpToken1;
+
+    @Value("${tmp-token.prefix}")
+    private String prefix;
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     @Autowired
     private MockMvc mockMvc;
@@ -67,6 +75,11 @@ class YearControllerIT {
         assertEquals(error.getPath(), url);
 
         return error;
+    }
+
+    @AfterAll
+    void cleanRedis() {
+        removeOldTmpToken(redisTemplate, prefix);
     }
 
     @Nested
