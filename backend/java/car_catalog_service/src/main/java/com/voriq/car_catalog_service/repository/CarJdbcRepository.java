@@ -27,22 +27,22 @@ public class CarJdbcRepository implements CarRepository {
                     .build();
 
     private static final String BASE_FROM = """
-        FROM cars c
-        JOIN models      m ON m.id = c.model_id
-        JOIN brands      b ON b.id = m.brand_id
-        JOIN engines     e ON e.id = c.engine_id
-        JOIN fuel_types  f ON f.id = e.fuel_type_id
-        JOIN years       y ON y.id = c.year_id
-        """;
+    FROM cars c
+    JOIN models      m ON m.id = c.model_id
+    JOIN brands      b ON b.id = m.brand_id
+    JOIN engines     e ON e.id = c.engine_id
+    JOIN fuel_types  f ON f.id = e.fuel_type_id
+    JOIN years       y ON y.id = c.year_id
+    """;
 
     private static final String BASE_SELECT = """
-        SELECT  c.id,
-                m.name  AS model,
-                e.type  AS engine,
-                f.name  AS fuel_type,
-                b.name  AS brand,
-                y.year  AS year
-        """ + BASE_FROM;
+    SELECT  c.id,
+            m.name       AS model,
+            e.type       AS engine,
+            f.name       AS fuel_type,
+            b.name       AS brand,
+            y.year_value AS year
+    """ + BASE_FROM;
 @Override
     public List<CarResponseDto> search(String brand, String model, String fuelType, String engineType,
                                        Integer yearFrom, Integer yearTo,
@@ -97,11 +97,11 @@ public class CarJdbcRepository implements CarRepository {
             args.add(engineType);
         }
         if (yearFrom != null) {
-            where.append(" AND y.year >= ? ");
+            where.append(" AND y.year_value >= ? ");
             args.add(yearFrom);
         }
         if (yearTo != null) {
-            where.append(" AND y.year <= ? ");
+            where.append(" AND y.year_value <= ? ");
             args.add(yearTo);
         }
 
