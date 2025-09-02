@@ -48,7 +48,7 @@ def process_db_models():
         model_item = {
             "brand_id": model["brand_id"],
             "id": index,
-            "name": model["model"].capitalize()
+            "name": model["model_name"].capitalize()
         }
         models_db_list.append(model_item)
     return save_json(models_db_list, "models_db.json", "db_json")
@@ -148,8 +148,8 @@ def process_db_cars():
 
 
     for index, car in enumerate(cars_time, start=1):
+        print(f"car: {car}")
         logger.info(f"🚗 Car processing: {car['name']} (id: {car['id']})")
-
         model_id = models_lookup.get(car["name"])
         year_id = years_lookup.get(car["year"])
         car_info = car.get("car_info", {})

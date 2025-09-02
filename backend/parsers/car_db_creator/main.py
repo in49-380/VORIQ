@@ -99,8 +99,8 @@ def process_models():
                     item = {
                         "brand_name": name,
                         "brand_id": id,
-                        # "model": model["nick"],
                         "model": model["title"],
+                        "model_name": model["title"][:-5],
                         "year": model["title"][-4:],
                         "id_model_infocar": model["id"]
                     }
@@ -124,8 +124,7 @@ def process_cars():
     urls_list = load_json("url_cars_list.json")
     car_data_list = []
 
-    for url_list in urls_list[:50]:
-
+    for url_list in urls_list[:10]:
         response_car = requests.get(url_list["url"], headers=headers)
         tree = html.fromstring(response_car.content)
         cars_elements = tree.xpath('//tbody[@id="cat4"]/tr')
@@ -140,7 +139,8 @@ def process_cars():
         item = {
             'id': url_list["id"],
             'brand': url_list["brand"],
-            'name': url_list["name"],
+            'name': url_list["name"][:-5],
+            'name_and_year':url_list["name"],
             'year': url_list["year"],
             'car_info': car_data
         }

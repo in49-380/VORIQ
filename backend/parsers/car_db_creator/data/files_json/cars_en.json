@@ -2,7 +2,8 @@
     {
         "id": 1,
         "brand": "Acura",
-        "name": "Adx 2025",
+        "name": "Adx",
+        "name_and_year": "Adx 2025",
         "year": "2025",
         "car_info": {
             "Engine": "1.5 VTEC Turbo",
@@ -21,7 +22,8 @@
     {
         "id": 1,
         "brand": "Acura",
-        "name": "Ilx 2015",
+        "name": "Ilx",
+        "name_and_year": "Ilx 2015",
         "year": "2015",
         "car_info": {
             "Engine": "2.4 i-VTEC",
@@ -42,7 +44,8 @@
     {
         "id": 1,
         "brand": "Acura",
-        "name": "Ilx 2018",
+        "name": "Ilx",
+        "name_and_year": "Ilx 2018",
         "year": "2018",
         "car_info": {
             "Engine": "2.4 i-VTEC",
@@ -63,7 +66,8 @@
     {
         "id": 1,
         "brand": "Acura",
-        "name": "Integra 2022",
+        "name": "Integra",
+        "name_and_year": "Integra 2022",
         "year": "2022",
         "car_info": {
             "Engine": "1.5 VTC Turbo",
@@ -85,7 +89,8 @@
     {
         "id": 1,
         "brand": "Acura",
-        "name": "Mdx 2016",
+        "name": "Mdx",
+        "name_and_year": "Mdx 2016",
         "year": "2016",
         "car_info": {
             "Engine": "3.5i i-VTEC",
@@ -106,7 +111,8 @@
     {
         "id": 1,
         "brand": "Acura",
-        "name": "Mdx 2020",
+        "name": "Mdx",
+        "name_and_year": "Mdx 2020",
         "year": "2020",
         "car_info": {
             "Engine": "3.5i i-VTEC",
@@ -124,7 +130,8 @@
     {
         "id": 1,
         "brand": "Acura",
-        "name": "Nsx 2015",
+        "name": "Nsx",
+        "name_and_year": "Nsx 2015",
         "year": "2015",
         "car_info": {
             "Engine": "3.5h V6 Turbo",
@@ -155,7 +162,8 @@
     {
         "id": 1,
         "brand": "Acura",
-        "name": "Rdx 2016",
+        "name": "Rdx",
+        "name_and_year": "Rdx 2016",
         "year": "2016",
         "car_info": {
             "Engine": "3.5i SOHC i-VTEC VCM",
@@ -176,7 +184,8 @@
     {
         "id": 1,
         "brand": "Acura",
-        "name": "Rdx 2018",
+        "name": "Rdx",
+        "name_and_year": "Rdx 2018",
         "year": "2018",
         "car_info": {
             "Engine": "2.0 i-VTEC Turbo",
@@ -198,7 +207,8 @@
     {
         "id": 1,
         "brand": "Acura",
-        "name": "Rdx 2021",
+        "name": "Rdx",
+        "name_and_year": "Rdx 2021",
         "year": "2021",
         "car_info": {
             "Engine": "2.0 VTEC Turbo",
@@ -215,856 +225,6 @@
             "Maximum power at rpm": "6500",
             "Max. torque": "380",
             "Maximum torque at rpm": "1600–4500"
-        }
-    },
-    {
-        "id": 1,
-        "brand": "Acura",
-        "name": "Rlx 2017",
-        "year": "2017",
-        "car_info": {
-            "Engine": "3.5h DOHC VTEC",
-            "Engine type": "Hybrid",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "3500",
-            "Cylinder arrangement": "V-shaped",
-            "Number of cylinders": "6",
-            "Number of valves": "24",
-            "The degree of compression": "11.5:1",
-            "Max. power output": "377",
-            "Maximum power at rpm": "6500",
-            "Max. torque": "470",
-            "Maximum torque at rpm": "4700",
-            "EV mode": "+",
-            "The possibility of charging from the network": "+",
-            "The power of the electric motor, L.S.": "119",
-            "Max turnover.Power of the electric motor, rpm": "3000",
-            "Torque of an electric motor, nm": "294",
-            "Max turnover.moment of the electric motor, rpm": "500-2000",
-            "The power of the ICE, L.S.": "310",
-            "Max turnover.power of the internal combustion engine, about./min.": "6500",
-            "Twisting ICE, NM": "369",
-            "Max turnover.moment of the ICE, about./min.": "4500"
-        }
-    },
-    {
-        "id": 1,
-        "brand": "Acura",
-        "name": "Rlx sport hybrid 2017",
-        "year": "2017",
-        "car_info": {
-            "Engine": "3.5h DOHC VTEC",
-            "Engine type": "Hybrid",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "3500",
-            "Cylinder arrangement": "V-shaped",
-            "Number of cylinders": "6",
-            "Number of valves": "24",
-            "The degree of compression": "11.5:1",
-            "Max. power output": "377",
-            "Maximum power at rpm": "6500",
-            "Max. torque": "470",
-            "Maximum torque at rpm": "4700",
-            "EV mode": "+",
-            "The possibility of charging from the network": "+",
-            "The power of the electric motor, L.S.": "119",
-            "Max turnover.Power of the electric motor, rpm": "3000",
-            "Torque of an electric motor, nm": "294",
-            "Max turnover.moment of the electric motor, rpm": "500-2000",
-            "The power of the ICE, L.S.": "310",
-            "Max turnover.power of the internal combustion engine, about./min.": "6500",
-            "Twisting ICE, NM": "369",
-            "Max turnover.moment of the ICE, about./min.": "4500"
-        }
-    },
-    {
-        "id": 1,
-        "brand": "Acura",
-        "name": "Tlx 2017",
-        "year": "2017",
-        "car_info": {
-            "Engine": "2.4i DOHC i-VTEC",
-            "Engine code": "K24W7",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "2356",
-            "Cylinder arrangement": "Inline",
-            "Number of cylinders": "4",
-            "Number of valves": "16",
-            "The degree of compression": "11.6:1",
-            "Max. power output": "206",
-            "Maximum power at rpm": "6800",
-            "Max. torque": "247",
-            "Maximum torque at rpm": "4500"
-        }
-    },
-    {
-        "id": 1,
-        "brand": "Acura",
-        "name": "Tlx 2020",
-        "year": "2020",
-        "car_info": {
-            "Engine": "2.0 i-VTEC Turbo",
-            "Engine code": "K20C6",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "1996",
-            "Cylinder arrangement": "Inline",
-            "Number of cylinders": "4",
-            "Number of valves": "16",
-            "Turbocharged": "+",
-            "The degree of compression": "9.8:1",
-            "Max. power output": "276",
-            "Maximum power at rpm": "6500",
-            "Max. torque": "380",
-            "Maximum torque at rpm": "1600–4500"
-        }
-    },
-    {
-        "id": 1,
-        "brand": "Acura",
-        "name": "Zdx 2023",
-        "year": "2023",
-        "car_info": {
-            "Engine": "102 kWh",
-            "Engine type": "Electric",
-            "Max. power output": "342",
-            "Max. torque": "441",
-            "The number of electric motors": "1"
-        }
-    },
-    {
-        "id": 2,
-        "brand": "Alfa romeo",
-        "name": "4c spider 2015",
-        "year": "2015",
-        "car_info": {
-            "Engine": "1.8i",
-            "Engine code": "940 A1.000",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "1749",
-            "Cylinder arrangement": "Inline",
-            "Number of cylinders": "4",
-            "Number of valves": "16",
-            "Turbocharged": "+",
-            "The degree of compression": "9.5:1",
-            "Max. power output": "240",
-            "Maximum power at rpm": "6000",
-            "Max. torque": "350",
-            "Maximum torque at rpm": "1700"
-        }
-    },
-    {
-        "id": 2,
-        "brand": "Alfa romeo",
-        "name": "Giulia 2016",
-        "year": "2016",
-        "car_info": {
-            "Engine": "2.9i V6",
-            "Engine code": "F154 V6",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "2891",
-            "Cylinder arrangement": "V-shaped",
-            "Number of cylinders": "6",
-            "Number of valves": "24",
-            "Turbocharged": "+",
-            "The degree of compression": "9.3:1",
-            "Max. power output": "510",
-            "Maximum power at rpm": "6500",
-            "Max. torque": "600",
-            "Maximum torque at rpm": "2500-5000"
-        }
-    },
-    {
-        "id": 2,
-        "brand": "Alfa romeo",
-        "name": "Giulietta 2016",
-        "year": "2016",
-        "car_info": {
-            "Engine": "1.4i T-JET",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "1368",
-            "Cylinder arrangement": "Inline",
-            "Number of cylinders": "4",
-            "Number of valves": "16",
-            "Turbocharged": "+",
-            "The degree of compression": "9.8:1",
-            "Max. power output": "120",
-            "Maximum power at rpm": "5000",
-            "Max. torque": "215",
-            "Maximum torque at rpm": "2500"
-        }
-    },
-    {
-        "id": 2,
-        "brand": "Alfa romeo",
-        "name": "Junior 2024",
-        "year": "2024",
-        "car_info": {
-            "Engine": "1.2 Mild-Hybrid",
-            "Engine type": "Hybrid",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "1199",
-            "Cylinder arrangement": "Inline",
-            "Number of cylinders": "3",
-            "Number of valves": "12",
-            "Turbocharged": "+",
-            "Max. power output": "136",
-            "Maximum power at rpm": "5750",
-            "Max. torque": "230",
-            "Maximum torque at rpm": "1500",
-            "The power of the electric motor, L.S.": "28"
-        }
-    },
-    {
-        "id": 2,
-        "brand": "Alfa romeo",
-        "name": "Junior elettrica 2024",
-        "year": "2024",
-        "car_info": {
-            "Engine": "115 kW",
-            "Engine type": "Electric",
-            "Max. power output": "156",
-            "Max. torque": "260",
-            "EV mode": "+",
-            "The possibility of charging from the network": "+",
-            "The number of electric motors": "1"
-        }
-    },
-    {
-        "id": 2,
-        "brand": "Alfa romeo",
-        "name": "Mito 2016",
-        "year": "2016",
-        "car_info": {
-            "Engine": "1.4i",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "1368",
-            "Cylinder arrangement": "Inline",
-            "Number of cylinders": "4",
-            "Number of valves": "8",
-            "The degree of compression": "11.0:1",
-            "Max. power output": "77",
-            "Maximum power at rpm": "6000",
-            "Max. torque": "115",
-            "Maximum torque at rpm": "3000"
-        }
-    },
-    {
-        "id": 2,
-        "brand": "Alfa romeo",
-        "name": "Stelvio 2017",
-        "year": "2017",
-        "car_info": {
-            "Engine": "2.0i MultiAir",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "1995",
-            "Cylinder arrangement": "Inline",
-            "Number of cylinders": "4",
-            "Number of valves": "16",
-            "Turbocharged": "+",
-            "The degree of compression": "10.0:1",
-            "Max. power output": "200",
-            "Maximum power at rpm": "4500",
-            "Max. torque": "330",
-            "Maximum torque at rpm": "1750"
-        }
-    },
-    {
-        "id": 2,
-        "brand": "Alfa romeo",
-        "name": "Tonale 2022",
-        "year": "2022",
-        "car_info": {
-            "Engine": "1.5h",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "1469",
-            "Cylinder arrangement": "Inline",
-            "Number of cylinders": "4",
-            "Number of valves": "16",
-            "Turbocharged": "+",
-            "Max. power output": "130",
-            "Maximum power at rpm": "5750",
-            "Max. torque": "240",
-            "Maximum torque at rpm": "1500"
-        }
-    },
-    {
-        "id": 3,
-        "brand": "Alpina",
-        "name": "B3 saloon 2020",
-        "year": "2020",
-        "car_info": {
-            "Engine": "3.0i",
-            "Engine code": "S58",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "2993",
-            "Cylinder arrangement": "Inline",
-            "Number of cylinders": "6",
-            "Number of valves": "24",
-            "The degree of compression": "9.3:1",
-            "Max. power output": "462",
-            "Maximum power at rpm": "5500–7000",
-            "Max. torque": "700",
-            "Maximum torque at rpm": "2500–4500"
-        }
-    },
-    {
-        "id": 3,
-        "brand": "Alpina",
-        "name": "B3 touring 2020",
-        "year": "2020",
-        "car_info": {
-            "Engine": "3.0i",
-            "Engine code": "S58",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "2993",
-            "Cylinder arrangement": "Inline",
-            "Number of cylinders": "6",
-            "Number of valves": "24",
-            "The degree of compression": "9.3:1",
-            "Max. power output": "462",
-            "Maximum power at rpm": "5500–7000",
-            "Max. torque": "700",
-            "Maximum torque at rpm": "2500–4500"
-        }
-    },
-    {
-        "id": 3,
-        "brand": "Alpina",
-        "name": "B5 saloon 2020",
-        "year": "2020",
-        "car_info": {
-            "Engine": "4.4i",
-            "Engine code": "N63",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "4395",
-            "Cylinder arrangement": "V-shaped",
-            "Number of cylinders": "8",
-            "Number of valves": "32",
-            "The degree of compression": "10.5:1",
-            "Max. power output": "621",
-            "Maximum power at rpm": "5500–6500",
-            "Max. torque": "800",
-            "Maximum torque at rpm": "2000–5000"
-        }
-    },
-    {
-        "id": 3,
-        "brand": "Alpina",
-        "name": "B5 touring 2020",
-        "year": "2020",
-        "car_info": {
-            "Engine": "4.4i",
-            "Engine code": "N63",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "4395",
-            "Cylinder arrangement": "V-shaped",
-            "Number of cylinders": "8",
-            "Number of valves": "32",
-            "The degree of compression": "10.5:1",
-            "Max. power output": "621",
-            "Maximum power at rpm": "5500–6500",
-            "Max. torque": "800",
-            "Maximum torque at rpm": "2000–5000"
-        }
-    },
-    {
-        "id": 3,
-        "brand": "Alpina",
-        "name": "B7 2019",
-        "year": "2019",
-        "car_info": {
-            "Engine": "4.4i",
-            "Engine code": "N63",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "4395",
-            "Cylinder arrangement": "V-shaped",
-            "Number of cylinders": "8",
-            "Number of valves": "32",
-            "The degree of compression": "10.5:1",
-            "Max. power output": "608",
-            "Maximum power at rpm": "5500–6500",
-            "Max. torque": "800",
-            "Maximum torque at rpm": "2000–5000"
-        }
-    },
-    {
-        "id": 3,
-        "brand": "Alpina",
-        "name": "B8 gran coupe 2021",
-        "year": "2021",
-        "car_info": {
-            "Engine": "4.4i",
-            "Engine code": "N63",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "4395",
-            "Cylinder arrangement": "V-shaped",
-            "Number of cylinders": "8",
-            "Number of valves": "32",
-            "The degree of compression": "10.5:1",
-            "Max. power output": "621",
-            "Maximum power at rpm": "5500–6500",
-            "Max. torque": "800",
-            "Maximum torque at rpm": "2000–5000"
-        }
-    },
-    {
-        "id": 3,
-        "brand": "Alpina",
-        "name": "D3 s saloon 2020",
-        "year": "2020",
-        "car_info": {
-            "Engine": "3.0d",
-            "Engine code": "B57",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "2993",
-            "Cylinder arrangement": "Inline",
-            "Number of cylinders": "6",
-            "Number of valves": "24",
-            "The degree of compression": "16.5:1",
-            "Max. power output": "355",
-            "Maximum power at rpm": "4000–4200",
-            "Max. torque": "730",
-            "Maximum torque at rpm": "1750–2750"
-        }
-    },
-    {
-        "id": 3,
-        "brand": "Alpina",
-        "name": "D3 s touring 2020",
-        "year": "2020",
-        "car_info": {
-            "Engine": "3.0d",
-            "Engine code": "B57",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "2993",
-            "Cylinder arrangement": "Inline",
-            "Number of cylinders": "6",
-            "Number of valves": "24",
-            "The degree of compression": "16.5:1",
-            "Max. power output": "355",
-            "Maximum power at rpm": "4000–4200",
-            "Max. torque": "730",
-            "Maximum torque at rpm": "1750–2750"
-        }
-    },
-    {
-        "id": 3,
-        "brand": "Alpina",
-        "name": "D5 s saloon 2020",
-        "year": "2020",
-        "car_info": {
-            "Engine": "3.0d",
-            "Engine code": "B57",
-            "Engine type": "ICE",
-            "Fuel type": "Diesel",
-            "Engine displacement, cc": "2993",
-            "Cylinder arrangement": "Inline",
-            "Number of cylinders": "6",
-            "Number of valves": "24",
-            "Turbocharged": "–",
-            "The degree of compression": "16:1",
-            "Max. power output": "408",
-            "Maximum power at rpm": "4000–5000",
-            "Max. torque": "800",
-            "Maximum torque at rpm": "1750–2750"
-        }
-    },
-    {
-        "id": 3,
-        "brand": "Alpina",
-        "name": "D5 s touring 2020",
-        "year": "2020",
-        "car_info": {
-            "Engine": "3.0d",
-            "Engine code": "B57",
-            "Engine type": "ICE",
-            "Fuel type": "Diesel",
-            "Engine displacement, cc": "2993",
-            "Cylinder arrangement": "Inline",
-            "Number of cylinders": "6",
-            "Number of valves": "24",
-            "Turbocharged": "–",
-            "The degree of compression": "16:1",
-            "Max. power output": "408",
-            "Maximum power at rpm": "4000–5000",
-            "Max. torque": "800",
-            "Maximum torque at rpm": "1750–2750"
-        }
-    },
-    {
-        "id": 3,
-        "brand": "Alpina",
-        "name": "Xb7 2020",
-        "year": "2020",
-        "car_info": {
-            "Engine": "4.4i",
-            "Engine code": "N63",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "4395",
-            "Cylinder arrangement": "V-shaped",
-            "Number of cylinders": "8",
-            "Number of valves": "32",
-            "The degree of compression": "10.5:1",
-            "Max. power output": "621",
-            "Maximum power at rpm": "5500–6500",
-            "Max. torque": "800",
-            "Maximum torque at rpm": "2000–5000"
-        }
-    },
-    {
-        "id": 3,
-        "brand": "Alpina",
-        "name": "Xd3 2021",
-        "year": "2021",
-        "car_info": {
-            "Engine": "3.0d",
-            "Engine code": "B57",
-            "Engine type": "ICE",
-            "Fuel type": "Diesel",
-            "Engine displacement, cc": "2993",
-            "Cylinder arrangement": "Inline",
-            "Number of cylinders": "6",
-            "Number of valves": "24",
-            "Turbocharged": "–",
-            "The degree of compression": "16:1",
-            "Max. power output": "394",
-            "Maximum power at rpm": "4000–5000",
-            "Max. torque": "800",
-            "Maximum torque at rpm": "1750–3000"
-        }
-    },
-    {
-        "id": 4,
-        "brand": "Aston martin",
-        "name": "Db11 2016",
-        "year": "2016",
-        "car_info": {
-            "Engine": "5.2i",
-            "Engine code": "AE31",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "5204",
-            "Cylinder arrangement": "V-shaped",
-            "Number of cylinders": "12",
-            "Number of valves": "48",
-            "Turbocharged": "+",
-            "The degree of compression": "9.3:1",
-            "Max. power output": "608",
-            "Maximum power at rpm": "6500",
-            "Max. torque": "700",
-            "Maximum torque at rpm": "1500"
-        }
-    },
-    {
-        "id": 4,
-        "brand": "Aston martin",
-        "name": "Db11 volante 2018",
-        "year": "2018",
-        "car_info": {
-            "Engine": "4.0i",
-            "Engine code": "M177",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "3982",
-            "Cylinder arrangement": "V-shaped",
-            "Number of cylinders": "8",
-            "Number of valves": "32",
-            "Max. power output": "510",
-            "Maximum power at rpm": "6000",
-            "Max. torque": "675",
-            "Maximum torque at rpm": "2000-5000"
-        }
-    },
-    {
-        "id": 4,
-        "brand": "Aston martin",
-        "name": "Dbs superleggera 2018",
-        "year": "2018",
-        "car_info": {
-            "Engine": "5.2i",
-            "Engine code": "AE31",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "5204",
-            "Cylinder arrangement": "V-shaped",
-            "Number of cylinders": "12",
-            "Number of valves": "48",
-            "The degree of compression": "9.3:1",
-            "Max. power output": "715",
-            "Maximum power at rpm": "6500",
-            "Max. torque": "900",
-            "Maximum torque at rpm": "1800-5000"
-        }
-    },
-    {
-        "id": 4,
-        "brand": "Aston martin",
-        "name": "Dbx 2020",
-        "year": "2020",
-        "car_info": {
-            "Engine": "4.0i",
-            "Engine code": "M177",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "3982",
-            "Cylinder arrangement": "V-shaped",
-            "Number of cylinders": "8",
-            "Number of valves": "32",
-            "The degree of compression": "8.6:1",
-            "Max. power output": "550",
-            "Maximum power at rpm": "6500",
-            "Max. torque": "700",
-            "Maximum torque at rpm": "2200-5000"
-        }
-    },
-    {
-        "id": 4,
-        "brand": "Aston martin",
-        "name": "Vantage 2018",
-        "year": "2018",
-        "car_info": {
-            "Engine": "4.0i",
-            "Engine code": "M177",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "3982",
-            "Cylinder arrangement": "V-shaped",
-            "Number of cylinders": "8",
-            "Number of valves": "32",
-            "The degree of compression": "10.5:1",
-            "Max. power output": "510",
-            "Maximum power at rpm": "6000",
-            "Max. torque": "685",
-            "Maximum torque at rpm": "2000-5000"
-        }
-    },
-    {
-        "id": 5,
-        "brand": "Audi",
-        "name": "A1 (8x) 2015",
-        "year": "2015",
-        "car_info": {
-            "Engine": "1.0 TFSI",
-            "Engine code": "CHZE (EA211)",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "999",
-            "Cylinder arrangement": "Inline",
-            "Number of cylinders": "3",
-            "Number of valves": "12",
-            "Turbocharged": "+",
-            "The degree of compression": "10.0:1",
-            "Max. power output": "82",
-            "Maximum power at rpm": "3500-5500",
-            "Max. torque": "160",
-            "Maximum torque at rpm": "1500-3500"
-        }
-    },
-    {
-        "id": 5,
-        "brand": "Audi",
-        "name": "A1 citycarver (gb) 2019",
-        "year": "2019",
-        "car_info": {
-            "Engine": "1.0 TFSI",
-            "Engine code": "DKLA (EA211)",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "999",
-            "Cylinder arrangement": "Inline",
-            "Number of cylinders": "3",
-            "Number of valves": "12",
-            "Turbocharged": "+",
-            "Max. power output": "95",
-            "Maximum power at rpm": "5000-5500",
-            "Max. torque": "175",
-            "Maximum torque at rpm": "2000-3500"
-        }
-    },
-    {
-        "id": 5,
-        "brand": "Audi",
-        "name": "A1 sportback (8x) 2015",
-        "year": "2015",
-        "car_info": {
-            "Engine": "1.0 TFSI",
-            "Engine code": "CHZE (EA211)",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "999",
-            "Cylinder arrangement": "Inline",
-            "Number of cylinders": "3",
-            "Number of valves": "12",
-            "Turbocharged": "+",
-            "The degree of compression": "10.0:1",
-            "Max. power output": "82",
-            "Maximum power at rpm": "3500-5500",
-            "Max. torque": "160",
-            "Maximum torque at rpm": "1500-3500"
-        }
-    },
-    {
-        "id": 5,
-        "brand": "Audi",
-        "name": "A1 sportback (gb) 2018",
-        "year": "2018",
-        "car_info": {
-            "Engine": "1.0 TFSI",
-            "Engine code": "DKLA (EA211)",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "999",
-            "Cylinder arrangement": "Inline",
-            "Number of cylinders": "3",
-            "Number of valves": "12",
-            "Turbocharged": "+",
-            "Max. power output": "95",
-            "Maximum power at rpm": "5000-5500",
-            "Max. torque": "175",
-            "Maximum torque at rpm": "2000-3500"
-        }
-    },
-    {
-        "id": 5,
-        "brand": "Audi",
-        "name": "A3 (8v) 2016",
-        "year": "2016",
-        "car_info": {
-            "Engine": "1.4 TFSI",
-            "Engine code": "CZEA/CVNA (EA211)",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "1395",
-            "Cylinder arrangement": "Inline",
-            "Number of cylinders": "4",
-            "Number of valves": "16",
-            "Turbocharged": "+",
-            "The degree of compression": "10.0:1",
-            "Max. power output": "150",
-            "Maximum power at rpm": "5000-6000",
-            "Max. torque": "250",
-            "Maximum torque at rpm": "1500-3500"
-        }
-    },
-    {
-        "id": 5,
-        "brand": "Audi",
-        "name": "A3 cabriolet (8v) 2016",
-        "year": "2016",
-        "car_info": {
-            "Engine": "1.5 TFSI",
-            "Engine code": "DADA (EA211)",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "1498",
-            "Cylinder arrangement": "Inline",
-            "Number of cylinders": "4",
-            "Number of valves": "16",
-            "Turbocharged": "+",
-            "Max. power output": "150",
-            "Maximum power at rpm": "5000-6000",
-            "Max. torque": "250",
-            "Maximum torque at rpm": "1500-3500"
-        }
-    },
-    {
-        "id": 5,
-        "brand": "Audi",
-        "name": "A3 sedan (8v) 2016",
-        "year": "2016",
-        "car_info": {
-            "Engine": "1.5 TFSI",
-            "Engine code": "DADA (EA211)",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "1498",
-            "Cylinder arrangement": "Inline",
-            "Number of cylinders": "4",
-            "Number of valves": "16",
-            "Turbocharged": "+",
-            "Max. power output": "150",
-            "Maximum power at rpm": "5000-6000",
-            "Max. torque": "250",
-            "Maximum torque at rpm": "1500-3500"
-        }
-    },
-    {
-        "id": 5,
-        "brand": "Audi",
-        "name": "A3 sedan (8y) 2020",
-        "year": "2020",
-        "car_info": {
-            "Engine": "2.0 TDI",
-            "Engine code": "EA288",
-            "Engine type": "ICE",
-            "Fuel type": "Diesel",
-            "Engine displacement, cc": "1968",
-            "Cylinder arrangement": "Inline",
-            "Number of cylinders": "4",
-            "Number of valves": "16",
-            "Turbocharged": "+",
-            "Max. power output": "116",
-            "Max. torque": "300"
-        }
-    },
-    {
-        "id": 5,
-        "brand": "Audi",
-        "name": "A3 sedan (8y) 2024",
-        "year": "2024",
-        "car_info": {
-            "Engine": "2.0 TDI",
-            "Engine code": "DFGA",
-            "Engine type": "ICE",
-            "Fuel type": "Diesel",
-            "Engine displacement, cc": "1968",
-            "Cylinder arrangement": "Inline",
-            "Number of cylinders": "4",
-            "Number of valves": "16",
-            "Turbocharged": "+",
-            "Max. power output": "150",
-            "Maximum power at rpm": "3000-4200",
-            "Max. torque": "360",
-            "Maximum torque at rpm": "1600-2750"
-        }
-    },
-    {
-        "id": 5,
-        "brand": "Audi",
-        "name": "A3 sportback (8v) 2016",
-        "year": "2016",
-        "car_info": {
-            "Engine": "1.4 TFSI",
-            "Engine code": "CZEA/CVNA (EA211)",
-            "Engine type": "ICE",
-            "Fuel type": "Petrol",
-            "Engine displacement, cc": "1395",
-            "Cylinder arrangement": "Inline",
-            "Number of cylinders": "4",
-            "Number of valves": "16",
-            "Turbocharged": "+",
-            "The degree of compression": "10.0:1",
-            "Max. power output": "150",
-            "Maximum power at rpm": "5000-6000",
-            "Max. torque": "250",
-            "Maximum torque at rpm": "1500-3500"
         }
     }
 ]
