@@ -96,7 +96,7 @@ jobs:
             -e LOG_DIR=/opt/app/logs \
             -e FIXED_DELAY_MS=259200000 \
             -e INITIAL_DELAY_MS=60000 \
-            $IMAGE:$TAG \
+            $IMAGE:$TAG && \
             docker network connect dbnetwork $CONTAINER
 
             # clean up old images to save space

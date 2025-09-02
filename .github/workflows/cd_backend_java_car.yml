@@ -97,7 +97,7 @@ jobs:
             -e TMP_TOKEN_2=c1a81c55-78db-4df9-9c39-2a9df7e9b46d \
             -e TMP_TOKEN_3=8d74f2d1-4c2e-4c90-b58b-1ac9e3c0a527 \
             --add-host host.docker.internal:host-gateway \
-            $IMAGE:$TAG \
+            $IMAGE:$TAG && \
             docker network connect dbnetwork $CONTAINER
 
             # clean up old images to save space
