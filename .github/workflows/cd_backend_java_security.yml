@@ -104,6 +104,6 @@ jobs:
             # remove dangling images
             #docker image prune -f --filter "dangling=true"
             # another remove string
-            docker image rm -f $(docker image ls -aq)
+            docker image rm -f $(docker image ls -aq) || true
             # if images wont be deleted, uncomment the next line
             #docker image ls "$IMAGE" -q | xargs -n 1 docker rmi -f

@@ -72,7 +72,7 @@ jobs:
             --restart unless-stopped \
             --name $CONTAINER \
             -p 8084:8084 \
-            -v $CONTAINER_log:/opt/app/logs \
+            -v "$CONTAINER"_log:/opt/app/logs \
             -e SPRING_PROFILES_ACTIVE=dev \
             -e PORT=8084 \
             -e DB_HOST=172.18.0.2 \
@@ -97,7 +97,7 @@ jobs:
             -e TMP_TOKEN_2=c1a81c55-78db-4df9-9c39-2a9df7e9b46d \
             -e TMP_TOKEN_3=8d74f2d1-4c2e-4c90-b58b-1ac9e3c0a527 \
             --add-host host.docker.internal:host-gateway \
-            $IMAGE:$TAG && \
+            $IMAGE:$TAG \
             docker network connect dbnetwork $CONTAINER
 
             # clean up old images to save space
@@ -105,6 +105,6 @@ jobs:
             # remove dangling images
             #docker image prune -f --filter "dangling=true"
             # another remove string
-            docker image rm -f $(docker image ls -aq)
+            docker image rm -f $(docker image ls -aq) || true
             # if images wont be deleted, uncomment the next line
             #docker image ls "$IMAGE" -q | xargs -n 1 docker rmi -f
