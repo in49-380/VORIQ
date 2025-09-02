@@ -43,5 +43,5 @@ public class CarResolveRequest {
     @Schema(name = "Engine ID", example = "1")
     @NotNull(message = "Drive layout Id can not be null")
     @Min(value = 1, message = "Id must be great of 0")
-    private Long driveLayout;
+    private Long driveLayoutId;
 }

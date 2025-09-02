@@ -375,6 +375,12 @@ public interface CarCatalogLookupApi {
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ErrorResponse.class)
                     )),
+            @ApiResponse(responseCode = "404",
+                    description = "Car not found",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorResponse.class)
+                    )),
             @ApiResponse(responseCode = "500",
                     description = "Temporary service error.",
                     content = @Content(
