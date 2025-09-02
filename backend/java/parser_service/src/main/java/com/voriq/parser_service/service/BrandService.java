@@ -1,6 +1,8 @@
 package com.voriq.parser_service.service;
 
 import com.voriq.parser_service.domain.dto.BrandDto;
+import com.voriq.parser_service.exception_handler.ObjectNotFoundException;
+import com.voriq.parser_service.exception_handler.errormessage.ErrorMessage;
 import com.voriq.parser_service.mapper.BrandMapper;
 import com.voriq.parser_service.repository.BrandRepository;
 import com.voriq.parser_service.service.interfaces.ReadOnlyService;
@@ -22,7 +24,8 @@ public class BrandService implements ReadOnlyService<BrandDto, Long> {
 
     @Override
     public BrandDto getById(Long id) {
-        return brandMapper.toDto(brandRepository.findById(id).orElseThrow());
+        return brandMapper.toDto(brandRepository.findById(id).orElseThrow(
+                ()-> new ObjectNotFoundException(ErrorMessage.OBJECT_NOT_FOUND)));
     }
 
 }

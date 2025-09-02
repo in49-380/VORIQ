@@ -1,6 +1,8 @@
 package com.voriq.parser_service.service;
 
 import com.voriq.parser_service.domain.dto.CarDto;
+import com.voriq.parser_service.exception_handler.ObjectNotFoundException;
+import com.voriq.parser_service.exception_handler.errormessage.ErrorMessage;
 import com.voriq.parser_service.mapper.CarMapper;
 import com.voriq.parser_service.repository.CarRepository;
 import com.voriq.parser_service.service.interfaces.ReadOnlyService;
@@ -24,6 +26,7 @@ public class CarService implements ReadOnlyService<CarDto, Long> {
 
     @Override
     public CarDto getById(Long id) {
-        return carMapper.toDto(carRepository.findById(id).orElseThrow());
+        return carMapper.toDto(carRepository.findById(id).orElseThrow(
+                ()-> new ObjectNotFoundException(ErrorMessage.OBJECT_NOT_FOUND)));
     }
 }

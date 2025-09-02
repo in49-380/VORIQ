@@ -2,6 +2,8 @@ package com.voriq.parser_service.service;
 
 import com.voriq.parser_service.domain.dto.EngineDto;
 import com.voriq.parser_service.domain.dto.FuelTypeDto;
+import com.voriq.parser_service.exception_handler.ObjectNotFoundException;
+import com.voriq.parser_service.exception_handler.errormessage.ErrorMessage;
 import com.voriq.parser_service.mapper.FuelTypeMapper;
 import com.voriq.parser_service.repository.FuelTypeRepository;
 import com.voriq.parser_service.service.interfaces.ReadOnlyService;
@@ -24,7 +26,8 @@ public class FuelTypeService implements ReadOnlyService<FuelTypeDto, Long> {
 
     @Override
     public FuelTypeDto getById(Long id) {
-        return fuelTypeMapper.toDto(fuelTypeRepository.findById(id).orElseThrow());
+        return fuelTypeMapper.toDto(fuelTypeRepository.findById(id).orElseThrow(
+                ()-> new ObjectNotFoundException(ErrorMessage.OBJECT_NOT_FOUND)));
     }
 
 }
