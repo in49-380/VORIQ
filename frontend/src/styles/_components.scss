@@ -17,15 +17,32 @@ button:focus-visible {
 // *****************************************
 // *****************************************
 // ******************************************
-FaGithub{
+FaGithub {
     color: var(--color-primary)
 }
+
+header>.git-hub-button{
+    @include m.position(fixed, n, 1rem, 1rem, n)
+}
+
+footer>.git-hub-button{
+    @include m.position(fixed, n, 1rem, 1rem, n)
+}
+
 
 .google-auth-button{
     @include m.size(240px, 240px)
 }
 
 .logout-button{
+}
+
+// *********************************************
+// *************Footer**************************
+// *********************************************
+footer>.footer-left,
+footer>.footer-nav{
+    @include m.flex (0.5rem, center, center, wrap)
 }
 // **********************************************
 // **********welcom-Page*************************

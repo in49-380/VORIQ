@@ -5,19 +5,16 @@ import GitHubButton from "../GitHubButton";
 
 const Footer = () => {
   return (
-    <footer className="fixed bottom-0 left-0 w-full bg-gray-100 p-4 text-center shadow">
+    <footer>
       {/* Left part: buttons */}
-      <div className="flex flex-wrap items-center gap-2">
-        "{/* LogoutButton */}
+      <div className="footer-left">
         <LogoutButton />
-        {/* Cookies */}
         <KlaroConsentButton />
-        {/* GitHub */}
         <GitHubButton />
       </div>
 
       {/* Right part: Links (open in new tab) */}
-      <nav className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
+      <nav className="footer-nav">
         <a href="/privacy" target="_blank" rel="noopener noreferrer">
           Privacy Policy
         </a>
