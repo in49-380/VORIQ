@@ -27,14 +27,15 @@ jobs:
 
             set -euo pipefail
 
-            # set veriables
+            # set variables
             BRANCH="${{ github.ref_name }}"
             REPO_DIR="/home/${{ secrets.CICD_SSH_USER }}/VORIQ"
             #SERVICE_DIR="devops/frontend"
             IMAGE="dev_front_node"
-            #TAG_SHA="${{ github.sha }}"
-            #TAG_BRANCH="$(echo "$BRANCH" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9_.-]+#-#g' | sed -E 's#^-+|-+$##g' | cut -c1-120)-latest"
+            TAG_BRANCH="$(echo "$BRANCH" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9_.-]+#-#g' | sed -E 's#^-+|-+$##g' | cut -c1-120)-latest"
+            TAG_SHA="${{ github.sha }}"
             TAG_LAT="latest"
+            TAG=$TAG_LAT
             CONTAINER="dev_front_node"
 
             # Ensure the VORIQ directory exists
@@ -58,14 +59,14 @@ jobs:
 
             # build new image
             docker image build --no-cache \
-              -t "$IMAGE:$TAG_LAT" \
-              -f "$REPO_DIR/devops/frontend/Dockerfile.front.develop" .
+              -t "$IMAGE:$TAG" \
+              -f "$REPO_DIR/devops/frontend/Dockerfile.test" .
 
             #docker tag "$IMAGE:$TAG_SHA" "$IMAGE:$TAG_BRANCH"
             #docker tag "$IMAGE:$TAG_SHA" "$IMAGE:TAG_LAT"
 
             # remove old container if exists
-            docker container stop "$CONTAINER"
+            docker container stop "$CONTAINER" || true
             docker container rm -f "$CONTAINER" || true
 
             # restart container with new image
@@ -73,12 +74,14 @@ jobs:
               --name "$CONTAINER" \
               --restart unless-stopped \
               -p 3000:3000 \
-              "$IMAGE:$TAG_LAT"
+              "$IMAGE:$TAG"
 
             # clean up old images to save space
-            docker image prune -f 
+            #docker image prune -f 
             # remove dangling images
             #docker image prune -f --filter "dangling=true"
+            # another remove string
+            docker image rm -f $(docker image ls -aq) || true
             # if images wont be deleted, uncomment the next line
             #docker image ls "$IMAGE" -q | xargs -n 1 docker rmi -f
 

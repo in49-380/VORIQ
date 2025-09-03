@@ -1,18 +1,18 @@
 [
     {
         "id": 1,
-        "name": "Бензин"
+        "name": "Petrol"
     },
     {
         "id": 2,
-        "name": "Дизель"
+        "name": "Diesel"
     },
     {
         "id": 3,
-        "name": "Газ"
+        "name": "Gas"
     },
     {
         "id": 4,
-        "name": "Электро"
+        "name": "Electric"
     }
 ]

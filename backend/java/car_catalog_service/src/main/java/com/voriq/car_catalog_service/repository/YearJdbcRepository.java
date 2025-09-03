@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 public class YearJdbcRepository extends BaseJdbcIntegerRepository {
 
     private static final String TABLE = "years";
-    private static final String COLUMN = "year";
+    private static final String COLUMN = "year_value";
 
     public YearJdbcRepository() {
         super(TABLE,COLUMN);

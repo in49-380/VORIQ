@@ -1,6 +1,7 @@
 package com.voriq.car_catalog_service.service;
 
 import com.voriq.car_catalog_service.domain.dto.BrandResponseDto;
+import com.voriq.car_catalog_service.exception_handler.exception.ServiceUnavailableException;
 import com.voriq.car_catalog_service.repository.BrandJdbcRepository;
 import com.voriq.car_catalog_service.service.interfaces.ReadOnlyService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,13 @@ public class BrandServiceImp implements ReadOnlyService<BrandResponseDto> {
 
     @Override
     public BrandResponseDto getAll() {
-        List<String> brands = repository.findAll();
+        List<String> brands;
+        try {
+            brands = repository.findAll();
+        } catch (Exception ex) {
+            throw new ServiceUnavailableException(
+                    "The server is currently overloaded or under maintenance. Please try again later.", ex);
+        }
         return BrandResponseDto.builder()
                 .items(List.copyOf(brands))
                 .build();

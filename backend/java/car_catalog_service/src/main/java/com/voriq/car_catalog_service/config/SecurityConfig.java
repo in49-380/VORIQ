@@ -7,7 +7,6 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -55,31 +54,29 @@ public class SecurityConfig {
 
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-    private final TmpTokenAuthFilter tmpTokenAuthFilter ;
+    private final TmpTokenAuthFilter tmpTokenAuthFilter;
 
     @Value("${cors.allowed-origins}")
     private String allowedOrigins;
 
-    private static final String BRANDS_URL = "/v1/brands";
+    public static final String BRANDS_URL = "/v1/brands";
 
-    private static final String ENGINES_URL = "/v1/engines";
+    public static final String ENGINES_URL = "/v1/engines";
 
-    private static final String FUEL_TYPE_URL = "/v1/fuel-types";
+    public static final String FUEL_TYPE_URL = "/v1/fuel-types";
 
-    private static final String CAR_ALL_URL = "/v1/cars";
+    public static final String CAR_ALL_URL = "/v1/cars";
 
-    private static final String CAR_ID_URL = "/v1/cars/by-id/{id}";
+    public static final String CAR_ID_URL = "/v1/cars/by-id/{id}";
 
-    private static final String MODEL_BRAND_URL = "/v1/models/by-brand/{brand}";
+    public static final String MODEL_BRAND_URL = "/v1/models/by-brand/{brand}";
 
-    private static final String YEAR_URL = "/v1/years";
+    public static final String YEAR_URL = "/v1/years";
 
-    private static final String TEST_DELAY_URL = "/v1/test/delay-ms";
+    public static final String TEST_DELAY_URL = "/v1/test/delay-ms";
 
     @Bean
     public SecurityFilterChain configureAuth(HttpSecurity http) throws Exception {
-
-
 
         return http
                 .csrf(AbstractHttpConfigurer::disable)
@@ -96,14 +93,14 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, MODEL_BRAND_URL).authenticated()
                         .requestMatchers(HttpMethod.GET, YEAR_URL).authenticated()
                         .requestMatchers(HttpMethod.GET, TEST_DELAY_URL).permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().denyAll()
                 )
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(customAuthenticationEntryPoint)
                         .accessDeniedHandler(customAccessDeniedHandler)
                 )
-                          .addFilterBefore(tmpTokenAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(tmpTokenAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

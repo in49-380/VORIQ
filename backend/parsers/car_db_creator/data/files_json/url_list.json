@@ -458,30 +458,5 @@
         "id": 92,
         "name": "Zotye",
         "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=1989"
-    },
-    {
-        "id": 93,
-        "name": "Богдан",
-        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=391"
-    },
-    {
-        "id": 94,
-        "name": "ВАЗ",
-        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=223"
-    },
-    {
-        "id": 95,
-        "name": "ГАЗ",
-        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=224"
-    },
-    {
-        "id": 96,
-        "name": "ЗАЗ",
-        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=225"
-    },
-    {
-        "id": 97,
-        "name": "УАЗ",
-        "url": "https://www.infocar.ua/infocar-ua/ajax/models2_json.php?mark=228"
     }
 ]

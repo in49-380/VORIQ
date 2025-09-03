@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,7 +30,8 @@ import static com.voriq.car_catalog_service.utilitie.TokenUtilities.extractToken
 @RequiredArgsConstructor
 public class TmpTokenAuthFilter extends OncePerRequestFilter {
 
-    public static final String TMP_TOKEN_PREFIX = "tmp-token:";
+    @Value("${tmp-token.prefix}")
+    private String prefix;
 
     private final StringRedisTemplate redisTemplate;
 
@@ -79,13 +81,6 @@ public class TmpTokenAuthFilter extends OncePerRequestFilter {
     }
 
     private String getNameByToken(String token) {
-        return redisTemplate.opsForValue().get(TMP_TOKEN_PREFIX + token);
-    }
-
-    private void unauthorized(HttpServletResponse response, String message) throws IOException {
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.getWriter().write("{\"error\":\"" + message + "\"}");
-        response.getWriter().flush();
+        return redisTemplate.opsForValue().get(prefix + token);
     }
 }
