@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
         info = @Info(
                 title = "Parser Service",
                 description = "Parser Service",
-                version = "0.1.0",
+                version = "0.2.0",
                 contact = @Contact(
                         name = "Oleksandr Harbuz",
                         email = "pamail08@gmail.com"

@@ -1,6 +1,5 @@
 package com.voriq.parser_service.service;
 
-import com.voriq.parser_service.domain.dto.EngineDto;
 import com.voriq.parser_service.domain.dto.FuelTypeDto;
 import com.voriq.parser_service.exception_handler.ObjectNotFoundException;
 import com.voriq.parser_service.exception_handler.errormessage.ErrorMessage;
@@ -14,7 +13,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class FuelTypeService implements ReadOnlyService<FuelTypeDto, Long> {
+public class FuelTypeServiceImpl implements ReadOnlyService<FuelTypeDto, Long> {
 
     private final FuelTypeRepository fuelTypeRepository;
     private final FuelTypeMapper fuelTypeMapper;

@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(
-        name = "models",
+        name = "cars_carmodel",
         uniqueConstraints = @UniqueConstraint(
                 name = "uq_models_brand_name",
                 columnNames = {"brand_id", "name"}
@@ -20,12 +20,13 @@ import java.util.Objects;
 @Builder
 @ToString(onlyExplicitlyIncluded = true)
 public class Model {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ToString.Include
-    @Column(name = "name", nullable = false) // БЕЗ unique=true
+    @Column(name = "name", nullable = false)
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false,

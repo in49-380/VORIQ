@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(
-        name = "engines",
+        name = "cars_engine",
         uniqueConstraints = @UniqueConstraint(
                 name = "uq_engines_type_fuel",
                 columnNames = {"type", "fuel_type_id"}
@@ -23,12 +23,13 @@ import java.util.Set;
 @Builder
 @ToString(onlyExplicitlyIncluded = true)
 public class Engine {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ToString.Include
-    @Column(name = "type", nullable = false) // БЕЗ unique=true
+    @Column(name = "type", nullable = false)
     private String type;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false,
@@ -37,6 +38,18 @@ public class Engine {
             foreignKey = @ForeignKey(name = "fk_engine_fuel_type"))
     @ToString.Exclude
     private FuelType fuelType;
+
+    @ToString.Include
+    @Column(name = "series_code", nullable = true)
+    private String seriesCode;
+
+    @ToString.Include
+    @Column(name = "engine_code", nullable = true)
+    private String engineCode;
+
+    @ToString.Include
+    @Column(name = "displacement_cc", nullable = true)
+    private Integer displacementCC;
 
     @OneToMany(mappedBy = "engine", cascade = CascadeType.PERSIST)
     @JsonIgnore

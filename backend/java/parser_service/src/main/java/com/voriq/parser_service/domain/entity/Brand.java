@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(
-        name = "brands",
+        name = "cars_brand",
         uniqueConstraints = @UniqueConstraint(name = "uq_brands_name", columnNames = "name")
 )
 @Getter
@@ -20,6 +20,7 @@ import java.util.Set;
 @ToString(onlyExplicitlyIncluded = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Brand {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

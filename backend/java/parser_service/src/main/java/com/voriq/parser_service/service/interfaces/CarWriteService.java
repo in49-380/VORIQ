@@ -4,7 +4,6 @@ import com.voriq.parser_service.domain.dto.request.CarRequestDto;
 
 import java.util.List;
 
-public interface ReadOnlyService<D, ID> {
-    List<D> getAll();
-    D getById(ID id);
+public interface CarWriteService {
+    void saveCars(List<CarRequestDto> cars);
 }

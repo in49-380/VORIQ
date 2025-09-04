@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class BrandService implements ReadOnlyService<BrandDto, Long> {
+public class BrandServiceImpl implements ReadOnlyService<BrandDto, Long> {
 
     private final BrandRepository brandRepository;
     private final BrandMapper brandMapper;

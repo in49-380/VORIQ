@@ -1,5 +1,6 @@
 package com.voriq.parser_service.controller.base;
 
+import com.voriq.parser_service.exception_handler.dto.ErrorResponse;
 import com.voriq.parser_service.service.interfaces.ReadOnlyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -36,7 +37,7 @@ public abstract class BaseReadOnlyController<D, ID> {
                     description = "Not found",
                     content = @Content(
                             mediaType = "application/problem+json",
-                            schema = @Schema(implementation = ProblemDetail.class) // заменить на кастомный клас ошибки
+                            schema = @Schema(implementation = ErrorResponse.class)
                     )
             )
     })

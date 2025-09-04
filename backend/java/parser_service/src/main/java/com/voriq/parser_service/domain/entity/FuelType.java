@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(
-        name = "fuel_types",
+        name = "cars_fueltype",
         uniqueConstraints = @UniqueConstraint(name = "uq_fuel_types_name", columnNames = "name")
 )
 @Getter
@@ -20,6 +20,7 @@ import java.util.Set;
 @ToString(onlyExplicitlyIncluded = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class FuelType {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

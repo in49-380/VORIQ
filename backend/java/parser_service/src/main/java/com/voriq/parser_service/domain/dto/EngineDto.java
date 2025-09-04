@@ -10,6 +10,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class EngineDto {
+
     private Long id;
     private String type;
+    private FuelTypeDto fuelType;
+    private String seriesCode;
+    private String engineCode;
+    private Integer displacementCC;
 }

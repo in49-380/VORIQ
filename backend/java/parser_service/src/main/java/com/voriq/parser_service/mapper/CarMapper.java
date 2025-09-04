@@ -9,9 +9,20 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface CarMapper {
-    @Mapping(source = "fuelType", target = "engine.fuelType")
+
+    @Mapping(source = "model", target = "model")
+    @Mapping(source = "engine", target = "engine")
+    @Mapping(source = "year", target = "year")
+    @Mapping(source = "market", target = "market")
+    @Mapping(source = "transmission", target = "transmission")
+    @Mapping(source = "whilldrive", target = "whilldrive")
     List<CarDto> toDtoList(List<Car> cars);
 
-    @Mapping(source = "engine.fuelType", target = "fuelType")
+    @Mapping(source = "model", target = "model")
+    @Mapping(source = "engine", target = "engine")
+    @Mapping(source = "year", target = "year")
+    @Mapping(source = "market", target = "market")
+    @Mapping(source = "transmission", target = "transmission")
+    @Mapping(source = "whilldrive", target = "whilldrive")
     CarDto toDto(Car car);
 }

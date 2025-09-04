@@ -7,6 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class FuelTypeDto {
+
     private Long id;
     private String name;
 }

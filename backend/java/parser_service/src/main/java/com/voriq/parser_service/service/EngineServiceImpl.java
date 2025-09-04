@@ -1,6 +1,5 @@
 package com.voriq.parser_service.service;
 
-import com.voriq.parser_service.domain.dto.BrandDto;
 import com.voriq.parser_service.domain.dto.EngineDto;
 import com.voriq.parser_service.exception_handler.ObjectNotFoundException;
 import com.voriq.parser_service.exception_handler.errormessage.ErrorMessage;
@@ -14,7 +13,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class EngineService implements ReadOnlyService<EngineDto, Long> {
+public class EngineServiceImpl implements ReadOnlyService<EngineDto, Long> {
 
     private final EngineRepository engineRepository;
     private final EngineMapper engineMapper;

@@ -10,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class ModelDto {
+
     private Long id;
     private String name;
     private BrandDto brand;
