@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Tag(name = "Model", description = "Model catalog endpoints")
+@Tag(name = "Model. Deprecated. Will be disabled soon!", description = "Model catalog endpoints")
 @RequestMapping("/v1/models")
 public interface ModelApi {
 
