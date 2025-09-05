@@ -46,8 +46,8 @@ jobs:
 
             # get the latest changes
             git fetch --all --prune
-            git checkout -B "$BRANCH" "origin/$BRANCH"
-            git reset --hard "origin/$BRANCH"
+            git checkout -B "$BRANCH" "TAG_SHA"
+            git reset --hard "TAG_SHA"
             git clean -fdx
 
             # go to the code directory
@@ -58,7 +58,7 @@ jobs:
             # build new image
             docker image build --no-cache \
               -t "$IMAGE:$TAG" \
-              -f "$REPO_DIR/devops/backend/java/security_service/Dockerfile" .
+              -f "$REPO_DIR/devops/dev/backend/java/security_service/Dockerfile" .
 
             #docker tag "$IMAGE:$TAG_SHA" "$IMAGE:$TAG_BRANCH"
             #docker tag "$IMAGE:$TAG_SHA" "$IMAGE:TAG_LAT"

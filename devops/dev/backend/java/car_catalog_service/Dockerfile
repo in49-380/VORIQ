@@ -43,7 +43,7 @@ ENV JAVA_OPTS="--add-opens java.base/java.lang=ALL-UNNAMED \
                --add-exports java.base/jdk.internal.misc=ALL-UNNAMED"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates tzdata wget && \
+    ca-certificates tzdata curl wget && \
     rm -rf /var/lib/apt/lists/*
 
 RUN groupadd --gid 1000 spring-app && \
