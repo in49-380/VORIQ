@@ -59,6 +59,6 @@ COPY --from=app-build --chown=spring-app:spring-app $BUILD_PATH/application.jar 
 
 USER spring-app:spring-app
 
-EXPOSE 8081
+EXPOSE 8084
 ENTRYPOINT ["sh","-c","exec java $JAVA_OPTS -jar application.jar"]
 
