@@ -47,7 +47,7 @@ jobs:
             # get the latest changes
             git fetch --all --prune
             git checkout -B "$BRANCH" "$TAG_SHA"
-            git reset --hard "TAG_SHA"
+            git reset --hard "$TAG_SHA"
             git clean -fdx
 
             # go to the code directory
