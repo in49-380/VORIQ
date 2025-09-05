@@ -46,7 +46,6 @@ public class RedisTmpTokenInitializer {
 
         int idx = prefix.indexOf(":");
         String prefixAll = (idx >= 0) ? prefix.substring(0, idx + 1) : prefix;
-
         var keys = redisTemplate.keys(prefixAll + "*");
         if (!keys.isEmpty()) {
             redisTemplate.delete(keys);
