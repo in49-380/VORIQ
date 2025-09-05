@@ -9,8 +9,8 @@ import java.util.Set;
 
 @Entity
 @Table(
-        name = "cars_fueltype",
-        uniqueConstraints = @UniqueConstraint(name = "uq_fuel_types_name", columnNames = "name")
+        name = "cars_market",
+        uniqueConstraints = @UniqueConstraint(name = "uq_brands_name", columnNames = "name")
 )
 @Getter
 @Setter
@@ -19,7 +19,7 @@ import java.util.Set;
 @Builder
 @ToString(onlyExplicitlyIncluded = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class FuelType {
+public class Market {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,11 +27,16 @@ public class FuelType {
 
     @EqualsAndHashCode.Include
     @ToString.Include
+    @Column(name = "code", nullable = false, unique = true)
+    private String code;
+
+    @EqualsAndHashCode.Include
+    @ToString.Include
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "fuelType", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "market", cascade = CascadeType.PERSIST)
     @JsonIgnore
     @ToString.Exclude
-    private Set<Engine> engines = new HashSet<>();
+    private Set<Car> cars = new HashSet<>();
 }
