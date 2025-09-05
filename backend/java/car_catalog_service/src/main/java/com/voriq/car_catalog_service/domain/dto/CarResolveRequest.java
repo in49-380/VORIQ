@@ -15,33 +15,33 @@ import lombok.Setter;
 @Schema(name = "Car resolve request")
 public class CarResolveRequest {
 
-    @Schema(name = "Brand ID", example = "23")
+    @Schema(example = "23")
     @NotNull(message = "Brand Id can not be null")
     @Min(value = 1, message = "Id must be great of 0")
     private Long brandId;
 
-    @Schema(name = "Model ID", example = "12")
+    @Schema(example = "12")
     @NotNull(message = "Model Id can not be null")
     @Min(value = 1, message = "Id must be great of 0")
     private Long modelId;
 
-    @Schema(name = "Year ID", example = "5")
+    @Schema(example = "5")
     @NotNull(message = "Year Id can not be null")
     @Min(value = 1, message = "Id must be great of 0")
     private Long yearId;
 
-    @Schema(name = "Engine ID", example = "9")
+    @Schema( example = "9")
     @NotNull(message = "Engine Id can not be null")
     @Min(value = 1, message = "Id must be great of 0")
     private Long engineId;
 
-    @Schema(name = "Engine ID", example = "3")
+    @Schema( example = "3")
     @NotNull(message = "Transmission Id can not be null")
     @Min(value = 1, message = "Id must be great of 0")
     private Long transmissionId;
 
-    @Schema(name = "Engine ID", example = "1")
-    @NotNull(message = "Drive layout Id can not be null")
+    @Schema( example = "1")
+    @NotNull(message = "Wheel drive Id can not be null")
     @Min(value = 1, message = "Id must be great of 0")
-    private Long driveLayoutId;
+    private Long wheelDriveId;
 }

@@ -18,8 +18,8 @@ public interface CarCatalogService {
 
     List<IdValueResponseDto> findTransmissions(Long brandId, Long modelId, Long yearId, Long engineId);
 
-    List<IdValueResponseDto> findDriveLayouts(Long brandId, Long modelId, Long yearId,
-                                              Long engineId, Long transmissionsId);
+    List<IdValueResponseDto> findWheelDrives(Long brandId, Long modelId, Long yearId,
+                                             Long engineId, Long transmissionsId);
 
     CarIdDto getResolve(CarResolveRequest req);
 }

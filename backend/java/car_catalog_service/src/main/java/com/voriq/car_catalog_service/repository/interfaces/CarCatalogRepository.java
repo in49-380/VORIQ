@@ -27,7 +27,7 @@ public interface CarCatalogRepository {
             Long yearId,
             Long engineId);
 
-    List<IdValueResponseDto> findDriveLayouts(
+    List<IdValueResponseDto> findWheelDrives(
             Long brandId,
             Long modelId,
             Long yearId,

@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CarCatalogLookupController implements CarCatalogLookupApi {
 
-    private CarCatalogService service;
+    private final CarCatalogService service;
 
     @Override
     public ResponseEntity<List<IdValueResponseDto>> getALlBrands() {
@@ -43,8 +43,8 @@ public class CarCatalogLookupController implements CarCatalogLookupApi {
     }
 
     @Override
-    public ResponseEntity<List<IdValueResponseDto>> getDriveLayouts(Long brandId, Long modelId, Long yearId, Long engineId, Long transmissionsId) {
-        return ResponseEntity.ok(service.findDriveLayouts(brandId, modelId, yearId, engineId, transmissionsId));
+    public ResponseEntity<List<IdValueResponseDto>> getWheelDrives(Long brandId, Long modelId, Long yearId, Long engineId, Long transmissionsId) {
+        return ResponseEntity.ok(service.findWheelDrives(brandId, modelId, yearId, engineId, transmissionsId));
     }
 
     @Override

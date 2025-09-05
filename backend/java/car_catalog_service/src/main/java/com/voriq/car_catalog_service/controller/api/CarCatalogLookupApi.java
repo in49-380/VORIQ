@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-@Tag(name = "Car catalog lookup", description = "E")
+@Tag(name = "Car catalog lookup", description = "Endpoints of the car catalog for sequential search of cars by parameters.")
 @RequestMapping("/v1/catalog")
 public interface CarCatalogLookupApi {
 
@@ -279,8 +279,8 @@ public interface CarCatalogLookupApi {
     );
     //===============================================
 
-    @Operation(summary = "Get drive layouts of car by brand, model, year, engine and transmission",
-            description = "Get drive layouts of car by brand ID, model ID, year ID," +
+    @Operation(summary = "Get wheel drive of car by brand, model, year, engine and transmission",
+            description = "Get wheel drive of car by brand ID, model ID, year ID," +
                     " engine ID and transmission ID from catalog. " +
                     "For authorized user")
     @ApiResponses(value = {
@@ -318,8 +318,8 @@ public interface CarCatalogLookupApi {
                     ))}
     )
     @GetMapping("/brands/{brandId}/models/{modelId}/years/{yearId}/" +
-            "engines/{engineId}/transmissions/{transmissionsId}/drive-layouts")
-    ResponseEntity<List<IdValueResponseDto>> getDriveLayouts(
+            "engines/{engineId}/transmissions/{transmissionsId}/wheel_drive")
+    ResponseEntity<List<IdValueResponseDto>> getWheelDrives(
             @PathVariable
             @Parameter(description = "Id of brand in catalog", example = "32")
             @NotNull(message = "Id can not be null")

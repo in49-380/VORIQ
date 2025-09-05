@@ -10,7 +10,6 @@ import com.voriq.car_catalog_service.service.interfaces.CarCatalogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +17,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CarCatalogServiceImpl implements CarCatalogService {
 
-    private CarCatalogRepository repository;
+    private final CarCatalogRepository repository;
+
     @Override
     public List<IdValueResponseDto> findALlBrands() {
         List<IdValueResponseDto> result;
@@ -80,10 +80,10 @@ public class CarCatalogServiceImpl implements CarCatalogService {
     }
 
     @Override
-    public List<IdValueResponseDto> findDriveLayouts(Long brandId, Long modelId, Long yearId, Long engineId, Long transmissionsId) {
+    public List<IdValueResponseDto> findWheelDrives(Long brandId, Long modelId, Long yearId, Long engineId, Long transmissionsId) {
         List<IdValueResponseDto> result;
         try {
-            result = repository.findDriveLayouts(brandId, modelId, yearId, engineId, transmissionsId);
+            result = repository.findWheelDrives(brandId, modelId, yearId, engineId, transmissionsId);
         } catch (Exception ex) {
             throw new ServiceUnavailableException(
                     "The server is currently overloaded or under maintenance. Please try again later.", ex);
@@ -95,18 +95,18 @@ public class CarCatalogServiceImpl implements CarCatalogService {
     public CarIdDto getResolve(CarResolveRequest req) {
         Optional<Long> result;
         try {
-           result = repository.getResolve(
+            result = repository.getResolve(
                     req.getBrandId(),
                     req.getModelId(),
                     req.getYearId(),
                     req.getEngineId(),
                     req.getTransmissionId(),
-                    req.getDriveLayoutId());
+                    req.getWheelDriveId());
         } catch (Exception ex) {
             throw new ServiceUnavailableException(
                     "The server is currently overloaded or under maintenance. Please try again later.", ex);
         }
-        Long carId = result.orElseThrow(()->new NotFoundException("Car not found"));
+        Long carId = result.orElseThrow(() -> new NotFoundException("Car not found"));
         return new CarIdDto(carId);
     }
 }
