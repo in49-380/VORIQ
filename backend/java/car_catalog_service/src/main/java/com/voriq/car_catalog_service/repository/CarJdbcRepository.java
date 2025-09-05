@@ -31,6 +31,7 @@ public class CarJdbcRepository implements CarRepository {
                     .build();
 
     private static final String BASE_FROM = """
+
             FROM cars c
             JOIN models      m ON m.id = c.model_id
             JOIN brands      b ON b.id = m.brand_id

@@ -44,10 +44,12 @@ public class RedisTmpTokenInitializer {
 
     public static void removeOldTmpToken(StringRedisTemplate redisTemplate, String prefix) {
 
+
         int idx = prefix.indexOf(":");
         String prefixAll = (idx >= 0) ? prefix.substring(0, idx + 1) : prefix;
 
         var keys = redisTemplate.keys(prefixAll + "*");
+
         if (!keys.isEmpty()) {
             redisTemplate.delete(keys);
             log.info("Deleted {} Redis keys with prefix {}", keys.size(), prefix);
