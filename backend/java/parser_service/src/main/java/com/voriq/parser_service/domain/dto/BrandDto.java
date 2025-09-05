@@ -1,0 +1,13 @@
+package com.voriq.parser_service.domain.dto;
+
+import lombok.*;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@Builder
+public class BrandDto {
+
+    private Long id;
+    private String name;
+}

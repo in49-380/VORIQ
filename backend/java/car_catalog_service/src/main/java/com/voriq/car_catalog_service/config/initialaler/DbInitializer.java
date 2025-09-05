@@ -2,7 +2,7 @@ package com.voriq.car_catalog_service.config.initialaler;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Profile;
@@ -16,12 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-@RequiredArgsConstructor
 @Profile("dev")
 public class DbInitializer implements ApplicationRunner {
 
     private final JdbcTemplate jdbc;
     private final ObjectMapper objectMapper = new ObjectMapper();
+
+    public DbInitializer(@Qualifier("carsJdbcTemplate") JdbcTemplate jdbc) {
+        this.jdbc = jdbc;
+    }
 
     @Override
     @Transactional
