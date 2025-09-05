@@ -7,7 +7,6 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -55,7 +54,7 @@ public class SecurityConfig {
 
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-    private final TmpTokenAuthFilter tmpTokenAuthFilter ;
+    private final TmpTokenAuthFilter tmpTokenAuthFilter;
 
     @Value("${cors.allowed-origins}")
     private String allowedOrigins;
@@ -76,10 +75,18 @@ public class SecurityConfig {
 
     public static final String TEST_DELAY_URL = "/v1/test/delay-ms";
 
+    public static final String CAR_CATALOG_BRANDS_URL="/v1/catalog/brands";
+    public static final String CAR_CATALOG_MODELS_URL="/v1/catalog/brands/{brandId}/models";
+    public static final String CAR_CATALOG_YEARS_URL="/v1/catalog/brands/{brandId}/models/{modelId}/years";
+    public static final String CAR_CATALOG_ENGINES_URL="/v1/catalog/brands/{brandId}/models/{modelId}/years/{yearId}/engines";
+    public static final String CAR_CATALOG_TRANSMISSIONS_URL="/v1/catalog/brands/{brandId}/" +
+            "models/{modelId}/years/{yearId}/engines/{engineId}/transmissions";
+    public static final String CAR_CATALOG_WHEEL_DRIVES_URL="/v1/catalog/brands/{brandId}/models/{modelId}/years/{yearId}/" +
+            "engines/{engineId}/transmissions/{transmissionsId}/wheel_drive";
+    public static final String CAR_CATALOG_RESOLVE_URL="/v1/catalog/cars/resolve";
+
     @Bean
     public SecurityFilterChain configureAuth(HttpSecurity http) throws Exception {
-
-
 
         return http
                 .csrf(AbstractHttpConfigurer::disable)
@@ -88,6 +95,7 @@ public class SecurityConfig {
                         s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/error").permitAll()
+
                         .requestMatchers(HttpMethod.GET, BRANDS_URL).authenticated()
                         .requestMatchers(HttpMethod.GET, ENGINES_URL).authenticated()
                         .requestMatchers(HttpMethod.GET, FUEL_TYPE_URL).authenticated()
@@ -95,7 +103,20 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, CAR_ID_URL).authenticated()
                         .requestMatchers(HttpMethod.GET, MODEL_BRAND_URL).authenticated()
                         .requestMatchers(HttpMethod.GET, YEAR_URL).authenticated()
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                CAR_CATALOG_BRANDS_URL,
+                                CAR_CATALOG_MODELS_URL,
+                                CAR_CATALOG_YEARS_URL,
+                                CAR_CATALOG_ENGINES_URL,
+                                CAR_CATALOG_TRANSMISSIONS_URL,
+                                CAR_CATALOG_WHEEL_DRIVES_URL
+                        ).authenticated()
+                        .requestMatchers(HttpMethod.POST, CAR_CATALOG_RESOLVE_URL).authenticated()
+
                         .requestMatchers(HttpMethod.GET, TEST_DELAY_URL).permitAll()
+
                         .anyRequest().denyAll()
                 )
                 .httpBasic(AbstractHttpConfigurer::disable)
@@ -103,7 +124,7 @@ public class SecurityConfig {
                         .authenticationEntryPoint(customAuthenticationEntryPoint)
                         .accessDeniedHandler(customAccessDeniedHandler)
                 )
-                          .addFilterBefore(tmpTokenAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(tmpTokenAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
