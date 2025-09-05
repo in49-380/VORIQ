@@ -6,7 +6,7 @@ on:
       - '**'
     paths:
       - 'frontend/**'
-      - 'devops/frontend/**'
+      - 'devops/dev/frontend/**'
   workflow_dispatch:
 
 concurrency:

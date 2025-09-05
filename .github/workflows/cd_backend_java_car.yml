@@ -6,7 +6,7 @@ on:
       - '**'
     paths:
       - 'backend/java/car_catalog_service**'
-      - 'devops/backend/java/car_catalog_service**'
+      - 'devops/dev/backend/java/car_catalog_service**'
   workflow_dispatch:
 
 concurrency:
