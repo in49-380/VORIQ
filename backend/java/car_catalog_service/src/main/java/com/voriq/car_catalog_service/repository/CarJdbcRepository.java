@@ -2,7 +2,7 @@ package com.voriq.car_catalog_service.repository;
 
 import com.voriq.car_catalog_service.domain.dto.CarResponseDto;
 import com.voriq.car_catalog_service.repository.interfaces.CarRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -11,10 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-@RequiredArgsConstructor
 public class CarJdbcRepository implements CarRepository {
 
     private final JdbcTemplate jdbc;
+
+    public CarJdbcRepository(@Qualifier("carsJdbcTemplate")
+                             JdbcTemplate jdbc) {
+        this.jdbc = jdbc;
+    }
 
     private static final RowMapper<CarResponseDto> CAR_ROW = (rs, n) ->
             CarResponseDto.builder()
@@ -27,23 +31,24 @@ public class CarJdbcRepository implements CarRepository {
                     .build();
 
     private static final String BASE_FROM = """
-    FROM cars c
-    JOIN models      m ON m.id = c.model_id
-    JOIN brands      b ON b.id = m.brand_id
-    JOIN engines     e ON e.id = c.engine_id
-    JOIN fuel_types  f ON f.id = e.fuel_type_id
-    JOIN years       y ON y.id = c.year_id
-    """;
+            FROM cars c
+            JOIN models      m ON m.id = c.model_id
+            JOIN brands      b ON b.id = m.brand_id
+            JOIN engines     e ON e.id = c.engine_id
+            JOIN fuel_types  f ON f.id = e.fuel_type_id
+            JOIN years       y ON y.id = c.year_id
+            """;
 
     private static final String BASE_SELECT = """
-    SELECT  c.id,
-            m.name       AS model,
-            e.type       AS engine,
-            f.name       AS fuel_type,
-            b.name       AS brand,
-            y.year_value AS year
-    """ + BASE_FROM;
-@Override
+            SELECT  c.id,
+                    m.name       AS model,
+                    e.type       AS engine,
+                    f.name       AS fuel_type,
+                    b.name       AS brand,
+                    y.year_value AS year
+            """ + BASE_FROM;
+
+    @Override
     public List<CarResponseDto> search(String brand, String model, String fuelType, String engineType,
                                        Integer yearFrom, Integer yearTo,
                                        String orderBy, int limit, int offset) {

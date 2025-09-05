@@ -2,13 +2,16 @@ package com.voriq.car_catalog_service.repository.abstracts;
 
 import com.voriq.car_catalog_service.repository.interfaces.BaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
+
 public abstract class BaseJdbcRepository<T> implements BaseRepository<T> {
 
     @Autowired
+    @Qualifier("carsJdbcTemplate")
     private JdbcTemplate jdbcTemplate;
 
     private final String table;
@@ -32,7 +35,7 @@ public abstract class BaseJdbcRepository<T> implements BaseRepository<T> {
     }
 
     @Override
-    public  List<T> findAll(Class<T> type) {
+    public List<T> findAll(Class<T> type) {
         String sql = String.format("""
                 SELECT DISTINCT ON (lower(trim(%1$s))) %1$s
                 FROM %2$s

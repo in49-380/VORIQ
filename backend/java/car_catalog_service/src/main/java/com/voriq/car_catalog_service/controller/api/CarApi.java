@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Tag(name = "Cars", description = "Cars catalog endpoints")
+@Tag(name = "Cars. Deprecated. Will be disabled soon!", description = "Cars catalog endpoints")
 @RequestMapping("/v1/cars")
 public interface CarApi {
 
