@@ -1,6 +1,7 @@
 package com.voriq.parser_service.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,8 +10,8 @@ import java.util.Set;
 
 @Entity
 @Table(
-        name = "cars_fueltype",
-        uniqueConstraints = @UniqueConstraint(name = "uq_fuel_types_name", columnNames = "name")
+        name = "cars_year",
+        uniqueConstraints = @UniqueConstraint(name = "uq_years_year", columnNames = "year")
 )
 @Getter
 @Setter
@@ -19,7 +20,8 @@ import java.util.Set;
 @Builder
 @ToString(onlyExplicitlyIncluded = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class FuelType {
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Year {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,11 +29,11 @@ public class FuelType {
 
     @EqualsAndHashCode.Include
     @ToString.Include
-    @Column(name = "name", nullable = false, unique = true)
-    private String name;
+    @Column(name = "year", nullable = false, unique = true)
+    private Integer year;
 
-    @OneToMany(mappedBy = "fuelType", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "year", cascade = CascadeType.PERSIST)
     @JsonIgnore
     @ToString.Exclude
-    private Set<Engine> engines = new HashSet<>();
+    private Set<Car> cars = new HashSet<>();
 }
