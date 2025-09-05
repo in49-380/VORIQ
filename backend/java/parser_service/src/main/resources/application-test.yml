@@ -1,15 +1,23 @@
 server:
   port: ${PORT}
   forward-headers-strategy: framework
+  error:
+    whitelabel:
+      enabled: false
   servlet:
-    context-path: /api
+    context-path: /api/v1
 
 spring:
   application:
     name: parser_service
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
 
   datasource:
-    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME_TEST}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
@@ -17,10 +25,15 @@ spring:
   sql:
     init:
       mode: always
-      schema-locations: classpath:schema.sql
-      data-locations: classpath:data.sql
+#      schema-locations: classpath:schema.sql
+#      data-locations: classpath:data.sql
       platform: postgres
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create   # on clear DB: create / create-drop; on an existing DB — update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect

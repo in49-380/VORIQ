@@ -31,6 +31,7 @@ public class CarJdbcRepository implements CarRepository {
                     .build();
 
     private static final String BASE_FROM = """
+
             FROM cars c
             JOIN models      m ON m.id = c.model_id
             JOIN brands      b ON b.id = m.brand_id
@@ -47,7 +48,6 @@ public class CarJdbcRepository implements CarRepository {
                     b.name       AS brand,
                     y.year_value AS year
             """ + BASE_FROM;
-
     @Override
     public List<CarResponseDto> search(String brand, String model, String fuelType, String engineType,
                                        Integer yearFrom, Integer yearTo,
