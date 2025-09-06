@@ -1,0 +1,259 @@
+package com.voriq.car_catalog_service.config.db_config;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.postgresql.PGConnection;
+import org.postgresql.copy.CopyManager;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import javax.sql.DataSource;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+@Slf4j
+@Configuration("voriqDbInitConfig")
+@RequiredArgsConstructor
+@Profile("dev")
+public class DatabaseBootstrap {
+
+    private final @Qualifier("adminDataSource") DataSource adminDataSource;
+
+    @Value("${app.pg.host}")
+    private String host;
+    @Value("${app.pg.port}")
+    private int port;
+    @Value("${app.pg.user}")
+    private String user;
+    @Value("${app.pg.password}")
+    private String password;
+    @Value("${app.pg.app-db}")
+    private String appDb;
+
+    private static final String DUMP_CLASSPATH = "db/dump-voriq_cars.sql";
+
+    private String dbLower() {
+        return appDb == null ? null : appDb.toLowerCase(java.util.Locale.ROOT);
+    }
+
+    @Bean("voriqDbInit")
+    public Object bootstrap() throws Exception {
+        createDatabaseIfMissing();
+        if (!isAlreadyInitialized()) {
+            importDumpIntoAppDatabase();
+        } else {
+            log.info("Database {} is already initialized, skipping import", dbLower());
+        }
+        return new Object();
+    }
+
+    private void createDatabaseIfMissing() {
+        JdbcTemplate admin = new JdbcTemplate(adminDataSource);
+        String db = dbLower();
+
+        Integer cnt = admin.queryForObject(
+                "SELECT COUNT(*) FROM pg_database WHERE lower(datname) = ?",
+                Integer.class, db
+        );
+        if (cnt != null && cnt > 0) {
+            log.info("Database {} already exists", db);
+            return;
+        }
+
+        log.info("Creating database {} ...", db);
+        String sql = ("""
+                CREATE DATABASE %s
+                  TEMPLATE template0
+                  ENCODING 'UTF8'
+                  LOCALE_PROVIDER 'libc'
+                  LC_COLLATE 'C'
+                  LC_CTYPE 'C'
+                """).formatted(db);
+
+        try {
+            admin.execute(sql);
+            log.info("Database {} created", db);
+        } catch (org.springframework.jdbc.BadSqlGrammarException e) {
+            // Если БД уже создана (гонка): SQLSTATE 42P04 (duplicate_database) — пропускаем
+            Throwable cause = e.getCause();
+            if (cause instanceof org.postgresql.util.PSQLException pg
+                    && "42P04".equals(pg.getSQLState())) {
+                log.info("Database {} already exists (race), skipping CREATE", db);
+            } else {
+                throw e;
+            }
+        }
+    }
+
+    private boolean isAlreadyInitialized() {
+        String url = "jdbc:postgresql://" + host + ":" + port + "/" + dbLower();
+        String sql = """
+                select 1
+                from information_schema.tables
+                where table_schema='public'
+                  and table_name in (
+                    'cars-brand','cars-carmodel','cars-engine','cars-fueltype','cars-year',
+                    'cars-car','auth_group','auth_user','django_migrations'
+                  )
+                limit 1
+                """;
+        try (Connection c = DriverManager.getConnection(url, user, password);
+             Statement st = c.createStatement();
+             var rs = st.executeQuery(sql)) {
+            return rs.next();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private void importDumpIntoAppDatabase() throws Exception {
+        String url = "jdbc:postgresql://" + host + ":" + port + "/" + dbLower();
+
+        try (Connection conn = DriverManager.getConnection(url, user, password)) {
+            try (Statement pre = conn.createStatement()) {
+                pre.execute("CREATE SCHEMA IF NOT EXISTS public");
+                pre.execute("SET search_path = public");
+            }
+
+            PGConnection pgConn = conn.unwrap(PGConnection.class);
+            CopyManager copyManager = pgConn.getCopyAPI();
+
+            List<String> ddlStatements = new ArrayList<>();
+            List<CopyBlock> copyBlocks = new ArrayList<>();
+            List<String> fkConstraints = new ArrayList<>();
+
+            parseDump(ddlStatements, copyBlocks, fkConstraints);
+
+            try (Statement st = conn.createStatement()) {
+                for (String ddl : ddlStatements) {
+                    log.info("DDL: {}", firstLine(ddl));
+                    st.execute(ddl);
+                }
+            }
+
+            for (CopyBlock cb : copyBlocks) {
+                String copySql = "COPY " + cb.qualifiedTable +
+                        " (" + String.join(", ", cb.columns) + ") FROM STDIN";
+                log.info("COPY {} ({} rows)", cb.qualifiedTable, cb.rows.size());
+
+                StringBuilder buf = new StringBuilder();
+                for (String row : cb.rows) buf.append(row).append('\n');
+
+                try (Reader reader = new StringReader(buf.toString())) {
+                    copyManager.copyIn(copySql, reader);
+                }
+            }
+
+            try (Statement st = conn.createStatement()) {
+                for (String fk : fkConstraints) {
+                    log.info("FK: {}", firstLine(fk));
+                    st.execute(fk);
+                }
+            }
+
+            log.info("✅ Import into {} completed", dbLower());
+        }
+    }
+
+    private void parseDump(List<String> ddlStatements,
+                           List<CopyBlock> copyBlocks,
+                           List<String> fkConstraints) throws IOException {
+
+        ClassPathResource res = new ClassPathResource(DUMP_CLASSPATH);
+        try (BufferedReader br = new BufferedReader(
+                new InputStreamReader(res.getInputStream(), StandardCharsets.UTF_8))) {
+
+            String line;
+            boolean inCreate = false;
+            StringBuilder ddl = new StringBuilder();
+
+            boolean inCopy = false;
+            CopyBlock current = null;
+
+            while ((line = br.readLine()) != null) {
+                String t = line.trim();
+
+                // Шум/глобальные команды psql — пропускаем
+                if (t.isEmpty()
+                        || t.startsWith("-- Roles")
+                        || t.startsWith("-- Databases")
+                        || t.startsWith("\\connect")
+                        || t.startsWith("CREATE ROLE")
+                        || t.startsWith("ALTER ROLE")
+                        || t.startsWith("CREATE DATABASE ")
+                        || t.startsWith("ALTER DATABASE ")
+                        || t.startsWith("SET ")
+                        || t.startsWith("SELECT pg_catalog.set_config")) {
+                    continue;
+                }
+
+                if (t.startsWith("CREATE TABLE ")) {
+                    inCreate = true;
+                    ddl.setLength(0);
+                }
+                if (inCreate) {
+                    ddl.append(line).append('\n');
+                    if (t.endsWith(");")) {
+                        inCreate = false;
+                        ddlStatements.add(ddl.toString());
+                        ddl.setLength(0);
+                    }
+                    continue;
+                }
+
+                if (!inCopy && t.startsWith("COPY ") && t.contains(" FROM stdin;")) {
+                    inCopy = true;
+                    current = new CopyBlock();
+
+                    String head = t.substring(5, t.indexOf(" FROM stdin;")).trim();
+                    int p = head.indexOf('(');
+                    String table = (p > 0) ? head.substring(0, p).trim() : head;
+                    String cols = head.substring(p + 1, head.lastIndexOf(')'));
+
+                    current.qualifiedTable = table;
+                    current.columns = Arrays.stream(cols.split(","))
+                            .map(String::trim)
+                            .toList();
+                    continue;
+                }
+                if (inCopy) {
+                    if (t.equals("\\.")) {
+                        inCopy = false;
+                        copyBlocks.add(current);
+                        current = null;
+                    } else {
+                        current.rows.add(line);
+                    }
+                    continue;
+                }
+
+                if (t.startsWith("ALTER TABLE ONLY") && t.contains("ADD CONSTRAINT")) {
+                    fkConstraints.add(line);
+                }
+            }
+        }
+    }
+
+    private static String firstLine(String s) {
+        String l = s.strip();
+        int i = l.indexOf('\n');
+        return i > 0 ? l.substring(0, i) : l;
+    }
+
+    private static class CopyBlock {
+        String qualifiedTable;
+        List<String> columns = new ArrayList<>();
+        List<String> rows = new ArrayList<>();
+    }
+}
