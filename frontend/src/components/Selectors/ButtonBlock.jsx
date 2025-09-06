@@ -9,7 +9,7 @@ const ButtonBlock=({brand,model,year,engine, setCurrentStep})=>{
 
     const {t}=useTranslation()
     const {runApi, setSuccessResult}=useLoader()
-    const {analysButtonIsDisabled, setIsNewSearch}=useSelect()
+    const {analysButtonIsDisabled, setIsNewSearch, setAnalysButtonIsDisabled}=useSelect()
 
 
     const goToStep=(s)=>{setCurrentStep(s)}
@@ -34,6 +34,8 @@ const ButtonBlock=({brand,model,year,engine, setCurrentStep})=>{
         setIsNewSearch(true)
         setSuccessResult(null)
         localStorage.setItem('hintIsViewed', 'true')
+        setAnalysButtonIsDisabled(true);
+        
     }
 
     const dis_en= analysButtonIsDisabled

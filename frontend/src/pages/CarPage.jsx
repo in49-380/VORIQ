@@ -10,7 +10,7 @@ import SelectorBlock from '../components/Selectors/SelectorBlock.jsx';
 import ButtonBlock from '../components/Selectors/ButtonBlock.jsx';
 
 import HintBox from '../components/HintTour/HintBox.jsx';
-
+import Speed from '../components/Speed.jsx';
 
 const CarPage = () => {
 
@@ -104,22 +104,10 @@ const CarPage = () => {
        { successResult && !isNewSearch &&
         <div className='resultData'>
             <h1>Here will be the results of the selected car’s analysis.</h1>
-            {/* <div>
-            <strong>Brand:</strong> {successResult.brandId?.label} 
-          </div>
-          <div>
-            <strong>Model:</strong> {successResult.modelId?.label} 
-          </div>
-          <div>
-            <strong>Years:</strong> {successResult.yearIds?.map(y=>y.label).join(', ')}
-          </div>
-          <div>
-            <strong>Engine:</strong> {successResult.engineIds?.label} 
-          </div> */}
-          <h2>* Not necessarily here — it will depend on the design — but they will be shown.</h2>
+            <h2>* Not necessarily here — it will depend on the design — but they will be shown.</h2>
         </div>}
       </div>
-
+      {/* <Speed/> */}
       <SelectorBlock
         brand={brand}
         model={model}

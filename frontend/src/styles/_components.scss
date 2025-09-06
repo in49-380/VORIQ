@@ -99,6 +99,7 @@ footer>.footer-nav{
 .dialog-content.fullscreen{
     @include m.position(fixed,0,0,0,0);
     @include m.flex-col(n,center,center);
+    background-color:var(--background-dark);
 }
 
 .dialog-content.small{
@@ -119,6 +120,8 @@ footer>.footer-nav{
     margin-bottom: 2rem;
     color: var(--color-secondary)
 }
+
+
 
 // ********************************************
 // ********CookiesConsent Modal Window*********
@@ -292,6 +295,49 @@ footer>.footer-nav{
     @include m.font(3rem, v.$red-button, normal);
 }
 // *************************************************
+// ******Speedometer*******************************
+// ************************************************
+.speedometer {
+  width: 200px;
+//   margin: 40px auto;
+}
+
+.dial {
+  width: 100%;
+  height: auto;
+  fill:none;
+  stroke-width: 10px;
+}
+
+.speedNums{
+   font-size: 1rem; 
+   font-weight: bold;
+   fill:var(--color-secondary);
+}
+
+.speedTicks{
+     stroke:var(--color-secondary);
+     stroke-width:1px;
+}
+
+.needle {
+ stroke:v.$red-button-hover;
+ stroke-width:3px;
+ stroke-linecap:round;
+
+  transform-origin: 100px 100px; 
+  transform: rotate(90deg);  
+  animation: swing 1s ease-in-out infinite;
+
+}
+
+@keyframes swing {
+  20%   { transform: rotate(150deg); }
+  40%  { transform: rotate(120deg); }
+  70%  { transform: rotate(170deg); }
+  100% { transform: rotate(90deg); }
+}
+
 
 
 
