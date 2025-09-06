@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
-import {useState} from 'react'
+import React from "react";
+import {useState, useEffect} from 'react'
 import useHintBox from '../../hooks/useHintBox'
 import Button from "../Button";
-import {changeLanguage } from "i18next";
-import { SelectContext } from "../../hooks/useSelect";
+// import {changeLanguage } from "i18next";
 
-const HintBox=({width, height, top, left, currentStep, setCurrentStep})=>{
+const HintBox=({currentStep, setCurrentStep})=>{
 
   const hintTour=[
     { step: 1, value: 's1', content: 'hint1' },
@@ -17,24 +16,36 @@ const HintBox=({width, height, top, left, currentStep, setCurrentStep})=>{
   ]
 
   const {hintBoxData}=useHintBox()
-  // const [currentStep, setCurrentStep]=useState(1)
-  const [isHintAvaible, setIsHintAvaible]=useState(currentStep<5)
+  const [isHintAvaible, setIsHintAvaible] = useState(() => {
+    return currentStep < 7 && !localStorage.getItem('hintIsViewed');
+  });
+
+  useEffect(() => {
+  if (currentStep > 6) {
+    setIsHintAvaible(false);
+  } else {
+    if (!localStorage.getItem('hintIsViewed')) setIsHintAvaible(true);
+  }
+  }, [currentStep]);
 
     const currentHint=hintTour
     .find(item=>item.step===currentStep)
 
+    if (!currentHint) return null;
     const currentBoxData=hintBoxData
     .filter(item=>item.id===currentHint.value)
     .map(hint=>({
       coord:{
-        top: top||hint.coord.top,
-        left:left||hint.coord.left
+        top: hint.coord.top,
+        left:hint.coord.left
       },
       size:{
-        width:width||hint.size.width,
-        height:height||hint.size.height
-      }
+        width:hint.size.width,
+        height:hint.size.height
+      },
+      tipOffset:hint.tipOffset
     }))[0]  
+    if (!currentBoxData) return null;
 
     const hintStyle=
           { width: `${currentBoxData?.size?.width}px`, 
@@ -42,6 +53,9 @@ const HintBox=({width, height, top, left, currentStep, setCurrentStep})=>{
             top: `${currentBoxData?.coord?.top}px`, 
             left:`${currentBoxData?.coord?.left}px` }
 
+    const tipStyle={
+      "--tip-offset":`${currentBoxData?.tipOffset}px`
+    }        
 
     
             
@@ -55,7 +69,7 @@ const HintBox=({width, height, top, left, currentStep, setCurrentStep})=>{
 
     const onCloseClick=(()=>{
       setIsHintAvaible(false)
-      localStorage.setItem('hintIsViewed', true)
+      localStorage.setItem('hintIsViewed', 'true')
     })
 
 
@@ -66,29 +80,30 @@ const HintBox=({width, height, top, left, currentStep, setCurrentStep})=>{
       <> 
           <div
             key={currentHint?.stepValue}
-            className="absolute  bg-gray-400 rounded-lg flex flex-col items-center justify-center text-black font-bold m-12 mx-auto py-4"
+            className="hint_container"
             style={hintStyle}
           > 
             {currentHint?.content}
             <div
-              className="absolute bottom-[-10px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[10px] border-t-gray-400"
+              className="small_element"
+              style={tipStyle}
             />
-            <div className="flex flex-row"> 
+            <div className="hint_buttons_container"> 
               
+                <Button id='b16'
+                onClick={onCloseClick}
+                children={'close'}/>
+
                 {currentStep>1 && 
-                <Button
+                <Button id='b14'
                 onClick={onPrevClick}
                 children={'prev'}/>}
                 
-                {currentStep<5 && 
-                <Button
+                {currentStep<6 && 
+                <Button id='b15'
                 onClick={onNextClick}
                 children={'next'}/>}
 
-                <Button
-                onClick={onCloseClick}
-                children={'close'}
-                />
               </div>
           
           </div>

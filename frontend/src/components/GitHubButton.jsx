@@ -1,17 +1,20 @@
 import { FaGithub } from "react-icons/fa";
+import Button from "./Button";
 
-const GitHubButton = ({ onClick, ref, title }) => {
+const GitHubButton = ({ref, title }) => {
   return (
-    <button
+    <Button
       tabIndex="0"
-      onClick={onClick}
-      title={title}
+      title="GitHub"
       ref={ref}
-      className="p-2 rounded hover:bg-gray-400 active:bg-gray-500 focus:outline-2 "
+      onClick={() =>
+          window.open("https://github.com/in49-380/VORIQ", "_blank")
+        }
+      className="git-hub-button"
       aria-label={title}
     >
-      <FaGithub className="text-2xl text-gray-700" />
-    </button>
+      <FaGithub />
+    </Button>
   );
 };
 export default GitHubButton;

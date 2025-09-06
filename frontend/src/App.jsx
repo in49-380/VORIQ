@@ -1,7 +1,5 @@
 import { useContext, useEffect } from 'react';
 
-import './App.css'
-import LogoutButton from './components/oauth/LogoutButton'
 import AuthContext from "./components/oauth/AuthContext";
 import RegistrationPage from './pages/StartPage';
 import CarPage from './pages/CarPage';
@@ -15,12 +13,7 @@ import ErrorModal from './components/error_loaderModal/ErrorModal';
 
 const screenPage = {
   login: <RegistrationPage />,
-  cars: (
-    <>
-      <CarPage />
-      <LogoutButton/>
-    </>
-  ),
+  cars:  <CarPage />
 }
 
 function App() {
@@ -51,7 +44,6 @@ function App() {
         {screenPage[currentScreen]}
       </main>
       <Footer/>
-      <KlaroConsentButton/>
     </> 
   )
 }

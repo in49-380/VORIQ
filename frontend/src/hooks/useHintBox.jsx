@@ -31,13 +31,27 @@ const [hintBoxData, setHintBoxData]=useState([])
           })
      return getDataByElementId     
   }
-
+  
   const  makeHintBoxData=(elementData)=>{
+
+    const size=elementData.size
+    const coord=elementData.coord
+
+    const xcenter=coord.left+size.width/2
+    const ycenter=coord.top
+    
     const id=elementData.id
-    const width=elementData.size.width*2
-    const height=elementData.size.height*1.2
-    const top=elementData.coord.top-height*3
-    const left=elementData.coord.left-width/4
+
+    const width = Math.max(250, size.width);
+    const height=size.height*2
+    const top=ycenter-height-20
+    const newLeft=xcenter-width/2
+    const left = Math.min(
+         Math.max(10, newLeft),           
+         window.innerWidth - width - 10  
+          );
+    const tipOffset=xcenter-left      
+  
     return{
           id: id,
           coord:{
@@ -48,6 +62,7 @@ const [hintBoxData, setHintBoxData]=useState([])
             width:width,
             height:height
           },
+          tipOffset:tipOffset
       }
   }
        

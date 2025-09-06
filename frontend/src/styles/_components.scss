@@ -1,0 +1,343 @@
+@use 'variables' as v;
+@use 'mixins' as m;
+
+// *****<Button>******************
+// *******************************
+button{
+    padding: 5px;
+    border-radius: 0.25rem;
+    font-size: 1.6rem;
+    transition: border-color 0.25s;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--background-secondary);
+  outline-offset:2px
+}
+// *****************************************
+// *****************************************
+// ******************************************
+FaGithub {
+    color: var(--color-primary)
+}
+
+header>.git-hub-button{
+    @include m.position(fixed, n, 1rem, 1rem, n)
+}
+
+footer>.git-hub-button{
+    @include m.position(fixed, n, 1rem, 1rem, n)
+}
+
+
+.google-auth-button{
+    @include m.size(240px, 240px)
+}
+
+.logout-button{
+}
+
+// *********************************************
+// *************Footer**************************
+// *********************************************
+footer>.footer-left,
+footer>.footer-nav{
+    @include m.flex (0.5rem, center, center, wrap)
+}
+// **********************************************
+// **********welcom-Page*************************
+// **********************************************
+.split{
+    @include m.size(80%, 80%, var(--background-secondary));
+    @include m.flex-row(5, center, center);
+    border-radius:3rem;
+}
+
+.split > .welcome, 
+.split > .google{
+    flex:1;
+    @include m.flex-col (n, center, center);
+    @include m.size(100%, 100%);
+
+}
+
+.split > .welcome{
+    border-top-left-radius: 3rem;
+    border-bottom-left-radius: 3rem;
+    text-align: center;
+}
+.split > .google{
+    border-top-right-radius: 3rem;
+    border-bottom-right-radius: 3rem;
+    background-color: var(--background-light);
+}
+
+.big-title{
+    @include m.font(5rem, var(--color-title), bold);
+}
+
+.welcome>.subtitle{
+    @include m.font(2rem, var(--color-secondary), bold);
+    margin-top: 1rem;
+}
+// ******************************
+//******* ModalWindow ***********
+// ********************************
+
+.dialog-overlay{
+    @include m.position(fixed,0,7rem,0,0);
+    background-color: var(--background-dark);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+   }
+
+.dialog-content{
+    background-color:var(--background-light);
+    z-index:50
+}   
+
+.dialog-content.fullscreen{
+    @include m.position(fixed,0,0,0,0);
+    @include m.flex-col(n,center,center);
+    background-color:var(--background-dark);
+}
+
+.dialog-content.small{
+    @include m.hvcenter(fixed);
+    max-width: 50rem;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: var(--box-shadow)
+
+}
+
+.dialog-title{
+    @include m.font(2rem, var(--color-title), bold);
+    text-align:center;
+    margin-bottom: 2rem;
+}
+.dialog-description{
+    margin-bottom: 2rem;
+    color: var(--color-secondary)
+}
+
+
+
+// ********************************************
+// ********CookiesConsent Modal Window*********
+// ********************************************
+.cookie_modal_container{
+    @include m.flex-row(center, space-between);
+    width: 100%;
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.cookie_modal_container > :nth-child(1),
+.cookie_modal_container > :nth-child(2),
+.cookie_modal_container > :nth-child(3){
+    @include m.font(1.5rem, white, n);
+    @include m.size(27%, 4rem)
+}
+
+.cookie_modal_container > :nth-child(1){
+    background-color: v.$red-button;
+}
+.cookie_modal_container > :nth-child(2){
+    background-color: v.$gray-button;
+}
+.cookie_modal_container > :nth-child(3){
+    background-color: v.$green-button;
+}
+.cookie_modal_container > :nth-child(1):hover{
+    background-color: v.$red-button-hover;
+}
+.cookie_modal_container > :nth-child(2):hover{
+    background-color: v.$gray-button-hover;
+}
+.cookie_modal_container > :nth-child(3):hover{
+    background-color: v.$green-button-hover;
+}
+
+.cookie_modal_container > :nth-child(3).smallChar{
+    @include m.font(1.2rem, white, n);
+
+    // text-sm whitespace-nowrapsmal
+}
+.langInCookieModal{
+    @include m.position(absolute,0,0, null, null)
+}
+
+.policy_container{
+    @include m.flex-row(2rem, start, end);
+    width: 100%;
+    position: relative;
+}
+
+.policy_container>button,
+.policy_container>button{
+    @include m.font(1.3rem, var(--color-light),n);
+
+}
+.policy_container>button:hover,
+.policy_container>button:active{
+    color: var(--color-primary)
+}
+
+// *************************************
+// ********Selector-Block*****
+// ***************************************
+.selector_container{
+    @include m.size(90vw,30vh, transparent);
+    @include m.flex-row(center, space-around)
+
+}
+
+// *************************************
+// ********analyze - newCar Buttons*****
+// ***************************************
+.analyze_button_container{
+    @include m.flex-row(n, space-around, center);
+    width: 40vw;
+    align-self: start;
+}
+.analyze_button_container button{
+    @include m.size(15vw, 5rem);
+    @include m.font (1.5rem, white, bold );
+    padding:1rem;
+}
+
+.analyze_button_container .disabled_button{
+    background-color: v.$green-button-disabled;
+    cursor: not-allowed;
+    transform:none;
+     transition-property: background-color;
+    transition-duration: 200ms;
+}
+
+.analyze_button_container .enabled_button{
+    background-color: v.$green-button;
+    transition-property: background-color;
+    transition-duration: 200ms;
+}
+.analyze_button_container .enabled_button:hover{
+    background-color: v.$green-button-hover;
+}
+// ******************************************
+// ************HintTour**********************
+// ******************************************
+.hint_container{
+    @include m.position(absolute);
+    @include m.flex-col (1rem, center, center);
+    @include m.font(1.4rem, var(--color-title), bold);
+    background-color: var(--background-secondary);
+    border: transparent;
+    border-radius: 5px;
+    padding: 1rem;
+    margin: 0;
+}
+
+.hint_container>.small_element{
+    // @include m.hcenter(absolute);
+    @include m.position(absolute, var(--tip-offset), null,null,-10px);
+    // bottom:-10px;
+    width: 0;
+    height: 0;
+    border-left:10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px var(--background-secondary) solid;
+}
+
+.hint_container>.hint_buttons_container{
+    @include m.size (100%, 100%, none);
+    @include m.flex-row(4rem, center, center);
+}
+#b16{
+    color: v.$red-button;
+}
+#b16:hover{
+    color: v.$red-button-hover;
+}
+
+// *******************************************
+.car-container{
+    position: relative;
+}
+
+.topCarSite{
+    @include m.flex-row(10rem,space-between, center);
+    @include m.size(100%, 40%);
+}
+// *********************************************
+// *********************************************
+.carData{
+    @include m.size(40%, 90%, transparent);
+    @include m.flex-col(2rem, left, start);
+    margin-left: 2rem;    
+}
+
+.carData>h2{
+    color: v.$green-button;
+}
+
+.resultData{
+    @include m.size(40%, 90%, transparent);
+    @include m.flex-col(2rem, space-between, center);
+    margin-left: 2rem;    
+}
+
+.resultData>h2 {
+    @include m.font(2rem, var(--color-light), normal);
+    text-align: center;
+}
+
+.resultData>h1 {
+    @include m.font(3rem, v.$red-button, normal);
+}
+// *************************************************
+// ******Speedometer*******************************
+// ************************************************
+.speedometer {
+  width: 200px;
+//   margin: 40px auto;
+}
+
+.dial {
+  width: 100%;
+  height: auto;
+  fill:none;
+  stroke-width: 10px;
+}
+
+.speedNums{
+   font-size: 1rem; 
+   font-weight: bold;
+   fill:var(--color-secondary);
+}
+
+.speedTicks{
+     stroke:var(--color-secondary);
+     stroke-width:1px;
+}
+
+.needle {
+ stroke:v.$red-button-hover;
+ stroke-width:3px;
+ stroke-linecap:round;
+
+  transform-origin: 100px 100px; 
+  transform: rotate(90deg);  
+  animation: swing 1s ease-in-out infinite;
+
+}
+
+@keyframes swing {
+  20%   { transform: rotate(150deg); }
+  40%  { transform: rotate(120deg); }
+  70%  { transform: rotate(170deg); }
+  100% { transform: rotate(90deg); }
+}
+
+
+
+
