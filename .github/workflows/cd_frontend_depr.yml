@@ -1,23 +1,23 @@
-name: Deploy Backend Java Security Service
+name: DEPRECATED Deploy Frontend Node
 
 on:
   push:
     branches:
       - '**'
     paths:
-      - 'backend/java/security_service**'
-      - 'devops/dev/backend/java/security_service**'
+      - 'frontend/**'
+      - 'devops/dev/frontend/**'
   workflow_dispatch:
 
 concurrency:
-  group: deploy-backend-java-security-service-${{ github.ref }}
+  group: deploy-frontend-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy backend to Server over SSH
+      - name: Deploy frontend to server over SSH
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.CICD_SSH_HOST }}
@@ -30,13 +30,13 @@ jobs:
             # set variables
             BRANCH="${{ github.ref_name }}"
             REPO_DIR="/home/${{ secrets.CICD_SSH_USER }}/VORIQ"
-            #SERVICE_DIR="backend/java/security_service"
-            IMAGE="dev_security_service"
+            #SERVICE_DIR="devops/frontend"
+            IMAGE="dev_front_node"
             TAG_BRANCH="$(echo "$BRANCH" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9_.-]+#-#g' | sed -E 's#^-+|-+$##g' | cut -c1-120)-latest"
             TAG_SHA="${{ github.sha }}"
             TAG_LAT="latest"
             TAG=$TAG_LAT
-            CONTAINER="dev_security_service" 
+            CONTAINER="dev_front_node"
 
             # Ensure the VORIQ directory exists
             [ -d "$REPO_DIR/.git" ] || git clone https://github.com/in49-380/VORIQ.git "$REPO_DIR"
@@ -50,19 +50,31 @@ jobs:
             git reset --hard "$TAG_SHA"
             git clean -fdx
 
-            # go to the infrastructure directory  
-            cd "$REPO_DIR/devops"
+            # go to the code directory  
+            cd "$REPO_DIR/frontend"
+        
+            echo '${{ secrets.DEV_FRONT_GOOGLE_CLIENT_ID }}' > .env
+            echo "VITE_SWAGGER_DOMAIN=http://172.17.0.8" >> .env
+            echo "VITE_SWAGGER_PORT=8084" >> .env
 
-            # prepare .enf for infrastructure
-            rm -f .env
-            echo 'DB_NAME=${{ secrets.DB_NAME }}' >> .env
-            echo 'DB_USERNAME=${{ secrets.DB_USERNAME }}' >> .env
-            echo 'DB_PASSWORD=${{ secrets.DB_PASSWORD }}' >> .env
-            echo 'DB_NAME_SECURITY=${{ secrets.DB_NAME_SSERVICE }}' >> .env
-            echo 'DB_NAME_CAR=${{ secrets.DB_NAME_CAR }}' >> .env
-            
-            # build new image and restart container with new image
-            ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d --no-deps --build back-java-security
+            # build new image
+            docker image build --no-cache \
+              -t "$IMAGE:$TAG" \
+              -f "$REPO_DIR/devops/dev/frontend/Dockerfile" .
+
+            #docker tag "$IMAGE:$TAG_SHA" "$IMAGE:$TAG_BRANCH"
+            #docker tag "$IMAGE:$TAG_SHA" "$IMAGE:TAG_LAT"
+
+            # remove old container if exists
+            docker container stop "$CONTAINER" || true
+            docker container rm -f "$CONTAINER" || true
+
+            # restart container with new image
+            docker container run -d \
+              --name "$CONTAINER" \
+              --restart unless-stopped \
+              -p 3000:3000 \
+              "$IMAGE:$TAG"
 
             # clean up old images to save space
             #docker image prune -f 
@@ -72,3 +84,5 @@ jobs:
             docker image rm -f $(docker image ls -aq) || true
             # if images wont be deleted, uncomment the next line
             #docker image ls "$IMAGE" -q | xargs -n 1 docker rmi -f
+
+

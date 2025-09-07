@@ -40,7 +40,8 @@ volumes:
     # name: ${ENV}_pg_data
     name: db_pg01_data
   pgadmin_data:
-    name: ${ENV}_pgadmin_data
+    #name: ${ENV}_pgadmin_data
+    name: pgadmin_data
 
 
 services:
@@ -57,7 +58,7 @@ services:
       # These ports are in format <host-port>:<container-port>
       - ${PROXY_HTTP_PORTS} # Public HTTP Port
       - ${PROXY_HTTPS_PORTS} # Public HTTPS Port
-      - '8081:81' # Admin Web Port
+      - ${PROXY_ADMIN_PORTS} # Admin Web Port
       # Add any other Stream port you want to expose
       # - '21:21' # FTP
 
@@ -100,7 +101,7 @@ services:
   front-node:
     build:
       #context: /home/$USER/VORIQ/frontend # absolute path to source code dir.
-      context: ../../frontend # relative path to source code dir. relative to this (docker-compose.yml) file
+      context: ../frontend # relative path to source code dir. relative to this (docker-compose.yml) file
       dockerfile: ../devops/${ENV}/frontend/Dockerfile # path to Dockerfile relative to CONTEXT dir.
       # args:
       #   RELEASE: 17
@@ -108,8 +109,8 @@ services:
     container_name: ${ENV}-front-node
     # expose:
     #   - 3000
-    ports:
-      - ${FRONT_NODE_PORTS}
+    # ports:
+    #   - ${FRONT_NODE_PORTS}
     networks:
       - app-network
     restart: unless-stopped
@@ -117,14 +118,14 @@ services:
       - VITE_SWAGGER_DOMAIN=back-java-car
       - VITE_SWAGGER_PORT=${BACK_JAVA_CAR_HOST_PORT:-8084}
     env_file:
-      - ../../frontend/.env 
+      - ../frontend/.env 
       - .env.${ENV}
 
 
   back-java-security:
     build:
       #context: /home/$USER/VORIQ/backend/java/security_service # absolute path to source code dir.
-      context: ../../backend/java/security_service # relative path to source code dir. relative to this (docker-compose.yml) file
+      context: ../backend/java/security_service # relative path to source code dir. relative to this (docker-compose.yml) file
       dockerfile: ../../../devops/${ENV}/backend/java/security_service/Dockerfile # path to Dockerfile relative to CONTEXT dir.
       # args:
       #   RELEASE: 17
@@ -185,7 +186,7 @@ services:
   back-java-car:
     build:
       #context: /home/$USER/VORIQ/backend/java/car_catalog_service # absolute path to source code dir.
-      context: ../../backend/java/car_catalog_service # relative path to source code dir. relative to this (docker-compose.yml) file
+      context: ../backend/java/car_catalog_service # relative path to source code dir. relative to this (docker-compose.yml) file
       dockerfile: ../../../devops/${ENV}/backend/java/car_catalog_service/Dockerfile # path to Dockerfile relative to CONTEXT dir.
       # args:
       #   RELEASE: 17

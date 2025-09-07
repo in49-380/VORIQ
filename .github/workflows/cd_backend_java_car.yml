@@ -50,55 +50,19 @@ jobs:
             git reset --hard "$TAG_SHA"
             git clean -fdx
 
-            # go to the code directory
-            cd /home/${{ secrets.CICD_SSH_USER }}/VORIQ/backend/java/car_catalog_service
+            # go to the infrastructure directory  
+            cd "$REPO_DIR/devops"
 
-
-
-            # build new image
-            docker image build --no-cache \
-              -t "$IMAGE:$TAG" \
-              -f "$REPO_DIR/devops/dev/backend/java/car_catalog_service/Dockerfile" .
-
-            #docker tag "$IMAGE:$TAG_SHA" "$IMAGE:$TAG_BRANCH"
-            #docker tag "$IMAGE:$TAG_SHA" "$IMAGE:TAG_LAT"
-
-            # remove old container if exists
-            docker container stop "$CONTAINER" || true
-            docker container rm -f "$CONTAINER" || true
-
-            # running new docker container
-            docker container run -d \
-            --restart unless-stopped \
-            --name $CONTAINER \
-            -p 8084:8084 \
-            -v "$CONTAINER"_log:/opt/app/logs \
-            -e SPRING_PROFILES_ACTIVE=dev \
-            -e PORT=8084 \
-            -e DB_HOST=172.18.0.2 \
-            -e DB_PORT=5432 \
-            -e DB_NAME=cars \
-            -e DB_USERNAME=postgres \
-            -e DB_PASSWORD=postgres \
-            -e REDIS_HOST=172.17.0.5 \
-            -e REDIS_PORT=6379 \
-            -e ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000,http://voriq.info:3000,http://172.17.0.3:3000 \
-            -e ACCESS_TOKEN_EXPIRATION_MS=900000 \
-            -e MAX_TOKEN=5 \
-            -e ISSUE_RATE_LIMIT=5000 \
-            -e VALIDATE_RATE_LIMIT=300 \
-            -e BLOCKED_PREFIX="block:" \
-            -e LOG_PATH=/opt/app/logs \
-            -e JAVA_OPTS="-XX:+ExitOnOutOfMemoryError -XX:MaxRAMPercentage=75 -XX:+UseStringDeduplication -Duser.timezone=Europe/Berlin" \
-            -e LOG_DIR=/opt/app/logs \
-            -e FIXED_DELAY_MS=259200000 \
-            -e INITIAL_DELAY_MS=60000 \
-            -e TMP_TOKEN_1=3f2f9b4a-26a7-4b0c-a1b2-7e7e05f3c4d1 \
-            -e TMP_TOKEN_2=c1a81c55-78db-4df9-9c39-2a9df7e9b46d \
-            -e TMP_TOKEN_3=8d74f2d1-4c2e-4c90-b58b-1ac9e3c0a527 \
-            --add-host host.docker.internal:host-gateway \
-            $IMAGE:$TAG && \
-            docker network connect dbnetwork $CONTAINER
+            # prepare .enf for infrastructure
+            rm -f .env
+            echo 'DB_NAME=${{ secrets.DB_NAME }}' >> .env
+            echo 'DB_USERNAME=${{ secrets.DB_USERNAME }}' >> .env
+            echo 'DB_PASSWORD=${{ secrets.DB_PASSWORD }}' >> .env
+            echo 'DB_NAME_SECURITY=${{ secrets.DB_NAME_SSERVICE }}' >> .env
+            echo 'DB_NAME_CAR=${{ secrets.DB_NAME_CAR }}' >> .env
+            
+            # build new image and restart container with new image
+            ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d --no-deps --build back-java-car
 
             # clean up old images to save space
             #docker image prune -f 

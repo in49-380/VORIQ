@@ -53,28 +53,24 @@ jobs:
             # go to the code directory  
             cd "$REPO_DIR/frontend"
         
+            # prepare .enf for front
             echo '${{ secrets.DEV_FRONT_GOOGLE_CLIENT_ID }}' > .env
             echo "VITE_SWAGGER_DOMAIN=http://172.17.0.8" >> .env
             echo "VITE_SWAGGER_PORT=8084" >> .env
 
-            # build new image
-            docker image build --no-cache \
-              -t "$IMAGE:$TAG" \
-              -f "$REPO_DIR/devops/dev/frontend/Dockerfile" .
+            # go to the infrastructure directory  
+            cd "$REPO_DIR/devops"
 
-            #docker tag "$IMAGE:$TAG_SHA" "$IMAGE:$TAG_BRANCH"
-            #docker tag "$IMAGE:$TAG_SHA" "$IMAGE:TAG_LAT"
-
-            # remove old container if exists
-            docker container stop "$CONTAINER" || true
-            docker container rm -f "$CONTAINER" || true
-
-            # restart container with new image
-            docker container run -d \
-              --name "$CONTAINER" \
-              --restart unless-stopped \
-              -p 3000:3000 \
-              "$IMAGE:$TAG"
+            # prepare .enf for infrastructure
+            rm -f .env
+            echo 'DB_NAME=${{ secrets.DB_NAME }}' >> .env
+            echo 'DB_USERNAME=${{ secrets.DB_USERNAME }}' >> .env
+            echo 'DB_PASSWORD=${{ secrets.DB_PASSWORD }}' >> .env
+            echo 'DB_NAME_SECURITY=${{ secrets.DB_NAME_SSERVICE }}' >> .env
+            echo 'DB_NAME_CAR=${{ secrets.DB_NAME_CAR }}' >> .env
+            
+            # build new image and restart container with new image
+            ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d --no-deps --build front-node
 
             # clean up old images to save space
             #docker image prune -f 
