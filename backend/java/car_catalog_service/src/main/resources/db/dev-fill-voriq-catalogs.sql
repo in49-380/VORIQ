@@ -53,7 +53,7 @@ WITH base AS (
     ('I4',    'M256', 'M256',     2999, 3),
     ('I4',    'EA211','CZEA',     1395, 1),
     ('I4',    'EA888','DNPA',     1984, 1),
-    ('I4',    'J20A', 'J20A',     1995, 5)
+    ('I4',    'J20A', 'J20A',     1995, 1)
   ) e(type, series_code, engine_code, displacement_cc, fuel_type_id)
 ),
 start_id AS ( SELECT COALESCE(MAX(id), 0) AS s FROM cars_engine )
