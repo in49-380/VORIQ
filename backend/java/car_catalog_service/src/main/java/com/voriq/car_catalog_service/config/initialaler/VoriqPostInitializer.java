@@ -30,7 +30,13 @@ public class VoriqPostInitializer implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         runScript("db/dev-fill-voriq-catalogs.sql");
-        runScript("db/dev-build-cars-car.sql");
+        runScript("db/seed_cars_refs_min.sql");
+
+//        Run once when creating a database!!!
+//        runScript("db/add_base_pks_once.sql");
+
+        runScript("db/add_all_keys.sql");
+        runScript("db/seed_cars_exact_500.sql");
         log.info("✅ VORIQ_cars post-init (dev) completed.");
     }
 

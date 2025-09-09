@@ -13,11 +13,9 @@ import java.util.Optional;
 @Repository
 public class CarCatalogJdbcRepository implements CarCatalogRepository {
 
-
     private final JdbcTemplate jdbc;
 
-    public CarCatalogJdbcRepository(@Qualifier("voriqJdbcTemplate")
-                                    JdbcTemplate jdbc) {
+    public CarCatalogJdbcRepository(@Qualifier("voriqJdbcTemplate") JdbcTemplate jdbc) {
         this.jdbc = jdbc;
     }
 
@@ -50,39 +48,38 @@ public class CarCatalogJdbcRepository implements CarCatalogRepository {
     @Override
     public List<IdValueResponseDto> findYears(Long brandId, Long modelId) {
         final String sql = """
-        SELECT DISTINCT y.id, y.year AS value
-        FROM cars_car c
-        JOIN cars_year y ON y.id = c.year_id
-        WHERE c.brand_id = ? AND c.model_id = ?
-        ORDER BY y.year
-        """;
-
+            SELECT DISTINCT y.id, CAST(y.year AS varchar) AS value
+            FROM cars_car c
+            JOIN cars_carmodel m ON m.id = c.model_id
+            JOIN cars_year     y ON y.id = c.year_id
+            WHERE m.brand_id = ? AND c.model_id = ?
+            ORDER BY 2
+            """;
         return jdbc.query(sql, ID_VALUE_ROW, brandId, modelId);
     }
 
     @Override
     public List<IdValueResponseDto> findEngines(Long brandId, Long modelId, Long yearId) {
         final String sql = """
-        SELECT DISTINCT e.id, e.type AS value
-        FROM cars_car c
-        JOIN cars_engine e ON e.id = c.engine_id
-        WHERE c.brand_id = ? AND c.model_id = ? AND c.year_id = ?
-        ORDER BY e.type
-        """;
-
+            SELECT DISTINCT e.id, e.type AS value
+            FROM cars_car c
+            JOIN cars_carmodel m ON m.id = c.model_id
+            JOIN cars_engine  e ON e.id = c.engine_id
+            WHERE m.brand_id = ? AND c.model_id = ? AND c.year_id = ?
+            ORDER BY 2
+            """;
         return jdbc.query(sql, ID_VALUE_ROW, brandId, modelId, yearId);
     }
 
-
     @Override
     public List<IdValueResponseDto> findTransmissions(Long brandId, Long modelId, Long yearId, Long engineId) {
-        // label = Manual/Automatic по флагу manual
         final String sql = """
             SELECT DISTINCT t.id,
                    CASE WHEN t.manual THEN 'Manual' ELSE 'Automatic' END AS value
             FROM cars_car c
+            JOIN cars_carmodel   m ON m.id = c.model_id
             JOIN cars_transmission t ON t.id = c.transmission_id
-            WHERE c.brand_id = ? AND c.model_id = ? AND c.year_id = ? AND c.engine_id = ?
+            WHERE m.brand_id = ? AND c.model_id = ? AND c.year_id = ? AND c.engine_id = ?
             ORDER BY 2
             """;
         return jdbc.query(sql, ID_VALUE_ROW, brandId, modelId, yearId, engineId);
@@ -93,8 +90,13 @@ public class CarCatalogJdbcRepository implements CarCatalogRepository {
         final String sql = """
             SELECT DISTINCT w.id, w.name AS value
             FROM cars_car c
-            JOIN cars_whilldrive w ON w.id = c.wheel_drive_id
-            WHERE c.brand_id = ? AND c.model_id = ? AND c.year_id = ? AND c.engine_id = ? AND c.transmission_id = ?
+            JOIN cars_carmodel  m ON m.id = c.model_id
+            JOIN cars_whilldrive w ON w.id = c.whill_drive_id
+            WHERE m.brand_id = ?
+              AND c.model_id = ?
+              AND c.year_id = ?
+              AND c.engine_id = ?
+              AND c.transmission_id = ?
             ORDER BY 2
             """;
         return jdbc.query(sql, ID_VALUE_ROW, brandId, modelId, yearId, engineId, transmissionsId);
@@ -108,16 +110,17 @@ public class CarCatalogJdbcRepository implements CarCatalogRepository {
                                      Long transmissionId,
                                      Long driveLayoutId) {
         final String sql = """
-                SELECT c.id
-                FROM cars_car c
-                WHERE c.brand_id = ?
-                  AND c.model_id = ?
-                  AND c.year_id = ?
-                  AND c.engine_id = ?
-                  AND c.transmission_id = ?
-                  AND c.wheel_drive_id = ?
-                LIMIT 1
-                """;
+            SELECT c.id
+            FROM cars_car c
+            JOIN cars_carmodel m ON m.id = c.model_id
+            WHERE m.brand_id = ?
+              AND c.model_id = ?
+              AND c.year_id = ?
+              AND c.engine_id = ?
+              AND c.transmission_id = ?
+              AND c.whill_drive_id = ?
+            LIMIT 1
+            """;
         List<Long> ids = jdbc.query(sql,
                 (rs, n) -> rs.getLong(1),
                 brandId, modelId, yearId, engineId, transmissionId, driveLayoutId);
@@ -125,4 +128,3 @@ public class CarCatalogJdbcRepository implements CarCatalogRepository {
         return ids.isEmpty() ? Optional.empty() : Optional.of(ids.get(0));
     }
 }
-
