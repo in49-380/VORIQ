@@ -48,6 +48,7 @@ jobs:
             git fetch --all --prune
             git checkout -B "$BRANCH" "$TAG_SHA"
             git reset --hard "$TAG_SHA"
+            git pull origin "$BRANCH"
             git clean -fdx
 
             # go to the infrastructure directory  
@@ -72,3 +73,43 @@ jobs:
             docker image rm -f $(docker image ls -aq) || true
             # if images wont be deleted, uncomment the next line
             #docker image ls "$IMAGE" -q | xargs -n 1 docker rmi -f
+
+            # wait few seconds, until container is run
+            sleep 20
+
+            # get container id of the just started container
+            CONTAINER=$(ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" ps -q back-java-car)
+
+            # checking container status.
+            if [ "$(docker inspect -f {{.State.Running}} $CONTAINER)" != "true" ] || [ "$(docker inspect -f {{.State.Restarting}} $CONTAINER)" = "true" ] ; then
+                echo "Container failed to start. Capturing logs..." >&2
+                # getting last log strings.
+                LOGS=$(docker logs --tail 50 $CONTAINER 2>&1)
+                
+                # creating output variable 'container_logs' with logs content and transfer to github actions output
+                echo "::set-output name=container_logs::$LOGS"
+                
+                exit 1 # exiting with failure, so all job ends with failure.
+            fi
+  
+  notify_on_failure:
+    runs-on: ubuntu-latest
+    needs: build_and_deploy
+    if: failure()
+    steps:
+      - name: Send a Discord notification
+        uses: appleboy/discord-action@master
+        with:
+          webhook_id: ${{ secrets.DISCORD_WEBHOOK_URL }} # WebHook ID
+          webhook_token: ${{ secrets.DISCORD_WEBHOOK_URL }} # WebHook Token
+          message: |
+            :x: **Deploy is failed!**
+            
+            **Repo**: `${{ github.repository }}`
+            **Branch**: `${{ github.ref_name }}`
+            **Commit**: `${{ github.sha }}`
+            **Deploy log**: `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`
+            
+            \`\`\`
+            ${{ needs.build_and_deploy.outputs.container_logs }}
+            \`\`\`
