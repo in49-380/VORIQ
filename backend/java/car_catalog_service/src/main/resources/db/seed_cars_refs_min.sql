@@ -1,16 +1,50 @@
+-- seed_cars_refs_min.sql
 SET search_path = public;
 
-WITH seq AS (SELECT pg_get_serial_sequence('cars_brand','id') AS s)
-SELECT setval(s::regclass, (SELECT COALESCE(MAX(id),0) FROM cars_brand), true)
-FROM seq WHERE s IS NOT NULL;
+-- === cars_market: создать одну запись, если таблица пустая (ТОЛЬКО ДАННЫЕ) ===
+-- Подставь нужные значения code/name при желании, сейчас ставим заглушку 'GEN' / 'Generic'
+WITH start_id AS (SELECT COALESCE(MAX(id), 0) AS s FROM cars_market)
+INSERT INTO cars_market (id, code, name)
+SELECT s.s + 1, 'GEN', 'Generic'
+FROM start_id s
+WHERE NOT EXISTS (SELECT 1 FROM cars_market);
 
-WITH seq AS (SELECT pg_get_serial_sequence('cars_carmodel','id') AS s)
-SELECT setval(s::regclass, (SELECT COALESCE(MAX(id),0) FROM cars_carmodel), true)
-FROM seq WHERE s IS NOT NULL;
+-- === Синхронизация последовательностей (если они есть). Без DO $$, по одной команде на таблицу ===
+-- cars_market
+WITH seq AS (SELECT pg_get_serial_sequence('cars_market','id') AS s),
+     mx  AS (SELECT COALESCE(MAX(id), 0) AS m FROM cars_market)
+SELECT CASE WHEN seq.s IS NULL THEN NULL
+            WHEN mx.m = 0     THEN setval(seq.s::regclass, 1, false)
+            ELSE                    setval(seq.s::regclass, mx.m, true)
+       END
+FROM seq, mx;
 
-WITH seq AS (SELECT pg_get_serial_sequence('cars_year','id') AS s)
-SELECT setval(s::regclass, (SELECT COALESCE(MAX(id),0) FROM cars_year), true)
-FROM seq WHERE s IS NOT NULL;
+-- cars_brand
+WITH seq AS (SELECT pg_get_serial_sequence('cars_brand','id') AS s),
+     mx  AS (SELECT COALESCE(MAX(id), 0) AS m FROM cars_brand)
+SELECT CASE WHEN seq.s IS NULL THEN NULL
+            WHEN mx.m = 0     THEN setval(seq.s::regclass, 1, false)
+            ELSE                    setval(seq.s::regclass, mx.m, true)
+       END
+FROM seq, mx;
+
+-- cars_carmodel
+WITH seq AS (SELECT pg_get_serial_sequence('cars_carmodel','id') AS s),
+     mx  AS (SELECT COALESCE(MAX(id), 0) AS m FROM cars_carmodel)
+SELECT CASE WHEN seq.s IS NULL THEN NULL
+            WHEN mx.m = 0     THEN setval(seq.s::regclass, 1, false)
+            ELSE                    setval(seq.s::regclass, mx.m, true)
+       END
+FROM seq, mx;
+
+-- cars_year
+WITH seq AS (SELECT pg_get_serial_sequence('cars_year','id') AS s),
+     mx  AS (SELECT COALESCE(MAX(id), 0) AS m FROM cars_year)
+SELECT CASE WHEN seq.s IS NULL THEN NULL
+            WHEN mx.m = 0     THEN setval(seq.s::regclass, 1, false)
+            ELSE                    setval(seq.s::regclass, mx.m, true)
+       END
+FROM seq, mx;
 
 -- ===== BRANDS =====
 INSERT INTO cars_brand (name)
@@ -33,37 +67,37 @@ WHERE NOT EXISTS (SELECT 1 FROM cars_brand WHERE name='Tesla');
 INSERT INTO cars_carmodel (name, brand_id)
 SELECT '3 Series', b.id
 FROM cars_brand b
-WHERE b.name = 'BMW'
+WHERE b.name='BMW'
   AND NOT EXISTS (SELECT 1 FROM cars_carmodel m WHERE m.name='3 Series' AND m.brand_id=b.id);
 
 INSERT INTO cars_carmodel (name, brand_id)
 SELECT '5 Series', b.id
 FROM cars_brand b
-WHERE b.name = 'BMW'
+WHERE b.name='BMW'
   AND NOT EXISTS (SELECT 1 FROM cars_carmodel m WHERE m.name='5 Series' AND m.brand_id=b.id);
 
 INSERT INTO cars_carmodel (name, brand_id)
 SELECT 'Golf', b.id
 FROM cars_brand b
-WHERE b.name = 'Volkswagen'
+WHERE b.name='Volkswagen'
   AND NOT EXISTS (SELECT 1 FROM cars_carmodel m WHERE m.name='Golf' AND m.brand_id=b.id);
 
 INSERT INTO cars_carmodel (name, brand_id)
 SELECT 'Passat', b.id
 FROM cars_brand b
-WHERE b.name = 'Volkswagen'
+WHERE b.name='Volkswagen'
   AND NOT EXISTS (SELECT 1 FROM cars_carmodel m WHERE m.name='Passat' AND m.brand_id=b.id);
 
 INSERT INTO cars_carmodel (name, brand_id)
 SELECT 'Corolla', b.id
 FROM cars_brand b
-WHERE b.name = 'Toyota'
+WHERE b.name='Toyota'
   AND NOT EXISTS (SELECT 1 FROM cars_carmodel m WHERE m.name='Corolla' AND m.brand_id=b.id);
 
 INSERT INTO cars_carmodel (name, brand_id)
 SELECT 'Model 3', b.id
 FROM cars_brand b
-WHERE b.name = 'Tesla'
+WHERE b.name='Tesla'
   AND NOT EXISTS (SELECT 1 FROM cars_carmodel m WHERE m.name='Model 3' AND m.brand_id=b.id);
 
 -- ===== YEARS =====
