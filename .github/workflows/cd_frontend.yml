@@ -108,8 +108,9 @@ jobs:
       - name: Send a Discord notification
         uses: appleboy/discord-action@master
         with:
-          webhook_id: ${{ secrets.DISCORD_WEBHOOK_URL }} # WebHook ID
-          webhook_token: ${{ secrets.DISCORD_WEBHOOK_URL }} # WebHook Token
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }} # WebHook URL
+          #webhook_id: ${{ secrets.DISCORD_WEBHOOK_URL }} # WebHook ID
+          #webhook_token: ${{ secrets.DISCORD_WEBHOOK_URL }} # WebHook Token
           message: |
             :x: **Deploy is failed!**
             
@@ -121,4 +122,3 @@ jobs:
             \`\`\`
             ${{ needs.build_and_deploy.outputs.container_logs }}
             \`\`\`
-            
