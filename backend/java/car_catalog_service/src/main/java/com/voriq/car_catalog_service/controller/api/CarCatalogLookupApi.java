@@ -14,8 +14,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -104,7 +104,7 @@ public interface CarCatalogLookupApi {
             @PathVariable
             @Parameter(description = "Id of brand in catalog", example = "32")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long brandId
     );
     //===============================================
@@ -150,12 +150,12 @@ public interface CarCatalogLookupApi {
             @PathVariable
             @Parameter(description = "Id of brand in catalog", example = "32")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long brandId,
             @PathVariable
             @Parameter(description = "Id of model in catalog", example = "43")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long modelId
     );
     //===============================================
@@ -202,17 +202,17 @@ public interface CarCatalogLookupApi {
             @PathVariable
             @Parameter(description = "Id of brand in catalog", example = "32")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long brandId,
             @PathVariable
             @Parameter(description = "Id of model in catalog", example = "43")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long modelId,
             @PathVariable
             @Parameter(description = "Id of year in catalog", example = "5")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long yearId
     );
     //===============================================
@@ -259,22 +259,22 @@ public interface CarCatalogLookupApi {
             @PathVariable
             @Parameter(description = "Id of brand in catalog", example = "32")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long brandId,
             @PathVariable
             @Parameter(description = "Id of model in catalog", example = "43")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long modelId,
             @PathVariable
             @Parameter(description = "Id of year in catalog", example = "5")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long yearId,
             @PathVariable
             @Parameter(description = "Id of engine in catalog", example = "6")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long engineId
     );
     //===============================================
@@ -323,27 +323,27 @@ public interface CarCatalogLookupApi {
             @PathVariable
             @Parameter(description = "Id of brand in catalog", example = "32")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long brandId,
             @PathVariable
             @Parameter(description = "Id of model in catalog", example = "43")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long modelId,
             @PathVariable
             @Parameter(description = "Id of year in catalog", example = "5")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long yearId,
             @PathVariable
             @Parameter(description = "Id of engine in catalog", example = "6")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long engineId,
             @PathVariable
             @Parameter(description = "Id of transmission in catalog", example = "2")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long transmissionsId
     );
     //===============================================
@@ -399,5 +399,4 @@ public interface CarCatalogLookupApi {
             @Valid
             @org.springframework.web.bind.annotation.RequestBody
             CarResolveRequest req);
-
 }

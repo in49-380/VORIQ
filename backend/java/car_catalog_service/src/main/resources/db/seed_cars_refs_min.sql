@@ -1,16 +1,11 @@
--- seed_cars_refs_min.sql
 SET search_path = public;
 
--- === cars_market: создать одну запись, если таблица пустая (ТОЛЬКО ДАННЫЕ) ===
--- Подставь нужные значения code/name при желании, сейчас ставим заглушку 'GEN' / 'Generic'
 WITH start_id AS (SELECT COALESCE(MAX(id), 0) AS s FROM cars_market)
 INSERT INTO cars_market (id, code, name)
 SELECT s.s + 1, 'GEN', 'Generic'
 FROM start_id s
 WHERE NOT EXISTS (SELECT 1 FROM cars_market);
 
--- === Синхронизация последовательностей (если они есть). Без DO $$, по одной команде на таблицу ===
--- cars_market
 WITH seq AS (SELECT pg_get_serial_sequence('cars_market','id') AS s),
      mx  AS (SELECT COALESCE(MAX(id), 0) AS m FROM cars_market)
 SELECT CASE WHEN seq.s IS NULL THEN NULL
@@ -19,7 +14,6 @@ SELECT CASE WHEN seq.s IS NULL THEN NULL
        END
 FROM seq, mx;
 
--- cars_brand
 WITH seq AS (SELECT pg_get_serial_sequence('cars_brand','id') AS s),
      mx  AS (SELECT COALESCE(MAX(id), 0) AS m FROM cars_brand)
 SELECT CASE WHEN seq.s IS NULL THEN NULL
@@ -28,7 +22,6 @@ SELECT CASE WHEN seq.s IS NULL THEN NULL
        END
 FROM seq, mx;
 
--- cars_carmodel
 WITH seq AS (SELECT pg_get_serial_sequence('cars_carmodel','id') AS s),
      mx  AS (SELECT COALESCE(MAX(id), 0) AS m FROM cars_carmodel)
 SELECT CASE WHEN seq.s IS NULL THEN NULL
@@ -37,7 +30,6 @@ SELECT CASE WHEN seq.s IS NULL THEN NULL
        END
 FROM seq, mx;
 
--- cars_year
 WITH seq AS (SELECT pg_get_serial_sequence('cars_year','id') AS s),
      mx  AS (SELECT COALESCE(MAX(id), 0) AS m FROM cars_year)
 SELECT CASE WHEN seq.s IS NULL THEN NULL
