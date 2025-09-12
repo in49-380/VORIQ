@@ -1,0 +1,27 @@
+services:
+  # Service PostgreSQL
+  postgres:
+    image: postgres:15
+    container_name: voriq-postgres
+    environment:
+      POSTGRES_DB: voriq_cars
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"  # 5433 на хосте -> 5432 в контейнере
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d voriq_cars" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  parser-service:
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

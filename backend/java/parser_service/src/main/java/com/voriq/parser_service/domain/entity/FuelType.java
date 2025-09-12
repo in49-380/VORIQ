@@ -10,7 +10,7 @@ import java.util.Set;
 @Entity
 @Table(
         name = "cars_fueltype",
-        uniqueConstraints = @UniqueConstraint(name = "uq_fuel_types_name", columnNames = "name")
+        uniqueConstraints = @UniqueConstraint(name = "uq_fueltype_name", columnNames = "name")
 )
 @Getter
 @Setter
