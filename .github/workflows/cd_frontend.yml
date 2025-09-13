@@ -6,7 +6,7 @@ on:
       - '**'
     paths:
       - 'frontend/**'
-      - 'devops/frontend/**'
+      - 'devops/dev/frontend/**'
   workflow_dispatch:
 
 concurrency:
@@ -46,35 +46,31 @@ jobs:
 
             # get the latest changes
             git fetch --all --prune
-            git checkout -B "$BRANCH" "origin/$BRANCH"
-            git reset --hard "origin/$BRANCH"
+            git checkout -B "$BRANCH" "$TAG_SHA"
+            git reset --hard "$TAG_SHA"
             git clean -fdx
 
             # go to the code directory  
             cd "$REPO_DIR/frontend"
         
+            # prepare .enf for front
             echo '${{ secrets.DEV_FRONT_GOOGLE_CLIENT_ID }}' > .env
             echo "VITE_SWAGGER_DOMAIN=http://172.17.0.8" >> .env
             echo "VITE_SWAGGER_PORT=8084" >> .env
 
-            # build new image
-            docker image build --no-cache \
-              -t "$IMAGE:$TAG" \
-              -f "$REPO_DIR/devops/frontend/Dockerfile.test" .
+            # go to the infrastructure directory  
+            cd "$REPO_DIR/devops"
 
-            #docker tag "$IMAGE:$TAG_SHA" "$IMAGE:$TAG_BRANCH"
-            #docker tag "$IMAGE:$TAG_SHA" "$IMAGE:TAG_LAT"
-
-            # remove old container if exists
-            docker container stop "$CONTAINER" || true
-            docker container rm -f "$CONTAINER" || true
-
-            # restart container with new image
-            docker container run -d \
-              --name "$CONTAINER" \
-              --restart unless-stopped \
-              -p 3000:3000 \
-              "$IMAGE:$TAG"
+            # prepare .enf for infrastructure
+            rm -f .env
+            echo 'DB_NAME=${{ secrets.DB_NAME }}' >> .env
+            echo 'DB_USERNAME=${{ secrets.DB_USERNAME }}' >> .env
+            echo 'DB_PASSWORD=${{ secrets.DB_PASSWORD }}' >> .env
+            echo 'DB_NAME_SECURITY=${{ secrets.DB_NAME_SSERVICE }}' >> .env
+            echo 'DB_NAME_CAR=${{ secrets.DB_NAME_CAR }}' >> .env
+            
+            # build new image and restart container with new image
+            ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d --no-deps --build front-node
 
             # clean up old images to save space
             #docker image prune -f 
@@ -86,3 +82,43 @@ jobs:
             #docker image ls "$IMAGE" -q | xargs -n 1 docker rmi -f
 
 
+            # wait few seconds, until container is run
+            sleep 20
+
+            # get container id of the just started container
+            CONTAINER=$(ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" ps -q back-java-car)
+
+            # checking container status.
+            if [ "$(docker inspect -f {{.State.Running}} $CONTAINER)" != "true" ] || [ "$(docker inspect -f {{.State.Restarting}} $CONTAINER)" = "true" ] ; then
+                echo "Container failed to start. Capturing logs..." >&2
+                # getting last log strings.
+                LOGS=$(docker logs --tail 50 $CONTAINER 2>&1)
+                
+                # creating output variable 'container_logs' with logs content and transfer to github actions output
+                echo "::set-output name=container_logs::$LOGS"
+                
+                exit 1 # exiting with failure, so all job ends with failure.
+            fi
+  
+  notify_on_failure:
+    runs-on: ubuntu-latest
+    needs: build_and_deploy
+    if: failure()
+    steps:
+      - name: Send a Discord notification
+        uses: appleboy/discord-action@master
+        with:
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }} # WebHook URL
+          #webhook_id: ${{ secrets.DISCORD_WEBHOOK_URL }} # WebHook ID
+          #webhook_token: ${{ secrets.DISCORD_WEBHOOK_URL }} # WebHook Token
+          message: |
+            :x: **Deploy is failed!**
+            
+            **Repo**: `${{ github.repository }}`
+            **Branch**: `${{ github.ref_name }}`
+            **Commit**: `${{ github.sha }}`
+            **Deploy log**: `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`
+            
+            \`\`\`
+            ${{ needs.build_and_deploy.outputs.container_logs }}
+            \`\`\`

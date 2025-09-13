@@ -39,7 +39,7 @@ const startAllTimeOut = () => {
     clearAllTimeOut()
     setIsTimeOutError(true);
     controllerRef.current?.abort()
-  },3000);
+  },5000);
 };
 
 const initialAbortController=()=>{
@@ -75,7 +75,7 @@ const runApi=async(asyncFunction)=>{
     const result = await asyncFunction({signal});
     requestFinished.current = true;
     clearAllTimeOut()
-    setTimeout(()=>setIsLoading(false),500)
+    setTimeout(()=>setIsLoading(false),1000)
     console.log('result in Api before if', result.response)
     if (result.success) {
       console.log('result.succes',result.success)

@@ -1,7 +1,7 @@
 
 import { useEffect} from 'react';
 import {useTranslation} from 'react-i18next'
-import Select from 'react-select';
+import Select, {components as RSComponents} from 'react-select';
 // import { motion, AnimatePresence } from "framer-motion";
 
 
@@ -13,14 +13,17 @@ import brandAnalyse from '../../../public/fakeDB/fakeAnalys.jsx';
 import { modelAnalyse, yearAnalyse, engineAnalyse } from '../../../public/fakeDB/fakeAnalys.jsx';
 
 
-const SelectorBlock=({brand,model,year,engine, setCurrentStep})=>{
+const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
     const {t}=useTranslation()
-    const {runApi}=useLoader()
-    const {setAnalysButtonIsDisabled}=useSelect()
-    const goToStep=(s)=>{
-      setCurrentStep(s)
-    }
+    const {runApi, setSuccessResult}=useLoader()
+    const {setAnalysButtonIsDisabled, isNewSearch, setIsNewSearch}=useSelect()
+    const goToStep=(s)=>{setCurrentStep(s)}
       
+    const clearForNewSearching=()=>{
+       setSuccessResult(null)
+       setIsNewSearch(false)
+    } 
+
     useEffect(()=>{
         const getBrands=async()=>{
         const data= await runApi((opt)=>requestFromVehicleSelectors('brands.json',opt))
@@ -67,11 +70,14 @@ const SelectorBlock=({brand,model,year,engine, setCurrentStep})=>{
     },[year.value])
 
     const onBrandChange=(newValue)=>{
+       clearForNewSearching()
+
         if (newValue===null){
         model.clear()
         year.clear()
         engine.clear()
         brand.softClear()
+        setAnalysButtonIsDisabled(true)
         } else {
             model.softClear()
             year.softClear()
@@ -83,10 +89,13 @@ const SelectorBlock=({brand,model,year,engine, setCurrentStep})=>{
     }
 
     const onModelChange=(newValue)=>{
+       clearForNewSearching()
+
     if (newValue===null){
         year.clear()
         engine.clear()
         model.softClear()
+        setAnalysButtonIsDisabled(true)
     } else {
             year.softClear()
             model.setValue(newValue)
@@ -96,29 +105,148 @@ const SelectorBlock=({brand,model,year,engine, setCurrentStep})=>{
     }
 
     const onYearChange=(newValue)=>{
+       clearForNewSearching()
+
         if (!newValue || newValue.length === 0){
         engine.clear()
         year.softClear()
+        setAnalysButtonIsDisabled(true)
         } else {
             engine.softClear()
             year.setValue(newValue)
             engine.setDisabled(false)
             goToStep(4)
+           
         }   
     }
 
     const onEngineChange=(newValue)=>{
+      clearForNewSearching()
+
+        if (!newValue || newValue.length === 0){
+        engine.softClear()
+        setAnalysButtonIsDisabled(true)
+        } else {
         engine.setValue(newValue)
         setAnalysButtonIsDisabled(false)
         goToStep(5)
+        }
     }
 
+     useEffect(()=>{
+      if(isNewSearch){
+        brand.softClear()
+        model.clear()
+        year.clear()
+        engine.clear()
+      }
+     },[isNewSearch]) 
+    // **************select styling******************
+    // **********************************************
 
-    const className= "px-3 py-1.5 w-50 bg-transparent text-sm text-black cursor-pointer outline-none hover:bg-black/5 focus:bg-black/10 appearance-none";
-    const optionClassName= "mt-1 w-full bg-transparent shadow-none border-none outline-none";
+    const DropdownIndicator=(props)=>{
+      return (
+      <RSComponents.DropdownIndicator {...props}>
+          <svg
+            style={{ stroke: props.isDisabled ? 'var(--color-light)' : 'var(--color-primary)', 
+            fill:'none',
+            strokeWidth:'2px'}}
+            height="2rem" width="2rem" viewBox="0 0 20 20"
+          >
+            <path d="M4 6 L10 13 L16 6"  />
+          </svg>
+      </RSComponents.DropdownIndicator>
+  );
+    }
+
+    
+    const customStyles={
+        container:(provided)=>({
+          ...provided,
+          width:'20%',
+        }),
+
+        control: (provided, state)=>({
+            ...provided,
+            backgroundColor: 'var(--background-light)',
+                      
+            '&:hover': { backgroundColor: 'var(--background-secondary)',
+                         border:'none'   
+             },
+            border:'none',
+            boxShadow: state.isFocused ? '0 0 0 0 transparent' : 'none', 
+        }),
+
+         placeholder : (provided, state) => ({
+            ...provided,
+            color: state.isDisabled
+            ? 'var(--color-light)'
+            : 'var(--color-primary)'
+          }),
+
+        DropdownIndicator:(provided, state)=>({
+           ...provided,
+           svg: {
+              fill: state.isDisabled
+            ? 'var(--color-light)'
+            : 'var(--color-primary)'
+          }
+        }),
+
+        menu: (provided) => ({
+            ...provided,
+           borderRadius: '0.5rem',
+
+        }),
+
+        menuList: (provided) => ({
+            ...provided,
+            maxHeight: "30rem",
+            "::-webkit-scrollbar": {
+              width: "0.8rem",
+            },
+            "::-webkit-scrollbar-track": {
+              background: "transparent",
+            },
+            "::-webkit-scrollbar-thumb": {
+              background: "var(--background-secondary)",
+              borderRadius: "4px",
+            },
+        }),
+
+        singleValue: (provided) => ({
+            ...provided,
+            color: 'var(--color-title)',
+            
+        }),
+
+        multiValue: (provided) => ({
+          ...provided,
+          backgroundColor: "none",
+          display: "flex",
+          alignItems: "center",
+          gap: "4px",
+        }),
+
+        option: (provided, state) => ({
+            ...provided,
+            backgroundColor: state.isFocused
+                ? 'var(--background-dark)'
+                : 'var(--background-primary)',
+            color: state.isFocused ? 'var(--color-light)' : 'null',
+            cursor: 'pointer',
+            userSelect: "none",
+             ":active": {
+              ...provided[":active"],
+              backgroundColor: "var(--backgound-primary)",
+    },
+         }),
+
+    }
 
   return(
-      <div className="h-[30vh] w-[90vw] flex flex-row items-center justify-around bg-blue-100">
+      <div className="selector_container">
+            
             
             
             <Select
@@ -129,8 +257,8 @@ const SelectorBlock=({brand,model,year,engine, setCurrentStep})=>{
               onChange={onBrandChange}
               isClearable
               isDisabled={brand.disabled}
-              className={className}
-              optionClassName={optionClassName}
+              styles={customStyles}
+              components={{DropdownIndicator}}
             />
       
 
@@ -142,8 +270,10 @@ const SelectorBlock=({brand,model,year,engine, setCurrentStep})=>{
               onChange={onModelChange}
               isClearable
               isDisabled={model.disabled}
-              className={className}
-              optionClassName={optionClassName}
+              styles={customStyles}
+              components={{DropdownIndicator}}
+
+
             />
     
             <Select
@@ -155,8 +285,10 @@ const SelectorBlock=({brand,model,year,engine, setCurrentStep})=>{
               isClearable
               isMulti
               isDisabled={year.disabled}
-              className={className}
-              optionClassName={optionClassName}
+              styles={customStyles}
+              components={{DropdownIndicator}}
+
+
             />
     
             <Select
@@ -168,8 +300,10 @@ const SelectorBlock=({brand,model,year,engine, setCurrentStep})=>{
               onChange={onEngineChange}
               isClearable
               isDisabled={engine.disabled}
-              className={className}
-              optionClassName={optionClassName}
+              styles={customStyles}
+              components={{DropdownIndicator}}
+
+
             />
           
           </div>

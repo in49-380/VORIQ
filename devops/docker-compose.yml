@@ -1,0 +1,291 @@
+#commands string:
+#ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" down
+#ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d --build
+#ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d --no-deps --build <service_name>
+#ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d <service_name>
+#docker compose build <service1> [service2]
+#ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" ps --services
+#docker compose up --scale web=3 -d
+#docker compose up web --scale web=3 -d
+
+
+#variables
+#PROJECT=VORIQ
+#ENV=dev,prod,test
+#REPO_DIR="/home/${{ secrets.CICD_SSH_USER }}/VORIQ"
+
+networks:
+  app-network:
+    name: ${ENV-:test}-app-network
+    driver: bridge
+  db-network:
+    name: ${ENV-:test}-db-network
+    driver: bridge
+    internal: true
+
+volumes:
+  proxy_data:
+    name: ${ENV}_proxy_data
+  proxy_letsencrypt:
+    name: ${ENV}_proxy_letsencrypt
+  html:
+    name: ${ENV}_html
+  car_catalog_service_log:
+    name: ${ENV}_car_catalog_service_log
+  security_service_log:
+    name: ${ENV}_security_service_log
+  redis_data:
+    name: ${ENV}_redis_data
+  db_pg01_data:
+    # name: ${ENV}_pg_data
+    name: db_pg01_data
+  pgadmin_data:
+    #name: ${ENV}_pgadmin_data
+    name: pgadmin_data
+
+
+services:
+  #${PROJECT}-${ENV}-front-node:
+  #${PROJECT}-${ENV}-front-nginx:
+  #${PROJECT}-${ENV}-back-security:
+  proxy:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: ${ENV}-proxy
+    networks:
+      - app-network
+    restart: unless-stopped
+    ports:
+      # These ports are in format <host-port>:<container-port>
+      - ${PROXY_HTTP_PORTS} # Public HTTP Port
+      - ${PROXY_HTTPS_PORTS} # Public HTTPS Port
+      - ${PROXY_ADMIN_PORTS} # Admin Web Port
+      # Add any other Stream port you want to expose
+      # - '21:21' # FTP
+
+    #environment:
+      # Uncomment this if you want to change the location of
+      # the SQLite DB file within the container
+      # DB_SQLITE_FILE: "/data/database.sqlite"
+
+      # Uncomment this if IPv6 is not enabled on your host
+      # DISABLE_IPV6: 'true'
+
+    volumes:
+      - proxy_data:/data
+      - proxy_letsencrypt:/etc/letsencrypt
+    env_file:
+      - .env.${ENV}
+  nginx:
+    image: nginx:latest
+    container_name: ${ENV}-nginx
+    # expose: # exposed by default
+    #   - 80
+    #   - 443
+    # ports:
+    #   - ${NGINX_HTTP_PORTS}
+    #   - ${NGINX_HTTPS_PORTS}
+    volumes:
+      - html:/usr/share/nginx/html/
+      # - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      # - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - app-network
+    restart: unless-stopped
+    env_file:
+      - .env.${ENV}
+
+    # Example of running with volume mount
+    # docker run -d --name
+
+
+  front-node:
+    build:
+      #context: /home/$USER/VORIQ/frontend # absolute path to source code dir.
+      context: ../frontend # relative path to source code dir. relative to this (docker-compose.yml) file
+      dockerfile: ../devops/${ENV}/frontend/Dockerfile # path to Dockerfile relative to CONTEXT dir.
+      # args:
+      #   RELEASE: 17
+    image: ${ENV}-front-node:${TAG:-latest}
+    container_name: ${ENV}-front-node
+    # expose:
+    #   - 3000
+    # ports:
+    #   - ${FRONT_NODE_PORTS}
+    networks:
+      - app-network
+    restart: unless-stopped
+    environment:
+      - VITE_SWAGGER_DOMAIN=back-java-car
+      - VITE_SWAGGER_PORT=${BACK_JAVA_CAR_HOST_PORT:-8084}
+    env_file:
+      - ../frontend/.env 
+      - .env.${ENV}
+
+
+  back-java-security:
+    build:
+      #context: /home/$USER/VORIQ/backend/java/security_service # absolute path to source code dir.
+      context: ../backend/java/security_service # relative path to source code dir. relative to this (docker-compose.yml) file
+      dockerfile: ../../../devops/${ENV}/backend/java/security_service/Dockerfile # path to Dockerfile relative to CONTEXT dir.
+      # args:
+      #   RELEASE: 17
+    image: ${ENV}-back-java-security:${TAG:-latest}
+    container_name: ${ENV}-back-java-security
+    ports:
+      - ${BACK_JAVA_SECURITY_HOST_PORT}:${BACK_JAVA_SECURITY_CONT_PORT}
+    volumes:
+      - security_service_log:/opt/app/logs
+    networks:
+      - app-network
+      - db-network
+    restart: unless-stopped
+    environment:
+      - DB_HOST=db
+      - DB_PORT=${POSTGRES_HOST_PORT}
+      - DB_NAME=${DB_NAME_SECURITY}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - REDIS_HOST=redis
+      - REDIS_PORT=${REDIS_HOST_PORT}
+      - SPRING_PROFILES_ACTIVE=${ENV}
+      - PORT=${BACK_JAVA_SECURITY_CONT_PORT:-8080}
+      - ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000,http://voriq.info:3000,http://172.17.0.3:3000
+      - ACCESS_TOKEN_EXPIRATION_MS=900000
+      - MAX_TOKEN=5
+      - ISSUE_RATE_LIMIT=5000
+      - VALIDATE_RATE_LIMIT=300
+      - BLOCKED_PREFIX="block:"
+      - LOG_PATH=/opt/app/logs
+      - JAVA_OPTS=-XX:+ExitOnOutOfMemoryError -XX:MaxRAMPercentage=75 -XX:+UseStringDeduplication -Duser.timezone=Europe/Berlin
+      - LOG_DIR=/opt/app/logs
+      - FIXED_DELAY_MS=259200000
+      - INITIAL_DELAY_MS=60000
+    logging:
+      driver: "local"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    tmpfs:
+      - /tmp
+    env_file:
+      - .env
+      - .env.${ENV}
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--spider", "http://localhost:${BACK_JAVA_SECURITY_CONT_PORT:-8080}/api/swagger-ui/index.html"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+
+  back-java-car:
+    build:
+      #context: /home/$USER/VORIQ/backend/java/car_catalog_service # absolute path to source code dir.
+      context: ../backend/java/car_catalog_service # relative path to source code dir. relative to this (docker-compose.yml) file
+      dockerfile: ../../../devops/${ENV}/backend/java/car_catalog_service/Dockerfile # path to Dockerfile relative to CONTEXT dir.
+      # args:
+      #   RELEASE: 17
+    image: ${ENV}-back-java-car:${TAG:-latest}
+    container_name: ${ENV}-back-java-car
+    ports:
+      - ${BACK_JAVA_CAR_HOST_PORT}:${BACK_JAVA_CAR_CONT_PORT}
+    volumes:
+      - car_catalog_service_log:/opt/app/logs
+    networks:
+      - app-network
+      - db-network
+    restart: unless-stopped
+    environment:
+      - DB_HOST=db
+      - DB_PORT=${POSTGRES_HOST_PORT}
+      - DB_NAME=${DB_NAME_CAR}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - REDIS_HOST=redis
+      - REDIS_PORT=${REDIS_HOST_PORT}
+      - SPRING_PROFILES_ACTIVE=${ENV}
+      - PORT=${BACK_JAVA_CAR_CONT_PORT:-8080}
+      - ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000,http://voriq.info:3000,http://172.17.0.3:3000
+      - ACCESS_TOKEN_EXPIRATION_MS=900000
+      - MAX_TOKEN=5
+      - ISSUE_RATE_LIMIT=5000
+      - VALIDATE_RATE_LIMIT=300
+      - BLOCKED_PREFIX="block:"
+      - LOG_PATH=/opt/app/logs
+      - JAVA_OPTS=-XX:+ExitOnOutOfMemoryError -XX:MaxRAMPercentage=75 -XX:+UseStringDeduplication -Duser.timezone=Europe/Berlin
+      - LOG_DIR=/opt/app/logs
+      - FIXED_DELAY_MS=259200000
+      - INITIAL_DELAY_MS=60000
+      - TMP_TOKEN_1=3f2f9b4a-26a7-4b0c-a1b2-7e7e05f3c4d1
+      - TMP_TOKEN_2=c1a81c55-78db-4df9-9c39-2a9df7e9b46d
+      - TMP_TOKEN_3=8d74f2d1-4c2e-4c90-b58b-1ac9e3c0a527
+    logging:
+      driver: "local"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    tmpfs:
+      - /tmp
+    env_file:
+      - .env 
+      - .env.${ENV}
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--spider", "http://localhost:${BACK_JAVA_CAR_CONT_PORT:-8080}/api/swagger-ui/index.html"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+
+  redis:
+    image: redis:7-alpine
+    container_name: ${ENV}-redis
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - ${REDIS_HOST_PORT:-6379}:${REDIS_CONT_PORT:-6379}
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+    restart: unless-stopped
+    env_file:
+      - .env.${ENV}
+
+
+  db:
+    image: postgres:17.6
+    container_name: ${ENV}-db-pg01
+    environment:
+      POSTGRES_DB: ${DB_NAME:-postgres}
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?set in .env}
+    ports:
+      - ${POSTGRES_HOST_PORT:-5432}:${POSTGRES_CONT_PORT:-5432}
+    volumes:
+      - db_pg01_data:/var/lib/postgresql/data
+    networks:
+      - db-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+    restart: unless-stopped
+    env_file:
+      - .env
+      - .env.${ENV}

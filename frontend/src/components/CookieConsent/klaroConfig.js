@@ -97,12 +97,12 @@ export const klaroConfig={
             onlyOnce: true,        },
 
 
-        {
-            name: 'youtube',
-            // “The service loads only upon contextual user consent (for example, clicking on the video).”
-            contextualConsentOnly: true,
-            purposes: ['video'],
-        },
+        // {
+        //     name: 'youtube',
+        //     // “The service loads only upon contextual user consent (for example, clicking on the video).”
+        //     contextualConsentOnly: true,
+        //     purposes: ['video'],
+        // },
         // ******************************************
         // ******🔽 * TEST *****************************
         // ******************************************

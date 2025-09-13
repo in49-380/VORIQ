@@ -1,0 +1,30 @@
+services:
+  parser-service:
+    build:
+      context: .
+      args:
+        RELEASE: 17
+    image: parser-service:latest
+    container_name: parser-service
+    env_file:
+      - .env
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      PORT: ${PORT}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${DB_NAME}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "8085:8080"
+    logging:
+      driver: "local"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    tmpfs:
+      - /tmp

@@ -1,22 +1,24 @@
 import * as Dialog from '@radix-ui/react-dialog';
 
 const Modal = ({ open, onOpenChange, children, title, description, fullscreen = false, className }) => {
+  
   return (
     <Dialog.Root modal open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay  
-          className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm" 
+          className="dialog-overlay" 
         />
         <Dialog.Content  
-          className={
+          className={`dialog-content ${
             fullscreen
-              ? `fixed inset-0 flex flex-col justify-center items-center bg-white bg-opacity-90 backdrop-blur-sm z-50 ${className}`
-              : `fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-md bg-white border-2 border-red-500 rounded-md p-6 shadow-lg text-black text-lg font-bold ${className}`
-          }
+              ? `fullscreen bg-opacity-90 backdrop-blur-sm`
+              : `small `
+          }${className}`}
+
           onInteractOutside={(e) => e.preventDefault()}
         >
-          <Dialog.Title className="text-2xl font-bold text-blue-900 text-center mb-2">{title}</Dialog.Title>
-          <Dialog.Description>{description}</Dialog.Description>
+          <Dialog.Title className="dialog-title">{title}</Dialog.Title>
+          <Dialog.Description className='dialog-description'>{description}</Dialog.Description>
           {children}
         </Dialog.Content>
       </Dialog.Portal>

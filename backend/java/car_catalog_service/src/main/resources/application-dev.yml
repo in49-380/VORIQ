@@ -9,10 +9,11 @@ spring:
     name: car_catalog_service
 
   datasource:
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:cars}
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD}
-    driver-class-name: org.postgresql.Driver
+    voriq:
+      url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB2_NAME:voriq_cars}
+      username: ${DB_USERNAME:postgres}
+      password: ${DB_PASSWORD}
+      driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
@@ -23,8 +24,15 @@ spring:
     redis:
       host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
-      connect-timeout: 200ms
-      timeout: 200ms
+
+app:
+  pg:
+    host: ${DB_HOST:localhost}
+    port: ${DB_PORT:5432}
+    admin-db: ${DB_ADMIN:postgres}
+    app-db: ${DB2_NAME:voriq_cars}
+    user: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD}
 
 springdoc:
   swagger-ui:
@@ -40,4 +48,4 @@ tmp-token:
   1: ${TMP_TOKEN_1}
   2: ${TMP_TOKEN_2}
   3: ${TMP_TOKEN_3}
-  prefix: "tmp-token: "
+  prefix: "${TMP_TOKEN_PREFIX:tmp-token: }"
