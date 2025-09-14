@@ -29,7 +29,6 @@ public class BaseHomeWorkTest {
         RestAssured.filters(new AllureRestAssured());
     }
 
-
     public static String getConfig(String key) {
         return properties.getProperty(key);
     }
