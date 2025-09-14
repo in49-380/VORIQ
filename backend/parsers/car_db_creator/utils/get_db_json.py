@@ -1,6 +1,7 @@
 
 from .decorators import logger, log_execution
 from .save_load_data import load_json, save_json
+from .tools import extract_unique_records
 
 
 """
@@ -48,7 +49,7 @@ def process_db_models():
         model_item = {
             "brand_id": model["brand_id"],
             "id": index,
-            "name": model["model"].capitalize()
+            "name": model["model"][:-5].capitalize()
         }
         models_db_list.append(model_item)
     return save_json(models_db_list, "models_db.json", "db_json")
@@ -115,7 +116,7 @@ def process_db_engines():
         {"id": 106, "type": "Hybrid", "fuel_type_id": 3},
         {"id": 107, "type": "Electric", "fuel_type_id": 4}
     ]
-    return save_json(engines_db_list, "engines_db.json", "db_json")
+    return save_json(engines_db_list, "engines_type_db.json", "db_json")
 
 @log_execution
 def process_db_cars():
@@ -134,7 +135,7 @@ def process_db_cars():
     brands = load_json("brands_db.json", "db_json")
     years = load_json("years_db.json", "db_json")
     models = load_json("models_db.json", "db_json")
-    engines = load_json("engines_db.json", "db_json")
+    engines = load_json("engines_type_db.json", "db_json")
     fuels = load_json("fuels_db.json", "db_json")
 
     brands_lookup = {brand["name"]: brand["id"] for brand in brands}
@@ -147,8 +148,8 @@ def process_db_cars():
     }
 
 
-    for index, car in enumerate(cars_time, start=1):
-        logger.info(f"🚗 Car processing: {car['name']} (id: {car['id']})")
+    for car in cars_time:
+        logger.info(f"Car processing: {car['name']}")
 
         model_id = models_lookup.get(car["name"])
         year_id = years_lookup.get(car["year"])
@@ -177,7 +178,6 @@ def process_db_cars():
             continue
 
         car_entry = {
-            "id": index,
             "model_id": model_id,
             "engine_id": engine_id,
             "year_id": year_id
@@ -187,3 +187,12 @@ def process_db_cars():
 
     logger.info(f"Total number of cars processed: {len(cars)}")
     return save_json(cars, "cars_db.json", "db_json")
+
+# def process_db_transmision():
+#     return extract_unique_records(find_element='Transmission type')
+#
+# def process_db_drive():
+#     return extract_unique_records(find_element='Drive')
+#
+# def process_db_gears():
+#     return extract_unique_records(find_element='Number of gears')
