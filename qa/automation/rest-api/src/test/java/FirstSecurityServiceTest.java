@@ -29,4 +29,13 @@ public class FirstSecurityServiceTest extends BaseSecurityTest {
                 .contentType(ContentType.JSON);
         //.log().all();
     }
+
+    @Test
+    public void secondTest() {
+        given()
+                .when().log().all()
+                .options(getConfig("objectTokenIssuance"))
+                .then().log().all()
+                .statusCode(200);
+    }
 }
