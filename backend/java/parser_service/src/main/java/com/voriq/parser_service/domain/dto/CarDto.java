@@ -5,14 +5,12 @@ import com.voriq.parser_service.domain.entity.Transmission;
 import com.voriq.parser_service.domain.entity.WhillDrive;
 import com.voriq.parser_service.domain.entity.Year;
 import jakarta.transaction.Transaction;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class CarDto {
 

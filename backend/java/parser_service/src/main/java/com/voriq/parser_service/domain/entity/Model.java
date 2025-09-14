@@ -9,7 +9,7 @@ import java.util.Objects;
 @Table(
         name = "cars_carmodel",
         uniqueConstraints = @UniqueConstraint(
-                name = "uq_models_brand_name",
+                name = "uq_model_brand_name",
                 columnNames = {"brand_id", "name"}
         )
 )
