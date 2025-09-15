@@ -87,10 +87,6 @@ jobs:
             # wait few seconds, until container is run
             sleep 20
 
-      - name: Check container status and get logs
-        id: check_status
-        run: |
-        
             # get container id of the just started container
             CONTAINER=$(ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" ps -q back-java-parser)
 
