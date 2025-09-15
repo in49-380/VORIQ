@@ -1,4 +1,4 @@
-name: Deploy Backend Java Car Catalog Service
+name: Deploy Backend Java Parser Service
 
 on:
   push:
