@@ -16,6 +16,8 @@ concurrency:
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
+    outputs:
+      container_logs: ${{ steps.deploy_and_check.outputs.container_logs }}
     steps:
       - name: Deploy backend to Server over SSH
         uses: appleboy/ssh-action@v0.1.7
@@ -97,10 +99,10 @@ jobs:
                 LOGS=$(docker logs --tail 50 $CONTAINER 2>&1)
                 
                 # creating output variable 'container_logs' with logs content and transfer to github actions output
-                #echo "::set-output name=container_logs::$LOGS"
-                echo "container_logs<<EOF" >> $GITHUB_OUTPUT
-                echo "$LOGS" >> $GITHUB_OUTPUT
-                echo "EOF" >> $GITHUB_OUTPUT
+                echo "::set-output name=container_logs::$LOGS" # old method
+                # echo "container_logs<<EOF" >> $GITHUB_OUTPUT
+                # echo "$LOGS" >> $GITHUB_OUTPUT
+                # echo "EOF" >> $GITHUB_OUTPUT
                 # exiting with failure, so all job ends with failure.
                 exit 1 
             fi
