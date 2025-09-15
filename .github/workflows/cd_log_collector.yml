@@ -10,18 +10,19 @@ jobs:
     outputs:
       container_logs: ${{ steps.set_logs_output.outputs.container_logs }}
     steps:
-      - name: Deploy backend to Server over SSH
-        id: deploy_and_check
-        uses: appleboy/ssh-action@v1.2.2
+      - name: Add SSH key to agent
+        uses: webfactory/ssh-agent@v0.9.1
         with:
-          host: ${{ secrets.CICD_SSH_HOST }}
-          username: ${{ secrets.CICD_SSH_USER }}
-          key: ${{ secrets.CICD_SSH_PRIVATE_KEY }}
-          script: |
+          ssh-private-key: ${{ secrets.CICD_SSH_PRIVATE_KEY }}
 
-                docker logs --tail 5 dev-back-java-parser 2>&1
-                uname -a
-
+          
+      - name: Get container logs over SSH
+        id: get_logs_from_server
+        # Здесь вы явно указываете имя пользователя, хост и команду
+        # Весь вывод команды будет захвачен в steps.get_logs_from_server.outputs.stdout
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.CICD_SSH_USER }}@${{ secrets.CICD_SSH_HOST }} 'docker logs --tail 5 dev-back-java-parser 2>&1'
+    
 
       - name: Set logs output for failed run
         id: set_logs_output
@@ -29,6 +30,7 @@ jobs:
         run: |
 
           echo "${{ steps.deploy_and_check.outputs.stdout }}"
+          echo "${{ steps.get_logs_from_server.outputs.stdout }}"
           LOGS_FROM_SSH="${{ steps.deploy_and_check.outputs.stdout }}"
 
           # LOGS_FROM_SSH="${{ steps.deploy_and_check.outputs.container_logs }}"
