@@ -18,6 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       container_logs: ${{ steps.deploy_and_check.outputs.container_logs }}
+      stdout: ${{ steps.deploy_and_check.outputs.stdout }}
     steps:
       - name: Deploy backend to Server over SSH
         id: deploy_and_check
@@ -98,11 +99,12 @@ jobs:
                 echo "Container failed to start. Capturing logs..." >&2
                 # getting last log strings.
                 #LOGS=$(docker logs --tail 50 $CONTAINER_ID 2>&1)
-                LOGS=$(docker logs --tail 50 $CONTAINER_ID 2>&1 | base64)
+                # LOGS=$(docker logs --tail 50 $CONTAINER_ID 2>&1 | base64)
+                docker logs --tail 50 $CONTAINER_ID 2>&1
                 
                 # creating output variable 'container_logs' with logs content and transfer to github actions output
                 # v1
-                echo "::set-output name=container_logs::string from previous job" # old method
+                # echo "::set-output name=container_logs::string from previous job" # old method
                 # v2
                 # echo "container_logs=string from previous job" >> $GITHUB_OUTPUT
                 # v3
@@ -140,5 +142,8 @@ jobs:
             $(echo "${{ job.build_and_deploy.steps.deploy_and_check.outputs.container_logs }}")
             `${{ job.build_and_deploy.steps.deploy_and_check.outputs.container_logs }}`
             echo "${{ job.build_and_deploy.steps.deploy_and_check.outputs.container_logs }}"
+            ${{ needs.build_and_deploy.outputs.stdout }}
+            `${{ needs.build_and_deploy.outputs.stdout }}'
+
             \`\`\`
       
