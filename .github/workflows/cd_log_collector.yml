@@ -1,0 +1,86 @@
+name: Deploy Backend Java Parser Service
+
+on:
+  workflow_dispatch:
+
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    outputs:
+      container_logs: ${{ steps.set_logs_output.outputs.container_logs }}
+      stdout: ${{ steps.deploy_and_check.outputs.stdout }}
+    steps:
+      - name: Deploy backend to Server over SSH
+        id: deploy_and_check
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.CICD_SSH_HOST }}
+          username: ${{ secrets.CICD_SSH_USER }}
+          key: ${{ secrets.CICD_SSH_PRIVATE_KEY }}
+          script: |
+
+
+            # get container id of the just started container
+            CONTAINER_ID=$(ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" ps -q back-java-parser)
+
+            # checking container status.
+            # if [ "$(docker inspect -f {{.State.Running}} $CONTAINER_ID)" != "true" ] || [ "$(docker inspect -f {{.State.Restarting}} $CONTAINER_ID)" = "true" ] ; then
+            #     echo "Container failed to start. Capturing logs..." >&2
+                # getting last log strings.
+                LOGS=$(docker logs --tail 50 $CONTAINER_ID 2>&1)
+                # LOGS=$(docker logs --tail 50 $CONTAINER_ID 2>&1 | base64)
+                docker logs --tail 5 $CONTAINER_ID 2>&1
+                
+                # creating output variable 'container_logs' with logs content and transfer to github actions output
+                # v1
+                # echo "::set-output name=container_logs::string from previous job" # old method
+                # v2
+                echo "container_logs=string from previous job 222" >> $GITHUB_OUTPUT
+                # v3
+                # echo "container_logs<<EOF" >> $GITHUB_OUTPUT
+                # echo "$LOGS" >> $GITHUB_OUTPUT
+                # echo "EOF" >> $GITHUB_OUTPUT
+                
+                # exiting with failure, so all job ends with failure.
+            #     exit 1 
+            # fi
+
+      - name: Set logs output for failed run
+        id: set_logs_output
+        # if: failure()
+        run: |
+          LOGS_FROM_SSH="${{ steps.deploy_and_check.outputs.stdout }}"
+          # echo "container_logs<<EOF" >> $GITHUB_OUTPUT
+          # echo "$LOGS_FROM_SSH" >> $GITHUB_OUTPUT
+          # echo "EOF" >> $GITHUB_OUTPUT
+          # v2
+          echo "container_logs=string from previous job 3333" >> $GITHUB_OUTPUT
+
+  print_on_failure:
+    runs-on: ubuntu-latest
+    needs: build_and_deploy
+    # if: failure()
+    steps:
+      - name: print logs
+        run: |
+          echo "LOGS:"
+          echo "1 - ${{ needs.build_and_deploy.outputs.container_logs }}"
+          echo "2 - ${{ needs.build_and_deploy.outputs.stdout }}"
+          echo "3 - ${{ job.build_and_deploy.steps.deploy_and_check.outputs.container_logs }}"
+          echo "4 - ${{ job.build_and_deploy.steps.deploy_and_check.outputs.stdout }}"
+          echo "5 - ${{ needs.build_and_deploy.outputs.step_container_logs }}"
+          echo "6 - ${{ needs.build_and_deploy.outputs.step_stdout }}"
+          echo "7 - ${{ job.build_and_deploy.steps.deploy_and_check.outputs.step_container_logs }}"
+          echo "8 - ${{ job.build_and_deploy.steps.deploy_and_check.outputs.step_stdout }}"
+          echo "9 - $container_logs"
+          echo "10 - $stdout"
+          echo "11 - $step_container_logs"
+          echo "12 - $step_stdout"
+        env:
+          container_logs: ${{ needs.build_and_deploy.outputs.container_logs }}
+          stdout: ${{ needs.build_and_deploy.outputs.stdout }}
+          step_container_logs: ${{ job.build_and_deploy.steps.deploy_and_check.outputs.container_logs }}
+          step_stdout: ${{ job.build_and_deploy.steps.deploy_and_check.outputs.stdout }}
+
+
