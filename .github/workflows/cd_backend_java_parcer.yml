@@ -98,15 +98,15 @@ jobs:
             if [ "$(docker inspect -f {{.State.Running}} $CONTAINER_ID)" != "true" ] || [ "$(docker inspect -f {{.State.Restarting}} $CONTAINER_ID)" = "true" ] ; then
                 echo "Container failed to start. Capturing logs..." >&2
                 # getting last log strings.
-                #LOGS=$(docker logs --tail 50 $CONTAINER_ID 2>&1)
+                # LOGS=$(docker logs --tail 50 $CONTAINER_ID 2>&1)
                 # LOGS=$(docker logs --tail 50 $CONTAINER_ID 2>&1 | base64)
-                docker logs --tail 50 $CONTAINER_ID 2>&1
+                # docker logs --tail 50 $CONTAINER_ID 2>&1
                 
                 # creating output variable 'container_logs' with logs content and transfer to github actions output
                 # v1
-                # echo "::set-output name=container_logs::string from previous job" # old method
+                echo "::set-output name=container_logs::string from previous job" # old method
                 # v2
-                # echo "container_logs=string from previous job" >> $GITHUB_OUTPUT
+                echo "container_logs=string from previous job 222" >> $GITHUB_OUTPUT
                 # v3
                 # echo "container_logs<<EOF" >> $GITHUB_OUTPUT
                 # echo "$LOGS" >> $GITHUB_OUTPUT
@@ -136,14 +136,15 @@ jobs:
             **Deploy log**: `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`
             
             \`\`\`
+            **LOGS:**
+            ${{ needs.build_and_deploy.outputs.container_logs }}
             `${{ needs.build_and_deploy.outputs.container_logs }}`
-            echo `${{ needs.build_and_deploy.outputs.container_logs }}`
-            $(echo "${{ needs.build_and_deploy.outputs.container_logs }}")
-            $(echo "${{ job.build_and_deploy.steps.deploy_and_check.outputs.container_logs }}")
+            ${{ job.build_and_deploy.steps.deploy_and_check.outputs.container_logs }}
             `${{ job.build_and_deploy.steps.deploy_and_check.outputs.container_logs }}`
-            echo "${{ job.build_and_deploy.steps.deploy_and_check.outputs.container_logs }}"
             ${{ needs.build_and_deploy.outputs.stdout }}
             `${{ needs.build_and_deploy.outputs.stdout }}'
+            ${{ job.build_and_deploy.steps.deploy_and_check.outputs.stdout }}
+            `${{ job.build_and_deploy.steps.deploy_and_check.outputs.stdout }}`
 
             \`\`\`
       
