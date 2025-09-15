@@ -100,7 +100,7 @@ jobs:
                 # getting last log strings.
                 LOGS=$(docker logs --tail 50 $CONTAINER_ID 2>&1)
                 # LOGS=$(docker logs --tail 50 $CONTAINER_ID 2>&1 | base64)
-                docker logs --tail 50 $CONTAINER_ID 2>&1
+                docker logs --tail 5 $CONTAINER_ID 2>&1
                 
                 # creating output variable 'container_logs' with logs content and transfer to github actions output
                 # v1
@@ -127,6 +127,19 @@ jobs:
           echo "2 - ${{ needs.build_and_deploy.outputs.stdout }}"
           echo "3 - ${{ job.build_and_deploy.steps.deploy_and_check.outputs.container_logs }}"
           echo "4 - ${{ job.build_and_deploy.steps.deploy_and_check.outputs.stdout }}"
+          echo "5 - ${{ needs.build_and_deploy.outputs.step_container_logs }}"
+          echo "6 - ${{ needs.build_and_deploy.outputs.step_stdout }}"
+          echo "7 - ${{ job.build_and_deploy.steps.deploy_and_check.outputs.step_container_logs }}"
+          echo "8 - ${{ job.build_and_deploy.steps.deploy_and_check.outputs.step_stdout }}"
+          echo "9 - $container_logs"
+          echo "10 - $stdout"
+          echo "11 - $step_container_logs"
+          echo "12 - $step_stdout"
+        env:
+          container_logs: ${{ needs.build_and_deploy.outputs.container_logs }}
+          stdout: ${{ needs.build_and_deploy.outputs.stdout }}
+          step_container_logs: ${{ job.build_and_deploy.steps.deploy_and_check.outputs.container_logs }}
+          step_stdout: ${{ job.build_and_deploy.steps.deploy_and_check.outputs.stdout }}
 
   notify_on_failure:
     runs-on: ubuntu-latest
