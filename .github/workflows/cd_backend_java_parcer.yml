@@ -97,7 +97,8 @@ jobs:
             if [ "$(docker inspect -f {{.State.Running}} $CONTAINER)" != "true" ] || [ "$(docker inspect -f {{.State.Restarting}} $CONTAINER)" = "true" ] ; then
                 echo "Container failed to start. Capturing logs..." >&2
                 # getting last log strings.
-                LOGS=$(docker logs --tail 50 $CONTAINER 2>&1)
+                #LOGS=$(docker logs --tail 50 $CONTAINER 2>&1)
+                LOGS=$(docker logs --tail 50 $CONTAINER 2>&1 | base64)
                 
                 # creating output variable 'container_logs' with logs content and transfer to github actions output
                 echo "::set-output name=container_logs::$LOGS" # old method
@@ -128,5 +129,6 @@ jobs:
             **Deploy log**: `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`
             
             \`\`\`
-            ${{ needs.build_and_deploy.outputs.container_logs }}
+            #${{ needs.build_and_deploy.outputs.container_logs }}
+            $(echo '${{ needs.build_and_deploy.outputs.container_logs }}' | base64 --decode)
             \`\`\`
