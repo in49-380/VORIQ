@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
+import java.util.Set;
+
 @Configuration
 @RequiredArgsConstructor
 @Profile({"dev", "test"})
@@ -16,6 +18,8 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 public class RedisTmpTokenInitializer {
 
     private final StringRedisTemplate redisTemplate;
+
+    private static final String prefixOld = "tmp-token:";
 
     @Value("${tmp-token.1}")
     private String tmpToken1;
@@ -44,15 +48,20 @@ public class RedisTmpTokenInitializer {
 
     public static void removeOldTmpToken(StringRedisTemplate redisTemplate, String prefix) {
 
-        int idx = prefix.indexOf(":");
-        String prefixAll = (idx >= 0) ? prefix.substring(0, idx + 1) : prefix;
-        var keys = redisTemplate.keys(prefixAll + "*");
+        Set<String> keys = redisTemplate.keys(prefixOld + "*");
         if (!keys.isEmpty()) {
             redisTemplate.delete(keys);
-            log.info("Deleted {} Redis keys with prefix {}", keys.size(), prefix);
+            log.info("Deleted {} Redis keys with prefix {}: ", keys.size(), prefix);
+            keys.forEach(RedisTmpTokenInitializer::maskKey);
         } else {
             log.info("No Redis keys found with prefix {}", prefix);
         }
+    }
+
+    private static void maskKey(String fullKey) {
+        String tail = fullKey.substring(prefixOld.length());
+        String first4 = tail.substring(0, Math.min(4, tail.length()));
+        log.info("- {}{}****", prefixOld, first4);
     }
 }
 
