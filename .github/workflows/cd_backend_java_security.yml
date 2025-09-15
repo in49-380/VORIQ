@@ -68,7 +68,7 @@ jobs:
             echo 'DB_PASSWORD=${{ secrets.DB_PASSWORD }}' >> .env
             echo 'DB_NAME_SECURITY=${{ secrets.DB_NAME_SSERVICE }}' >> .env
             echo 'DB_NAME_CAR=${{ secrets.DB_NAME_CAR }}' >> .env
-            echo 'DB_NAME_PARCER=${{ secrets.DB_NAME_PARCER }}' >> .env
+            echo 'DB_NAME_PARSER=${{ secrets.DB_NAME_PARSER }}' >> .env
             
             # build new image and restart container with new image
             ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d --no-deps --build back-java-security
