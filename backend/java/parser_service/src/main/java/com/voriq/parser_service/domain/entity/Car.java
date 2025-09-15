@@ -1,9 +1,7 @@
 package com.voriq.parser_service.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.Objects;
 
 @Entity
@@ -14,7 +12,6 @@ import java.util.Objects;
 @NoArgsConstructor
 @Builder
 @ToString
-//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Car {
 
     @Id

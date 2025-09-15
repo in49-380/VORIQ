@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class CarRequestDto {
 
     private String brand;
-    private String name;
+    private String name; // name of model
     private String year;
 
     @JsonProperty("Engine type")
@@ -33,5 +33,5 @@ public class CarRequestDto {
     private Integer gears;
 
     @JsonProperty("Drive")
-    private String drive;
+    private String drive; // name of whilldrive
 }

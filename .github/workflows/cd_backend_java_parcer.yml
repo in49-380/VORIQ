@@ -1,23 +1,26 @@
-name: Deploy Backend Java Car Catalog Service
+name: Deploy Backend Java Parser Service
 
 on:
   push:
     branches:
       - '**'
     paths:
-      - 'backend/java/car_catalog_service**'
-      - 'devops/dev/backend/java/car_catalog_service**'
+      - 'backend/java/parser_service**'
+      - 'devops/dev/backend/java/parser_service**'
   workflow_dispatch:
 
 concurrency:
-  group: deploy-backend-java-car_catalog_service-${{ github.ref }}
+  group: deploy-backend-java-parser_service-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
+    outputs:
+      container_logs: ${{ steps.deploy_and_check.outputs.container_logs }}
     steps:
       - name: Deploy backend to Server over SSH
+        id: deploy_and_check
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.CICD_SSH_HOST }}
@@ -31,12 +34,12 @@ jobs:
             BRANCH="${{ github.ref_name }}"
             REPO_DIR="/home/${{ secrets.CICD_SSH_USER }}/VORIQ"
             #SERVICE_DIR="backend/java/security_service"
-            IMAGE="dev_car_catalog_service"
+            IMAGE="dev_parser_service"
             TAG_BRANCH="$(echo "$BRANCH" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9_.-]+#-#g' | sed -E 's#^-+|-+$##g' | cut -c1-120)-latest"
             TAG_SHA="${{ github.sha }}"
             TAG_LAT="latest"
             TAG=$TAG_LAT
-            CONTAINER="dev_car_catalog_service" 
+            CONTAINER="dev_parser_service" 
 
             # Ensure the VORIQ directory exists
             [ -d "$REPO_DIR/.git" ] || git clone https://github.com/in49-380/VORIQ.git "$REPO_DIR"
@@ -73,7 +76,7 @@ jobs:
             
             
             # build new image and restart container with new image
-            ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d --no-deps --build back-java-car
+            ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d --no-deps --build back-java-parser
 
             # clean up old images to save space
             #docker image prune -f 
@@ -88,18 +91,22 @@ jobs:
             sleep 20
 
             # get container id of the just started container
-            CONTAINER=$(ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" ps -q back-java-car)
+            CONTAINER=$(ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" ps -q back-java-parser)
 
             # checking container status.
             if [ "$(docker inspect -f {{.State.Running}} $CONTAINER)" != "true" ] || [ "$(docker inspect -f {{.State.Restarting}} $CONTAINER)" = "true" ] ; then
                 echo "Container failed to start. Capturing logs..." >&2
                 # getting last log strings.
-                LOGS=$(docker logs --tail 50 $CONTAINER 2>&1)
+                #LOGS=$(docker logs --tail 50 $CONTAINER 2>&1)
+                LOGS=$(docker logs --tail 50 $CONTAINER 2>&1 | base64)
                 
                 # creating output variable 'container_logs' with logs content and transfer to github actions output
-                echo "::set-output name=container_logs::$LOGS"
-                
-                exit 1 # exiting with failure, so all job ends with failure.
+                echo "::set-output name=container_logs::$LOGS" # old method
+                # echo "container_logs<<EOF" >> $GITHUB_OUTPUT
+                # echo "$LOGS" >> $GITHUB_OUTPUT
+                # echo "EOF" >> $GITHUB_OUTPUT
+                # exiting with failure, so all job ends with failure.
+                exit 1 
             fi
   
   notify_on_failure:
@@ -122,5 +129,6 @@ jobs:
             **Deploy log**: `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`
             
             \`\`\`
-            ${{ needs.build_and_deploy.outputs.container_logs }}
+            #${{ needs.build_and_deploy.outputs.container_logs }}
+            $(echo '${{ needs.build_and_deploy.outputs.container_logs }}' | base64 --decode)
             \`\`\`

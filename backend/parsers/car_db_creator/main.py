@@ -1,30 +1,51 @@
+import json
 import requests
 import re
 from lxml import html
 
 from utils.get_db_json import (
     process_db_brands, process_db_models, process_db_engines,
-    process_db_fuel_typs, process_db_year, process_db_cars
+    process_db_fuel_typs, process_db_year, process_db_cars,
 )
 from utils.get_list_url import info_car, url_models, url_element_auto
 from utils.get_urls import get_urls_models, get_urls_cars
 from utils.headers import headers
-from utils.translator import translate_car_info
+from utils.tools import parser_table, extract_unique_records, add_if_exists
+from utils.translator import translate_car
 from utils.save_load_data import (
     save_json, load_json
 )
 from utils.decorators import log_execution
 
 """
-This module contains functions to scrape car data from an external source,
-process the information, and export it into a local database.
+This module implements an ETL pipeline to extract car data from infocar.ua,
+transform it into structured JSON format, and load it into a local database.
 
-The workflow includes:
-1. Fetching car brands.
-2. Processing models and filtering by year.
-3. Scraping detailed car specifications.
-4. Exporting the processed data to a database.
+Workflow steps:
+1. Fetch car brands from HTML.
+2. Generate model URLs and filter models by year (>=2015).
+3. Scrape detailed car specifications from individual pages.
+4. Translate car data to English.
+5. Export structured data to a local database.
+
+Generated files:
+- brands.json: List of car brands with internal and external IDs.
+- url_list.json: URLs for car models.
+- models.json: Filtered car models with metadata.
+- cars.json: Raw car specifications in Russian.
+- cars_en.json / cars_en_db.json: Translated car data for database import.
+
+Technologies used:
+- requests, lxml, XPath for web scraping.
+- JSON for data serialization.
+- Custom decorators for logging.
+- Translation via internal utility.
+
+Note:
+- Only the first 100 car URLs are processed to reduce load.
+- The main() function orchestrates the entire pipeline.
 """
+
 @log_execution
 def fetch_brand_dict():
     """
@@ -64,6 +85,21 @@ def process_brands(brands):
     save_json(brands_list, "brands.json")
 
 @log_execution
+def process_url_list():
+    """
+    Generates a list of model URLs based on brand data and saves it to a file.
+
+    Loads brand information from 'brands.json', constructs a list of model URLs
+    using the `get_urls_models` function, and writes the result to 'url_list.json'.
+
+    Returns:
+        bool: True if the data was successfully saved, otherwise False.
+    """
+    brands_data = load_json("brands.json")
+    urls_list = get_urls_models(brands_data, url_models)
+    return save_json(urls_list, "url_list.json")
+
+@log_execution
 def process_models():
     """
     Loads the list of car brands, constructs model URLs,
@@ -73,10 +109,6 @@ def process_models():
     :return: None
     """
     models_list = []
-
-    brands_data = load_json("brands.json")
-    url_list = get_urls_models(brands_data, url_models)
-    save_json(url_list, "url_list.json")
 
     urls_list = load_json("url_list.json")
 
@@ -99,9 +131,8 @@ def process_models():
                     item = {
                         "brand_name": name,
                         "brand_id": id,
-                        # "model": model["nick"],
+                        "year": year,
                         "model": model["title"],
-                        "year": model["title"][-4:],
                         "id_model_infocar": model["id"]
                     }
                     models_list.append(item)
@@ -124,29 +155,31 @@ def process_cars():
     urls_list = load_json("url_cars_list.json")
     car_data_list = []
 
-    for url_list in urls_list[:50]:
+    for url_list in urls_list[:500]:
 
         response_car = requests.get(url_list["url"], headers=headers)
         tree = html.fromstring(response_car.content)
-        cars_elements = tree.xpath('//tbody[@id="cat4"]/tr')
+        cars_elements_engine = tree.xpath('//tbody[@id="cat4"]/tr')
+        cars_elements_transmission = tree.xpath('//*[@id="cat43"]/tr')
+        item_engine = parser_table(cars_elements_engine)
+        item_transmission = parser_table(cars_elements_transmission)
 
-        i = 1
-        car_data = {}
-        while i < len(cars_elements) - 1:
-            key = cars_elements[i].text_content().strip()
-            value = cars_elements[i + 1].text_content().strip()
-            car_data[key] = value
-            i += 3
         item = {
-            'id': url_list["id"],
             'brand': url_list["brand"],
-            'name': url_list["name"],
+            'model': url_list["name"][:-5],
             'year': url_list["year"],
-            'car_info': car_data
         }
-        car_data_list.append(item)
 
+        add_if_exists(item, item_engine, 'Двигатель')
+        add_if_exists(item, item_engine, 'Тип двигателя')
+        add_if_exists(item, item_engine, 'Тип топлива')
+        add_if_exists(item, item_transmission, 'Тип коробки передач')
+        add_if_exists(item, item_transmission, 'Кол-во передач')
+        add_if_exists(item, item_transmission, 'Привод')
+
+        car_data_list.append(item)
     save_json(car_data_list, "cars.json")
+
 
 @log_execution
 def process_cars_en(input_file="cars.json", output_file="cars_en.json"):
@@ -161,14 +194,13 @@ def process_cars_en(input_file="cars.json", output_file="cars_en.json"):
 
     cars_ru = load_json(input_file)
     cars_en = []
-
-    for car in cars_ru:
-        car_en = car.copy()
-        car_en["car_info"] = translate_car_info(car.get("car_info", {}))
-        cars_en.append(car_en)
+    cars_en = [translate_car(car) for car in cars_ru]
+    # for car in cars_ru:
+    #     car_en = translate_car(car)
+    #     cars_en.append(car_en)
 
     save_json(cars_en, output_file)
-
+    save_json(cars_en, "cars_en_db.json", "db_json")
 
 @log_execution
 def export_to_db():
@@ -182,7 +214,11 @@ def export_to_db():
     process_db_engines()
     process_db_fuel_typs()
     process_db_year()
-    process_db_cars()
+    # process_db_cars()
+    extract_unique_records(find_element='engine')
+    extract_unique_records(find_element='drive')
+    extract_unique_records(find_element='transmission_type')
+    extract_unique_records(find_element='number_gears')
 
 @log_execution
 def main():
@@ -194,6 +230,7 @@ def main():
     """
     brand_dict = fetch_brand_dict()
     process_brands(brand_dict)
+    process_url_list()
     process_models()
     process_cars()
     process_cars_en()
