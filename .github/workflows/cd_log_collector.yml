@@ -36,7 +36,7 @@ jobs:
                 # v1
                 # echo "::set-output name=container_logs::string from previous job" # old method
                 # v2
-                # echo "container_logs=string from previous job 222" >> "$GITHUB_OUTPUT"
+                echo "container_logs=string from previous job 222" >> "$GITHUB_OUTPUT"
                 # v3
                 # echo "container_logs<<EOF" >> $GITHUB_OUTPUT
                 # echo "$LOGS" >> $GITHUB_OUTPUT
@@ -50,7 +50,8 @@ jobs:
         id: set_logs_output
         # if: failure()
         run: |
-          LOGS_FROM_SSH="${{ steps.deploy_and_check.outputs.stdout }}"
+          # LOGS_FROM_SSH="${{ steps.deploy_and_check.outputs.stdout }}"
+          LOGS_FROM_SSH="${{ steps.deploy_and_check.outputs.container_logs }}"
           # echo "container_logs<<EOF" >> $GITHUB_OUTPUT
           # echo "$LOGS_FROM_SSH" >> $GITHUB_OUTPUT
           # echo "EOF" >> $GITHUB_OUTPUT
