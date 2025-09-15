@@ -131,6 +131,9 @@ jobs:
             
             \`\`\`
             ${{ needs.build_and_deploy.outputs.container_logs }}
+            echo "${{ needs.build_and_deploy.outputs.container_logs }}"
             $(echo "${{ needs.build_and_deploy.outputs.container_logs }}")
             $(echo "${{ job.build_and_deploy.steps.deploy_and_check.outputs.container_logs }}")
+            ${{ job.build_and_deploy.steps.deploy_and_check.outputs.container_logs }}
+            echo "${{ job.build_and_deploy.steps.deploy_and_check.outputs.container_logs }}""
             \`\`\`
