@@ -98,7 +98,7 @@ jobs:
             if [ "$(docker inspect -f {{.State.Running}} $CONTAINER_ID)" != "true" ] || [ "$(docker inspect -f {{.State.Restarting}} $CONTAINER_ID)" = "true" ] ; then
                 echo "Container failed to start. Capturing logs..." >&2
                 # getting last log strings.
-                # LOGS=$(docker logs --tail 50 $CONTAINER_ID 2>&1)
+                LOGS=$(docker logs --tail 50 $CONTAINER_ID 2>&1)
                 # LOGS=$(docker logs --tail 50 $CONTAINER_ID 2>&1 | base64)
                 # docker logs --tail 50 $CONTAINER_ID 2>&1
                 
