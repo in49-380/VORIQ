@@ -182,6 +182,4 @@ jobs:
             `${{ job.build_and_deploy.steps.deploy_and_check.outputs.stdout }}`
 
             \`\`\`
-        env:
 
-      
