@@ -115,7 +115,19 @@ jobs:
                 # exiting with failure, so all job ends with failure.
                 exit 1 
             fi
-  
+  print_on_failure:
+    runs-on: ubuntu-latest
+    needs: build_and_deploy
+    if: failure()
+    steps:
+      - name: print logs
+        run: |
+          echo "LOGS:"
+          echo "1 - ${{ needs.build_and_deploy.outputs.container_logs }}"
+          echo "2 - ${{ needs.build_and_deploy.outputs.stdout }}"
+          echo "3 - ${{ job.build_and_deploy.steps.deploy_and_check.outputs.container_logs }}"
+          echo "4 - ${{ job.build_and_deploy.steps.deploy_and_check.outputs.stdout }}"
+
   notify_on_failure:
     runs-on: ubuntu-latest
     needs: build_and_deploy
