@@ -104,13 +104,13 @@ jobs:
                 
                 # creating output variable 'container_logs' with logs content and transfer to github actions output
                 # v1
-                echo "::set-output name=container_logs::string from previous job" # old method
+                # echo "::set-output name=container_logs::string from previous job" # old method
                 # v2
-                echo "container_logs=string from previous job 222" >> $GITHUB_OUTPUT
+                # echo "container_logs=string from previous job 222" >> $GITHUB_OUTPUT
                 # v3
-                # echo "container_logs<<EOF" >> $GITHUB_OUTPUT
-                # echo "$LOGS" >> $GITHUB_OUTPUT
-                # echo "EOF" >> $GITHUB_OUTPUT
+                echo "container_logs<<EOF" >> $GITHUB_OUTPUT
+                echo "$LOGS" >> $GITHUB_OUTPUT
+                echo "EOF" >> $GITHUB_OUTPUT
                 
                 # exiting with failure, so all job ends with failure.
                 exit 1 
@@ -125,8 +125,8 @@ jobs:
         uses: appleboy/discord-action@master
         with:
           webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }} # WebHook URL
-          #webhook_id: ${{ secrets.DISCORD_WEBHOOK_URL }} # WebHook ID
-          #webhook_token: ${{ secrets.DISCORD_WEBHOOK_URL }} # WebHook Token
+          # webhook_id: ${{ secrets.DISCORD_WEBHOOK_URL }} # WebHook ID
+          # webhook_token: ${{ secrets.DISCORD_WEBHOOK_URL }} # WebHook Token
           message: |
             :x: **Deploy is failed!**
             
