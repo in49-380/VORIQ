@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Deploy backend to Server over SSH
         id: deploy_and_check
-        uses: appleboy/ssh-action@v0.1.7
+        uses: appleboy/ssh-action@v1.2.2
         with:
           host: ${{ secrets.CICD_SSH_HOST }}
           username: ${{ secrets.CICD_SSH_USER }}
