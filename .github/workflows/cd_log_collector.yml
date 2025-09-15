@@ -28,9 +28,9 @@ jobs:
             # if [ "$(docker inspect -f {{.State.Running}} $CONTAINER_ID)" != "true" ] || [ "$(docker inspect -f {{.State.Restarting}} $CONTAINER_ID)" = "true" ] ; then
             #     echo "Container failed to start. Capturing logs..." >&2
                 # getting last log strings.
-                LOGS=$(docker logs --tail 50 back-java-parser 2>&1)
+                LOGS=$(docker logs --tail 50 dev-back-java-parser 2>&1)
                 # LOGS=$(docker logs --tail 50 back-java-parser 2>&1 | base64)
-                docker logs --tail 5 back-java-parser 2>&1
+                docker logs --tail 5 dev-back-java-parser 2>&1
                 
                 # creating output variable 'container_logs' with logs content and transfer to github actions output
                 # v1
