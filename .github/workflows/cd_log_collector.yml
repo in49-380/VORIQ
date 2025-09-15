@@ -21,7 +21,9 @@ jobs:
         # Здесь вы явно указываете имя пользователя, хост и команду
         # Весь вывод команды будет захвачен в steps.get_logs_from_server.outputs.stdout
         run: |
-          echo $(ssh -o StrictHostKeyChecking=no ${{ secrets.CICD_SSH_USER }}@${{ secrets.CICD_SSH_HOST }} 'uname -a')
+          var_1_data=$(ssh -o StrictHostKeyChecking=no ${{ secrets.CICD_SSH_USER }}@${{ secrets.CICD_SSH_HOST }} 'uname -a')
+          echo "$var_1_data"
+          echo "var_1=$var_1_data" >> $GITHUB_OUTPUT
     
 
       - name: Set logs output for failed run
@@ -29,8 +31,10 @@ jobs:
         # if: failure()
         run: |
 
-          echo "${{ steps.deploy_and_check.outputs.stdout }}"
-          echo "${{ steps.get_logs_from_server.outputs.stdout }}"
+          echo "1 ${{ steps.deploy_and_check.outputs.stdout }}"
+          echo "2 ${{ steps.get_logs_from_server.outputs.stdout }}"
+          echo "3 ${{ steps.get_logs_from_server.outputs.var_1 }}"
+          
           LOGS_FROM_SSH="${{ steps.deploy_and_check.outputs.stdout }}"
 
           # LOGS_FROM_SSH="${{ steps.deploy_and_check.outputs.container_logs }}"
