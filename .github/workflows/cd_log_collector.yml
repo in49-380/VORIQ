@@ -21,8 +21,8 @@ jobs:
         # Здесь вы явно указываете имя пользователя, хост и команду
         # Весь вывод команды будет захвачен в steps.get_logs_from_server.outputs.stdout
         run: |
-          var_1_data=$(ssh -o StrictHostKeyChecking=no ${{ secrets.CICD_SSH_USER }}@${{ secrets.CICD_SSH_HOST }} 'uname -a')
-          echo "$var_1_data"
+          var_1_data=$(ssh -o StrictHostKeyChecking=no ${{ secrets.CICD_SSH_USER }}@${{ secrets.CICD_SSH_HOST }} 'docker logs --tail 50 dev-back-java-parser 2>&1')
+          # echo "$var_1_data"
           echo "var_1=$var_1_data" >> $GITHUB_OUTPUT
     
 
@@ -34,7 +34,7 @@ jobs:
           echo "1 ${{ steps.deploy_and_check.outputs.stdout }}"
           echo "2 ${{ steps.get_logs_from_server.outputs.stdout }}"
           echo "3 ${{ steps.get_logs_from_server.outputs.var_1 }}"
-          
+
           LOGS_FROM_SSH="${{ steps.deploy_and_check.outputs.stdout }}"
 
           # LOGS_FROM_SSH="${{ steps.deploy_and_check.outputs.container_logs }}"
