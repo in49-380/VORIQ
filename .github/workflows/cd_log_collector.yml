@@ -55,7 +55,7 @@ jobs:
           # echo "$LOGS_FROM_SSH" >> $GITHUB_OUTPUT
           # echo "EOF" >> $GITHUB_OUTPUT
           # v2
-          echo "container_logs=string from previous job 3333" >> $GITHUB_OUTPUT
+          echo "container_logs=$LOGS_FROM_SSH" >> $GITHUB_OUTPUT
 
   print_on_failure:
     runs-on: ubuntu-latest
