@@ -34,9 +34,9 @@ jobs:
                 
                 # creating output variable 'container_logs' with logs content and transfer to github actions output
                 # v1
-                # echo "::set-output name=container_logs::string from previous job" # old method
+                echo "::set-output name=container_logs::string from previous job 111" # old method
                 # v2
-                echo "container_logs=string from previous job 222" >> "$GITHUB_OUTPUT"
+                # echo "container_logs=string from previous job 222" >> "$GITHUB_OUTPUT"
                 # v3
                 # echo "container_logs<<EOF" >> $GITHUB_OUTPUT
                 # echo "$LOGS" >> $GITHUB_OUTPUT
