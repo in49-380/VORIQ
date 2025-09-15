@@ -9,7 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       container_logs: ${{ steps.set_logs_output.outputs.container_logs }}
-      stdout: ${{ steps.deploy_and_check.outputs.stdout }}
     steps:
       - name: Deploy backend to Server over SSH
         id: deploy_and_check
@@ -21,27 +20,17 @@ jobs:
           script: |
 
                 docker logs --tail 5 dev-back-java-parser 2>&1
-                
-                # creating output variable 'container_logs' with logs content and transfer to github actions output
-                # v1
-                # echo "::set-output name=container_logs::string from previous job 111" # old method
-                # v2
-                # echo "container_logs=string from previous job 222" >> "$GITHUB_OUTPUT"
-                # v3
-                # echo "container_logs<<EOF" >> $GITHUB_OUTPUT
-                # echo "$LOGS" >> $GITHUB_OUTPUT
-                # echo "EOF" >> $GITHUB_OUTPUT
-                
-                # exiting with failure, so all job ends with failure.
-            #     exit 1 
-            # fi
+                uname -a
+
 
       - name: Set logs output for failed run
         id: set_logs_output
         # if: failure()
         run: |
+
           echo "${{ steps.deploy_and_check.outputs.stdout }}"
           LOGS_FROM_SSH="${{ steps.deploy_and_check.outputs.stdout }}"
+
           # LOGS_FROM_SSH="${{ steps.deploy_and_check.outputs.container_logs }}"
           # echo "container_logs<<EOF" >> $GITHUB_OUTPUT
           # echo "$LOGS_FROM_SSH" >> $GITHUB_OUTPUT
