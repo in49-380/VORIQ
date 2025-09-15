@@ -1,5 +1,7 @@
 #commands string:
 #ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" down
+#ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" build
+#ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" build --no-cache <service_name>
 #ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d --build
 #ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d --no-deps --build <service_name>
 #ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d <service_name>
@@ -245,6 +247,42 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+
+
+  back-parser:
+    build:
+      context: ../backend/java/parser_service # relative path to source code dir. relative to this (docker-compose.yml) file
+      dockerfile: ../../../devops/${ENV}/backend/java/parser_service/Dockerfile # path to Dockerfile relative to CONTEXT dir.
+      # args:
+      #   RELEASE: 17
+    image: ${ENV}-back-java-parser:${TAG:-latest}
+    container_name: ${ENV}-back-java-parser
+    networks:
+      - app-network
+      - db-network
+    env_file:
+      - .env.${ENV}
+    environment:
+      - SPRING_PROFILES_ACTIVE="application-dev.yml"   #TODO: ${SPRING_PROFILES_ACTIVE} #update with developer to use dev, prod.. etc.
+      - PORT=${BACK_JAVA_PARSER_CONT_PORT:-8080}
+      - DB_HOST=db
+      - DB_PORT=${POSTGRES_HOST_PORT}
+      - DB_NAME=${DB_NAME_PARCER}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+    ports:
+      - ${BACK_JAVA_PARSER_HOST_PORT}:${BACK_JAVA_PARSER_CONT_PORT}
+    logging:
+      driver: "local"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    tmpfs:
+      - /tmp
 
 
   redis:
