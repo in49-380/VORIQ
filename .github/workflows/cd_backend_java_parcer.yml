@@ -101,11 +101,15 @@ jobs:
                 LOGS=$(docker logs --tail 50 $CONTAINER_ID 2>&1 | base64)
                 
                 # creating output variable 'container_logs' with logs content and transfer to github actions output
-                # echo "::set-output name=container_logs::$LOGS" # old method
-                echo "container_logs=string from previous job" >> $GITHUB_OUTPUT
+                # v1
+                echo "::set-output name=container_logs::string from previous job" # old method
+                # v2
+                # echo "container_logs=string from previous job" >> $GITHUB_OUTPUT
+                # v3
                 # echo "container_logs<<EOF" >> $GITHUB_OUTPUT
                 # echo "$LOGS" >> $GITHUB_OUTPUT
                 # echo "EOF" >> $GITHUB_OUTPUT
+                
                 # exiting with failure, so all job ends with failure.
                 exit 1 
             fi
@@ -135,5 +139,6 @@ jobs:
             $(echo "${{ needs.build_and_deploy.outputs.container_logs }}")
             $(echo "${{ job.build_and_deploy.steps.deploy_and_check.outputs.container_logs }}")
             ${{ job.build_and_deploy.steps.deploy_and_check.outputs.container_logs }}
-            echo "${{ job.build_and_deploy.steps.deploy_and_check.outputs.container_logs }}""
+            echo "${{ job.build_and_deploy.steps.deploy_and_check.outputs.container_logs }}"
             \`\`\`
+      
