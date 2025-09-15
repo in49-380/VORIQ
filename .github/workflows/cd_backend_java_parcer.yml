@@ -106,11 +106,11 @@ jobs:
                 # v1
                 # echo "::set-output name=container_logs::string from previous job" # old method
                 # v2
-                # echo "container_logs=string from previous job 222" >> $GITHUB_OUTPUT
+                echo "container_logs=string from previous job 222" >> $GITHUB_OUTPUT
                 # v3
-                echo "container_logs<<EOF" >> $GITHUB_OUTPUT
-                echo "$LOGS" >> $GITHUB_OUTPUT
-                echo "EOF" >> $GITHUB_OUTPUT
+                # echo "container_logs=<<EOF" >> $GITHUB_OUTPUT
+                # echo "$LOGS" >> $GITHUB_OUTPUT
+                # echo "EOF" >> $GITHUB_OUTPUT
                 
                 # exiting with failure, so all job ends with failure.
                 exit 1 
