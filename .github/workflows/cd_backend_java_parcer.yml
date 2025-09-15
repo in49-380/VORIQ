@@ -102,9 +102,10 @@ jobs:
                 
                 # creating output variable 'container_logs' with logs content and transfer to github actions output
                 # echo "::set-output name=container_logs::$LOGS" # old method
-                echo "container_logs<<EOF" >> $GITHUB_OUTPUT
-                echo "$LOGS" >> $GITHUB_OUTPUT
-                echo "EOF" >> $GITHUB_OUTPUT
+                echo "container_logs=string from prevoius job" >> $GITHUB_OUTPUT
+                # echo "container_logs<<EOF" >> $GITHUB_OUTPUT
+                # echo "$LOGS" >> $GITHUB_OUTPUT
+                # echo "EOF" >> $GITHUB_OUTPUT
                 # exiting with failure, so all job ends with failure.
                 exit 1 
             fi
