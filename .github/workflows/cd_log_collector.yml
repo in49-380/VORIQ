@@ -10,25 +10,33 @@ jobs:
     outputs:
       container_logs: ${{ steps.set_logs_output.outputs.container_logs }}
     steps:
-      - name: Deploy backend to Server over SSH
-        id: deploy_and_check
-        uses: appleboy/ssh-action@v0.1.7
+      - name: Add SSH key to agent
+        uses: webfactory/ssh-agent@v0.9.1
         with:
-          host: ${{ secrets.CICD_SSH_HOST }}
-          username: ${{ secrets.CICD_SSH_USER }}
-          key: ${{ secrets.CICD_SSH_PRIVATE_KEY }}
-          script: |
+          ssh-private-key: ${{ secrets.CICD_SSH_PRIVATE_KEY }}
 
-                docker logs --tail 5 dev-back-java-parser 2>&1
-                uname -a
 
+      - name: Get container logs over SSH
+        id: get_logs_from_server
+        # Здесь вы явно указываете имя пользователя, хост и команду
+        # Весь вывод команды будет захвачен в steps.get_logs_from_server.outputs.stdout
+        run: |
+          var_1_data="$(ssh -o StrictHostKeyChecking=no ${{ secrets.CICD_SSH_USER }}@${{ secrets.CICD_SSH_HOST }} 'docker logs --tail 50 dev-back-java-parser 2>&1')"
+          echo "$var_1_data"
+          echo "var_1<<EOF" >> $GITHUB_OUTPUT
+          echo "$var_1_data" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+    
 
       - name: Set logs output for failed run
         id: set_logs_output
         # if: failure()
         run: |
 
-          echo "${{ steps.deploy_and_check.outputs.stdout }}"
+          echo "1 ${{ steps.deploy_and_check.outputs.stdout }}"
+          echo "2 ${{ steps.get_logs_from_server.outputs.stdout }}"
+          echo "3 ${{ steps.get_logs_from_server.outputs.var_1 }}"
+
           LOGS_FROM_SSH="${{ steps.deploy_and_check.outputs.stdout }}"
 
           # LOGS_FROM_SSH="${{ steps.deploy_and_check.outputs.container_logs }}"
@@ -38,30 +46,26 @@ jobs:
           # v2
           echo "container_logs=$LOGS_FROM_SSH" >> $GITHUB_OUTPUT
 
-  print_on_failure:
+  notify_on_failure:
     runs-on: ubuntu-latest
     needs: build_and_deploy
-    # if: failure()
+    #if: failure()
     steps:
-      - name: print logs
-        run: |
-          echo "LOGS:"
-          echo "1 - ${{ needs.build_and_deploy.outputs.container_logs }}"
-          echo "2 - ${{ needs.build_and_deploy.outputs.stdout }}"
-          echo "3 - ${{ job.build_and_deploy.steps.deploy_and_check.outputs.container_logs }}"
-          echo "4 - ${{ job.build_and_deploy.steps.deploy_and_check.outputs.stdout }}"
-          echo "5 - ${{ needs.build_and_deploy.outputs.step_container_logs }}"
-          echo "6 - ${{ needs.build_and_deploy.outputs.step_stdout }}"
-          echo "7 - ${{ job.build_and_deploy.steps.deploy_and_check.outputs.step_container_logs }}"
-          echo "8 - ${{ job.build_and_deploy.steps.deploy_and_check.outputs.step_stdout }}"
-          echo "9 - $container_logs"
-          echo "10 - $stdout"
-          echo "11 - $step_container_logs"
-          echo "12 - $step_stdout"
-        env:
-          container_logs: ${{ needs.build_and_deploy.outputs.container_logs }}
-          stdout: ${{ needs.build_and_deploy.outputs.stdout }}
-          step_container_logs: ${{ job.build_and_deploy.steps.deploy_and_check.outputs.container_logs }}
-          step_stdout: ${{ job.build_and_deploy.steps.deploy_and_check.outputs.stdout }}
-
-
+      - name: Send a Discord notification
+        uses: appleboy/discord-action@master
+        with:
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }} # WebHook URL
+          # webhook_id: ${{ secrets.DISCORD_WEBHOOK_URL }} # WebHook ID
+          # webhook_token: ${{ secrets.DISCORD_WEBHOOK_URL }} # WebHook Token
+          message: |
+            :x: **Deploy is failed!**
+            
+            **Repo**: `${{ github.repository }}`
+            **Branch**: `${{ github.ref_name }}`
+            **Commit**: `${{ github.sha }}`
+            **Deploy log**: `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`
+            
+            \`\`\`
+            **LOGS:**
+            ${{ needs.build_and_deploy.outputs.VAR_1 }}
+            \`\`\`
