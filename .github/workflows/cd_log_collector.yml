@@ -22,7 +22,7 @@ jobs:
         # Весь вывод команды будет захвачен в steps.get_logs_from_server.outputs.stdout
         run: |
           #var_1_data="$(ssh -o StrictHostKeyChecking=no ${{ secrets.CICD_SSH_USER }}@${{ secrets.CICD_SSH_HOST }} 'docker logs --tail 50 dev-back-java-parser 2>&1')"
-          var_1_data="$(ssh -o StrictHostKeyChecking=no ${{ secrets.CICD_SSH_USER }}@${{ secrets.CICD_SSH_HOST }} 'docker logs dev-back-java-parser 2>&1 | grep -i error | tail -n 10')"
+          var_1_data="$(ssh -o StrictHostKeyChecking=no ${{ secrets.CICD_SSH_USER }}@${{ secrets.CICD_SSH_HOST }} 'docker logs dev-back-java-parser 2>&1 | grep -i error | tail -n 5')"
           echo "$var_1_data"
           echo "var_1<<EOF" >> $GITHUB_OUTPUT
           echo "$var_1_data" >> $GITHUB_OUTPUT
@@ -59,7 +59,7 @@ jobs:
           # webhook_id: ${{ secrets.DISCORD_WEBHOOK_URL }} # WebHook ID
           # webhook_token: ${{ secrets.DISCORD_WEBHOOK_URL }} # WebHook Token
           message: |
-            :x: **Deploy is failed!**
+            :v: **Requested LOGS!**
             
             **Repo**: `${{ github.repository }}`
             **Branch**: `${{ github.ref_name }}`
