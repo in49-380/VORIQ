@@ -56,7 +56,9 @@ jobs:
             **Repo**: `${{ github.repository }}`
             **Branch**: `${{ github.ref_name }}`
             **Commit**: `${{ github.sha }}`
-            **Deploy log**: `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`
+            **Run ID**: `${{ github.run_id }}`
+            **Deploy log link address**: `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`
+            **Deploy log direct link**: [LOGS](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
             **LOGS:**
             \`\`\`
             ${{ needs.build_and_deploy.outputs.container_logs }}
