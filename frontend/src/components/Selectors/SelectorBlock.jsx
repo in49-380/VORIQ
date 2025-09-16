@@ -11,7 +11,7 @@ import useSelect from '../../hooks/useSelect.jsx';
 import {requestFromVehicleSelectors} from '../../api/dbRequest.jsx'
 import brandAnalyse from '../../../public/fakeDB/fakeAnalys.jsx';
 import { modelAnalyse, yearAnalyse, engineAnalyse } from '../../../public/fakeDB/fakeAnalys.jsx';
-
+import {get} from '../../api/api.js'
 
 const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
     const {t}=useTranslation()
@@ -26,8 +26,9 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
 
     useEffect(()=>{
         const getBrands=async()=>{
-        const data= await runApi((opt)=>requestFromVehicleSelectors('brands.json',opt))
-        const result=brandAnalyse(data)
+        // const data= await runApi((opt)=>requestFromVehicleSelectors('brands.json',opt))
+        const result= await runApi((signal)=>get('http://voriq.info:8084/api/v1/catalog/brands',signal))
+        // const result=brandAnalyse(data)
         brand.setOptions(result)
         }
     getBrands()
@@ -35,11 +36,14 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
 
     useEffect(()=>{
         const getModels=async()=>{
+        console.log('brand.value', brand.value)
         if (!brand.value) {
         return;
         }
-        const data=await runApi((opt)=>requestFromVehicleSelectors('models.json', opt))
-        const result=modelAnalyse(data, brand.value)
+        // const data=await runApi((opt)=>requestFromVehicleSelectors('models.json', opt))
+        const reqParameter=brand.value.id
+        const result=await runApi((signal)=>get(`http://voriq.info:8084/api/v1/catalog/brands/${reqParameter}/models`,signal))
+        // const result=modelAnalyse(data, brand.value)
         model.setOptions(result)
         }
     getModels()
@@ -251,6 +255,8 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
             
             <Select
               id='s1'
+              getOptionLabel={(option) => option.value}
+              getOptionValue={(option) => option.id}
               placeholder={t('selectorBlock.brand')}
               value={brand.value}
               options={brand.options}
@@ -264,6 +270,8 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
 
             <Select
               id='s2'
+              getOptionLabel={(option) => option.value}
+              getOptionValue={(option) => option.id}
               placeholder={t('selectorBlock.model')}
               value={model.value}
               options={model.options}
@@ -278,6 +286,8 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
     
             <Select
               id='s3'
+              getOptionLabel={(option) => option.value}
+              getOptionValue={(option) => option.id}
               placeholder={t('selectorBlock.year')}
               value={year.value}
               options={year.options}
@@ -293,7 +303,8 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
     
             <Select
               id='s4'
-
+              getOptionLabel={(option) => option.value}
+              getOptionValue={(option) => option.id}
               placeholder={t('selectorBlock.engine')}
               value={engine.value}
               options={engine.options}
