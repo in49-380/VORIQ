@@ -23,6 +23,10 @@ jobs:
         run: |
           #log_data="$(ssh -o StrictHostKeyChecking=no ${{ secrets.CICD_SSH_USER }}@${{ secrets.CICD_SSH_HOST }} 'docker logs --tail 50 dev-back-java-parser 2>&1')"
           log_data="$(ssh -o StrictHostKeyChecking=no ${{ secrets.CICD_SSH_USER }}@${{ secrets.CICD_SSH_HOST }} 'docker logs dev-back-java-parser 2>&1 | grep -i error | tail -n 10')"
+          echo " "
+          echo " "
+          echo " "
+          echo "___REQUESTED LOGS___"
           echo "$log_data"
           echo "rlogs<<EOF" >> $GITHUB_OUTPUT
           echo "$log_data" >> $GITHUB_OUTPUT
