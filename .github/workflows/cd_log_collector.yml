@@ -8,7 +8,7 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     outputs:
-      container_logs: ${{ steps.get_logs_from_server.outputs.var_1 }}
+      container_logs: ${{ steps.get_logs_from_server.outputs.rlogs }}
     steps:
       - name: Add SSH key to agent
         uses: webfactory/ssh-agent@v0.9.1
@@ -21,11 +21,11 @@ jobs:
         # Здесь вы явно указываете имя пользователя, хост и команду
         # Весь вывод команды будет захвачен в steps.get_logs_from_server.outputs.stdout
         run: |
-          #var_1_data="$(ssh -o StrictHostKeyChecking=no ${{ secrets.CICD_SSH_USER }}@${{ secrets.CICD_SSH_HOST }} 'docker logs --tail 50 dev-back-java-parser 2>&1')"
-          var_1_data="$(ssh -o StrictHostKeyChecking=no ${{ secrets.CICD_SSH_USER }}@${{ secrets.CICD_SSH_HOST }} 'docker logs dev-back-java-parser 2>&1 | grep -i error | tail -n 5')"
-          echo "$var_1_data"
-          echo "var_1<<EOF" >> $GITHUB_OUTPUT
-          echo "$var_1_data" >> $GITHUB_OUTPUT
+          #log_data="$(ssh -o StrictHostKeyChecking=no ${{ secrets.CICD_SSH_USER }}@${{ secrets.CICD_SSH_HOST }} 'docker logs --tail 50 dev-back-java-parser 2>&1')"
+          log_data="$(ssh -o StrictHostKeyChecking=no ${{ secrets.CICD_SSH_USER }}@${{ secrets.CICD_SSH_HOST }} 'docker logs dev-back-java-parser 2>&1 | grep -i error | tail -n 10')"
+          echo "$log_data"
+          echo "rlogs<<EOF" >> $GITHUB_OUTPUT
+          echo "$log_data" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
     
 
@@ -33,19 +33,11 @@ jobs:
         id: set_logs_output
         # if: failure()
         run: |
+          echo "1 - ${{ steps.get_logs_from_server.outputs.rlogs }}"
+          echo "2 - container_logs"
+        env:
+          container_logs: ${{ steps.get_logs_from_server.outputs.rlogs }}
 
-          echo "1 ${{ steps.deploy_and_check.outputs.stdout }}"
-          echo "2 ${{ steps.get_logs_from_server.outputs.stdout }}"
-          echo "3 ${{ steps.get_logs_from_server.outputs.var_1 }}"
-
-          LOGS_FROM_SSH="${{ steps.deploy_and_check.outputs.stdout }}"
-
-          # LOGS_FROM_SSH="${{ steps.deploy_and_check.outputs.container_logs }}"
-          # echo "container_logs<<EOF" >> $GITHUB_OUTPUT
-          # echo "$LOGS_FROM_SSH" >> $GITHUB_OUTPUT
-          # echo "EOF" >> $GITHUB_OUTPUT
-          # v2
-          echo "container_logs=$LOGS_FROM_SSH" >> $GITHUB_OUTPUT
 
   notify_on_failure:
     runs-on: ubuntu-latest
@@ -65,9 +57,7 @@ jobs:
             **Branch**: `${{ github.ref_name }}`
             **Commit**: `${{ github.sha }}`
             **Deploy log**: `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`
-            
-            \`\`\`
             **LOGS:**
+            \`\`\`
             ${{ needs.build_and_deploy.outputs.container_logs }}
-            `${{ needs.build_and_deploy.outputs.container_logs }}`
             \`\`\`
