@@ -49,7 +49,7 @@ jobs:
   notify_on_failure:
     runs-on: ubuntu-latest
     needs: build_and_deploy
-    if: failure()
+    #if: failure()
     steps:
       - name: Send a Discord notification
         uses: appleboy/discord-action@master
