@@ -67,6 +67,6 @@ jobs:
             
             \`\`\`
             **LOGS:**
-            ${{ needs.build_and_deploy.outputs.var_1 }}
-            `${{ needs.build_and_deploy.outputs.var_1 }}`
+            ${{ needs.build_and_deploy.outputs.container_logs }}
+            `${{ needs.build_and_deploy.outputs.container_logs }}`
             \`\`\`
