@@ -2,6 +2,7 @@
 set -euo pipefail
 
 echo "== Clone repo =="
+rm -rf /src
 git clone --depth=1 --branch "${REPO_BRANCH}" "${REPO_URL}" /src
 
 mkdir -p "${RESULTS_DIR}" "${REPORT_DIR}" "${HISTORY_CACHE}"
