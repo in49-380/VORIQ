@@ -1,0 +1,90 @@
+#commands string:
+#ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" down
+#ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" build
+#ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" build --no-cache <service_name>
+#ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d --build
+#ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d --no-deps --build <service_name>
+#ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d <service_name>
+#ENV=dev && ENV=$ENV docker compose -f <compose_file_name> --env-file .env --env-file .env."$ENV" up -d <service_name>
+#docker compose build <service1> [service2]
+#ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" ps --services
+#docker compose up --scale web=3 -d
+#docker compose up web --scale web=3 -d
+
+
+#variables
+#PROJECT=VORIQ
+#ENV=dev,prod,test
+#REPO_DIR="/home/${{ secrets.CICD_SSH_USER }}/VORIQ"
+
+networks:
+  qa-network:
+    name: ${ENV-:test}-qa-network
+    driver: bridge
+
+volumes:
+  qa_data_reports:
+    name: ${ENV}_qa_reports
+  qa_data_results:
+    name: ${ENV}_qa_results
+
+services:
+  qa-selenium:
+    image: selenium/standalone-chrome:latest
+    container_name: ${ENV}-qa-selenium
+    # environment:
+    #   SELENIUM_PORT: 4444
+    # ports:
+    #   - "${SELENIUM_PORT}:4444"
+    networks:
+      - qa-network
+    shm_size: 1g  
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:4444/status"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+  qa-test:
+    image: maven:3.9-eclipse-temurin-21
+    container_name: ${ENV}-qa-test
+    networks:
+      - qa-network
+    volumes:
+      - qa_data_reports:/allure-report
+      - qa_data_results:/allure-results
+      - ./tests.sh:/tests.sh
+    depends_on:
+      qa-selenium:
+        condition: service_healthy
+    environment:
+      REPO_URL: "https://github.com/in49-380/VORIQ.git"
+      REPO_BRANCH: dev
+      BASE_URL: http://voriq.info/
+      SELENIUM_REMOTE_URL: http://qa-selenium:4444/wd/hub
+      # общие пути для результатов/отчёта/истории
+      RESULTS_DIR: /allure-results # target/allure-results by default
+      REPORT_DIR: /allure-report
+      HISTORY_CACHE: /allure-report/.allure
+    # entrypoint: ["/bin/bash","-lc"]
+    entrypoint: ["/bin/bash", "/tests.sh"]
+    # command: |
+    #   "
+    #   echo == Clone repo ==
+    #   env
+    #   ls -la allure-report
+    #   git clone $REPO_URL
+    #   "
+
+  qa-nginx:
+    image: nginx:alpine
+    container_name: ${ENV}-qa-nginx
+    networks:
+      - qa-network
+    # depends_on:
+    #   - qa-test
+    ports:
+      - ${QA_NGINX_HTTP_PORTS}
+    volumes:
+      - qa_data_reports:/usr/share/nginx/html:ro
+    restart: unless-stopped

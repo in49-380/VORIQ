@@ -5,6 +5,7 @@
 #ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d --build
 #ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d --no-deps --build <service_name>
 #ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d <service_name>
+#ENV=dev && ENV=$ENV docker compose -f <compose_file_name> --env-file .env --env-file .env."$ENV" up -d <service_name>
 #docker compose build <service1> [service2]
 #ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" ps --services
 #docker compose up --scale web=3 -d
@@ -44,10 +45,7 @@ volumes:
   pgadmin_data:
     #name: ${ENV}_pgadmin_data
     name: pgadmin_data
-  qa_data_reports:
-    name: ${ENV}_qa_reports
-  qa_data_results:
-    name: ${ENV}_qa_results
+
 
 
 services:
@@ -333,56 +331,3 @@ services:
       - .env.${ENV}
 
 
-  qa-selenium:
-    image: selenium/standalone-chrome:latest
-    container_name: ${ENV}-qa-selenium
-    # environment:
-    #   SELENIUM_PORT: 4444
-    # ports:
-    #   - "${SELENIUM_PORT}:4444"
-    networks:
-      - app-network
-    shm_size: 1g  
-    healthcheck:
-      test: ["CMD", "curl", "-fsS", "http://localhost:4444/status"]
-      interval: 10s
-      timeout: 5s
-      retries: 30
-
-  qa-test:
-    image: maven:3.9-eclipse-temurin-17
-    container_name: ${ENV}-qa-test
-    networks:
-      - app-network
-    volumes:
-      - qa_data_reports:/allure-report
-      - qa_data_results:/allure-results
-    depends_on:
-      qa-selenium:
-        condition: service_healthy
-    # working_dir: /work
-    environment:
-      - REPO_URL="https://github.com/in49-380/VORIQ.git"
-      - REPO_BRANCH=dev
-      - BASE_URL=http://voriq.info/
-      - SELENIUM_REMOTE_URL=http://qa-selenium:4444/wd/hub
-      # общие пути для результатов/отчёта/истории
-      - RESULTS_DIR=/allure-results
-      - REPORT_DIR=/allure-report
-      - HISTORY_CACHE=/allure-report/.allure
-    entrypoint: ["/bin/bash","-lc"]
-    command: |
-      sleep 5
-
-  qa-nginx:
-    image: nginx:alpine
-    container_name: ${ENV}-qa-nginx
-    networks:
-      - app-network
-    # depends_on:
-    #   - qa-test
-    ports:
-      - ${QA_NGINX_HTTP_PORTS}
-    volumes:
-      - qa_data_reports:/usr/share/nginx/html:ro
-    restart: unless-stopped
