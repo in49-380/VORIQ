@@ -6,6 +6,8 @@
 #ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d --no-deps --build <service_name>
 #ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d <service_name>
 #ENV=dev && ENV=$ENV docker compose -f <compose_file_name> --env-file .env --env-file .env."$ENV" up -d <service_name>
+#ENV=dev && ENV=$ENV docker compose -f qa-docker-compose.yml --env-file .env --env-file .env."$ENV" up -d qa-test
+
 #docker compose build <service1> [service2]
 #ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" ps --services
 #docker compose up --scale web=3 -d

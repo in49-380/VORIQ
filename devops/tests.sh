@@ -31,7 +31,8 @@ mvn -B io.qameta.allure:allure-maven:report \
 popd >/dev/null
 
 echo "== Preload history to results =="
-rsync -a "${REPORT_DIR}/history/" "${RESULTS_DIR}/history/" || true
+# rsync -a "${REPORT_DIR}/history/" "${RESULTS_DIR}/history/" || true
+cp -r "${REPORT_DIR}/history/" "${RESULTS_DIR}/" || true
 
 echo "== Build aggregated report (one for both) =="
 # соберём единый статический отчёт из общей папки результатов
@@ -41,7 +42,8 @@ mvn -f /src/qa/automation/ui/pom.xml -B io.qameta.allure:allure-maven:report \
 
 echo "== Save history back to cache =="
 if [ -d "${REPORT_DIR}/history" ]; then
-rsync -a "${REPORT_DIR}/history/" "${HISTORY_CACHE}/history/" || true
+# rsync -a "${REPORT_DIR}/history/" "${HISTORY_CACHE}/history/" || true
+cp -r "${REPORT_DIR}/history/" "${HISTORY_CACHE}/" || true
 fi
 
 echo "All done. Aggregated report at ${REPORT_DIR}/index.html"
