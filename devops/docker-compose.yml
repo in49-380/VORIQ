@@ -366,12 +366,21 @@ services:
       - REPO_BRANCH=dev
       - BASE_URL=http://voriq.info/
       - SELENIUM_REMOTE_URL=http://qa-selenium:4444/wd/hub
-      # общие пути для результатов/отчёта/истории
+
       - RESULTS_DIR=/allure-results
       - REPORT_DIR=/allure-report
       - HISTORY_CACHE=/allure-report/.allure
     entrypoint: ["/bin/bash","-c"]
     command: |
+
+      export REPO_URL="https://github.com/in49-380/VORIQ.git"
+      export REPO_BRANCH=dev
+      export BASE_URL=http://voriq.info/
+      export SELENIUM_REMOTE_URL=http://qa-selenium:4444/wd/hub
+
+      export RESULTS_DIR=/allure-results
+      export REPORT_DIR=/allure-report
+      export HISTORY_CACHE=/allure-report/.allure
 
       echo "== Clone repo =="
       rm -rf /src && git clone --depth=1 --branch "${REPO_BRANCH}" "${REPO_URL}" /src
