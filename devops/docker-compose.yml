@@ -360,16 +360,16 @@ services:
     depends_on:
       qa-selenium:
         condition: service_healthy
-    working_dir: /work
+    # working_dir: /work
     environment:
-      REPO_URL: https://github.com/in49-380/VORIQ.git
-      REPO_BRANCH: dev
-      BASE_URL: http://voriq.info/
-      SELENIUM_REMOTE_URL: http://qa-selenium:4444/wd/hub
+      - REPO_URL="https://github.com/in49-380/VORIQ.git"
+      - REPO_BRANCH=dev
+      - BASE_URL=http://voriq.info/
+      - SELENIUM_REMOTE_URL=http://qa-selenium:4444/wd/hub
       # общие пути для результатов/отчёта/истории
-      RESULTS_DIR: /allure-results
-      REPORT_DIR: /allure-report
-      HISTORY_CACHE: /allure-report/.allure
+      - RESULTS_DIR=/allure-results
+      - REPORT_DIR=/allure-report
+      - HISTORY_CACHE=/allure-report/.allure
     entrypoint: ["/bin/bash","-lc"]
     command: |
       set -euo pipefail
