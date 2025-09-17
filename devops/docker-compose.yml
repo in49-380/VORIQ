@@ -263,7 +263,7 @@ services:
     env_file:
       - .env.${ENV}
     environment:
-      - SPRING_PROFILES_ACTIVE="application-dev.yml"   #TODO: ${SPRING_PROFILES_ACTIVE} #update with developer to use dev, prod.. etc.
+      - SPRING_PROFILES_ACTIVE=${ENV}
       - PORT=${BACK_JAVA_PARSER_CONT_PORT:-8080}
       - DB_HOST=db
       - DB_PORT=${POSTGRES_HOST_PORT}
