@@ -15,12 +15,10 @@
         <module>rest-api</module>
     </modules>
 
-    <!-- Общие свойства (опционально, но удобно) -->
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
 
-        <!-- Единые папки Allure в корне -->
         <allure.shared.results>${project.basedir}/allure-results</allure.shared.results>
         <allure.shared.report>${project.basedir}/allure-report</allure.shared.report>
         <allure.shared.history>${project.basedir}/.allure/history</allure.shared.history>
