@@ -36,7 +36,7 @@ jobs:
             TAG_SHA="${{ github.sha }}"
             TAG_LAT="latest"
             TAG=$TAG_LAT
-            SERVICE="qa_test" 
+            SERVICE="qa-test" 
 
             # Ensure the VORIQ directory exists
             [ -d "$REPO_DIR/.git" ] || git clone https://github.com/in49-380/VORIQ.git "$REPO_DIR"
