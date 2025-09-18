@@ -90,7 +90,7 @@ services:
     ports:
       - ${NGINX_HTTP_PORTS}
       - ${NGINX_HTTPS_PORTS}
-    # volumes:
+    volumes:
       # - html:/usr/share/nginx/html/
       - nginx_conf:/etc/nginx/:ro
     networks:
