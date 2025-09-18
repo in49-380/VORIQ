@@ -11,17 +11,19 @@ const HintBox=({currentStep, setCurrentStep})=>{
     { step: 2, value: 's2', content: 'hint2' },
     { step: 3, value: 's3', content: 'hint3' },
     { step: 4, value: 's4', content: 'hint4' },
-    { step: 5, value: 'b5', content: 'hint5' },
-    { step: 6, value: 'b6', content: 'hint6' },
+    { step: 5, value: 's5', content: 'hint5' },
+    { step: 6, value: 's6', content: 'hint6' },
+    { step: 7, value: 'b5', content: 'hint7' },
+    { step: 8, value: 'b6', content: 'hint8' },
   ]
 
   const {hintBoxData}=useHintBox()
   const [isHintAvaible, setIsHintAvaible] = useState(() => {
-    return currentStep < 7 && !localStorage.getItem('hintIsViewed');
+    return currentStep < 9 && !localStorage.getItem('hintIsViewed');
   });
 
   useEffect(() => {
-  if (currentStep > 6) {
+  if (currentStep > 8) {
     setIsHintAvaible(false);
   } else {
     if (!localStorage.getItem('hintIsViewed')) setIsHintAvaible(true);
@@ -99,7 +101,7 @@ const HintBox=({currentStep, setCurrentStep})=>{
                 onClick={onPrevClick}
                 children={'prev'}/>}
                 
-                {currentStep<6 && 
+                {currentStep<8 && 
                 <Button id='b15'
                 onClick={onNextClick}
                 children={'next'}/>}

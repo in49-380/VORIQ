@@ -27,7 +27,7 @@ const ButtonBlock=({brand,model,year,engine, setCurrentStep})=>{
         const jsonPayload = JSON.stringify(payload);
         const response=await runApi((opt)=>getAnalyse(jsonPayload, opt))
         console.log('response in buttonblock', response)
-        goToStep(6)
+        goToStep(8)
     }
 
     const handleOnClickNewSearch=()=>{
