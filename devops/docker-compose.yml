@@ -33,6 +33,8 @@ volumes:
     name: ${ENV}_proxy_letsencrypt
   html:
     name: ${ENV}_html
+  nginx_conf:
+    name: ${ENV}_nginx_conf
   car_catalog_service_log:
     name: ${ENV}_car_catalog_service_log
   security_service_log:
@@ -89,9 +91,8 @@ services:
       - ${NGINX_HTTP_PORTS}
       - ${NGINX_HTTPS_PORTS}
     # volumes:
-    #   - html:/usr/share/nginx/html/
-      # - ./nginx/conf.d:/etc/nginx/conf.d:ro
-      # - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      # - html:/usr/share/nginx/html/
+      - nginx_conf:/etc/nginx/:ro
     networks:
       - app-network
     restart: unless-stopped
