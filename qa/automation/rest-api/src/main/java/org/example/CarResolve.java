@@ -1,70 +1,83 @@
 package org.example;
 
 public class CarResolve {
-    Integer idCar;
-    Integer idBrand;
-    Integer idModel;
-    Integer idYear;
-    Integer idEngine;
-    Integer idTransmission;
-    Integer idWheelDrive;
+    private Integer brandId;
+    private Integer modelId;
+    private Integer yearId;
+    private Integer engineId;
+    private Integer transmissionId;
+    private Integer wheelDriveId;
+
+    public CarResolve(Integer brandId, Integer modelId, Integer yearId, Integer engineId, Integer transmissionId, Integer wheelDriveId) {
+        this.brandId = brandId;
+        this.modelId = modelId;
+        this.yearId = yearId;
+        this.engineId = engineId;
+        this.transmissionId = transmissionId;
+        this.wheelDriveId = wheelDriveId;
+    }
 
     public CarResolve() {
     }
 
-    public Integer getIdCar() {
-        return idCar;
+
+    public Integer getBrandId() {
+        return brandId;
     }
 
-    public Integer getIdBrand() {
-        return idBrand;
+    public void setBrandId(Integer brandId) {
+        this.brandId = brandId;
     }
 
-    public Integer getIdModel() {
-        return idModel;
+    public Integer getModelId() {
+        return modelId;
     }
 
-    public Integer getIdYear() {
-        return idYear;
+    public void setModelId(Integer modelId) {
+        this.modelId = modelId;
     }
 
-    public Integer getIdEngine() {
-        return idEngine;
+    public Integer getYearId() {
+        return yearId;
     }
 
-    public Integer getIdTransmission() {
-        return idTransmission;
+    public void setYearId(Integer yearId) {
+        this.yearId = yearId;
     }
 
-    public Integer getIdWheelDrive() {
-        return idWheelDrive;
+    public Integer getEngineId() {
+        return engineId;
     }
 
-    public void setIdCar(Integer idCar) {
-        this.idCar = idCar;
+    public void setEngineId(Integer engineId) {
+        this.engineId = engineId;
     }
 
-    public void setIdBrand(Integer idBrand) {
-        this.idBrand = idBrand;
+    public Integer getTransmissionId() {
+        return transmissionId;
     }
 
-    public void setIdModel(Integer idModel) {
-        this.idModel = idModel;
+    public void setTransmissionId(Integer transmissionId) {
+        this.transmissionId = transmissionId;
     }
 
-    public void setIdYear(Integer idYear) {
-        this.idYear = idYear;
+    public Integer getWheelDriveId() {
+        return wheelDriveId;
     }
 
-    public void setIdEngine(Integer idEngine) {
-        this.idEngine = idEngine;
+    public void setWheelDriveId(Integer wheelDriveId) {
+        this.wheelDriveId = wheelDriveId;
     }
 
-    public void setIdTransmission(Integer idTransmission) {
-        this.idTransmission = idTransmission;
-    }
-
-    public void setIdWheelDrive(Integer idWheelDrive) {
-        this.idWheelDrive = idWheelDrive;
+    @Override
+    public String toString() {
+        return "{" +
+                "brandId = " + brandId + "," +
+                "modelId = " + modelId + "," +
+                "yearId = " + yearId + "," +
+                "engineId = " + engineId + "," +
+                "transmissionId = " + transmissionId + "," +
+                "wheelDriveId = " + wheelDriveId +
+                '}';
     }
 }

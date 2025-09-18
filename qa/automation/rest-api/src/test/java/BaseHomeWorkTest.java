@@ -26,7 +26,6 @@ public class BaseHomeWorkTest {
     @BeforeAll
     public static void globalSetUp() {
         properties = new Properties();
-        CarResolve carResolve = new CarResolve();
         try {
             FileInputStream fileInputStream = new FileInputStream("src/main/resources/config_homework.properties");
             properties.load(fileInputStream);
@@ -54,6 +53,4 @@ public class BaseHomeWorkTest {
         if (n < 0) throw new IllegalArgumentException("n должно быть >= 0");
         return ThreadLocalRandom.current().nextInt(n + 1);
     }
-
-
 }
