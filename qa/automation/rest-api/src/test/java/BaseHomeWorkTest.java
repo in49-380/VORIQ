@@ -21,6 +21,7 @@ public class BaseHomeWorkTest {
     static Integer idEngine;
     static Integer idTransmission;
     static Integer idWheelDrive;
+    static final Integer IDMAX = 99999;
 
 
     @BeforeAll

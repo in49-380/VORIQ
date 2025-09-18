@@ -16,9 +16,6 @@
       "items": [
         {
           "type": "string"
-        },
-        {
-          "type": "string"
         }
       ]
     },
@@ -26,7 +23,24 @@
       "type": "string"
     },
     "validationErrors": {
-      "type": "null"
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "field": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "field",
+            "message"
+          ]
+        }
+      ]
     }
   },
   "required": [

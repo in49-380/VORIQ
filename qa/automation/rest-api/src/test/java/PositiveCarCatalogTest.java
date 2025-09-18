@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 
-public class CarCatalogPositiveTest extends BaseHomeWorkTest {
+public class PositiveCarCatalogTest extends BaseHomeWorkTest {
 
 
     @Test
@@ -188,15 +188,26 @@ public class CarCatalogPositiveTest extends BaseHomeWorkTest {
         }
         CarResolve carResolve = new CarResolve(idBrand, idModel, idYear, idEngine, idTransmission, idWheelDrive);
 
-        System.out.println(carResolve);
         given()
                 .contentType(ContentType.JSON).body(carResolve)
                 .header("Authorization", "Bearer " + getConfig("token"))
-                .when().log().ifValidationFails().log().all()
+                .when().log().ifValidationFails()
                 .post(getConfig("objectCarCatalog") + getConfig("objectCarResolve"))
                 .then().statusCode(200)
                 .contentType(ContentType.JSON)
-                .body(matchesJsonSchemaInClasspath("car_catalog-schema.json"))
-                .extract().response();
+                .body(matchesJsonSchemaInClasspath("car_catalog-schema.json"));
+    }
+
+    @Test
+    @Tag("positive")
+    public void testController() {
+
+        given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + getConfig("token"))
+                .when().log().ifValidationFails()
+                .post(getConfig("objectCarCatalog") + getConfig("objectTestController"))
+                .then().statusCode(204)
+                .contentType(ContentType.JSON);
     }
 }
