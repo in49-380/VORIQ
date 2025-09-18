@@ -24,6 +24,7 @@ const HintBox=({currentStep, setCurrentStep})=>{
 
   useEffect(() => {
   if (currentStep > 8) {
+
     setIsHintAvaible(false);
   } else {
     if (!localStorage.getItem('hintIsViewed')) setIsHintAvaible(true);
@@ -102,6 +103,7 @@ const HintBox=({currentStep, setCurrentStep})=>{
                 children={'prev'}/>}
                 
                 {currentStep<8 && 
+
                 <Button id='b15'
                 onClick={onNextClick}
                 children={'next'}/>}

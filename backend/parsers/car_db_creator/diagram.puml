@@ -1,0 +1,117 @@
+@startuml
+
+title Процесс обработки данных об автомобилях
+
+' === Группировка по структуре проекта ===
+package "car_db_creator" {
+    package "data" {
+        package "files_json" {
+            package "db_json" {
+                [brands_db.json]
+                [cars_db.json]
+                [engines_db.json]
+                [fuels_db.json]
+                [models_db.json]
+                [years_db.json]
+            }
+            [brands.json]
+            [cars.json]
+            [cars_en.json]
+            [models.json]
+            [translation_dict.json]
+            [url_cars_list.json]
+            [url_list.json]
+        }
+        package "files_log" {
+            [parser.log]
+        }
+    }
+    package "utils" {
+        artifact "decorators.py" as decorators_file {
+            [load_error_handler_json(func)]
+            [save_error_handler_json(func)]
+            [log_execution(func)]
+        }
+        artifact "get_db_json.py" as get_db_json_file {
+            [process_db_brands()]
+            [process_db_models()]
+            [process_db_year()]
+            [process_db_fuel_typs()]
+            [process_db_engines()]
+            [process_db_cars()]
+        }
+        artifact "get_list_url.py" as get_list_url_file {
+        }
+        artifact "get_urls.py" as get_urls_file {
+            [get_urls_models(data, url)]
+            [get_urls_cars(data, url)]
+        }
+        artifact "headers.py" as headers_file {
+        }
+        artifact "save_load_data.py" as save_load_data_file {
+            [find_project_root()] as find_patch
+            [save_json()] as save
+            [load_json()] as load
+            [append_to_json_file()]
+        }
+        artifact "translator.py" as translator_file {
+        }
+
+
+    }
+    artifact "main.py" as main_file {
+        [fetch_brand_dict()]
+        [process_brands(brands)] as brands_func
+        [process_models()] as models_func
+        [process_cars()] as cars_func
+        [process_cars_en(input_file="cars.json", output_file="cars_en.json")] as cars_en_func
+        [export_to_db()] as export_db
+        [main()] as main_func
+
+    }
+}
+
+' === Взаимосвязи между функциями ===
+
+
+  main_func --> [fetch_brand_dict()]
+  main_func --> brands_func
+  brands_func -[#orange]-> save
+  save <--> find_patch
+  save -[#orange]-> [brands.json]
+  main_func --> models_func
+  models_func <-[#blue]- load
+  load <--> find_patch
+  load <-[#blue]- [brands.json]
+  models_func --> [get_urls_models(data, url)]
+  models_func -[#orange]-> save
+  save <--> find_patch
+  save -[#orange]-> [url_list.json]
+  models_func <-- load
+  load <--> find_patch
+  load <-[#blue]- [url_list.json]
+  models_func --> save
+  save <--> find_patch
+  save -[#orange]-> [models.json]
+  main_func --> cars_func
+  cars_func <-[#blue]- load
+  cars_func -[#orange]-> save
+  cars_func <-[#blue]- load
+  cars_func -[#orange]-> save
+  save <--> find_patch
+  save -[#orange]-> [cars.json]
+  main_func --> cars_en_func
+  cars_en_func <-- load
+  cars_en_func --> save
+  main_func --> export_db
+  export_db --> [process_db_brands()]
+  export_db --> [process_db_models()]
+  export_db --> [process_db_engines()]
+  export_db --> [process_db_fuel_typs()]
+  export_db --> [process_db_year()]
+  export_db --> [process_db_cars()]
+
+
+
+
+@enduml

@@ -1,0 +1,23 @@
+ALTER TABLE cars_brand        ALTER COLUMN id SET NOT NULL;
+ALTER TABLE cars_carmodel     ALTER COLUMN id SET NOT NULL;
+ALTER TABLE cars_engine       ALTER COLUMN id SET NOT NULL;
+ALTER TABLE cars_fueltype     ALTER COLUMN id SET NOT NULL;
+ALTER TABLE cars_market       ALTER COLUMN id SET NOT NULL;
+ALTER TABLE cars_transmission ALTER COLUMN id SET NOT NULL;
+ALTER TABLE cars_whilldrive   ALTER COLUMN id SET NOT NULL;
+ALTER TABLE cars_year         ALTER COLUMN id SET NOT NULL;
+ALTER TABLE cars_car          ALTER COLUMN id SET NOT NULL;
+ALTER TABLE cars_searchquery  ALTER COLUMN id SET NOT NULL;
+ALTER TABLE cars_searchresult ALTER COLUMN id SET NOT NULL;
+
+ALTER TABLE cars_brand        ADD CONSTRAINT pk_cars_brand        PRIMARY KEY (id);
+ALTER TABLE cars_carmodel     ADD CONSTRAINT pk_cars_carmodel     PRIMARY KEY (id);
+ALTER TABLE cars_engine       ADD CONSTRAINT pk_cars_engine       PRIMARY KEY (id);
+ALTER TABLE cars_fueltype     ADD CONSTRAINT pk_cars_fueltype     PRIMARY KEY (id);
+ALTER TABLE cars_market       ADD CONSTRAINT pk_cars_market       PRIMARY KEY (id);
+ALTER TABLE cars_transmission ADD CONSTRAINT pk_cars_transmission PRIMARY KEY (id);
+ALTER TABLE cars_whilldrive   ADD CONSTRAINT pk_cars_whilldrive   PRIMARY KEY (id);
+ALTER TABLE cars_year         ADD CONSTRAINT pk_cars_year         PRIMARY KEY (id);
+ALTER TABLE cars_car          ADD CONSTRAINT pk_cars_car          PRIMARY KEY (id);
+ALTER TABLE cars_searchquery  ADD CONSTRAINT pk_cars_searchquery  PRIMARY KEY (id);
+ALTER TABLE cars_searchresult ADD CONSTRAINT pk_cars_searchresult PRIMARY KEY (id);

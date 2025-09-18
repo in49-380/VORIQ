@@ -1,7 +1,6 @@
 package com.voriq.parser_service.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +10,7 @@ import java.util.Set;
 @Entity
 @Table(
         name = "cars_year",
-        uniqueConstraints = @UniqueConstraint(name = "uq_years_year", columnNames = "year")
+        uniqueConstraints = @UniqueConstraint(name = "uq_year_year", columnNames = "year")
 )
 @Getter
 @Setter
@@ -20,7 +19,6 @@ import java.util.Set;
 @Builder
 @ToString(onlyExplicitlyIncluded = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Year {
 
     @Id

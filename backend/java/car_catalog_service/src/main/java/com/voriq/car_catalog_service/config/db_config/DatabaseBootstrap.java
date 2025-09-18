@@ -22,6 +22,27 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Bootstraps the application database for the development profile.
+ * <p>
+ * Responsibilities:
+ * <ul>
+ *     <li>Ensures the target database exists (creates it via the administrative {@link DataSource}
+ *     if missing).</li>
+ *     <li>Detects whether the database is already initialized by probing for well-known tables.</li>
+ *     <li>If not initialized, imports a PostgreSQL dump from the classpath
+ *     ({@code db/dump-voriq_cars.sql}) by executing collected DDL statements, streaming
+ *     {@code COPY ... FROM STDIN} data via {@link CopyManager}, and then applying
+ *     foreign-key constraints.</li>
+ * </ul>
+ * <p>
+ * This configuration is only active for the {@code dev} Spring profile and runs once at
+ * context startup by exposing a no-op bean named {@code voriqDbInit}.
+ * </p>
+ *
+ * @author RsLan
+ * @since 1.0.0
+ */
 @Slf4j
 @Configuration("voriqDbInitConfig")
 @RequiredArgsConstructor
@@ -47,6 +68,24 @@ public class DatabaseBootstrap {
         return appDb == null ? null : appDb.toLowerCase(java.util.Locale.ROOT);
     }
 
+    /**
+     * Triggers the database bootstrap process when the Spring context is created.
+     * <p>
+     * Flow:
+     * <ol>
+     *     <li>Create the target database if it does not already exist.</li>
+     *     <li>Check whether the database is initialized.</li>
+     *     <li>If not initialized, import the bundled dump into the application database.</li>
+     * </ol>
+     * The returned {@link Object} has no functional meaning; it simply ensures the
+     * configuration executes at startup.
+     * </p>
+     *
+     * @return a dummy bean instance to run the initialization during context startup
+     * @throws Exception if dump parsing or import fails
+     * @author RsLan
+     * @since 1.0.0
+     */
     @Bean("voriqDbInit")
     public Object bootstrap() throws Exception {
         createDatabaseIfMissing();
@@ -58,6 +97,17 @@ public class DatabaseBootstrap {
         return new Object();
     }
 
+    /**
+     * Creates the application database if it does not already exist.
+     * <p>
+     * Uses the administrative {@link DataSource} to query {@code pg_database}. If missing,
+     * executes a {@code CREATE DATABASE} statement with deterministic locale and encoding.
+     * PostgreSQL SQLSTATE {@code 42P04} (duplicate_database) is treated as a benign race.
+     * </p>
+     *
+     * @author RsLan
+     * @since 1.0.0
+     */
     private void createDatabaseIfMissing() {
         JdbcTemplate admin = new JdbcTemplate(adminDataSource);
         String db = dbLower();
@@ -85,7 +135,6 @@ public class DatabaseBootstrap {
             admin.execute(sql);
             log.info("Database {} created", db);
         } catch (org.springframework.jdbc.BadSqlGrammarException e) {
-            // Если БД уже создана (гонка): SQLSTATE 42P04 (duplicate_database) — пропускаем
             Throwable cause = e.getCause();
             if (cause instanceof org.postgresql.util.PSQLException pg
                     && "42P04".equals(pg.getSQLState())) {
@@ -96,6 +145,18 @@ public class DatabaseBootstrap {
         }
     }
 
+    /**
+     * Determines whether the database already contains expected application tables.
+     * <p>
+     * The check queries {@code information_schema.tables} for a small set of known table
+     * names within the {@code public} schema. Any positive match is treated as "initialized".
+     * Returns {@code false} if an exception occurs while probing.
+     * </p>
+     *
+     * @return {@code true} if at least one expected table exists; otherwise {@code false}
+     * @author RsLan
+     * @since 1.0.0
+     */
     private boolean isAlreadyInitialized() {
         String url = "jdbc:postgresql://" + host + ":" + port + "/" + dbLower();
         String sql = """
@@ -117,6 +178,24 @@ public class DatabaseBootstrap {
         }
     }
 
+    /**
+     * Imports the SQL dump into the application database.
+     * <p>
+     * Steps:
+     * <ol>
+     *     <li>Ensure {@code public} schema exists and set the search path.</li>
+     *     <li>Parse the dump into DDL statements, COPY blocks, and FK constraints.</li>
+     *     <li>Execute DDL statements.</li>
+     *     <li>Stream data for each COPY block using PostgreSQL's {@link CopyManager}.</li>
+     *     <li>Apply foreign-key constraints.</li>
+     * </ol>
+     * Logging includes the first line of each executed statement and basic COPY stats.
+     * </p>
+     *
+     * @throws Exception if any parsing or database operation fails
+     * @author RsLan
+     * @since 1.0.0
+     */
     private void importDumpIntoAppDatabase() throws Exception {
         String url = "jdbc:postgresql://" + host + ":" + port + "/" + dbLower();
 
@@ -166,6 +245,26 @@ public class DatabaseBootstrap {
         }
     }
 
+    /**
+     * Parses a PostgreSQL dump into executable units.
+     * <p>
+     * The parser scans the dump file for:
+     * <ul>
+     *     <li>{@code CREATE TABLE ...;} blocks → collected as DDL statements,</li>
+     *     <li>{@code COPY schema.table (cols...) FROM stdin;} blocks with data rows
+     *     terminated by {@code \.} → collected as {@link CopyBlock}s,</li>
+     *     <li>{@code ALTER TABLE ONLY ... ADD CONSTRAINT ...;} → collected as FK constraints.</li>
+     * </ul>
+     * Several non-essential lines (role/db settings, {@code \connect}, etc.) are ignored.
+     * </p>
+     *
+     * @param ddlStatements output list for DDL statements (in discovery order)
+     * @param copyBlocks    output list for COPY blocks with rows
+     * @param fkConstraints output list for foreign-key constraint statements
+     * @throws IOException if the dump resource cannot be read
+     * @author RsLan
+     * @since 1.0.0
+     */
     private void parseDump(List<String> ddlStatements,
                            List<CopyBlock> copyBlocks,
                            List<String> fkConstraints) throws IOException {
@@ -184,7 +283,6 @@ public class DatabaseBootstrap {
             while ((line = br.readLine()) != null) {
                 String t = line.trim();
 
-                // Шум/глобальные команды psql — пропускаем
                 if (t.isEmpty()
                         || t.startsWith("-- Roles")
                         || t.startsWith("-- Databases")
@@ -245,12 +343,27 @@ public class DatabaseBootstrap {
         }
     }
 
+    /**
+     * Returns the first non-blank line of the given string (or the whole string if single-line).
+     *
+     * @param s source text
+     * @return the first line, trimmed of surrounding whitespace
+     * @author RsLan
+     * @since 1.0.0
+     */
     private static String firstLine(String s) {
         String l = s.strip();
         int i = l.indexOf('\n');
         return i > 0 ? l.substring(0, i) : l;
     }
 
+    /**
+     * Container for a parsed {@code COPY} block consisting of a fully-qualified table name,
+     * the ordered list of column names, and the raw data rows to be piped to {@code STDIN}.
+     *
+     * @author RsLan
+     * @since 1.0.0
+     */
     private static class CopyBlock {
         String qualifiedTable;
         List<String> columns = new ArrayList<>();

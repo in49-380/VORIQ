@@ -1,8 +1,11 @@
 #commands string:
 #ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" down
+#ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" build
+#ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" build --no-cache <service_name>
 #ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d --build
 #ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d --no-deps --build <service_name>
 #ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d <service_name>
+#ENV=dev && ENV=$ENV docker compose -f <compose_file_name> --env-file .env --env-file .env."$ENV" up -d <service_name>
 #docker compose build <service1> [service2]
 #ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" ps --services
 #docker compose up --scale web=3 -d
@@ -40,7 +43,9 @@ volumes:
     # name: ${ENV}_pg_data
     name: db_pg01_data
   pgadmin_data:
-    name: ${ENV}_pgadmin_data
+    #name: ${ENV}_pgadmin_data
+    name: pgadmin_data
+
 
 
 services:
@@ -57,7 +62,7 @@ services:
       # These ports are in format <host-port>:<container-port>
       - ${PROXY_HTTP_PORTS} # Public HTTP Port
       - ${PROXY_HTTPS_PORTS} # Public HTTPS Port
-      - '8081:81' # Admin Web Port
+      - ${PROXY_ADMIN_PORTS} # Admin Web Port
       # Add any other Stream port you want to expose
       # - '21:21' # FTP
 
@@ -100,7 +105,7 @@ services:
   front-node:
     build:
       #context: /home/$USER/VORIQ/frontend # absolute path to source code dir.
-      context: ../../frontend # relative path to source code dir. relative to this (docker-compose.yml) file
+      context: ../frontend # relative path to source code dir. relative to this (docker-compose.yml) file
       dockerfile: ../devops/${ENV}/frontend/Dockerfile # path to Dockerfile relative to CONTEXT dir.
       # args:
       #   RELEASE: 17
@@ -108,8 +113,8 @@ services:
     container_name: ${ENV}-front-node
     # expose:
     #   - 3000
-    ports:
-      - ${FRONT_NODE_PORTS}
+    # ports:
+    #   - ${FRONT_NODE_PORTS}
     networks:
       - app-network
     restart: unless-stopped
@@ -117,14 +122,14 @@ services:
       - VITE_SWAGGER_DOMAIN=back-java-car
       - VITE_SWAGGER_PORT=${BACK_JAVA_CAR_HOST_PORT:-8084}
     env_file:
-      - ../../frontend/.env 
+      - ../frontend/.env 
       - .env.${ENV}
 
 
   back-java-security:
     build:
       #context: /home/$USER/VORIQ/backend/java/security_service # absolute path to source code dir.
-      context: ../../backend/java/security_service # relative path to source code dir. relative to this (docker-compose.yml) file
+      context: ../backend/java/security_service # relative path to source code dir. relative to this (docker-compose.yml) file
       dockerfile: ../../../devops/${ENV}/backend/java/security_service/Dockerfile # path to Dockerfile relative to CONTEXT dir.
       # args:
       #   RELEASE: 17
@@ -185,7 +190,7 @@ services:
   back-java-car:
     build:
       #context: /home/$USER/VORIQ/backend/java/car_catalog_service # absolute path to source code dir.
-      context: ../../backend/java/car_catalog_service # relative path to source code dir. relative to this (docker-compose.yml) file
+      context: ../backend/java/car_catalog_service # relative path to source code dir. relative to this (docker-compose.yml) file
       dockerfile: ../../../devops/${ENV}/backend/java/car_catalog_service/Dockerfile # path to Dockerfile relative to CONTEXT dir.
       # args:
       #   RELEASE: 17
@@ -246,6 +251,42 @@ services:
         condition: service_healthy
 
 
+  back-java-parser:
+    build:
+      context: ../backend/java/parser_service # relative path to source code dir. relative to this (docker-compose.yml) file
+      dockerfile: ../../../devops/${ENV}/backend/java/parser_service/Dockerfile # path to Dockerfile relative to CONTEXT dir.
+      # args:
+      #   RELEASE: 17
+    image: ${ENV}-back-java-parser:${TAG:-latest}
+    container_name: ${ENV}-back-java-parser
+    networks:
+      - app-network
+      - db-network
+    env_file:
+      - .env.${ENV}
+    environment:
+      - SPRING_PROFILES_ACTIVE=${ENV}
+      - PORT=${BACK_JAVA_PARSER_CONT_PORT:-8080}
+      - DB_HOST=db
+      - DB_PORT=${POSTGRES_HOST_PORT}
+      - DB_NAME=${DB_NAME_PARSER}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+    ports:
+      - ${BACK_JAVA_PARSER_HOST_PORT}:${BACK_JAVA_PARSER_CONT_PORT}
+    logging:
+      driver: "local"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    tmpfs:
+      - /tmp
+
+
   redis:
     image: redis:7-alpine
     container_name: ${ENV}-redis
@@ -288,3 +329,5 @@ services:
     env_file:
       - .env
       - .env.${ENV}
+
+

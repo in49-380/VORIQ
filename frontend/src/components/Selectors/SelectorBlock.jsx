@@ -104,6 +104,7 @@ const SelectorBlock=({brand, model, year,engine, transmission, wheel, setCurrent
           wheel.clear()
           brand.softClear()
           setAnalysButtonIsDisabled(true)
+
         } else {
             model.softClear()
             year.softClear()
@@ -204,8 +205,16 @@ const SelectorBlock=({brand, model, year,engine, transmission, wheel, setCurrent
         }
     }
 
-
-
+     useEffect(()=>{
+      if(isNewSearch){
+        brand.softClear()
+        model.clear()
+        year.clear()
+        engine.clear()
+      }
+     },[isNewSearch]) 
+    // **************select styling******************
+    // **********************************************
 
      useEffect(()=>{
       if(isNewSearch){
@@ -240,6 +249,7 @@ const SelectorBlock=({brand, model, year,engine, transmission, wheel, setCurrent
         container:(provided)=>({
           ...provided,
           width:'30%',
+
         }),
 
         control: (provided, state)=>({

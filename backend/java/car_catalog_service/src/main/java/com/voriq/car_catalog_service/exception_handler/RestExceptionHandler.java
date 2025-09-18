@@ -4,11 +4,10 @@ package com.voriq.car_catalog_service.exception_handler;
 import com.voriq.car_catalog_service.exception_handler.dto.ErrorResponse;
 import com.voriq.car_catalog_service.exception_handler.dto.ValidationError;
 import com.voriq.car_catalog_service.exception_handler.exception.RestException;
-import com.voriq.car_catalog_service.exception_handler.exception.StatusException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -112,6 +110,36 @@ public class RestExceptionHandler {
                 .error(status.getReasonPhrase())
                 .message(Set.of("The error of validation of the request"))
                 .validationErrors(validationErrors)
+                .path(request.getRequestURI())
+                .build();
+
+        return new ResponseEntity<>(errorResponse, status);
+    }
+
+    /**
+     * Handles type conversion mismatches for request parameters, path variables, or headers.
+     *
+     * <p>Triggered by {@link TypeMismatchException} (and its subclasses, e.g.
+     * {@code MethodArgumentTypeMismatchException}) when a request value cannot be converted
+     * to the required target type (e.g., invalid enum constant, number format issue).
+     * Produces a 400 Bad Request with the exception message; {@code validationErrors} is not populated.</p>
+     *
+     * @param ex      the mismatch exception describing the failed conversion
+     * @param request current HTTP request (used to fill {@code path})
+     * @return 400 Bad Request containing an {@link ErrorResponse} with the error message only
+     * @author RsLan
+     * @since 1.0.0
+     */
+    @ExceptionHandler(TypeMismatchException.class)
+    public ResponseEntity<ErrorResponse> handleValidationException(TypeMismatchException ex, HttpServletRequest request) {
+        String msg = ex.getMessage();
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(status.value())
+                .error(status.getReasonPhrase())
+                .message(Set.of(ex.getMessage()))
+                .validationErrors(null)
                 .path(request.getRequestURI())
                 .build();
 

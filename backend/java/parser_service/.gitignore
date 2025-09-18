@@ -19,6 +19,7 @@ target/
 *.iws
 *.iml
 *.ipr
+.env
 
 ### NetBeans ###
 /nbproject/private/
@@ -32,3 +33,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Docker compose ###
+docker-compose.test.yml

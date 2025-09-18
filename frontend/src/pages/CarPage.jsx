@@ -17,7 +17,8 @@ const CarPage = () => {
   // const {t}=useTranslation()
 
   // const [res,setRes]=useState()
-  const {runApi, resultMessage, successResult}=useLoader()
+  // const {runApi, resultMessage, successResult}=useLoader()
+  const {successResult}=useLoader()
   const [currentStep, setCurrentStep]=useState(1)
   const {isNewSearch}=useSelect()
 
@@ -49,6 +50,7 @@ const CarPage = () => {
     && engine.value
     && transmission.value
     && wheel.value
+
   
   return (
     
@@ -107,6 +109,7 @@ const CarPage = () => {
           </div>
           <div>
             <strong>Wheel drive:</strong> {wheel.value.value} 
+
           </div>
           <h2>Click <strong>Analyze</strong> and we will collect the data for you.</h2>
         </div>}
