@@ -1766,6 +1766,13 @@
     {
         "id": 9,
         "brand": "Bmw",
+        "name": "Ix3 (na5) 2025",
+        "year": 2025,
+        "url": "https://www.infocar.ua/compare/do/7323-7323.html"
+    },
+    {
+        "id": 9,
+        "brand": "Bmw",
         "name": "M2 coupe (f87) 2015",
         "year": 2015,
         "url": "https://www.infocar.ua/compare/do/4586-4586.html"
@@ -7219,6 +7226,13 @@
     {
         "id": 48,
         "brand": "Jetour",
+        "name": "T1 2024",
+        "year": 2024,
+        "url": "https://www.infocar.ua/compare/do/7322-7322.html"
+    },
+    {
+        "id": 48,
+        "brand": "Jetour",
         "name": "T2 2023",
         "year": 2023,
         "url": "https://www.infocar.ua/compare/do/7151-7151.html"
@@ -7285,6 +7299,13 @@
         "name": "X90 2020",
         "year": 2020,
         "url": "https://www.infocar.ua/compare/do/6335-6335.html"
+    },
+    {
+        "id": 48,
+        "brand": "Jetour",
+        "name": "X90 plus 2023",
+        "year": 2023,
+        "url": "https://www.infocar.ua/compare/do/7321-7321.html"
     },
     {
         "id": 48,
@@ -7767,13 +7788,6 @@
         "brand": "Kia",
         "name": "Rio hatchback 2015",
         "year": 2015,
-        "url": "https://www.infocar.ua/compare/do/4464-4464.html"
-    },
-    {
-        "id": 50,
-        "brand": "Kia",
-        "name": "Rio hatchback 2015",
-        "year": 2015,
         "url": "https://www.infocar.ua/compare/do/4332-4332.html"
     },
     {
@@ -7782,6 +7796,13 @@
         "name": "Rio hatchback 2015",
         "year": 2015,
         "url": "https://www.infocar.ua/compare/do/4337-4337.html"
+    },
+    {
+        "id": 50,
+        "brand": "Kia",
+        "name": "Rio hatchback 2015",
+        "year": 2015,
+        "url": "https://www.infocar.ua/compare/do/4464-4464.html"
     },
     {
         "id": 50,
@@ -7809,14 +7830,14 @@
         "brand": "Kia",
         "name": "Rio sedan 2017",
         "year": 2017,
-        "url": "https://www.infocar.ua/compare/do/5222-5222.html"
+        "url": "https://www.infocar.ua/compare/do/5436-5436.html"
     },
     {
         "id": 50,
         "brand": "Kia",
         "name": "Rio sedan 2017",
         "year": 2017,
-        "url": "https://www.infocar.ua/compare/do/5436-5436.html"
+        "url": "https://www.infocar.ua/compare/do/5222-5222.html"
     },
     {
         "id": 50,

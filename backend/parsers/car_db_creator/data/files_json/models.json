@@ -1766,6 +1766,13 @@
     {
         "brand_name": "BMW",
         "brand_id": 9,
+        "year": 2025,
+        "model": "iX3 (NA5) 2025",
+        "id_model_infocar": "7323"
+    },
+    {
+        "brand_name": "BMW",
+        "brand_id": 9,
         "year": 2015,
         "model": "M2 Coupe (F87) 2015",
         "id_model_infocar": "4586"
@@ -7219,6 +7226,13 @@
     {
         "brand_name": "Jetour",
         "brand_id": 48,
+        "year": 2024,
+        "model": "T1 2024",
+        "id_model_infocar": "7322"
+    },
+    {
+        "brand_name": "Jetour",
+        "brand_id": 48,
         "year": 2023,
         "model": "T2 2023",
         "id_model_infocar": "7151"
@@ -7285,6 +7299,13 @@
         "year": 2020,
         "model": "X90 2020",
         "id_model_infocar": "6335"
+    },
+    {
+        "brand_name": "Jetour",
+        "brand_id": 48,
+        "year": 2023,
+        "model": "X90 Plus 2023",
+        "id_model_infocar": "7321"
     },
     {
         "brand_name": "Jetour",
@@ -7767,13 +7788,6 @@
         "brand_id": 50,
         "year": 2015,
         "model": "Rio Hatchback 2015",
-        "id_model_infocar": "4464"
-    },
-    {
-        "brand_name": "KIA",
-        "brand_id": 50,
-        "year": 2015,
-        "model": "Rio Hatchback 2015",
         "id_model_infocar": "4332"
     },
     {
@@ -7782,6 +7796,13 @@
         "year": 2015,
         "model": "Rio Hatchback 2015",
         "id_model_infocar": "4337"
+    },
+    {
+        "brand_name": "KIA",
+        "brand_id": 50,
+        "year": 2015,
+        "model": "Rio Hatchback 2015",
+        "id_model_infocar": "4464"
     },
     {
         "brand_name": "KIA",
@@ -7809,14 +7830,14 @@
         "brand_id": 50,
         "year": 2017,
         "model": "Rio Sedan 2017",
-        "id_model_infocar": "5222"
+        "id_model_infocar": "5436"
     },
     {
         "brand_name": "KIA",
         "brand_id": 50,
         "year": 2017,
         "model": "Rio Sedan 2017",
-        "id_model_infocar": "5436"
+        "id_model_infocar": "5222"
     },
     {
         "brand_name": "KIA",

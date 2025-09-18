@@ -1,20 +1,8 @@
 [
     {
-        "name": "CVT"
+        "name": true
     },
     {
-        "name": "Robot 2 Clip"
-    },
-    {
-        "name": "Machine"
-    },
-    {
-        "name": "Mechanics"
-    },
-    {
-        "name": "Multidimensional clutch robot"
-    },
-    {
-        "name": "Robot 1 Clot"
+        "name": false
     }
 ]

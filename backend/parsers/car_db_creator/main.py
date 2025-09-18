@@ -5,12 +5,15 @@ from lxml import html
 
 from utils.get_db_json import (
     process_db_brands, process_db_models, process_db_engines,
-    process_db_fuel_typs, process_db_year, process_db_cars,
+    process_db_fuel_typs, process_db_year
 )
 from utils.get_list_url import info_car, url_models, url_element_auto
 from utils.get_urls import get_urls_models, get_urls_cars
 from utils.headers import headers
-from utils.tools import parser_table, extract_unique_records, add_if_exists
+from utils.tools import (
+    parser_table, extract_unique_records,
+    add_if_exists, extract_displacement, extract_transmission_type
+)
 from utils.translator import translate_car
 from utils.save_load_data import (
     save_json, load_json
@@ -195,12 +198,13 @@ def process_cars_en(input_file="cars.json", output_file="cars_en.json"):
     cars_ru = load_json(input_file)
     cars_en = []
     cars_en = [translate_car(car) for car in cars_ru]
-    # for car in cars_ru:
-    #     car_en = translate_car(car)
-    #     cars_en.append(car_en)
+    cars_en_db = [extract_transmission_type(car) for car in cars_en]
 
     save_json(cars_en, output_file)
-    save_json(cars_en, "cars_en_db.json", "db_json")
+    save_json(cars_en_db, "cars_en_db.json", "db_json")
+
+
+
 
 @log_execution
 def export_to_db():
