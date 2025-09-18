@@ -1,5 +1,6 @@
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -9,9 +10,9 @@ public class FirstTest extends BaseHomeWorkTest {
 
 
     @Test
+    @Tag("positive")
     public void getAllBrands() {
         if (idBrand == null) {
-
             Response resp = given()
                     .header("Authorization", "Bearer " + getConfig("token")).log().all()
                     .when().log().ifValidationFails()
@@ -22,10 +23,10 @@ public class FirstTest extends BaseHomeWorkTest {
                     .extract().response();
             idBrand = (Integer) resp.jsonPath().getList("id").get(random0toN(resp.jsonPath().getList("id").size() - 1));
         }
-        System.out.println("idBrand = " + idBrand);
     }
 
     @Test
+    @Tag("positive")
     public void getAllModelsByBrand() {
         if (idBrand == null) {
             getAllBrands();
@@ -34,7 +35,8 @@ public class FirstTest extends BaseHomeWorkTest {
             Response resp = given()
                     .header("Authorization", "Bearer " + getConfig("token")).log().all()
                     .when().log().ifValidationFails()
-                    .get(getConfig("objectCarCatalog") + getConfig("objectCarBrands") + "/" + idBrand + getConfig("objectCarModels"))
+                    .get(getConfig("objectCarCatalog") + getConfig("objectCarBrands")
+                            + "/" + idBrand + getConfig("objectCarModels"))
                     .then().statusCode(200)
                     .contentType(ContentType.JSON).log().all()
                     .body(matchesJsonSchemaInClasspath("car-schema.json"))
@@ -44,8 +46,8 @@ public class FirstTest extends BaseHomeWorkTest {
         }
     }
 
-
     @Test
+    @Tag("positive")
     public void getAllYearsByBrandAndModel() {
         System.out.println("idBrand = " + idBrand);
         System.out.println("idModel = " + idModel);
@@ -60,7 +62,9 @@ public class FirstTest extends BaseHomeWorkTest {
             Response resp = given()
                     .header("Authorization", "Bearer " + getConfig("token")).log().all()
                     .when().log().ifValidationFails()
-                    .get(getConfig("objectCarCatalog") + getConfig("objectCarBrands") + "/" + idBrand + getConfig("objectCarModels") + "/" + idModel + getConfig("objectCarYears"))
+                    .get(getConfig("objectCarCatalog") + getConfig("objectCarBrands")
+                            + "/" + idBrand + getConfig("objectCarModels")
+                            + "/" + idModel + getConfig("objectCarYears"))
                     .then().statusCode(200)
                     .contentType(ContentType.JSON).log().all()
                     .body(matchesJsonSchemaInClasspath("car-schema.json"))
@@ -70,13 +74,9 @@ public class FirstTest extends BaseHomeWorkTest {
         }
     }
 
-
     @Test
+    @Tag("positive")
     public void getAllEnginesByBrandAndModelAndYear() {
-        System.out.println("idBrand = " + idBrand);
-        System.out.println("idModel = " + idModel);
-        System.out.println("idYear = " + idYear);
-        System.out.println("idEngine = " + idEngine);
         if (idBrand == null) {
             getAllBrands();
         }
@@ -84,7 +84,7 @@ public class FirstTest extends BaseHomeWorkTest {
             getAllModelsByBrand();
         }
         if (idYear == null) {
-          getAllYearsByBrandAndModel();
+            getAllYearsByBrandAndModel();
         }
 
         if (idEngine == null) {
@@ -93,22 +93,13 @@ public class FirstTest extends BaseHomeWorkTest {
                     .when().log().ifValidationFails()
                     .get(getConfig("objectCarCatalog") + getConfig("objectCarBrands") +
                             "/" + idBrand + getConfig("objectCarModels") +
-                            "/" + idModel + getConfig("objectCarYears")+
+                            "/" + idModel + getConfig("objectCarYears") +
                             "/" + idYear + getConfig("objectCarEngines"))
                     .then().statusCode(200)
                     .contentType(ContentType.JSON).log().all()
                     .body(matchesJsonSchemaInClasspath("car-schema.json"))
                     .extract().response();
             idEngine = (Integer) resp.jsonPath().getList("id").get(random0toN(resp.jsonPath().getList("id").size() - 1));
-            System.out.println("idEngine = " + idEngine);
         }
     }
-
 }
-
-
-
-
-
-
-
