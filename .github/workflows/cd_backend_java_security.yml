@@ -5,8 +5,8 @@ on:
     branches:
       - '**'
     paths:
-      - 'backend/java/security_service**'
-      - 'devops/dev/backend/java/security_service**'
+      - 'backend/java/security_service/**'
+      - 'devops/dev/backend/java/security_service/**'
   workflow_dispatch:
 
 concurrency:
