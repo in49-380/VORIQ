@@ -95,6 +95,7 @@ services:
       - nginx_conf:/etc/nginx/:ro
     networks:
       - app-network
+      - qa-network
     restart: unless-stopped
     env_file:
       - .env.${ENV}
