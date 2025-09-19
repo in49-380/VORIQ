@@ -25,6 +25,9 @@ networks:
     name: ${ENV-:test}-db-network
     driver: bridge
     internal: true
+  qa-network:
+    external: true
+    name: ${ENV-:test}-qa-network
 
 volumes:
   proxy_data:
