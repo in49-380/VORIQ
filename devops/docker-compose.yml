@@ -57,12 +57,47 @@ services:
   #${PROJECT}-${ENV}-front-node:
   #${PROJECT}-${ENV}-front-nginx:
   #${PROJECT}-${ENV}-back-security:
+  traefik:
+    image: traefik:v3.5
+    container_name: ${ENV}-traefik
+    restart: unless-stopped
+    networks:
+      - app-network
+      - qa-network
+    ports:
+      - "9080:80"
+      - "9443:443"
+      # Откройте дашборд только для отладки
+      - "9880:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # Статическая конфигурация Traefik
+      - ./traefik.yml:/traefik.yml:ro
+      # Файл для хранения сертификатов
+      - ./acme.json:/acme.json
+    command:
+      # Включаем API и дашборд
+      - --api.dashboard=true
+      - --api.insecure=true
+      # Включаем провайдер Docker
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      # Определяем точки входа (порты)
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      # Настраиваем резолвер сертификатов Let's Encrypt
+      - --certificatesresolvers.letsencrypt.acme.email=your-email@example.com
+      - --certificatesresolvers.letsencrypt.acme.storage=acme.json
+      - --certificatesresolvers.letsencrypt.acme.tlschallenge=true
+
+
+
   proxy:
     image: 'jc21/nginx-proxy-manager:latest'
     container_name: ${ENV}-proxy
+    restart: unless-stopped
     networks:
       - app-network
-    restart: unless-stopped
     ports:
       # These ports are in format <host-port>:<container-port>
       - ${PROXY_HTTP_PORTS} # Public HTTP Port
@@ -87,6 +122,10 @@ services:
   nginx:
     image: nginx:latest
     container_name: ${ENV}-nginx
+    restart: unless-stopped
+    networks:
+      - app-network
+      - qa-network
     # expose: # exposed by default
     #   - 80
     #   - 443
@@ -96,10 +135,6 @@ services:
     volumes:
       # - html:/usr/share/nginx/html/
       - nginx_conf:/etc/nginx/:ro
-    networks:
-      - app-network
-      - qa-network
-    restart: unless-stopped
     env_file:
       - .env.${ENV}
 

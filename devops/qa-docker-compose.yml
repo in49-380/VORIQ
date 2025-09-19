@@ -81,6 +81,17 @@ services:
   qa-nginx:
     image: nginx:alpine
     container_name: ${ENV}-qa-nginx
+    labels:
+      - "traefik.enable=true"
+      # - "traefik.http.routers.qa-nginx.rule=Host(`mysite.com`) && PathPrefix(`/qa`)"
+      - "traefik.http.routers.qa-nginx.rule=PathPrefix(`/qa`)"
+      - "traefik.http.routers.qa-nginx.entrypoints=web"
+      # - "traefik.http.routers.qa-nginx.tls.certresolver=myresolver"
+      # - "traefik.http.services.qa-nginx.loadbalancer.server.port=80"
+      - "traefik.docker.network=qa-network"
+       # Middleware prefix removal /security
+      # - "traefik.http.middlewares.security-strip.stripprefix.prefixes=/qa"
+      # - "traefik.http.routers.security.middlewares=security-strip"
     networks:
       qa-network:
         aliases:
