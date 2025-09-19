@@ -72,9 +72,9 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       # Статическая конфигурация Traefik
-      - ./traefik.yml:/traefik.yml:ro
+      # - ./traefik.yml:/traefik.yml:ro
       # Файл для хранения сертификатов
-      - ./acme.json:/acme.json
+      # - ./acme.json:/acme.json
     command:
       # Включаем API и дашборд
       - --api.dashboard=true
@@ -86,9 +86,9 @@ services:
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
       # Настраиваем резолвер сертификатов Let's Encrypt
-      - --certificatesresolvers.letsencrypt.acme.email=your-email@example.com
-      - --certificatesresolvers.letsencrypt.acme.storage=acme.json
-      - --certificatesresolvers.letsencrypt.acme.tlschallenge=true
+      # - --certificatesresolvers.letsencrypt.acme.email=your-email@example.com
+      # - --certificatesresolvers.letsencrypt.acme.storage=acme.json
+      # - --certificatesresolvers.letsencrypt.acme.tlschallenge=true
 
 
 
