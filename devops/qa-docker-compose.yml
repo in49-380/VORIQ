@@ -89,9 +89,9 @@ services:
       # - "traefik.http.routers.qa-nginx.tls.certresolver=myresolver"
       # - "traefik.http.services.qa-nginx.loadbalancer.server.port=80"
       - "traefik.docker.network=qa-network"
-       # Middleware prefix removal /security
-      # - "traefik.http.middlewares.security-strip.stripprefix.prefixes=/qa"
-      # - "traefik.http.routers.security.middlewares=security-strip"
+       # Middleware prefix removal /prefix
+      - "traefik.http.middlewares.security-strip.stripprefix.prefixes=/qa"
+      - "traefik.http.routers.security.middlewares=security-strip"
     networks:
       qa-network:
         aliases:
