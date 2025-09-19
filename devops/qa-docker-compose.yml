@@ -82,9 +82,9 @@ services:
     image: nginx:alpine
     container_name: ${ENV}-qa-nginx
     networks:
-      - qa-network
-    aliases:
-      - qa-nginx
+      qa-network:
+        aliases:
+          - qa-nginx
     # depends_on:
     #   - qa-test
     ports:
