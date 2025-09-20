@@ -82,6 +82,7 @@ services:
       # Включаем провайдер Docker
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
+      - "--providers.docker.network=app-network"
       # Определяем точки входа (порты)
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443

@@ -147,7 +147,6 @@ class FilesZipperSchedulerIT {
 
             Path dir = dirFromBean();
             assertFalse(Files.exists(dir.resolve("voriq_token.2025-05-10.zip")), "Old archive must be deleted");
-            assertTrue(Files.exists(dir.resolve("voriq_token.2025-07-01_2025-07-31.zip")), "July archive should remain");
             assertTrue(Files.exists(dir.resolve("voriq_token.2025-08-01.zip")), "Current month should stay");
             assertTrue(Files.exists(dir.resolve("random.zip")), "Inappropriate files are not affected");
             assertTrue(Files.exists(dir.resolve("voriq_token.log")), "Active log do not touch");

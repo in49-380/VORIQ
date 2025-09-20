@@ -32,7 +32,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import static com.voriq.security_service.config.SecurityConfig.*;
+import static com.voriq.security_service.config.ApiPaths.*;
 import static com.voriq.security_service.service.TokenStoreStrategy.DelegatingTokenStoreStrategy.DEFAULT_SET_VALUE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;

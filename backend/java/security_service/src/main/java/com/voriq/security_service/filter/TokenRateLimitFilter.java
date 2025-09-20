@@ -21,8 +21,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 
-import static com.voriq.security_service.config.SecurityConfig.ISSUE_URL;
-import static com.voriq.security_service.config.SecurityConfig.VALIDATE_URL;
+import static com.voriq.security_service.config.ApiPaths.ISSUE_URL;
+import static com.voriq.security_service.config.ApiPaths.VALIDATE_URL;
 import static com.voriq.security_service.utilitie.TokenUtilities.extractTokenFromRequest;
 import static com.voriq.security_service.utilitie.TokenUtilities.isUuid;
 
@@ -101,8 +101,8 @@ public class TokenRateLimitFilter extends OncePerRequestFilter {
      * <ul>
      *   <li>Normalizes the request path (removes the {@code contextPath}) and handles only:
      *     <ul>
-     *       <li><b>POST</b> {@link com.voriq.security_service.config.SecurityConfig#ISSUE_URL}</li>
-     *       <li><b>GET</b>  {@link com.voriq.security_service.config.SecurityConfig#VALIDATE_URL}</li>
+     *       <li><b>POST</b> </li>
+     *       <li><b>GET</b>  </li>
      *     </ul>
      *     All other requests pass through unchanged.
      *   </li>
