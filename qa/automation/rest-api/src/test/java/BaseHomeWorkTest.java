@@ -23,7 +23,6 @@ public class BaseHomeWorkTest {
     static Integer idWheelDrive;
     static final Integer IDMAX = 99999;
 
-
     @BeforeAll
     public static void globalSetUp() {
         properties = new Properties();
