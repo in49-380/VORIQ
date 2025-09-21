@@ -5,8 +5,8 @@ on:
     branches:
       - '**'
     paths:
-      - 'backend/java/car_catalog_service**'
-      - 'devops/dev/backend/java/car_catalog_service**'
+      - 'backend/java/car_catalog_service/**'
+      - 'devops/dev/backend/java/car_catalog_service/**'
   workflow_dispatch:
 
 concurrency:
@@ -88,7 +88,7 @@ jobs:
             sleep 20
 
             # get container id of the just started container
-            CONTAINER=$(ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" ps -q back-java-car)
+            CONTAINER_ID=$(ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" ps -q back-java-car)
 
             # checking container status.
             if [ "$(docker inspect -f {{.State.Running}} $CONTAINER_ID)" != "true" ] || [ "$(docker inspect -f {{.State.Restarting}} $CONTAINER_ID)" = "true" ] ; then
