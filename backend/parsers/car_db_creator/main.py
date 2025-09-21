@@ -12,7 +12,8 @@ from utils.get_urls import get_urls_models, get_urls_cars
 from utils.headers import headers
 from utils.tools import (
     parser_table, extract_unique_records,
-    add_if_exists, extract_displacement, extract_transmission_type
+    add_if_exists, extract_displacement,
+    extract_transmission_type, add_element
 )
 from utils.translator import translate_car
 from utils.save_load_data import (
@@ -158,7 +159,7 @@ def process_cars():
     urls_list = load_json("url_cars_list.json")
     car_data_list = []
 
-    for url_list in urls_list[:500]:
+    for url_list in urls_list[:5]:
 
         response_car = requests.get(url_list["url"], headers=headers)
         tree = html.fromstring(response_car.content)
@@ -171,6 +172,7 @@ def process_cars():
             'brand': url_list["brand"],
             'model': url_list["name"][:-5],
             'year': url_list["year"],
+            'marketing_name': add_element(item_transmission, 'Тип коробки передач')
         }
 
         add_if_exists(item, item_engine, 'Двигатель')

@@ -7135,6 +7135,13 @@
     {
         "id": 47,
         "brand": "Jeep",
+        "name": "Cherokee 2025",
+        "year": 2025,
+        "url": "https://www.infocar.ua/compare/do/7324-7324.html"
+    },
+    {
+        "id": 47,
+        "brand": "Jeep",
         "name": "Compass 2017",
         "year": 2017,
         "url": "https://www.infocar.ua/compare/do/5237-5237.html"
@@ -7492,6 +7499,13 @@
     {
         "id": 50,
         "brand": "Kia",
+        "name": "Ev5 2025",
+        "year": 2025,
+        "url": "https://www.infocar.ua/compare/do/7326-7326.html"
+    },
+    {
+        "id": 50,
+        "brand": "Kia",
         "name": "Ev6 2021",
         "year": 2021,
         "url": "https://www.infocar.ua/compare/do/6655-6655.html"
@@ -7683,14 +7697,14 @@
         "brand": "Kia",
         "name": "Picanto 2015",
         "year": 2015,
-        "url": "https://www.infocar.ua/compare/do/4569-4569.html"
+        "url": "https://www.infocar.ua/compare/do/4387-4387.html"
     },
     {
         "id": 50,
         "brand": "Kia",
         "name": "Picanto 2015",
         "year": 2015,
-        "url": "https://www.infocar.ua/compare/do/4387-4387.html"
+        "url": "https://www.infocar.ua/compare/do/4569-4569.html"
     },
     {
         "id": 50,
@@ -7816,14 +7830,14 @@
         "brand": "Kia",
         "name": "Rio sedan 2015",
         "year": 2015,
-        "url": "https://www.infocar.ua/compare/do/4336-4336.html"
+        "url": "https://www.infocar.ua/compare/do/4331-4331.html"
     },
     {
         "id": 50,
         "brand": "Kia",
         "name": "Rio sedan 2015",
         "year": 2015,
-        "url": "https://www.infocar.ua/compare/do/4331-4331.html"
+        "url": "https://www.infocar.ua/compare/do/4336-4336.html"
     },
     {
         "id": 50,
@@ -11396,6 +11410,13 @@
         "url": "https://www.infocar.ua/compare/do/7118-7118.html"
     },
     {
+        "id": 69,
+        "brand": "Polestar",
+        "name": "5 2025",
+        "year": 2025,
+        "url": "https://www.infocar.ua/compare/do/7327-7327.html"
+    },
+    {
         "id": 70,
         "brand": "Porsche",
         "name": "718 boxster (982) 2016",
@@ -13038,14 +13059,14 @@
         "brand": "Subaru",
         "name": "Impreza 2017",
         "year": 2017,
-        "url": "https://www.infocar.ua/compare/do/5079-5079.html"
+        "url": "https://www.infocar.ua/compare/do/5080-5080.html"
     },
     {
         "id": 84,
         "brand": "Subaru",
         "name": "Impreza 2017",
         "year": 2017,
-        "url": "https://www.infocar.ua/compare/do/5080-5080.html"
+        "url": "https://www.infocar.ua/compare/do/5079-5079.html"
     },
     {
         "id": 84,
@@ -14474,6 +14495,13 @@
         "name": "T-roc 2021",
         "year": 2021,
         "url": "https://www.infocar.ua/compare/do/6862-6862.html"
+    },
+    {
+        "id": 89,
+        "brand": "Volkswagen",
+        "name": "T-roc 2025",
+        "year": 2025,
+        "url": "https://www.infocar.ua/compare/do/7325-7325.html"
     },
     {
         "id": 89,

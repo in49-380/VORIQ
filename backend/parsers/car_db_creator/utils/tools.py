@@ -102,6 +102,12 @@ def add_if_exists(target_dict, source_dict, key):
     if value is not None:
         target_dict[key] = value
 
+def add_element(source_dict,key):
+
+    value = source_dict.get(key)
+    return value
+
+
 
 
 
