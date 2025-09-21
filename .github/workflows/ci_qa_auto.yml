@@ -1,0 +1,78 @@
+name: CI QA Automation tests
+
+on:
+  push:
+    branches:
+      - 'dev'
+    paths:
+      - 'backend/java/**'
+      - 'frontend/**'
+      - 'qa/automation/**'
+  workflow_dispatch:
+
+concurrency:
+  group: ci-qa-auto-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy backend to Server over SSH
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.CICD_SSH_HOST }}
+          username: ${{ secrets.CICD_SSH_USER }}
+          key: ${{ secrets.CICD_SSH_PRIVATE_KEY }}
+          script: |
+
+            set -euo pipefail
+
+            # sleep 180
+
+            # set variables
+            REPO_DIR="/home/${{ secrets.CICD_SSH_USER }}/VORIQ"
+            #SERVICE_DIR="backend/java/security_service"
+            BRANCH="${{ github.ref_name }}"
+            TAG_BRANCH="$(echo "$BRANCH" | tr '[:upper:]' '[:lower:]' | sed -E 's#[^a-z0-9_.-]+#-#g' | sed -E 's#^-+|-+$##g' | cut -c1-120)-latest"
+            TAG_SHA="${{ github.sha }}"
+            TAG_LAT="latest"
+            TAG=$TAG_LAT
+            SERVICE="qa-test" 
+
+            # Ensure the VORIQ directory exists
+            [ -d "$REPO_DIR/.git" ] || git clone https://github.com/in49-380/VORIQ.git "$REPO_DIR"
+
+            # Change to the VORIQ directory
+            cd "$REPO_DIR"
+
+            # get the latest changes
+            git clean -fdx
+            git reset --hard
+            git fetch --all --prune
+            git checkout -B "$BRANCH" "$TAG_SHA"
+            git pull origin "$BRANCH"
+            
+            # go to the code directory  
+            cd "$REPO_DIR/frontend"
+        
+            # prepare .enf for front
+            echo '${{ secrets.DEV_FRONT_GOOGLE_CLIENT_ID }}' > .env
+            echo "VITE_SWAGGER_DOMAIN=http://172.17.0.8" >> .env
+            echo "VITE_SWAGGER_PORT=8084" >> .env
+
+            # go to the infrastructure directory  
+            cd "$REPO_DIR/devops"
+
+            # prepare .enf for infrastructure
+            rm -f .env
+            echo 'DB_NAME=${{ secrets.DB_NAME }}' >> .env
+            echo 'DB_USERNAME=${{ secrets.DB_USERNAME }}' >> .env
+            echo 'DB_PASSWORD=${{ secrets.DB_PASSWORD }}' >> .env
+            echo 'DB_NAME_SECURITY=${{ secrets.DB_NAME_SSERVICE }}' >> .env
+            echo 'DB_NAME_CAR=${{ secrets.DB_NAME_CAR }}' >> .env
+            echo 'DB_NAME_PARSER=${{ secrets.DB_NAME_PARSER }}' >> .env
+            
+            
+            # build new image and restart container with new image
+            ENV=dev && ENV=$ENV docker compose -f qa-docker-compose.yml --env-file .env --env-file .env."$ENV" up $SERVICE
