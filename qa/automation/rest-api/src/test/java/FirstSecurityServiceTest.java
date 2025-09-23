@@ -7,7 +7,7 @@ import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 
-public class FirstSecurityServiceTest extends BaseSecurityTest {
+public class FirstSecurityServiceTest extends BaseApiTest {
 
     @Test
     public void firstTest() {

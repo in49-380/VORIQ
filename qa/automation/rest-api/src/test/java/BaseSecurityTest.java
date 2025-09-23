@@ -24,7 +24,7 @@ public class BaseSecurityTest {
 
     @BeforeEach
     public void setUp() {
-        RestAssured.baseURI = getConfig("baseURISecurityService");
+        RestAssured.baseURI = getConfig("baseURI.catalog");
         RestAssured.filters(new AllureRestAssured());
     }
 

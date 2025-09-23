@@ -3,200 +3,45 @@ import io.restassured.response.Response;
 import org.example.CarResolve;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-public class PositiveCarCatalogTest extends BaseHomeWorkTest {
+public class PositiveCarCatalogTest extends BaseApiTest {
 
 
-    @Test
+    @ParameterizedTest(name = "[{index}] GET {0} -> {1}")
     @Tag("positive")
-    public void getAllBrands() {
-        if (idBrand == null) {
-            Response resp = given()
-                    .header("Authorization", "Bearer " + getConfig("token"))
-                    .when().log().ifValidationFails()
-                    .get(getConfig("objectCarCatalog") + getConfig("objectCarBrands"))
-                    .then().statusCode(200)
-                    .contentType(ContentType.JSON)
-                    .body(matchesJsonSchemaInClasspath("brands-schema.json"))
-                    .extract().response();
-            idBrand = (Integer) resp.jsonPath().getList("id").get(random0toN(resp.jsonPath().getList("id").size() - 1));
-        }
-    }
+    @MethodSource("suffixAndSchema")
+        // меняем ТОЛЬКО вторую часть пути и схему
+    void get_by_suffix(String suffixKeyOrLiteral, String schemaFile, int expectedStatus) {
 
-    @Test
-    @Tag("positive")
-    public void getAllModelsByBrand() {
-        if (idBrand == null) {
-            getAllBrands();
-        }
-        if (idModel == null) {
-            Response resp = given()
-                    .header("Authorization", "Bearer " + getConfig("token"))
-                    .when().log().ifValidationFails()
-                    .get(getConfig("objectCarCatalog") + getConfig("objectCarBrands")
-                            + "/" + idBrand + getConfig("objectCarModels"))
-                    .then().statusCode(200)
-                    .contentType(ContentType.JSON)
-                    .body(matchesJsonSchemaInClasspath("models-schema.json"))
-                    .extract().response();
-            idModel = (Integer) resp.jsonPath().getList("id").get(random0toN(resp.jsonPath().getList("id").size() - 1));
-        }
-    }
+       // String path = resolve(suffixKeyOrLiteral);
 
-    @Test
-    @Tag("positive")
-    public void getAllYearsByBrandAndModel() {
-        if (idBrand == null) {
-            getAllBrands();
-        }
-        if (idModel == null) {
-            getAllModelsByBrand();
-        }
-        if (idYear == null) {
-            Response resp = given()
-                    .header("Authorization", "Bearer " + getConfig("token"))
-                    .when().log().ifValidationFails()
-                    .get(getConfig("objectCarCatalog") + getConfig("objectCarBrands")
-                            + "/" + idBrand + getConfig("objectCarModels")
-                            + "/" + idModel + getConfig("objectCarYears"))
-                    .then().statusCode(200)
-                    .contentType(ContentType.JSON)
-                    .body(matchesJsonSchemaInClasspath("years-schema.json"))
-                    .extract().response();
-            idYear = (Integer) resp.jsonPath().getList("id").get(random0toN(resp.jsonPath().getList("id").size() - 1));
-        }
-    }
-
-    @Test
-    @Tag("positive")
-    public void getAllEnginesByBrandModelAndYear() {
-        if (idBrand == null) {
-            getAllBrands();
-        }
-        if (idModel == null) {
-            getAllModelsByBrand();
-        }
-        if (idYear == null) {
-            getAllYearsByBrandAndModel();
-        }
-        if (idEngine == null) {
-            Response resp = given()
-                    .header("Authorization", "Bearer " + getConfig("token"))
-                    .when().log().ifValidationFails()
-                    .get(getConfig("objectCarCatalog") + getConfig("objectCarBrands") +
-                            "/" + idBrand + getConfig("objectCarModels") +
-                            "/" + idModel + getConfig("objectCarYears") +
-                            "/" + idYear + getConfig("objectCarEngines"))
-                    .then().statusCode(200)
-                    .contentType(ContentType.JSON)
-                    .body(matchesJsonSchemaInClasspath("engines-schema.json"))
-                    .extract().response();
-            idEngine = (Integer) resp.jsonPath().getList("id").get(random0toN(resp.jsonPath().getList("id").size() - 1));
-        }
-    }
-
-    @Test
-    @Tag("positive")
-    public void getAllTransmissionsByBrandModelYearAndEngines() {
-        if (idBrand == null) {
-            getAllBrands();
-        }
-        if (idModel == null) {
-            getAllModelsByBrand();
-        }
-        if (idYear == null) {
-            getAllYearsByBrandAndModel();
-        }
-        if (idEngine == null) {
-            getAllEnginesByBrandModelAndYear();
-        }
-        if (idTransmission == null) {
-            Response resp = given()
-                    .header("Authorization", "Bearer " + getConfig("token"))
-                    .when().log().ifValidationFails()
-                    .get(getConfig("objectCarCatalog") + getConfig("objectCarBrands") +
-                            "/" + idBrand + getConfig("objectCarModels") +
-                            "/" + idModel + getConfig("objectCarYears") +
-                            "/" + idYear + getConfig("objectCarEngines") +
-                            "/" + idEngine + getConfig("objectCarTransmissions"))
-                    .then().statusCode(200)
-                    .contentType(ContentType.JSON)
-                    .body(matchesJsonSchemaInClasspath("transmissions-schema.json"))
-                    .extract().response();
-            idTransmission = (Integer) resp.jsonPath().getList("id").get(random0toN(resp.jsonPath().getList("id").size() - 1));
-        }
-    }
-
-    @Test
-    @Tag("positive")
-    public void getAllWheelDriveByBrandModelYearEnginesANDTransmissions() {
-        if (idBrand == null) {
-            getAllBrands();
-        }
-        if (idModel == null) {
-            getAllModelsByBrand();
-        }
-        if (idYear == null) {
-            getAllYearsByBrandAndModel();
-        }
-        if (idEngine == null) {
-            getAllEnginesByBrandModelAndYear();
-        }
-        if (idTransmission == null) {
-            getAllTransmissionsByBrandModelYearAndEngines();
-        }
-        Response resp = given()
-                .header("Authorization", "Bearer " + getConfig("token"))
-                .when().log().ifValidationFails()
-                .get(getConfig("objectCarCatalog") + getConfig("objectCarBrands") +
-                        "/" + idBrand + getConfig("objectCarModels") +
-                        "/" + idModel + getConfig("objectCarYears") +
-                        "/" + idYear + getConfig("objectCarEngines") +
-                        "/" + idEngine + getConfig("objectCarTransmissions") +
-                        "/" + idTransmission + getConfig("objectCarWheelDrive"))
-                .then().statusCode(200)
+        api.get(Service.CATALOG, resolve(suffixKeyOrLiteral))
+                .statusCode(expectedStatus)
                 .contentType(ContentType.JSON)
-                .body(matchesJsonSchemaInClasspath("wheel_drive-schema.json"))
-                .extract().response();
-        idWheelDrive = (Integer) resp.jsonPath().getList("id").get(random0toN(resp.jsonPath().getList("id").size() - 1));
+                .body(matchesJsonSchemaInClasspath(schemaFile));
     }
 
-    @Test
-    @Tag("positive")
-    public void getCarId() {
-
-        if (idBrand == null) {
-            getAllBrands();
-        }
-        if (idModel == null) {
-            getAllModelsByBrand();
-        }
-        if (idYear == null) {
-            getAllYearsByBrandAndModel();
-        }
-        if (idEngine == null) {
-            getAllEnginesByBrandModelAndYear();
-        }
-        if (idTransmission == null) {
-            getAllTransmissionsByBrandModelYearAndEngines();
-        }
-        if (idWheelDrive == null) {
-            getAllWheelDriveByBrandModelYearEnginesANDTransmissions();
-        }
-        CarResolve carResolve = new CarResolve(idBrand, idModel, idYear, idEngine, idTransmission, idWheelDrive);
-
-        given()
-                .contentType(ContentType.JSON).body(carResolve)
-                .header("Authorization", "Bearer " + getConfig("token"))
-                .when().log().ifValidationFails()
-                .post(getConfig("objectCarCatalog") + getConfig("objectCarResolve"))
-                .then().statusCode(200)
-                .contentType(ContentType.JSON)
-                .body(matchesJsonSchemaInClasspath("car_catalog-schema.json"));
+    static Stream<Arguments> suffixAndSchema() {
+        return Stream.of(
+                // через ключи из config.properties
+                arguments("objectCarBrands", "brands-schema.json", 200),
+                arguments("objectCarModels", "models-schema.json", 200),
+                arguments("objectCarYears", "years-schema.json", 200),
+                arguments("objectCarEngines", "engines-schema.json", 200),
+                arguments("objectCarTransmissions", "transmissions-schema.json", 200),
+                arguments("objectCarWheelDrive", "wheel_drive-schema.json", 200)
+        );
     }
+
 
     @Test
     @Tag("positive")
