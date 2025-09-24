@@ -1,5 +1,8 @@
 [
     {
         "name": true
+    },
+    {
+        "name": false
     }
 ]

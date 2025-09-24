@@ -159,7 +159,7 @@ def process_cars():
     urls_list = load_json("url_cars_list.json")
     car_data_list = []
 
-    for url_list in urls_list[:5]:
+    for url_list in urls_list[:500]:
 
         response_car = requests.get(url_list["url"], headers=headers)
         tree = html.fromstring(response_car.content)
