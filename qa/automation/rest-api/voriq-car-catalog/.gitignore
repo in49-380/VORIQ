@@ -1,0 +1,4 @@
+node_modules/
+newman/
+.env
+.DS_Store
