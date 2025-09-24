@@ -1,29 +1,4 @@
-## 🚗 VORIQ Car Catalog API Tests
 
-Automated end-to-end test to resolve `carId` with self-healing logic.
-
-📁 Path: `voriq-car-catalog/`
-profile
-Qwen3-Max
-10:31 am
-Конечно! Вот готовый файл README.md в виде единого текста — просто скопируйте всё содержимое ниже и вставьте в файл README.md внутри папки VORIQ/qa/automation/rest-api/voriq-car-catalog/.
-
-markdown
-
-
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-⌄
-⌄
 # 🚗 VORIQ Self-Healing Car Catalog API Test
 
 > Automated end-to-end test to resolve a valid `carId` from the multi-level car catalog — with built-in **self-healing** logic that recovers from missing or invalid IDs at any step.
