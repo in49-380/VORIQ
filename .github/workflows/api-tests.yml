@@ -31,8 +31,8 @@ jobs:
         run: |
           newman run "qa/automation/rest-api/voriq-car-catalog/collections/Voriq_Self-Healing_Test.postman_collection.json" \
             --environment "qa/automation/rest-api/voriq-car-catalog/environments/QA.postman_environment.json" \
-            --env-var "baseUrl=$BASE_URL" \
-            --env-var "accessToken=$ACCESS_TOKEN" \
+            --env-var "baseUrl=${{ env.BASE_URL }}" \
+            --env-var "accessToken=${{ env.ACCESS_TOKEN }}" \
             --reporters cli,allure \
             --reporter-allure-export ./allure-results
 
