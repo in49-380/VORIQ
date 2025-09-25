@@ -24,21 +24,21 @@ jobs:
         run: |
           npm install -g newman newman-reporter-allure
 
-      - name: 🧪 Run Self-Healing API Tests
+                  - name: 🧪 Run Self-Healing API Tests
         env:
           BASE_URL: ${{ secrets.BASE_URL }}
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         run: |
-          cd qa/automation/rest-api/voriq-car-catalog
-          newman run collections/Voriq_Self-Healing_Test.postman_collection.json \
+          newman run "qa/automation/rest-api/voriq-car-catalog/collections/Voriq_Self-Healing_Test.postman_collection.json" \
+            --environment "qa/automation/rest-api/voriq-car-catalog/environments/QA.postman_environment.json" \
             --env-var "baseUrl=$BASE_URL" \
             --env-var "accessToken=$ACCESS_TOKEN" \
             --reporters cli,allure \
-            --reporter-allure-export ./newman/
+            --reporter-allure-export ./allure-results
 
-      - name: 📤 Upload Allure Report Artifact
+            - name: 📤 Upload Allure Results Artifact
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: allure-report
-          path: qa/automation/rest-api/voriq-car-catalog/newman/
+          name: allure-results
+          path: ./allure-results/
