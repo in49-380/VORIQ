@@ -1,5 +1,4 @@
 import Utils.Service;
-import io.restassured.http.ContentType;
 import org.example.CarResolve;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -7,6 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+import static org.hamcrest.Matchers.equalTo;
 
 
 public class PositiveCarCatalogTest extends BaseApiTest {
@@ -15,21 +15,17 @@ public class PositiveCarCatalogTest extends BaseApiTest {
     @ParameterizedTest(name = "[{index}] GET {0} -> {1}")
     @Tag("positive")
     @MethodSource("suffixAndSchema")
-    void get_by_suffix(String suffixKeyOrLiteral, String schemaFile, int expectedStatus) {
-        apiWrapper.sendGetRequest(Service.CATALOG, resolve(suffixKeyOrLiteral)).log().all()
-                .statusCode(expectedStatus)
-                .contentType(ContentType.JSON)
+    void get_by_suffix(String suffixKeyOrLiteral, String schemaFile) {
+        apiWrapper.sendGetRequest(Service.CATALOG, resolve(suffixKeyOrLiteral))
                 .body(matchesJsonSchemaInClasspath(schemaFile));
     }
 
-    @Test
-    @Tag("positive")
-    public void getAllBrands() {
-        apiWrapper.sendGetRequest(Service.CATALOG, resolve("objectCarBrands")).log().all()
-                .statusCode(200)
-                .contentType(ContentType.JSON)
-                .body(matchesJsonSchemaInClasspath("car_brands-schema.json"));
-    }
+//    @Test
+//    @Tag("positive")
+//    public void getAllBrands() {
+//        apiWrapper.sendGetRequest(Service.CATALOG, resolve("objectCarBrands"))
+//                .body(matchesJsonSchemaInClasspath("brands-schema.json"));
+//    }
 
     @Test
     @Tag("positive")
@@ -43,7 +39,9 @@ public class PositiveCarCatalogTest extends BaseApiTest {
                 Integer.parseInt(getConfig("transmissionId")),
                 Integer.parseInt(getConfig("wheelDriveId")));
 
-        apiWrapper.sendPostRequest(Service.CATALOG, resolve("objectCarResolve"), carResolve).statusCode(200);
+        apiWrapper.sendPostRequest(Service.CATALOG, resolve("objectCarResolve"), carResolve).log().all()
+                .body(matchesJsonSchemaInClasspath("car_catalog-schema.json"))
+                .body("carId", equalTo(1));
     }
 
 

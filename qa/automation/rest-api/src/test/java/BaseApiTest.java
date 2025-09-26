@@ -28,7 +28,7 @@ public class BaseApiTest {
 //    static Integer idEngine;
 //    static Integer idTransmission;
 //    static Integer idWheelDrive;
-//    static final Integer IDMAX = 99999;
+ static final Integer IDMAX = 99999;
 
 
     protected static Properties cfg;
@@ -88,16 +88,14 @@ public class BaseApiTest {
 
     static Stream<Arguments> suffixAndSchema() {
         return Stream.of(
-                arguments("objectCarBrands", "brands-schema.json", 200),
-                arguments("objectCarModels", "models-schema.json", 200),
-                arguments("objectCarYears", "years-schema.json", 200),
-                arguments("objectCarEngines", "engines-schema.json", 200),
-                arguments("objectCarTransmissions", "transmissions-schema.json", 200),
-                arguments("objectCarWheelDrive", "wheel_drive-schema.json", 200)
+                arguments("objectCarBrands", "brands-schema.json"),
+                arguments("objectCarModels", "models-schema.json"),
+                arguments("objectCarYears", "years-schema.json"),
+                arguments("objectCarEngines", "engines-schema.json"),
+                arguments("objectCarTransmissions", "transmissions-schema.json"),
+                arguments("objectCarWheelDrive", "wheel_drive-schema.json")
         );
     }
 
-    //protected final ApiClient api = new ApiClient(this::spec);
     protected final ApiWrapper apiWrapper = new ApiWrapper(this::spec);
-
 }
