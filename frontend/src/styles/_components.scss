@@ -189,7 +189,8 @@ footer>.footer-nav{
 // ***************************************
 .selector_container{
     @include m.size(90vw,30vh, transparent);
-    @include m.flex-row(center, space-around)
+    @include m.flex-row(2rem, space-around, center, wrap)
+
 
 }
 

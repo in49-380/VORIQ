@@ -34,7 +34,9 @@
     "brand": "Marke",
     "model": "Modell",
     "year": "Jahr",
-    "engine": "Motor"
+    "engine": "Motor",
+     "transmission":"Übertragung",
+      "wheel":"Fahrwerksantrieb"
      },
    "buttonBlock": {
     "analyze": "Analysieren",
