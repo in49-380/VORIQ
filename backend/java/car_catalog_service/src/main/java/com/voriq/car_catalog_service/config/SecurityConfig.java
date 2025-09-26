@@ -26,6 +26,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.voriq.car_catalog_service.config.ApiPaths.*;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 /**
@@ -59,18 +60,6 @@ public class SecurityConfig {
     @Value("${cors.allowed-origins}")
     private String allowedOrigins;
 
-    public static final String TEST_DELAY_URL = "/v1/test/delay-ms";
-
-    public static final String CAR_CATALOG_BRANDS_URL = "/v1/catalog/brands";
-    public static final String CAR_CATALOG_MODELS_URL = "/v1/catalog/brands/{brandId}/models";
-    public static final String CAR_CATALOG_YEARS_URL = "/v1/catalog/brands/{brandId}/models/{modelId}/years";
-    public static final String CAR_CATALOG_ENGINES_URL = "/v1/catalog/brands/{brandId}/models/{modelId}/years/{yearId}/engines";
-    public static final String CAR_CATALOG_TRANSMISSIONS_URL = "/v1/catalog/brands/{brandId}/" +
-            "models/{modelId}/years/{yearId}/engines/{engineId}/transmissions";
-    public static final String CAR_CATALOG_WHEEL_DRIVES_URL = "/v1/catalog/brands/{brandId}/models/{modelId}/years/{yearId}/" +
-            "engines/{engineId}/transmissions/{transmissionsId}/wheel_drive";
-    public static final String CAR_CATALOG_RESOLVE_URL = "/v1/catalog/cars/resolve";
-
     /**
      * Builds and wires the primary {@link SecurityFilterChain}.
      * <p>Key settings:</p>
@@ -79,7 +68,7 @@ public class SecurityConfig {
      *   <li>Enables CORS using {@link #corsConfigurationSource()}.</li>
      *   <li>Permits Swagger/OpenAPI endpoints and {@code /error}.</li>
      *   <li>Requires authentication for catalog read endpoints (GET) and resolve (POST).</li>
-     *   <li>Permits {@code GET} {@value #TEST_DELAY_URL} for simple availability tests.</li>
+     *   <li>Permits {@code GET}  for simple availability tests.</li>
      *   <li>Denies all other requests.</li>
      *   <li>Registers {@link TmpTokenAuthFilter} before {@link UsernamePasswordAuthenticationFilter}.</li>
      *   <li>Configures custom {@link CustomAuthenticationEntryPoint} and
@@ -105,14 +94,14 @@ public class SecurityConfig {
 
                         .requestMatchers(
                                 HttpMethod.GET,
-                                CAR_CATALOG_BRANDS_URL,
-                                CAR_CATALOG_MODELS_URL,
-                                CAR_CATALOG_YEARS_URL,
-                                CAR_CATALOG_ENGINES_URL,
-                                CAR_CATALOG_TRANSMISSIONS_URL,
-                                CAR_CATALOG_WHEEL_DRIVES_URL
+                                BRANDS_URL,
+                                MODELS_URL,
+                                YEARS_URL,
+                                ENGINES_URL,
+                                TRANSMISSIONS_URL,
+                                WHEEL_DRIVES_URL
                         ).authenticated()
-                        .requestMatchers(HttpMethod.POST, CAR_CATALOG_RESOLVE_URL).authenticated()
+                        .requestMatchers(HttpMethod.POST, RESOLVE_URL).authenticated()
 
                         .requestMatchers(HttpMethod.GET, TEST_DELAY_URL).permitAll()
 
@@ -140,21 +129,6 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
             throws Exception {
         return config.getAuthenticationManager();
-    }
-
-    /**
-     * Configures OpenAPI with a Bearer (JWT) security scheme and a global security requirement.
-     *
-     * @return initialized {@link OpenAPI} bean
-     * @since 1.0.0
-     * @author RsLan
-     */
-    @Bean
-    public OpenAPI openAPI() {
-        return new OpenAPI().addSecurityItem(new SecurityRequirement()
-                        .addList("Bearer Authentication"))
-                .components(new Components()
-                        .addSecuritySchemes("Bearer Authentication", createAPIKeyScheme()));
     }
 
     /**

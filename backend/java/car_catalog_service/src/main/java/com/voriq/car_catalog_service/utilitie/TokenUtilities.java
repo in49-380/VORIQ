@@ -5,8 +5,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.NativeWebRequest;
 
-import java.util.UUID;
-
 public class TokenUtilities {
 
     public static String extractTokenFromRequest(HttpServletRequest request) {
@@ -25,15 +23,5 @@ public class TokenUtilities {
             }
         }
         return null;
-    }
-
-    public static boolean isUuid(String s) {
-        if (s == null) return false;
-        try {
-            UUID.fromString(s);
-            return true;
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
     }
 }
