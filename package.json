@@ -4,4 +4,9 @@
     "i18next-http-backend": "^3.0.2",
     "react-i18next": "^15.6.1"
   }
+  
+  "scripts": {
+    "prepare": "husky install"
+  }
+
 }

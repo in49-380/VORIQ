@@ -7,7 +7,7 @@ const authHeader = (json = false) => {
   const headers = { 'content-type': contentType };
 
   // const token = JSON.parse(localStorage.getItem('jwt_token'));
-  const token = '6b5f3d92-4b8c-4f2a-9f88-1a6b2c8a1b1d';
+  const token = '3f2f9b4a-26a7-4b0c-a1b2-7e7e05f3c4d1';
 
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
