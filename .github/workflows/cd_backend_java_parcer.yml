@@ -49,11 +49,12 @@ jobs:
             cd "$REPO_DIR"
 
             # get the latest changes
-            git clean -fdx
-            git reset --hard "$TAG_SHA"
+            #git clean -fdx
+            git reset --hard
             git fetch --all --prune
+            git pull --all
             git checkout -B "$BRANCH" "$TAG_SHA"
-            git pull origin "$BRANCH"
+            #git pull origin "$BRANCH"
 
             # go to the code directory  
             cd "$REPO_DIR/frontend"
