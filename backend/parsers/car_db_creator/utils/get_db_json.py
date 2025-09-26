@@ -1,7 +1,7 @@
 
 from .decorators import logger, log_execution
 from .save_load_data import load_json, save_json
-from .tools import extract_unique_records
+from .tools import extract_unique_records, extract_displacement, extract_transmission_type
 
 
 """
@@ -117,82 +117,3 @@ def process_db_engines():
         {"id": 107, "type": "Electric", "fuel_type_id": 4}
     ]
     return save_json(engines_db_list, "engines_type_db.json", "db_json")
-
-@log_execution
-def process_db_cars():
-    """
-    Processes car data and builds the final structure for the database.
-
-    Loads auxiliary data (brands, models, engines, fuel types, years),
-    matches it with the original car data, determines missing fields
-    (e.g., fuel type), and saves the result to the `cars_db.json` file.
-
-    Returns:
-        bool: True if the data was successfully saved, otherwise False.
-    """
-    cars = []
-    cars_time = load_json("cars_en.json")
-    brands = load_json("brands_db.json", "db_json")
-    years = load_json("years_db.json", "db_json")
-    models = load_json("models_db.json", "db_json")
-    engines = load_json("engines_type_db.json", "db_json")
-    fuels = load_json("fuels_db.json", "db_json")
-
-    brands_lookup = {brand["name"]: brand["id"] for brand in brands}
-    models_lookup = {model["name"]: model["id"] for model in models}
-    fuels_lookup = {fuel["name"]: fuel["id"] for fuel in fuels}
-    years_lookup = {year["year"]: year["id"] for year in years}
-    engines_lookup = {
-        (engine["type"], engine["fuel_type_id"]): engine["id"]
-        for engine in engines
-    }
-
-
-    for car in cars_time:
-        logger.info(f"Car processing: {car['name']}")
-
-        model_id = models_lookup.get(car["name"])
-        year_id = years_lookup.get(car["year"])
-        car_info = car.get("car_info", {})
-
-        engine_type = car_info.get("Engine type")
-        fuel_type_name = car_info.get("Fuel type")
-
-
-        if not fuel_type_name:
-            if engine_type and engine_type.lower() not in ["ICE", "Hybrid"]:
-                fuel_type_name = "Electric"
-                logger.info(f"Fuel type set automatically: '{fuel_type_name}'")
-            else:
-                fuel_type_name = "Petrol"
-                logger.info(f"Fuel type not specified, default value applied: '{fuel_type_name}'")
-
-        fuel_type_id = fuels_lookup.get(fuel_type_name)
-        if fuel_type_id is None:
-            logger.warning(f"❌ fuel_type_id not found for '{fuel_type_name}'")
-            continue
-
-        engine_id = engines_lookup.get((engine_type, fuel_type_id))
-        if engine_id is None:
-            logger.warning(f"❌ “No engine_id found for the specified pair: ({engine_type}, {fuel_type_id})")
-            continue
-
-        car_entry = {
-            "model_id": model_id,
-            "engine_id": engine_id,
-            "year_id": year_id
-        }
-        logger.info(f"✅ Entry added: {car_entry}")
-        cars.append(car_entry)
-
-    logger.info(f"Total number of cars processed: {len(cars)}")
-    return save_json(cars, "cars_db.json", "db_json")
-
-# def process_db_transmision():
-#     return extract_unique_records(find_element='Transmission type')
-#
-# def process_db_drive():
-#     return extract_unique_records(find_element='Drive')
-#
-# def process_db_gears():
-#     return extract_unique_records(find_element='Number of gears')
