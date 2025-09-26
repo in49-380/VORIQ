@@ -3,10 +3,6 @@ package com.voriq.security_service.config;
 import com.voriq.security_service.config.configs_components.CustomAccessDeniedHandler;
 import com.voriq.security_service.config.configs_components.CustomAuthenticationEntryPoint;
 import com.voriq.security_service.filter.TokenRateLimitFilter;
-import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.security.SecurityRequirement;
-import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +23,7 @@ import java.time.Clock;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.voriq.security_service.config.ApiPaths.*;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 /**
@@ -38,8 +35,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
  *   <li>Permits Swagger & OpenAPI endpoints and the token issue endpoint.</li>
  *   <li>Registers {@link TokenRateLimitFilter} <em>before</em> {@link UsernamePasswordAuthenticationFilter}
  *       to enforce per-user rate limiting prior to any authentication logic.</li>
- *   <li>Configures CORS from the {@code cors.allowed-origins} property.</li>
- *   <li>Sets up OpenAPI with Bearer authentication scheme.</li>
+ *   <li>Configures CORS from the {@code cors.allowed-origins} property.</li> *
  * </ul>
  *
  * <h3>Notes</h3>
@@ -63,19 +59,6 @@ public class SecurityConfig {
     private String allowedOrigins;
 
     /**
-     * Relative URL for issuing tokens (mounted under the global context path, e.g. "/api").
-     */
-    public static final String ISSUE_URL = "/v1/tokens/issue";
-    /**
-     * Relative URL for validating tokens (mounted under the global context path, e.g. "/api").
-     */
-    public static final String VALIDATE_URL = "/v1/tokens/validate";
-    /**
-     * Relative URL for revoking tokens (mounted under the global context path, e.g. "/api").
-     */
-    public static final String REVOKE_URL = "/v1/tokens/revoke";
-
-    /**
      * Builds the main Spring Security filter chain.
      *
      * <p><strong>Defaults:</strong></p>
@@ -92,9 +75,9 @@ public class SecurityConfig {
      *     <ul>
      *       <li>Swagger/OpenAPI: {@code /swagger-ui/**}, {@code /v3/api-docs/**}, {@code /swagger-ui.html}</li>
      *       <li>Error page: {@code /error}</li>
-     *       <li>{@link #ISSUE_URL} — {@code POST} only</li>
-     *       <li>{@link #VALIDATE_URL} — {@code GET} only</li>
-     *       <li>{@link #REVOKE_URL} — {@code DELETE} only</li>
+     *       <li> — {@code POST} only</li>
+     *       <li> — {@code GET} only</li>
+     *       <li> — {@code DELETE} only</li>
      *     </ul>
      *   </li>
      *   <li>All other requests require authentication.</li>
@@ -133,7 +116,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, ISSUE_URL).permitAll()
                         .requestMatchers(HttpMethod.GET, VALIDATE_URL).permitAll()
                         .requestMatchers(HttpMethod.DELETE, REVOKE_URL).permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().denyAll()
                 )
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .exceptionHandling(ex -> ex
@@ -156,28 +139,6 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
             throws Exception {
         return config.getAuthenticationManager();
-    }
-
-    /**
-     * Configures OpenAPI with a Bearer (JWT) security scheme and a global security requirement.
-     *
-     * @return initialized {@link OpenAPI} bean
-     */
-    @Bean
-    public OpenAPI openAPI() {
-        return new OpenAPI().addSecurityItem(new SecurityRequirement()
-                        .addList("Bearer Authentication"))
-                .components(new Components()
-                        .addSecuritySchemes("Bearer Authentication", createAPIKeyScheme()));
-    }
-
-    /**
-     * Defines the Bearer HTTP security scheme (JWT).
-     */
-    private SecurityScheme createAPIKeyScheme() {
-        return new SecurityScheme().type(SecurityScheme.Type.HTTP)
-                .bearerFormat("JWT")
-                .scheme("bearer");
     }
 
     /**
