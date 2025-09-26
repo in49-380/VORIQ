@@ -86,7 +86,7 @@ jobs:
             #docker image ls "$IMAGE" -q | xargs -n 1 docker rmi -f
 
             # wait few seconds, until container is run
-            sleep 20
+            sleep 60
 
             # get container id of the just started container
             CONTAINER_ID=$(ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" ps -q back-java-car)
