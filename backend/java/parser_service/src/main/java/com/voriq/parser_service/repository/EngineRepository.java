@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface EngineRepository extends JpaRepository<Engine, Long> {
-    Optional<Engine> findByTypeIgnoreCase(String name);
+    Optional<Engine> findByTypeIgnoreCaseAndDisplacementCC(String name, Double displacementCC);
 }

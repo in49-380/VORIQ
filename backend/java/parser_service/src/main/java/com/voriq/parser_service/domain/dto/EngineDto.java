@@ -14,5 +14,5 @@ public class EngineDto {
     private FuelTypeDto fuelType;
     private String seriesCode;
     private String engineCode;
-    private Integer displacementCC;
+    private Double displacementCC;
 }
