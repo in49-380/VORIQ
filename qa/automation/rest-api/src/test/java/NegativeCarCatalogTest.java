@@ -1,4 +1,5 @@
 import Utils.Service;
+import io.qameta.allure.Owner;
 import io.restassured.http.ContentType;
 import org.example.CarResolve;
 import org.junit.jupiter.api.Tag;
@@ -12,6 +13,7 @@ public class NegativeCarCatalogTest extends BaseApiTest {
 
     @Test
     @Tag("negative")
+    @Owner("Borys Pedorenko")
     public void getAllBrandsWithoutAuthorization() {
 
 
@@ -27,6 +29,7 @@ public class NegativeCarCatalogTest extends BaseApiTest {
 
     @Test
     @Tag("negative")
+    @Owner("Borys Pedorenko")
     public void getCarIdCarNotFound() {
 
         CarResolve carResolve = new CarResolve(
@@ -45,6 +48,7 @@ public class NegativeCarCatalogTest extends BaseApiTest {
 
     @Test
     @Tag("negative")
+    @Owner("Borys Pedorenko")
     public void getCarIdCarBadRequest() {
 
         CarResolve carResolve = new CarResolve(

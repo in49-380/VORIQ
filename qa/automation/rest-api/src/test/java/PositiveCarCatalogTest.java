@@ -1,4 +1,5 @@
 import Utils.Service;
+import io.qameta.allure.Owner;
 import org.example.CarResolve;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -14,21 +15,17 @@ public class PositiveCarCatalogTest extends BaseApiTest {
 
     @ParameterizedTest(name = "[{index}] GET {0} -> {1}")
     @Tag("positive")
+    @Owner("Borys Pedorenko")
     @MethodSource("suffixAndSchema")
     void get_by_suffix(String suffixKeyOrLiteral, String schemaFile) {
         apiWrapper.sendGetRequest(Service.CATALOG, resolve(suffixKeyOrLiteral))
                 .body(matchesJsonSchemaInClasspath(schemaFile));
     }
 
-//    @Test
-//    @Tag("positive")
-//    public void getAllBrands() {
-//        apiWrapper.sendGetRequest(Service.CATALOG, resolve("objectCarBrands"))
-//                .body(matchesJsonSchemaInClasspath("brands-schema.json"));
-//    }
 
     @Test
     @Tag("positive")
+    @Owner("Borys Pedorenko")
     public void getCarId() {
 
         CarResolve carResolve = new CarResolve(
@@ -45,22 +42,6 @@ public class PositiveCarCatalogTest extends BaseApiTest {
     }
 
 
-//        post(Service.CATALOG, resolve("objectCarResolve"), carResolve).log().all()
-//                .statusCode(200)
-//                .contentType(ContentType.JSON)
-//                .body(matchesJsonSchemaInClasspath("car_catalog-schema.json"));
-//
-
-//        given()
-//                .contentType(ContentType.JSON).body(carResolve)
-//                .header("Authorization", "Bearer " + getConfig("token"))
-//                .when().log().ifValidationFails().log().all()
-//                .post(getConfig("objectCarCatalog") + getConfig("objectCarResolve"))
-//                .then().statusCode(200)
-//                .contentType(ContentType.JSON)
-//                .body(matchesJsonSchemaInClasspath("car_catalog-schema.json"));
-//    }
-//
 //
 //    @Test
 //    @Tag("positive")

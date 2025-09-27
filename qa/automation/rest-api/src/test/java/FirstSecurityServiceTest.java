@@ -1,3 +1,4 @@
+import io.qameta.allure.Owner;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import static io.restassured.RestAssured.given;
 public class FirstSecurityServiceTest extends BaseApiTest {
 
     @Test
+    @Owner("Borys Pedorenko")
     public void firstTest() {
         String userId = getConfig("userId");
         String key = getConfig("key");
@@ -33,6 +35,7 @@ public class FirstSecurityServiceTest extends BaseApiTest {
 
     @Test
     @Disabled
+    @Owner("Borys Pedorenko")
     public void secondTest() {
         given()
                 .when().log().all()

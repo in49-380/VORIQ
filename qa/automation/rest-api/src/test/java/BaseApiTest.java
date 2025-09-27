@@ -21,18 +21,11 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 public class BaseApiTest {
 
-//    static Integer idCar;
-//    static Integer idBrand;
-//    static Integer idModel;
-//    static Integer idYear;
-//    static Integer idEngine;
-//    static Integer idTransmission;
-//    static Integer idWheelDrive;
- static final Integer IDMAX = 99999;
+    static final Integer IDMAX = 99999;
 
 
     protected static Properties cfg;
-     public static final Map<Service, RequestSpecification> SPECS = new EnumMap<>(Service.class);
+    public static final Map<Service, RequestSpecification> SPECS = new EnumMap<>(Service.class);
 
     @BeforeAll
     static void bootstrap() {
@@ -64,7 +57,7 @@ public class BaseApiTest {
                 .build();
     }
 
-     static String resolve(String templateKey) {
+    static String resolve(String templateKey) {
         String s = getConfig(templateKey);
         s = s.replace("{brandId}", getConfig("brandId"));
         s = s.replace("{modelId}", getConfig("modelId"));

@@ -50,17 +50,6 @@ public class ApiWrapper {
         return response.then();
     }
 
-    //    public static ValidatableResponse sendGetRequest(String callPath, int statusCode) {
-//        return sendGetRequest(given(), callPath, statusCode);
-//    }
-//
-//    public static ValidatableResponse sendGetRequest(RequestSpecification requestSpecification, String callPath) {
-//        return sendGetRequest(requestSpecification, callPath, DEFAULT_STATUS_CODE_GET);
-//    }
-//
-//    public static ValidatableResponse sendGetRequest(String callPath) {
-//        return sendGetRequest(given(), callPath, DEFAULT_STATUS_CODE_GET);
-//    }
     @Step("POST 200 {path} [{svc}]")
     public ValidatableResponse sendPostRequest(Service svc,
                                                String path, Object body) {
