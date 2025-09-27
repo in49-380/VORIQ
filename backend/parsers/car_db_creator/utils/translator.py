@@ -72,7 +72,7 @@ def translate(term, src="ru", dest="en"):
 
 
 
-def translate_car_info(car_info):
+def translate_car(car_info):
     """
     Translates the keys and string values of a car information dictionary from Russian to English.
 

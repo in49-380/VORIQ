@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 
-const IDs=['s1', 's2', 's3', 's4', 'b5', 'b6']
+const IDs=['s1', 's2', 's3', 's4', 's5', 's6', 'b5', 'b6']
 
 const HintBox=()=>{
 

@@ -35,7 +35,9 @@
       "brand": "Brand",
       "model": "Model",
       "year": "Year",
-      "engine": "Engine"
+      "engine": "Engine",
+      "transmission":"Transmission",
+      "wheel":"Chassis drive"
       
     },
     "buttonBlock":{

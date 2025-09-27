@@ -8,14 +8,15 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +26,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
+import static com.voriq.car_catalog_service.config.ApiPaths.*;
+
 @Tag(name = "Car catalog lookup", description = "Endpoints of the car catalog for sequential search of cars by parameters.")
-@RequestMapping("/v1/catalog")
+@RequestMapping(BASE_URL)
 public interface CarCatalogLookupApi {
 
     @Operation(summary = "Get all brands",
@@ -44,22 +47,40 @@ public interface CarCatalogLookupApi {
                     description = "User does not authorized.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error401UserUnauthorizedBrands",
+                                            ref = "#/components/examples/Error401UserUnauthorizedBrands"
+                                    )
+                            }
                     )),
             @ApiResponse(responseCode = "500",
                     description = "Temporary service error.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error500TemporaryServiceErrorBrands",
+                                            ref = "#/components/examples/Error500TemporaryServiceErrorBrands"
+                                    )
+                            }
                     )),
             @ApiResponse(responseCode = "503",
                     description = "The server is currently overloaded or under maintenance. Please try again later.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error503ServiceUnavailableBrands",
+                                            ref = "#/components/examples/Error503ServiceUnavailableBrands"
+                                    )
+                            }
                     ))}
     )
-    @GetMapping("/brands")
+    @GetMapping(value = BRANDS)
     ResponseEntity<List<IdValueResponseDto>> getALlBrands();
     //===============================================
 
@@ -78,33 +99,57 @@ public interface CarCatalogLookupApi {
                     description = "Bad request.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error400MissingIdModels",
+                                            ref = "#/components/examples/Error400MissingIdModels"
+                                    )
+                            }
                     )),
             @ApiResponse(responseCode = "401",
                     description = "User does not authorized.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error401UserUnauthorizedModels",
+                                            ref = "#/components/examples/Error401UserUnauthorizedModels"
+                                    )
+                            }
                     )),
             @ApiResponse(responseCode = "500",
                     description = "Temporary service error.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error500TemporaryServiceErrorModels",
+                                            ref = "#/components/examples/Error500TemporaryServiceErrorModels"
+                                    )
+                            }
                     )),
             @ApiResponse(responseCode = "503",
                     description = "The server is currently overloaded or under maintenance. Please try again later.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error503ServiceUnavailableModels",
+                                            ref = "#/components/examples/Error503ServiceUnavailableModels"
+                                    )
+                            }
                     ))}
     )
-    @GetMapping("/brands/{brandId}/models")
+    @GetMapping(value = MODELS)
     ResponseEntity<List<IdValueResponseDto>> getModelsByBrand(
             @PathVariable
             @Parameter(description = "Id of brand in catalog", example = "32")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long brandId
     );
     //===============================================
@@ -124,38 +169,62 @@ public interface CarCatalogLookupApi {
                     description = "Bad request.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error400MissingIdYears",
+                                            ref = "#/components/examples/Error400MissingIdYears"
+                                    )
+                            }
                     )),
             @ApiResponse(responseCode = "401",
                     description = "User does not authorized.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error401UserUnauthorizedYears",
+                                            ref = "#/components/examples/Error401UserUnauthorizedYears"
+                                    )
+                            }
                     )),
             @ApiResponse(responseCode = "500",
                     description = "Temporary service error.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error500TemporaryServiceErrorYears",
+                                            ref = "#/components/examples/Error500TemporaryServiceErrorYears"
+                                    )
+                            }
                     )),
             @ApiResponse(responseCode = "503",
                     description = "The server is currently overloaded or under maintenance. Please try again later.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error503ServiceUnavailableYears",
+                                            ref = "#/components/examples/Error503ServiceUnavailableYears"
+                                    )
+                            }
                     ))}
     )
-    @GetMapping("/brands/{brandId}/models/{modelId}/years")
+    @GetMapping(value = YEARS)
     ResponseEntity<List<IdValueResponseDto>> getYears(
             @PathVariable
             @Parameter(description = "Id of brand in catalog", example = "32")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long brandId,
             @PathVariable
             @Parameter(description = "Id of model in catalog", example = "43")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long modelId
     );
     //===============================================
@@ -176,43 +245,67 @@ public interface CarCatalogLookupApi {
                     description = "Bad request.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error400MissingIdEngines",
+                                            ref = "#/components/examples/Error400MissingIdEngines"
+                                    )
+                            }
                     )),
             @ApiResponse(responseCode = "401",
                     description = "User does not authorized.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error401UserUnauthorizedEngines",
+                                            ref = "#/components/examples/Error401UserUnauthorizedEngines"
+                                    )
+                            }
                     )),
             @ApiResponse(responseCode = "500",
                     description = "Temporary service error.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error500TemporaryServiceErrorEngines",
+                                            ref = "#/components/examples/Error500TemporaryServiceErrorEngines"
+                                    )
+                            }
                     )),
             @ApiResponse(responseCode = "503",
                     description = "The server is currently overloaded or under maintenance. Please try again later.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error503ServiceUnavailableEngines",
+                                            ref = "#/components/examples/Error503ServiceUnavailableEngines"
+                                    )
+                            }
                     ))}
     )
-    @GetMapping("/brands/{brandId}/models/{modelId}/years/{yearId}/engines")
+    @GetMapping(value = ENGINES)
     ResponseEntity<List<IdValueResponseDto>> getEngines(
             @PathVariable
             @Parameter(description = "Id of brand in catalog", example = "32")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long brandId,
             @PathVariable
             @Parameter(description = "Id of model in catalog", example = "43")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long modelId,
             @PathVariable
             @Parameter(description = "Id of year in catalog", example = "5")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long yearId
     );
     //===============================================
@@ -233,48 +326,72 @@ public interface CarCatalogLookupApi {
                     description = "Bad request.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error400MissingIdTransmissions",
+                                            ref = "#/components/examples/Error400MissingIdTransmissions"
+                                    )
+                            }
                     )),
             @ApiResponse(responseCode = "401",
                     description = "User does not authorized.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error401UserUnauthorizedTransmissions",
+                                            ref = "#/components/examples/Error401UserUnauthorizedTransmissions"
+                                    )
+                            }
                     )),
             @ApiResponse(responseCode = "500",
                     description = "Temporary service error.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error500TemporaryServiceErrorTransmissions",
+                                            ref = "#/components/examples/Error500TemporaryServiceErrorTransmissions"
+                                    )
+                            }
                     )),
             @ApiResponse(responseCode = "503",
                     description = "The server is currently overloaded or under maintenance. Please try again later.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error503ServiceUnavailableTransmissions",
+                                            ref = "#/components/examples/Error503ServiceUnavailableTransmissions"
+                                    )
+                            }
                     ))}
     )
-    @GetMapping("/brands/{brandId}/models/{modelId}/years/{yearId}/engines/{engineId}/transmissions")
+    @GetMapping(value = TRANSMISSIONS)
     ResponseEntity<List<IdValueResponseDto>> getTransmissions(
             @PathVariable
             @Parameter(description = "Id of brand in catalog", example = "32")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long brandId,
             @PathVariable
             @Parameter(description = "Id of model in catalog", example = "43")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long modelId,
             @PathVariable
             @Parameter(description = "Id of year in catalog", example = "5")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long yearId,
             @PathVariable
             @Parameter(description = "Id of engine in catalog", example = "6")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long engineId
     );
     //===============================================
@@ -296,54 +413,77 @@ public interface CarCatalogLookupApi {
                     description = "Bad request.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error400MissingIdWheelDrives",
+                                            ref = "#/components/examples/Error400MissingIdWheelDrives"
+                                    )
+                            }
                     )),
             @ApiResponse(responseCode = "401",
                     description = "User does not authorized.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error401UserUnauthorizedWheelDrives",
+                                            ref = "#/components/examples/Error401UserUnauthorizedWheelDrives"
+                                    )
+                            }
                     )),
             @ApiResponse(responseCode = "500",
                     description = "Temporary service error.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error500TemporaryServiceErrorWheelDrives",
+                                            ref = "#/components/examples/Error500TemporaryServiceErrorWheelDrives"
+                                    )
+                            }
                     )),
             @ApiResponse(responseCode = "503",
                     description = "The server is currently overloaded or under maintenance. Please try again later.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error503ServiceUnavailableWheelDrives",
+                                            ref = "#/components/examples/Error503ServiceUnavailableWheelDrives"
+                                    )
+                            }
                     ))}
     )
-    @GetMapping("/brands/{brandId}/models/{modelId}/years/{yearId}/" +
-            "engines/{engineId}/transmissions/{transmissionsId}/wheel_drive")
+    @GetMapping(value = WHEEL_DRIVES)
     ResponseEntity<List<IdValueResponseDto>> getWheelDrives(
             @PathVariable
             @Parameter(description = "Id of brand in catalog", example = "32")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long brandId,
             @PathVariable
             @Parameter(description = "Id of model in catalog", example = "43")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long modelId,
             @PathVariable
             @Parameter(description = "Id of year in catalog", example = "5")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long yearId,
             @PathVariable
             @Parameter(description = "Id of engine in catalog", example = "6")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long engineId,
             @PathVariable
             @Parameter(description = "Id of transmission in catalog", example = "2")
             @NotNull(message = "Id can not be null")
-            @Min(value = 1, message = "Id must be great of 0")
+            @Positive(message = "Id must be great of 0")
             Long transmissionsId
     );
     //===============================================
@@ -367,37 +507,66 @@ public interface CarCatalogLookupApi {
                     description = "Bad request.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error400DtoHaveWrongValueResolve",
+                                            ref = "#/components/examples/Error400DtoHaveWrongValueResolve"
+                                    )
+                            }
                     )),
             @ApiResponse(responseCode = "401",
                     description = "User does not authorized.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error401UserUnauthorizedWheelResolve",
+                                            ref = "#/components/examples/Error401UserUnauthorizedWheelResolve"
+                                    )
+                            }
                     )),
             @ApiResponse(responseCode = "404",
                     description = "Car not found",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error404CarNotFoundResolve",
+                                            ref = "#/components/examples/Error404CarNotFoundResolve"
+                                    )
+                            }
                     )),
             @ApiResponse(responseCode = "500",
                     description = "Temporary service error.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error500TemporaryServiceErrorResolve",
+                                            ref = "#/components/examples/Error500TemporaryServiceErrorResolve"
+                                    )
+                            }
                     )),
             @ApiResponse(responseCode = "503",
                     description = "The server is currently overloaded or under maintenance. Please try again later.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ErrorResponse.class)
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Error503ServiceUnavailableResolve",
+                                            ref = "#/components/examples/Error503ServiceUnavailableResolve"
+                                    )
+                            }
                     ))}
     )
-    @PostMapping("/cars/resolve")
+    @PostMapping(value = RESOLVE)
     ResponseEntity<CarIdDto> resolve(
             @Valid
             @org.springframework.web.bind.annotation.RequestBody
             CarResolveRequest req);
-
 }

@@ -36,7 +36,9 @@
     "brand": "Бренд",
     "model": "Модель",
     "year": "Рік",
-    "engine": "Двигун"
+    "engine": "Двигун",
+     "transmission":"Передача",
+    "wheel":"Привiд шассi"
      },
     "buttonBlock": {
     "analyze": "Аналіз",

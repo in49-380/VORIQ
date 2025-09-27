@@ -72,7 +72,7 @@ const runApi=async(asyncFunction)=>{
   const signal = initialAbortController();
   
   try {
-    const result = await asyncFunction({signal});
+    const result = await asyncFunction(signal);
     requestFinished.current = true;
     clearAllTimeOut()
     setTimeout(()=>setIsLoading(false),1000)

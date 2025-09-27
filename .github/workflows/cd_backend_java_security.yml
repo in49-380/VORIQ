@@ -5,8 +5,8 @@ on:
     branches:
       - '**'
     paths:
-      - 'backend/java/security_service**'
-      - 'devops/dev/backend/java/security_service**'
+      - 'backend/java/security_service/**'
+      - 'devops/dev/backend/java/security_service/**'
   workflow_dispatch:
 
 concurrency:
@@ -45,10 +45,20 @@ jobs:
             cd "$REPO_DIR"
 
             # get the latest changes
+            #git clean -fdx
+            git reset --hard
             git fetch --all --prune
+            git pull --all
             git checkout -B "$BRANCH" "$TAG_SHA"
-            git reset --hard "$TAG_SHA"
-            git clean -fdx
+            #git pull origin "$BRANCH"
+
+            # go to the code directory  
+            cd "$REPO_DIR/frontend"
+        
+            # prepare .enf for front
+            echo '${{ secrets.DEV_FRONT_GOOGLE_CLIENT_ID }}' > .env
+            echo "VITE_SWAGGER_DOMAIN=http://172.17.0.8" >> .env
+            echo "VITE_SWAGGER_PORT=8084" >> .env
 
             # go to the infrastructure directory  
             cd "$REPO_DIR/devops"
@@ -60,6 +70,7 @@ jobs:
             echo 'DB_PASSWORD=${{ secrets.DB_PASSWORD }}' >> .env
             echo 'DB_NAME_SECURITY=${{ secrets.DB_NAME_SSERVICE }}' >> .env
             echo 'DB_NAME_CAR=${{ secrets.DB_NAME_CAR }}' >> .env
+            echo 'DB_NAME_PARSER=${{ secrets.DB_NAME_PARSER }}' >> .env
             
             # build new image and restart container with new image
             ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d --no-deps --build back-java-security
@@ -72,3 +83,48 @@ jobs:
             docker image rm -f $(docker image ls -aq) || true
             # if images wont be deleted, uncomment the next line
             #docker image ls "$IMAGE" -q | xargs -n 1 docker rmi -f
+
+            # wait few seconds, until container is run
+            sleep 20
+
+            # get container id of the just started container
+            CONTAINER_ID=$(ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" ps -q back-java-security)
+
+            # checking container status.
+            if [ "$(docker inspect -f {{.State.Running}} $CONTAINER_ID)" != "true" ] || [ "$(docker inspect -f {{.State.Restarting}} $CONTAINER_ID)" = "true" ] ; then
+                echo " "
+                echo " "
+                echo " "
+                echo " "
+                echo " "
+                echo "!!!!!!!!! Container failed to start. Capturing logs... !!!!!!!!" >&2
+                # getting last log strings.
+                docker logs --tail 100 $CONTAINER_ID 2>&1
+            
+                # exiting with failure, so all job ends with failure.
+                exit 1 
+            fi
+
+
+
+  notify_on_failure:
+    runs-on: ubuntu-latest
+    needs: build_and_deploy
+    if: failure()
+    steps:
+      - name: Send a Discord notification
+        uses: appleboy/discord-action@master
+        with:
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }} # WebHook URL
+          # webhook_id: ${{ secrets.DISCORD_WEBHOOK_URL }} # WebHook ID
+          # webhook_token: ${{ secrets.DISCORD_WEBHOOK_URL }} # WebHook Token
+          message: |
+            :x: **Deploy is failed!**
+            
+            **Repo**: `${{ github.repository }}`
+            **Branch**: `${{ github.ref_name }}`
+            **Commit**: `${{ github.sha }}`
+            **Run ID**: `${{ github.run_id }}`
+            **Deploy log link address**: `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`
+            **Deploy log direct link**: [LOGS](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+

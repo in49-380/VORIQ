@@ -6,9 +6,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,7 +16,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.security.core.userdetails.User;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,12 +26,9 @@ import static com.voriq.car_catalog_service.utilitie.TokenUtilities.extractToken
 @RequiredArgsConstructor
 public class TmpTokenAuthFilter extends OncePerRequestFilter {
 
-    @Value("${tmp-token.prefix}")
-    private String prefix;
-
-    private final StringRedisTemplate redisTemplate;
-
     private final AuthenticationEntryPoint authenticationEntryPoint;
+
+    private final TmpTokens tmpTokens;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -81,6 +74,6 @@ public class TmpTokenAuthFilter extends OncePerRequestFilter {
     }
 
     private String getNameByToken(String token) {
-        return redisTemplate.opsForValue().get(prefix + token);
+        return tmpTokens.getTokens().get(token);
     }
 }

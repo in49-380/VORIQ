@@ -2,18 +2,12 @@
 import { useEffect} from 'react';
 import {useTranslation} from 'react-i18next'
 import Select, {components as RSComponents} from 'react-select';
-// import { motion, AnimatePresence } from "framer-motion";
-
-
 import { useLoader } from '../../hooks/useLoader.jsx';
 import useSelect from '../../hooks/useSelect.jsx';
 
-import {requestFromVehicleSelectors} from '../../api/dbRequest.jsx'
-import brandAnalyse from '../../../public/fakeDB/fakeAnalys.jsx';
-import { modelAnalyse, yearAnalyse, engineAnalyse } from '../../../public/fakeDB/fakeAnalys.jsx';
+import {get} from '../../api/api.js'
 
-
-const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
+const SelectorBlock=({brand, model, year,engine, transmission, wheel, setCurrentStep})=>{
     const {t}=useTranslation()
     const {runApi, setSuccessResult}=useLoader()
     const {setAnalysButtonIsDisabled, isNewSearch, setIsNewSearch}=useSelect()
@@ -23,113 +17,191 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
        setSuccessResult(null)
        setIsNewSearch(false)
     } 
-
+// *****************Brand init******************
     useEffect(()=>{
         const getBrands=async()=>{
-        const data= await runApi((opt)=>requestFromVehicleSelectors('brands.json',opt))
-        const result=brandAnalyse(data)
+        const result= await runApi((signal)=>get('http://voriq.info:8084/api/v1/catalog/brands',signal))
         brand.setOptions(result)
         }
     getBrands()
     },[])
 
+// *****************Model init******************
     useEffect(()=>{
         const getModels=async()=>{
+        console.log('brand.value', brand.value)
         if (!brand.value) {
         return;
         }
-        const data=await runApi((opt)=>requestFromVehicleSelectors('models.json', opt))
-        const result=modelAnalyse(data, brand.value)
+        const result=await runApi((signal)=>
+        get(`http://voriq.info:8084/api/v1/catalog/brands/${brand.value.id}/models`,signal))
         model.setOptions(result)
         }
     getModels()
     },[brand.value])
 
+// *****************Year init******************
     useEffect(()=>{
         const getYears=async()=>{
         if (!model.value) {
         return
         }
-        const data=await runApi((opt)=>requestFromVehicleSelectors('years.json',opt))
-        const result=yearAnalyse(data,model.value)
+        const result=await runApi((signal)=>
+        get(`http://voriq.info:8084/api/v1/catalog/brands/${brand.value.id}/models/${model.value.id}/years`,signal))
         year.setOptions(result)
         }
     getYears()
     },[model.value])
 
+// *****************Engine init******************
     useEffect(()=>{
         const getEngine=async()=>{
         if (!year.value) {
         return
         }
-        const data=await runApi((opt)=>requestFromVehicleSelectors('engines.json',opt))
-        const result=engineAnalyse(data, year.value)
+       const result=await runApi((signal)=>
+        get(`http://voriq.info:8084/api/v1/catalog/brands/${brand.value.id}/models/${model.value.id}/years/${year.value[0].id}/engines`,signal))
         engine.setOptions(result)
     }
     getEngine()
     },[year.value])
 
+// *****************Transmission init******************
+    useEffect(()=>{
+        const getTransmission=async()=>{
+        if (!engine.value) {
+        return
+        }
+       const result=await runApi((signal)=>
+        get(`http://voriq.info:8084/api/v1/catalog/brands/${brand.value.id}/models/${model.value.id}/years/${year.value[0].id}/engines/${engine.value.id}/transmissions`,signal))
+        transmission.setOptions(result)
+    }
+    getTransmission()
+    },[engine.value])
+
+// *****************WheelDrive init******************
+    useEffect(()=>{
+        const getWheel=async()=>{
+        if (!transmission.value) {
+        return
+        }
+       const result=await runApi((signal)=>
+        get(`http://voriq.info:8084/api/v1/catalog/brands/${brand.value.id}/models/${model.value.id}/years/${year.value[0].id}/engines/${engine.value.id}/transmissions/${transmission.value.id}/wheel_drive`,signal))
+        wheel.setOptions(result)
+    }
+    getWheel()
+    },[transmission.value])
+
+// **************Brand Change****************************
     const onBrandChange=(newValue)=>{
        clearForNewSearching()
 
         if (newValue===null){
-        model.clear()
-        year.clear()
-        engine.clear()
-        brand.softClear()
-        setAnalysButtonIsDisabled(true)
+          model.clear()
+          year.clear()
+          engine.clear()
+          transmission.clear()
+          wheel.clear()
+          brand.softClear()
+          setAnalysButtonIsDisabled(true)
+
         } else {
             model.softClear()
             year.softClear()
             engine.softClear()
+            transmission.softClear()
+            wheel.softClear()
             brand.setValue(newValue)
             model.setDisabled(false)
             goToStep(2)
         }
     }
-
+// **************Model Change****************************
     const onModelChange=(newValue)=>{
        clearForNewSearching()
 
     if (newValue===null){
         year.clear()
         engine.clear()
+        transmission.clear()
+        wheel.clear()
         model.softClear()
         setAnalysButtonIsDisabled(true)
     } else {
             year.softClear()
+            engine.softClear()
+            transmission.softClear()
+            wheel.softClear()
             model.setValue(newValue)
             year.setDisabled(false)
             goToStep(3)
     }
     }
-
+// **************Year Change****************************
     const onYearChange=(newValue)=>{
        clearForNewSearching()
 
         if (!newValue || newValue.length === 0){
-        engine.clear()
-        year.softClear()
-        setAnalysButtonIsDisabled(true)
+          engine.clear()
+          transmission.clear()
+          wheel.clear()
+          year.softClear()
+          setAnalysButtonIsDisabled(true)
         } else {
             engine.softClear()
+            transmission.softClear()
+            wheel.softClear()
             year.setValue(newValue)
             engine.setDisabled(false)
             goToStep(4)
            
         }   
     }
-
+// **************Engine Change****************************
     const onEngineChange=(newValue)=>{
       clearForNewSearching()
 
         if (!newValue || newValue.length === 0){
-        engine.softClear()
+          transmission.clear()
+          wheel.clear()  
+          engine.softClear()
         setAnalysButtonIsDisabled(true)
         } else {
-        engine.setValue(newValue)
-        setAnalysButtonIsDisabled(false)
-        goToStep(5)
+            transmission.softClear()
+            wheel.softClear()
+            engine.setValue(newValue)
+            transmission.setDisabled(false)
+            setAnalysButtonIsDisabled(true)
+            goToStep(5)
+        }
+    }
+    // **************Transmission Change****************************
+    const onTransmissionChange=(newValue)=>{
+      clearForNewSearching()
+
+        if (!newValue || newValue.length === 0){
+          wheel.clear()
+          transmission.softClear()
+          setAnalysButtonIsDisabled(true)
+        } else {
+          wheel.softClear()
+          transmission.setValue(newValue)
+          wheel.setDisabled(false)
+          setAnalysButtonIsDisabled(true)
+          goToStep(6)
+        }
+    }
+    // **************WheelDrive Change****************************
+    const onWheelChange=(newValue)=>{
+      clearForNewSearching()
+
+        if (!newValue || newValue.length === 0){
+          wheel.softClear()
+          setAnalysButtonIsDisabled(true)
+        } else {
+          wheel.setValue(newValue)
+          setAnalysButtonIsDisabled(false)
+          goToStep(7)
         }
     }
 
@@ -139,6 +211,19 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
         model.clear()
         year.clear()
         engine.clear()
+      }
+     },[isNewSearch]) 
+    // **************select styling******************
+    // **********************************************
+
+     useEffect(()=>{
+      if(isNewSearch){
+        brand.softClear()
+        model.clear()
+        year.clear()
+        engine.clear()
+        transmission.clear()
+        wheel.clear()
       }
      },[isNewSearch]) 
     // **************select styling******************
@@ -163,7 +248,8 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
     const customStyles={
         container:(provided)=>({
           ...provided,
-          width:'20%',
+          width:'30%',
+
         }),
 
         control: (provided, state)=>({
@@ -251,6 +337,8 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
             
             <Select
               id='s1'
+              getOptionLabel={(option) => option.value}
+              getOptionValue={(option) => option.id}
               placeholder={t('selectorBlock.brand')}
               value={brand.value}
               options={brand.options}
@@ -264,6 +352,8 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
 
             <Select
               id='s2'
+              getOptionLabel={(option) => option.value}
+              getOptionValue={(option) => option.id}
               placeholder={t('selectorBlock.model')}
               value={model.value}
               options={model.options}
@@ -278,6 +368,8 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
     
             <Select
               id='s3'
+              getOptionLabel={(option) => option.value}
+              getOptionValue={(option) => option.id}
               placeholder={t('selectorBlock.year')}
               value={year.value}
               options={year.options}
@@ -293,7 +385,8 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
     
             <Select
               id='s4'
-
+              getOptionLabel={(option) => option.value}
+              getOptionValue={(option) => option.id}
               placeholder={t('selectorBlock.engine')}
               value={engine.value}
               options={engine.options}
@@ -302,8 +395,34 @@ const SelectorBlock=({brand, model, year,engine, setCurrentStep})=>{
               isDisabled={engine.disabled}
               styles={customStyles}
               components={{DropdownIndicator}}
+            />
 
+            <Select
+              id='s5'
+              getOptionLabel={(option) => option.value}
+              getOptionValue={(option) => option.id}
+              placeholder={t('selectorBlock.transmission')}
+              value={transmission.value}
+              options={transmission.options}
+              onChange={onTransmissionChange}
+              isClearable
+              isDisabled={transmission.disabled}
+              styles={customStyles}
+              components={{DropdownIndicator}}
+            />
 
+            <Select
+              id='s6'
+              getOptionLabel={(option) => option.value}
+              getOptionValue={(option) => option.id}
+              placeholder={t('selectorBlock.wheel')}
+              value={wheel.value}
+              options={wheel.options}
+              onChange={onWheelChange}
+              isClearable
+              isDisabled={wheel.disabled}
+              styles={customStyles}
+              components={{DropdownIndicator}}
             />
           
           </div>

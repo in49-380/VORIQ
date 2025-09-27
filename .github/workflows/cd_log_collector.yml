@@ -1,0 +1,69 @@
+name: LOG parser
+
+on:
+  workflow_dispatch:
+
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    outputs:
+      container_logs: ${{ steps.get_logs_from_server.outputs.rlogs }}
+    steps:
+      - name: Add SSH key to agent
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.CICD_SSH_PRIVATE_KEY }}
+
+
+      - name: Get container logs over SSH
+        id: get_logs_from_server
+        # Здесь вы явно указываете имя пользователя, хост и команду
+        # Весь вывод команды будет захвачен в steps.get_logs_from_server.outputs.stdout
+        run: |
+          #log_data="$(ssh -o StrictHostKeyChecking=no ${{ secrets.CICD_SSH_USER }}@${{ secrets.CICD_SSH_HOST }} 'docker logs --tail 50 dev-back-java-parser 2>&1')"
+          log_data="$(ssh -o StrictHostKeyChecking=no ${{ secrets.CICD_SSH_USER }}@${{ secrets.CICD_SSH_HOST }} 'docker logs dev-back-java-parser 2>&1 | grep -i error | tail -n 10')"
+          echo " "
+          echo " "
+          echo " "
+          echo "___REQUESTED LOGS___"
+          echo "$log_data"
+          echo "rlogs<<EOF" >> $GITHUB_OUTPUT
+          echo "$log_data" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+    
+
+      - name: Set logs output for failed run
+        id: set_logs_output
+        # if: failure()
+        run: |
+          echo "1 - ${{ steps.get_logs_from_server.outputs.rlogs }}"
+          echo "2 - container_logs"
+        env:
+          container_logs: ${{ steps.get_logs_from_server.outputs.rlogs }}
+
+
+  notify_on_failure:
+    runs-on: ubuntu-latest
+    needs: build_and_deploy
+    #if: failure()
+    steps:
+      - name: Send a Discord notification
+        uses: appleboy/discord-action@master
+        with:
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }} # WebHook URL
+          # webhook_id: ${{ secrets.DISCORD_WEBHOOK_URL }} # WebHook ID
+          # webhook_token: ${{ secrets.DISCORD_WEBHOOK_URL }} # WebHook Token
+          message: |
+            :v: **Requested LOGS!**
+            
+            **Repo**: `${{ github.repository }}`
+            **Branch**: `${{ github.ref_name }}`
+            **Commit**: `${{ github.sha }}`
+            **Run ID**: `${{ github.run_id }}`
+            **Deploy log link address**: `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`
+            **Deploy log direct link**: [LOGS](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            **LOGS:**
+            \`\`\`
+            ${{ needs.build_and_deploy.outputs.container_logs }}
+            \`\`\`
