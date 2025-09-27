@@ -1,8 +1,11 @@
 #commands string:
 #ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" down
+#ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" build
+#ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" build --no-cache <service_name>
 #ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d --build
 #ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d --no-deps --build <service_name>
 #ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d <service_name>
+#ENV=dev && ENV=$ENV docker compose -f <compose_file_name> --env-file .env --env-file .env."$ENV" up -d <service_name>
 #docker compose build <service1> [service2]
 #ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" ps --services
 #docker compose up --scale web=3 -d
@@ -22,14 +25,23 @@ networks:
     name: ${ENV-:test}-db-network
     driver: bridge
     internal: true
+  qa-network:
+    name: ${ENV-:test}-qa-network
+    external: true
 
 volumes:
-  proxy_data:
-    name: ${ENV}_proxy_data
+  proxy_nginx_conf:
+    name: ${ENV}_proxy_nginx_conf
+  proxy_certbot:
+    name: ${ENV}_proxy_certbot
   proxy_letsencrypt:
     name: ${ENV}_proxy_letsencrypt
+  proxy_data:
+    name: ${ENV}_proxy_data
   html:
     name: ${ENV}_html
+  nginx_conf:
+    name: ${ENV}_nginx_conf
   car_catalog_service_log:
     name: ${ENV}_car_catalog_service_log
   security_service_log:
@@ -44,16 +56,53 @@ volumes:
     name: pgadmin_data
 
 
+
 services:
   #${PROJECT}-${ENV}-front-node:
   #${PROJECT}-${ENV}-front-nginx:
   #${PROJECT}-${ENV}-back-security:
-  proxy:
-    image: 'jc21/nginx-proxy-manager:latest'
-    container_name: ${ENV}-proxy
+  proxy-traefik:
+    image: traefik:v3.5
+    container_name: ${ENV}-proxy-traefik
+    restart: unless-stopped
     networks:
       - app-network
+      - qa-network
+    ports:
+      - "9080:80"
+      - "9443:443"
+      # Откройте дашборд только для отладки
+      - "9880:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # Статическая конфигурация Traefik
+      # - ./traefik.yml:/traefik.yml:ro
+      # Файл для хранения сертификатов
+      # - ./acme.json:/acme.json
+    command:
+      # Включаем API и дашборд
+      - --api.dashboard=true
+      - --api.insecure=true
+      # Включаем провайдер Docker
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.network=app-network
+      # Определяем точки входа (порты)
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      # Настраиваем резолвер сертификатов Let's Encrypt
+      # - --certificatesresolvers.letsencrypt.acme.email=your-email@example.com
+      # - --certificatesresolvers.letsencrypt.acme.storage=acme.json
+      # - --certificatesresolvers.letsencrypt.acme.tlschallenge=true
+
+
+
+  proxy-npm:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: ${ENV}-proxy-npm
     restart: unless-stopped
+    networks:
+      - app-network
     ports:
       # These ports are in format <host-port>:<container-port>
       - ${PROXY_HTTP_PORTS} # Public HTTP Port
@@ -75,22 +124,32 @@ services:
       - proxy_letsencrypt:/etc/letsencrypt
     env_file:
       - .env.${ENV}
-  nginx:
-    image: nginx:latest
-    container_name: ${ENV}-nginx
+
+
+  proxy-nginx:
+    build:
+      #context: /home/$USER/VORIQ/frontend # absolute path to source code dir.
+      context: . # relative path to source code dir. relative to this (docker-compose.yml) file
+      dockerfile: ./${ENV}/proxy/nginx/Dockerfile # path to Dockerfile relative to CONTEXT dir.
+    image: ${ENV}-proxy-nginx:${TAG:-latest}
+    container_name: ${ENV}-proxy-nginx
+    restart: unless-stopped
+    networks:
+      - app-network
+      - qa-network
     # expose: # exposed by default
     #   - 80
     #   - 443
-    # ports:
-    #   - ${NGINX_HTTP_PORTS}
-    #   - ${NGINX_HTTPS_PORTS}
+    ports:
+      - ${PROXY_HTTP_PORTS:-80}
+      - ${PROXY_HTTPS_PORTS:-443}
     volumes:
-      - html:/usr/share/nginx/html/
-      # - ./nginx/conf.d:/etc/nginx/conf.d:ro
-      # - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-    networks:
-      - app-network
-    restart: unless-stopped
+      # - html:/usr/share/nginx/html/
+      #- proxy_nginx_conf:/etc/nginx/:ro
+      - ./${ENV}/proxy/nginx/proxy_nginx.conf:/etc/nginx/nginx.conf:ro
+      - proxy_certbot:/var/www/certbot
+      - proxy_letsencrypt:/etc/letsencrypt
+
     env_file:
       - .env.${ENV}
 
@@ -247,6 +306,42 @@ services:
         condition: service_healthy
 
 
+  back-java-parser:
+    build:
+      context: ../backend/java/parser_service # relative path to source code dir. relative to this (docker-compose.yml) file
+      dockerfile: ../../../devops/${ENV}/backend/java/parser_service/Dockerfile # path to Dockerfile relative to CONTEXT dir.
+      # args:
+      #   RELEASE: 17
+    image: ${ENV}-back-java-parser:${TAG:-latest}
+    container_name: ${ENV}-back-java-parser
+    networks:
+      - app-network
+      - db-network
+    env_file:
+      - .env.${ENV}
+    environment:
+      - SPRING_PROFILES_ACTIVE=${ENV}
+      - PORT=${BACK_JAVA_PARSER_CONT_PORT:-8080}
+      - DB_HOST=db
+      - DB_PORT=${POSTGRES_HOST_PORT}
+      - DB_NAME=${DB_NAME_PARSER}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+    ports:
+      - ${BACK_JAVA_PARSER_HOST_PORT}:${BACK_JAVA_PARSER_CONT_PORT}
+    logging:
+      driver: "local"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    tmpfs:
+      - /tmp
+
+
   redis:
     image: redis:7-alpine
     container_name: ${ENV}-redis
@@ -289,3 +384,5 @@ services:
     env_file:
       - .env
       - .env.${ENV}
+
+

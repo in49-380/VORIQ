@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.voriq.car_catalog_service.config.ApiPaths.DELAY;
+import static com.voriq.car_catalog_service.config.ApiPaths.TEST_BASE_URL;
+
 @RestController
-@RequestMapping("/v1/test")
+@RequestMapping(TEST_BASE_URL)
 @Profile("dev")
 public class TestController {
 
@@ -28,7 +31,7 @@ public class TestController {
 
             )}
     )
-    @GetMapping("/delay-ms")
+    @GetMapping(value = DELAY)
     public ResponseEntity<Void> delay(
             @RequestParam(defaultValue = "5000")
             @NotNull

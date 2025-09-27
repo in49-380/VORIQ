@@ -26,6 +26,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.voriq.car_catalog_service.config.ApiPaths.*;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 /**
@@ -59,32 +60,27 @@ public class SecurityConfig {
     @Value("${cors.allowed-origins}")
     private String allowedOrigins;
 
-    public static final String BRANDS_URL = "/v1/brands";
-
-    public static final String ENGINES_URL = "/v1/engines";
-
-    public static final String FUEL_TYPE_URL = "/v1/fuel-types";
-
-    public static final String CAR_ALL_URL = "/v1/cars";
-
-    public static final String CAR_ID_URL = "/v1/cars/by-id/{id}";
-
-    public static final String MODEL_BRAND_URL = "/v1/models/by-brand/{brand}";
-
-    public static final String YEAR_URL = "/v1/years";
-
-    public static final String TEST_DELAY_URL = "/v1/test/delay-ms";
-
-    public static final String CAR_CATALOG_BRANDS_URL="/v1/catalog/brands";
-    public static final String CAR_CATALOG_MODELS_URL="/v1/catalog/brands/{brandId}/models";
-    public static final String CAR_CATALOG_YEARS_URL="/v1/catalog/brands/{brandId}/models/{modelId}/years";
-    public static final String CAR_CATALOG_ENGINES_URL="/v1/catalog/brands/{brandId}/models/{modelId}/years/{yearId}/engines";
-    public static final String CAR_CATALOG_TRANSMISSIONS_URL="/v1/catalog/brands/{brandId}/" +
-            "models/{modelId}/years/{yearId}/engines/{engineId}/transmissions";
-    public static final String CAR_CATALOG_WHEEL_DRIVES_URL="/v1/catalog/brands/{brandId}/models/{modelId}/years/{yearId}/" +
-            "engines/{engineId}/transmissions/{transmissionsId}/wheel_drive";
-    public static final String CAR_CATALOG_RESOLVE_URL="/v1/catalog/cars/resolve";
-
+    /**
+     * Builds and wires the primary {@link SecurityFilterChain}.
+     * <p>Key settings:</p>
+     * <ul>
+     *   <li>Disables CSRF and HTTP sessions (stateless via {@link SessionCreationPolicy#STATELESS}).</li>
+     *   <li>Enables CORS using {@link #corsConfigurationSource()}.</li>
+     *   <li>Permits Swagger/OpenAPI endpoints and {@code /error}.</li>
+     *   <li>Requires authentication for catalog read endpoints (GET) and resolve (POST).</li>
+     *   <li>Permits {@code GET}  for simple availability tests.</li>
+     *   <li>Denies all other requests.</li>
+     *   <li>Registers {@link TmpTokenAuthFilter} before {@link UsernamePasswordAuthenticationFilter}.</li>
+     *   <li>Configures custom {@link CustomAuthenticationEntryPoint} and
+     *       {@link CustomAccessDeniedHandler} for error handling.</li>
+     * </ul>
+     *
+     * @param http the {@link HttpSecurity} to configure
+     * @return the configured {@link SecurityFilterChain}
+     * @throws Exception if the security chain cannot be built
+     * @since 1.0.0
+     * @author RsLan
+     */
     @Bean
     public SecurityFilterChain configureAuth(HttpSecurity http) throws Exception {
 
@@ -96,24 +92,16 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/error").permitAll()
 
-                        .requestMatchers(HttpMethod.GET, BRANDS_URL).authenticated()
-                        .requestMatchers(HttpMethod.GET, ENGINES_URL).authenticated()
-                        .requestMatchers(HttpMethod.GET, FUEL_TYPE_URL).authenticated()
-                        .requestMatchers(HttpMethod.GET, CAR_ALL_URL).authenticated()
-                        .requestMatchers(HttpMethod.GET, CAR_ID_URL).authenticated()
-                        .requestMatchers(HttpMethod.GET, MODEL_BRAND_URL).authenticated()
-                        .requestMatchers(HttpMethod.GET, YEAR_URL).authenticated()
-
                         .requestMatchers(
                                 HttpMethod.GET,
-                                CAR_CATALOG_BRANDS_URL,
-                                CAR_CATALOG_MODELS_URL,
-                                CAR_CATALOG_YEARS_URL,
-                                CAR_CATALOG_ENGINES_URL,
-                                CAR_CATALOG_TRANSMISSIONS_URL,
-                                CAR_CATALOG_WHEEL_DRIVES_URL
+                                BRANDS_URL,
+                                MODELS_URL,
+                                YEARS_URL,
+                                ENGINES_URL,
+                                TRANSMISSIONS_URL,
+                                WHEEL_DRIVES_URL
                         ).authenticated()
-                        .requestMatchers(HttpMethod.POST, CAR_CATALOG_RESOLVE_URL).authenticated()
+                        .requestMatchers(HttpMethod.POST, RESOLVE_URL).authenticated()
 
                         .requestMatchers(HttpMethod.GET, TEST_DELAY_URL).permitAll()
 
@@ -134,6 +122,8 @@ public class SecurityConfig {
      * @param config boot-managed authentication configuration
      * @return the {@link AuthenticationManager}
      * @throws Exception if the manager cannot be created
+     * @since 1.0.0
+     * @author RsLan
      */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
@@ -142,20 +132,10 @@ public class SecurityConfig {
     }
 
     /**
-     * Configures OpenAPI with a Bearer (JWT) security scheme and a global security requirement.
-     *
-     * @return initialized {@link OpenAPI} bean
-     */
-    @Bean
-    public OpenAPI openAPI() {
-        return new OpenAPI().addSecurityItem(new SecurityRequirement()
-                        .addList("Bearer Authentication"))
-                .components(new Components()
-                        .addSecuritySchemes("Bearer Authentication", createAPIKeyScheme()));
-    }
-
-    /**
      * Defines the Bearer HTTP security scheme (UUID).
+     *
+     * @since 1.0.0
+     * @author RsLan
      */
     private SecurityScheme createAPIKeyScheme() {
         return new SecurityScheme().type(SecurityScheme.Type.HTTP)
@@ -169,6 +149,8 @@ public class SecurityConfig {
      * <p>Allowed methods: GET. Headers: *</p>
      *
      * @return source mapping all paths to the configured CORS settings
+     * @since 1.0.0
+     * @author RsLan
      */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

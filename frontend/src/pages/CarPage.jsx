@@ -5,7 +5,6 @@ import { useLoader } from '../hooks/useLoader.jsx';
 import useSelectState from '../hooks/useSelectState.jsx';
 import useSelect from '../hooks/useSelect.jsx';
 
-import {asyncRandomError} from '../api/asyncFunc.jsx';
 import SelectorBlock from '../components/Selectors/SelectorBlock.jsx';
 import ButtonBlock from '../components/Selectors/ButtonBlock.jsx';
 
@@ -18,7 +17,8 @@ const CarPage = () => {
   // const {t}=useTranslation()
 
   // const [res,setRes]=useState()
-  const {runApi, resultMessage, successResult}=useLoader()
+  // const {runApi, resultMessage, successResult}=useLoader()
+  const {successResult}=useLoader()
   const [currentStep, setCurrentStep]=useState(1)
   const {isNewSearch}=useSelect()
 
@@ -40,12 +40,17 @@ const CarPage = () => {
     const model=useSelectState (true)
     const year=useSelectState(true)
     const engine=useSelectState(true)  
+    const transmission=useSelectState(true)  
+    const wheel=useSelectState(true)  
 
     const hasAllValues = brand.value 
     && model.value 
     && year.value 
     && year.value.length > 0 
-    && engine.value;
+    && engine.value
+    && transmission.value
+    && wheel.value
+
   
   return (
     
@@ -84,20 +89,27 @@ const CarPage = () => {
       </div>} */}
 
       <div className='topCarSite'>
-       { currentStep>4 && !isNewSearch && hasAllValues &&
+       { currentStep>6 && !isNewSearch && hasAllValues &&
         <div className='carData'>
             <h2>You have selected this car:</h2>
             <div>
-            <strong>Brand:</strong> {brand.value.label} 
+            <strong>Brand:</strong> {brand.value.value} 
           </div>
           <div>
-            <strong>Model:</strong> {model.value.label} 
+            <strong>Model:</strong> {model.value.value} 
           </div>
           <div>
-            <strong>Years:</strong> {year.value.map(y=>y.label).join(', ')}
+            <strong>Years:</strong> {year.value.map(y=>y.value).join(', ')}
           </div>
           <div>
-            <strong>Engine:</strong> {engine.value.label} 
+            <strong>Engine:</strong> {engine.value.value} 
+          </div>
+          <div>
+            <strong>Transmission:</strong> {transmission.value.value} 
+          </div>
+          <div>
+            <strong>Wheel drive:</strong> {wheel.value.value} 
+
           </div>
           <h2>Click <strong>Analyze</strong> and we will collect the data for you.</h2>
         </div>}
@@ -114,6 +126,8 @@ const CarPage = () => {
         model={model}
         year={year}
         engine={engine}
+        transmission={transmission}
+        wheel={wheel}
         setCurrentStep={setCurrentStep}
       />
 
@@ -122,6 +136,8 @@ const CarPage = () => {
         model={model}
         year={year}
         engine={engine}
+        transmission={transmission}
+        wheel={wheel}
         setCurrentStep={setCurrentStep}
       />
 

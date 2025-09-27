@@ -1,4 +1,5 @@
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -28,5 +29,15 @@ public class FirstSecurityServiceTest extends BaseSecurityTest {
                 .statusCode(200)
                 .contentType(ContentType.JSON);
         //.log().all();
+    }
+
+    @Test
+    @Disabled
+    public void secondTest() {
+        given()
+                .when().log().all()
+                .options(getConfig("objectTokenIssuance"))
+                .then().log().all()
+                .statusCode(200);
     }
 }

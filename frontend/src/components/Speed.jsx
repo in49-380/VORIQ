@@ -52,8 +52,9 @@ const Speed=()=>{
 })
 
     return(
-       <div class="speedometer">
-        <svg viewBox="0 0 220 120"  class="dial">
+       <div className="speedometer">
+        <svg viewBox="0 0 220 120"  className="dial">
+
 
        <defs>
         <linearGradient id="arcGradient" x1="0%" y1="0%" x2="100%" y2="0%">

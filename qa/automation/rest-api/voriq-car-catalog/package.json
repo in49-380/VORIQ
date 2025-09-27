@@ -1,0 +1,10 @@
+{
+  "name": "voriq-car-catalog-api-tests",
+  "version": "1.0.0",
+  
+  "scripts": {
+    "test:api": "node run-tests.js",
+    "serve:allure": "npx serve -s allure-report"
+  }
+
+}
