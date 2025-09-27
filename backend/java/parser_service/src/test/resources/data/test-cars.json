@@ -1,21 +1,35 @@
 [
   {
     "brand": "Acura",
-    "name": "Adx",
-    "year": "2025",
-    "Engine type": "ICE",
-    "Fuel type": "Petrol",
-    "Transmission type": "CVT",
-    "Drive": "Front"
+    "model": "Adx",
+    "year": 2025,
+    "marketing_name": "CVT",
+    "displacement": 1.5,
+    "engine_type": "ICE",
+    "fuel_type": "Petrol",
+    "transmission_type": true,
+    "drive": "Front"
   },
   {
     "brand": "Alpina",
-    "name": "D5 s touring",
-    "year": "2020",
-    "Engine type": "ICE",
-    "Fuel type": "Diesel",
-    "Transmission type": "Machine",
-    "Number of gears": "8",
-    "Drive": "Full"
+    "model": "Ilx",
+    "year": 2015,
+    "marketing_name": "Robot 2 Clip",
+    "displacement": 2.4,
+    "engine_type": "ICE",
+    "fuel_type": "Petrol",
+    "transmission_type": false,
+    "number_gears": "8",
+    "drive": "Front"
+  },
+  {
+    "brand": "Citroen",
+    "model": "E-c4",
+    "year": 2020,
+    "marketing_name": "Multidimensional clutch robot",
+    "displacement": 115.0,
+    "engine_type": "Electric",
+    "transmission_type": true,
+    "drive": "Front"
   }
 ]

@@ -7,5 +7,9 @@ import java.util.Optional;
 
 @Repository
 public interface TransmissionRepository extends JpaRepository<Transmission, Long> {
-    Optional<Transmission> findByMarketingNameIgnoreCase(String marketingName);
+    Optional<Transmission> findByMarketingNameIgnoreCaseAndGearsAndManual(
+            String marketingName,
+            Integer gears,
+            Boolean manual
+    );
 }

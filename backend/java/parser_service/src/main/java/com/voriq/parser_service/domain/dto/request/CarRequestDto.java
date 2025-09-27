@@ -13,25 +13,33 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CarRequestDto {
 
+    @NotNull(message = "Brand cannot be null")
     private String brand;
-    private String name; // name of model
-    private String year;
 
-    @JsonProperty("Engine type")
+    @NotNull(message = "Model cannot be null")
+    private String model; // name of model
+
+    private Integer year;
+
+    @JsonProperty("marketing_name")
+    private String marketingName;
+
+    @JsonProperty("displacement")
+    private Double displacementCC;
+
+    @JsonProperty("engine_type")
     @NotNull(message = "Engine type cannot be null")
     private String engineType;
 
-    @JsonProperty("Fuel type")
-    @NotNull(message = "Fuel type cannot be null")
+    @JsonProperty("fuel_type")
     private String fuelType;
 
-    @JsonProperty("Transmission type")
-    @NotNull(message = "Transmission type cannot be null")
-    private String transmissionType;
+    @JsonProperty("transmission_type")
+    private Boolean manual; // manual of transmission
 
-    @JsonProperty("Number of gears")
+    @JsonProperty("number_gears")
     private Integer gears;
 
-    @JsonProperty("Drive")
+    @JsonProperty("drive")
     private String drive; // name of whilldrive
 }
