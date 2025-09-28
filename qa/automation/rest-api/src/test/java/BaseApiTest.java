@@ -7,17 +7,14 @@ import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.params.provider.Arguments;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.stream.Stream;
 
 import static io.restassured.RestAssured.reset;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 public class BaseApiTest {
 
@@ -65,8 +62,16 @@ public class BaseApiTest {
         s = s.replace("{engineId}", getConfig("engineId"));
         s = s.replace("{transmissionId}", getConfig("transmissionId"));
         s = s.replace("{objectCarCatalog}", getConfig("objectCarCatalog"));
+        s = s.replace("{objectTokenIssuance}", getConfig("objectTokenIssuance"));
+        s = s.replace("{userId}", getConfig("userId"));
+        s = s.replace("{key}", getConfig("key"));
+        s = s.replace("{token}", getConfig("token"));
+
         return s;
     }
+
+
+
 
 
     RequestSpecification spec(Service svc) {
@@ -77,17 +82,6 @@ public class BaseApiTest {
 
     protected static String getConfig(String key) {
         return cfg.getProperty(key);
-    }
-
-    static Stream<Arguments> suffixAndSchema() {
-        return Stream.of(
-                arguments("objectCarBrands", "brands-schema.json"),
-                arguments("objectCarModels", "models-schema.json"),
-                arguments("objectCarYears", "years-schema.json"),
-                arguments("objectCarEngines", "engines-schema.json"),
-                arguments("objectCarTransmissions", "transmissions-schema.json"),
-                arguments("objectCarWheelDrive", "wheel_drive-schema.json")
-        );
     }
 
     protected final ApiWrapper apiWrapper = new ApiWrapper(this::spec);

@@ -11,14 +11,9 @@ import java.util.function.Function;
 import static io.restassured.RestAssured.given;
 
 
-public class ApiWrapper {
+public record ApiWrapper(Function<Service, RequestSpecification> specProvider) {
     private final static int DEFAULT_STATUS_CODE_GET = 200;
     private final static int DEFAULT_STATUS_CODE_POST = 200;
-    private final Function<Service, RequestSpecification> specProvider;
-
-    public ApiWrapper(Function<Service, RequestSpecification> specProvider) {
-        this.specProvider = specProvider;
-    }
 
     @Step("GET {path} [{svc}]")
     public ValidatableResponse sendGetRequest(Service svc,
@@ -50,7 +45,24 @@ public class ApiWrapper {
         return response.then();
     }
 
-    @Step("POST 200 {path} [{svc}]")
+
+    @Step("GET with status code {statusCode} und delay {delay} {path} [{svc}]")
+    public ValidatableResponse sendGetRequestWithDelayWithoutBodyStatusCode(Service svc,
+                                                                            String path, int delay, int statusCode) {
+        Response response = given()
+                .spec(specProvider.apply(svc))
+                .when()
+                .queryParam("delay", delay)
+                .get(path)
+                .then()
+                .statusCode(statusCode)
+                .log().ifValidationFails()
+                .extract().response();
+        return response.then();
+    }
+
+
+    @Step("POST {DEFAULT_STATUS_CODE_POST} {path} [{svc}]")
     public ValidatableResponse sendPostRequest(Service svc,
                                                String path, Object body) {
         Response response = given()
@@ -81,4 +93,21 @@ public class ApiWrapper {
                 .extract().response();
         return response.then();
     }
+
+    @Step("POST with status code {statusCode} {path} [{svc}]")
+    public ValidatableResponse sendPostRequestWithoutBodyStatusCode(Service svc,
+                                                                    String path, int statusCode) {
+        Response response = given()
+                .spec(specProvider.apply(svc))
+                .when()
+                .post(path)
+                .then()
+                .statusCode(statusCode)
+                .contentType(ContentType.JSON)
+                .log().ifValidationFails()
+                .extract().response();
+        return response.then();
+    }
+
+
 }
