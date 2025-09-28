@@ -18,8 +18,6 @@ import static io.restassured.RestAssured.reset;
 
 public class BaseApiTest {
 
-    static final Integer IDMAX = 99999;
-
 
     protected static Properties cfg;
     public static final Map<Service, RequestSpecification> SPECS = new EnumMap<>(Service.class);
@@ -69,9 +67,6 @@ public class BaseApiTest {
 
         return s;
     }
-
-
-
 
 
     RequestSpecification spec(Service svc) {

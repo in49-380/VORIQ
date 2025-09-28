@@ -1,20 +1,16 @@
 import Utils.Service;
+import Utils.TestDataHelper;
 import io.qameta.allure.Owner;
 import io.restassured.http.ContentType;
-import org.example.CarResolve;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.stream.Stream;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 public class NegativeCarCatalogTest extends BaseApiTest {
 
@@ -35,139 +31,6 @@ public class NegativeCarCatalogTest extends BaseApiTest {
                 .body("message[0]", equalTo("Unauthorized access"));
     }
 
-    @Test
-    @Tag("negative")
-    @Owner("Borys Pedorenko")
-    public void getCarIdCarNotFound() {
-
-        CarResolve carResolve = new CarResolve(
-                Integer.parseInt(getConfig("brandId")),
-                Integer.parseInt(getConfig("modelId")),
-                Integer.parseInt(getConfig("yearId")),
-                IDMAX,
-                Integer.parseInt(getConfig("transmissionId")),
-                Integer.parseInt(getConfig("wheelDriveId")));
-
-        apiWrapper.sendPostRequestStatusCode(Service.CATALOG, resolve("objectCarResolve"), carResolve, 404).log().all()
-                .body("size()", greaterThan(0))
-                .body(matchesJsonSchemaInClasspath("error_response-schema.json"))
-                .body("message[0]", equalTo("Car not found"));
-    }
-
-    @ParameterizedTest(name = "[{index}] GET {0}")
-    @Tag("negative")
-    @Owner("Borys Pedorenko")
-    @DisplayName("Request for a car ID if the value of one of the parameters is null")
-    @MethodSource("ObjectCarResolveNull")
-    public void getCarIdCarBadRequest(CarResolve carResolve) {
-
-        apiWrapper.sendPostRequestStatusCode(Service.CATALOG, resolve("objectCarResolve"), carResolve, 400)
-                .body("size()", greaterThan(0))
-                .body(matchesJsonSchemaInClasspath("error_bed_request-schema.json"))
-                .body("message[0]", equalTo("The error of validation of the request"));
-    }
-
-
-    static Stream<Arguments> ObjectCarResolveNull() {
-        return Stream.of(
-                arguments(new CarResolve(null,
-                        Integer.parseInt(getConfig("modelId")),
-                        Integer.parseInt(getConfig("yearId")),
-                        Integer.parseInt(getConfig("engineId")),
-                        Integer.parseInt(getConfig("transmissionId")),
-                        Integer.parseInt(getConfig("wheelDriveId")))),
-                arguments(new CarResolve(Integer.parseInt(getConfig("brandId")),
-                        null,
-                        Integer.parseInt(getConfig("yearId")),
-                        Integer.parseInt(getConfig("engineId")),
-                        Integer.parseInt(getConfig("transmissionId")),
-                        Integer.parseInt(getConfig("wheelDriveId")))),
-                arguments(new CarResolve(Integer.parseInt(getConfig("brandId")),
-                        Integer.parseInt(getConfig("modelId")),
-                        null,
-                        Integer.parseInt(getConfig("engineId")),
-                        Integer.parseInt(getConfig("transmissionId")),
-                        Integer.parseInt(getConfig("wheelDriveId")))),
-                arguments(new CarResolve(Integer.parseInt(getConfig("brandId")),
-                        Integer.parseInt(getConfig("modelId")),
-                        Integer.parseInt(getConfig("yearId")),
-                        null,
-                        Integer.parseInt(getConfig("transmissionId")),
-                        Integer.parseInt(getConfig("wheelDriveId")))),
-                arguments(new CarResolve(Integer.parseInt(getConfig("brandId")),
-                        Integer.parseInt(getConfig("modelId")),
-                        Integer.parseInt(getConfig("yearId")),
-                        Integer.parseInt(getConfig("engineId")),
-                        null,
-                        Integer.parseInt(getConfig("wheelDriveId")))),
-                arguments(new CarResolve(Integer.parseInt(getConfig("brandId")),
-                        Integer.parseInt(getConfig("modelId")),
-                        Integer.parseInt(getConfig("yearId")),
-                        Integer.parseInt(getConfig("engineId")),
-                        Integer.parseInt(getConfig("transmissionId")),
-                        null)));
-    }
-
-    @ParameterizedTest(name = "[{index}] GET {0}")
-    @Tag("negative")
-    @Owner("Borys Pedorenko")
-    @DisplayName("Request for a car ID if the value of one of the parameters is less than 0")
-    @MethodSource("ObjectCarResolveMinus")
-    public void getCarIdCarBadRequestMinus(CarResolve carResolve) {
-
-        apiWrapper.sendPostRequestStatusCode(Service.CATALOG, resolve("objectCarResolve"), carResolve, 400)
-                .body("size()", greaterThan(0))
-                .body(matchesJsonSchemaInClasspath("error_bed_request-schema.json"))
-                .body("message[0]", equalTo("The error of validation of the request"));
-    }
-
-    static Stream<Arguments> ObjectCarResolveMinus() {
-
-        return Stream.of(
-                arguments(new CarResolve(-1,
-                        Integer.parseInt(getConfig("modelId")),
-                        Integer.parseInt(getConfig("yearId")),
-                        Integer.parseInt(getConfig("engineId")),
-                        Integer.parseInt(getConfig("transmissionId")),
-                        Integer.parseInt(getConfig("wheelDriveId")))),
-                arguments(new CarResolve(Integer.parseInt(getConfig("brandId")),
-                        -1,
-                        Integer.parseInt(getConfig("yearId")),
-                        Integer.parseInt(getConfig("engineId")),
-                        Integer.parseInt(getConfig("transmissionId")),
-                        Integer.parseInt(getConfig("wheelDriveId")))),
-                arguments(new CarResolve(Integer.parseInt(getConfig("brandId")),
-                        Integer.parseInt(getConfig("modelId")),
-                        -1,
-                        Integer.parseInt(getConfig("engineId")),
-                        Integer.parseInt(getConfig("transmissionId")),
-                        Integer.parseInt(getConfig("wheelDriveId")))),
-                arguments(new CarResolve(Integer.parseInt(getConfig("brandId")),
-                        Integer.parseInt(getConfig("modelId")),
-                        Integer.parseInt(getConfig("yearId")),
-                        -1,
-                        Integer.parseInt(getConfig("transmissionId")),
-                        Integer.parseInt(getConfig("wheelDriveId")))),
-                arguments(new CarResolve(Integer.parseInt(getConfig("brandId")),
-                        Integer.parseInt(getConfig("modelId")),
-                        Integer.parseInt(getConfig("yearId")),
-                        Integer.parseInt(getConfig("engineId")),
-                        -1,
-                        Integer.parseInt(getConfig("wheelDriveId")))),
-                arguments(new CarResolve(Integer.parseInt(getConfig("brandId")),
-                        Integer.parseInt(getConfig("modelId")),
-                        Integer.parseInt(getConfig("yearId")),
-                        Integer.parseInt(getConfig("engineId")),
-                        Integer.parseInt(getConfig("transmissionId")),
-                        -1)));
-    }
-
-
-
-
-
-
-
     int delay = -1000;
 
     @Test
@@ -177,9 +40,60 @@ public class NegativeCarCatalogTest extends BaseApiTest {
     public void testController() {
 
         apiWrapper.sendGetRequestWithDelayWithoutBodyStatusCode(Service.CATALOG,
-                        resolve("objectTestController"), delay, 400).log().all()
+                        resolve("objectTestController"), delay, 400)
                 .body(matchesJsonSchemaInClasspath("error_bed_request-schema.json"))
                 .body("validationErrors[0].field", nullValue())
                 .body("validationErrors.message", hasItem(containsString("Delay should be more than ")));
+    }
+
+
+    static java.util.stream.Stream<org.junit.jupiter.params.provider.Arguments> objectCarResolveMax() {
+        return TestDataHelper.carResolveMAX(BaseApiTest::getConfig);
+    }
+
+    @ParameterizedTest(name = "[{index}] GET {0}")
+    @Tag("negative")
+    @Owner("Borys Pedorenko")
+    @DisplayName("400 при MAX в одном из параметров")
+    @MethodSource("objectCarResolveMax")
+    void getCarIdCarBadRequestMax(org.example.CarResolve carResolve) {
+        apiWrapper.sendPostRequestStatusCode(Service.CATALOG, resolve("objectCarResolve"), carResolve, 404)
+                .body("size()", greaterThan(0))
+                .body(matchesJsonSchemaInClasspath("error_response-schema.json"))
+                .body("message[0]", equalTo("Car not found"));
+    }
+
+
+    static java.util.stream.Stream<org.junit.jupiter.params.provider.Arguments> objectCarResolveNull() {
+        return TestDataHelper.carResolveNullArgs(BaseApiTest::getConfig);
+    }
+
+    @ParameterizedTest(name = "[{index}] GET {0}")
+    @Tag("negative")
+    @Owner("Borys Pedorenko")
+    @DisplayName("400 при null в одном из параметров")
+    @MethodSource("objectCarResolveNull")
+    void getCarIdCarBadRequest_null(org.example.CarResolve carResolve) {
+        apiWrapper.sendPostRequestStatusCode(Service.CATALOG, resolve("objectCarResolve"), carResolve, 400)
+                .body("size()", greaterThan(0))
+                .body(matchesJsonSchemaInClasspath("error_bed_request-schema.json"))
+                .body("message[0]", equalTo("The error of validation of the request"));
+    }
+
+
+    static java.util.stream.Stream<org.junit.jupiter.params.provider.Arguments> objectCarResolveMinusOne() {
+        return TestDataHelper.carResolveMinusOneArgs(BaseApiTest::getConfig);
+    }
+
+    @ParameterizedTest(name = "[{index}] GET {0}")
+    @Tag("negative")
+    @Owner("Borys Pedorenko")
+    @DisplayName("400 при -1 в одном из параметров")
+    @MethodSource("objectCarResolveMinusOne")
+    void getCarIdCarBadRequest_minusOne(org.example.CarResolve carResolve) {
+        apiWrapper.sendPostRequestStatusCode(Service.CATALOG, resolve("objectCarResolve"), carResolve, 400)
+                .body("size()", greaterThan(0))
+                .body(matchesJsonSchemaInClasspath("error_bed_request-schema.json"))
+                .body("message[0]", equalTo("The error of validation of the request"));
     }
 }
