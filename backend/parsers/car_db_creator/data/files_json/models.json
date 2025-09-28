@@ -1766,6 +1766,13 @@
     {
         "brand_name": "BMW",
         "brand_id": 9,
+        "year": 2025,
+        "model": "iX3 (NA5) 2025",
+        "id_model_infocar": "7323"
+    },
+    {
+        "brand_name": "BMW",
+        "brand_id": 9,
         "year": 2015,
         "model": "M2 Coupe (F87) 2015",
         "id_model_infocar": "4586"
@@ -7128,6 +7135,13 @@
     {
         "brand_name": "Jeep",
         "brand_id": 47,
+        "year": 2025,
+        "model": "Cherokee 2025",
+        "id_model_infocar": "7324"
+    },
+    {
+        "brand_name": "Jeep",
+        "brand_id": 47,
         "year": 2017,
         "model": "Compass 2017",
         "id_model_infocar": "5237"
@@ -7219,6 +7233,13 @@
     {
         "brand_name": "Jetour",
         "brand_id": 48,
+        "year": 2024,
+        "model": "T1 2024",
+        "id_model_infocar": "7322"
+    },
+    {
+        "brand_name": "Jetour",
+        "brand_id": 48,
         "year": 2023,
         "model": "T2 2023",
         "id_model_infocar": "7151"
@@ -7285,6 +7306,13 @@
         "year": 2020,
         "model": "X90 2020",
         "id_model_infocar": "6335"
+    },
+    {
+        "brand_name": "Jetour",
+        "brand_id": 48,
+        "year": 2023,
+        "model": "X90 Plus 2023",
+        "id_model_infocar": "7321"
     },
     {
         "brand_name": "Jetour",
@@ -7467,6 +7495,13 @@
         "year": 2025,
         "model": "EV4 Fastback 2025",
         "id_model_infocar": "7320"
+    },
+    {
+        "brand_name": "KIA",
+        "brand_id": 50,
+        "year": 2025,
+        "model": "EV5 2025",
+        "id_model_infocar": "7326"
     },
     {
         "brand_name": "KIA",
@@ -7662,14 +7697,14 @@
         "brand_id": 50,
         "year": 2015,
         "model": "Picanto 2015",
-        "id_model_infocar": "4569"
+        "id_model_infocar": "4387"
     },
     {
         "brand_name": "KIA",
         "brand_id": 50,
         "year": 2015,
         "model": "Picanto 2015",
-        "id_model_infocar": "4387"
+        "id_model_infocar": "4569"
     },
     {
         "brand_name": "KIA",
@@ -7767,13 +7802,6 @@
         "brand_id": 50,
         "year": 2015,
         "model": "Rio Hatchback 2015",
-        "id_model_infocar": "4464"
-    },
-    {
-        "brand_name": "KIA",
-        "brand_id": 50,
-        "year": 2015,
-        "model": "Rio Hatchback 2015",
         "id_model_infocar": "4332"
     },
     {
@@ -7782,6 +7810,13 @@
         "year": 2015,
         "model": "Rio Hatchback 2015",
         "id_model_infocar": "4337"
+    },
+    {
+        "brand_name": "KIA",
+        "brand_id": 50,
+        "year": 2015,
+        "model": "Rio Hatchback 2015",
+        "id_model_infocar": "4464"
     },
     {
         "brand_name": "KIA",
@@ -7795,14 +7830,14 @@
         "brand_id": 50,
         "year": 2015,
         "model": "Rio Sedan 2015",
-        "id_model_infocar": "4336"
+        "id_model_infocar": "4331"
     },
     {
         "brand_name": "KIA",
         "brand_id": 50,
         "year": 2015,
         "model": "Rio Sedan 2015",
-        "id_model_infocar": "4331"
+        "id_model_infocar": "4336"
     },
     {
         "brand_name": "KIA",
@@ -11375,6 +11410,13 @@
         "id_model_infocar": "7118"
     },
     {
+        "brand_name": "Polestar",
+        "brand_id": 69,
+        "year": 2025,
+        "model": "5 2025",
+        "id_model_infocar": "7327"
+    },
+    {
         "brand_name": "Porsche",
         "brand_id": 70,
         "year": 2016,
@@ -13017,14 +13059,14 @@
         "brand_id": 84,
         "year": 2017,
         "model": "Impreza 2017",
-        "id_model_infocar": "5079"
+        "id_model_infocar": "5080"
     },
     {
         "brand_name": "Subaru",
         "brand_id": 84,
         "year": 2017,
         "model": "Impreza 2017",
-        "id_model_infocar": "5080"
+        "id_model_infocar": "5079"
     },
     {
         "brand_name": "Subaru",
@@ -14453,6 +14495,13 @@
         "year": 2021,
         "model": "T-Roc 2021",
         "id_model_infocar": "6862"
+    },
+    {
+        "brand_name": "Volkswagen",
+        "brand_id": 89,
+        "year": 2025,
+        "model": "T-Roc 2025",
+        "id_model_infocar": "7325"
     },
     {
         "brand_name": "Volkswagen",

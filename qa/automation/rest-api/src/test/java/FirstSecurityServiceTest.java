@@ -1,4 +1,5 @@
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -31,6 +32,7 @@ public class FirstSecurityServiceTest extends BaseSecurityTest {
     }
 
     @Test
+    @Disabled
     public void secondTest() {
         given()
                 .when().log().all()

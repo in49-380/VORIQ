@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "timestamp": {
+      "type": "string"
+    },
+    "status": {
+      "type": "integer"
+    },
+    "error": {
+      "type": "string"
+    },
+    "message": {
+      "type": "array",
+      "items": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "path": {
+      "type": "string"
+    },
+    "validationErrors": {
+      "type": "null"
+    }
+  },
+  "required": [
+    "timestamp",
+    "status",
+    "error",
+    "message",
+    "path",
+    "validationErrors"
+  ]
+}

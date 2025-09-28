@@ -1,4 +1,34 @@
+import re
 from .save_load_data import load_json, save_json
+
+def extract_displacement(raw_value):
+    """
+    Extracts the first numeric value (integer or float) from a raw string input.
+    Returns the value as a float if found, otherwise returns None.
+
+    :param raw_value: Raw input value (typically a string) containing numeric data
+    :return: Float representation of the first number found, or None if no valid number is present
+    """
+    match = re.search(r"\d+(\.\d+)?", str(raw_value))
+    if match:
+        return float(match.group())
+    return None
+
+def extract_transmission_type(car: dict):
+    """
+    Normalizes specific fields in a car dictionary:
+    - Converts 'displacement' to float.
+    - Converts 'transmission_type' to boolean: False if 'Mechanics', else True.
+
+    :param car: Dictionary containing car attributes.
+    :return: Updated dictionary with normalized fields.
+    """
+    for key in car:
+        if key == "displacement":
+            car[key] = extract_displacement(car[key])
+        elif key == "transmission_type":
+            car[key] = False if car[key] == "Mechanics" else True
+    return car
 
 def parser_table(input_table):
     """
@@ -56,6 +86,7 @@ def extract_unique_records(name_file='cars_en.json', find_element=''):
     file_name_db = f"{find_element}_db.json"
     return save_json(elements_list, file_name_db.lower(), "db_json")
 
+
 def add_if_exists(target_dict, source_dict, key):
     """
     Adds a key-value pair from the source dictionary to the target dictionary
@@ -66,6 +97,17 @@ def add_if_exists(target_dict, source_dict, key):
     :param key: Key to check and copy from source to target
     :return: None
     """
+
     value = source_dict.get(key)
     if value is not None:
         target_dict[key] = value
+
+def add_element(source_dict,key):
+
+    value = source_dict.get(key)
+    return value
+
+
+
+
+

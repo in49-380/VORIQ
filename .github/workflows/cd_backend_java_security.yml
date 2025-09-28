@@ -5,8 +5,8 @@ on:
     branches:
       - '**'
     paths:
-      - 'backend/java/security_service**'
-      - 'devops/dev/backend/java/security_service**'
+      - 'backend/java/security_service/**'
+      - 'devops/dev/backend/java/security_service/**'
   workflow_dispatch:
 
 concurrency:
@@ -45,11 +45,12 @@ jobs:
             cd "$REPO_DIR"
 
             # get the latest changes
-            git clean -fdx
-            git reset --hard "$TAG_SHA"
+            #git clean -fdx
+            git reset --hard
             git fetch --all --prune
+            git pull --all
             git checkout -B "$BRANCH" "$TAG_SHA"
-            git pull origin "$BRANCH"
+            #git pull origin "$BRANCH"
 
             # go to the code directory  
             cd "$REPO_DIR/frontend"
@@ -87,7 +88,7 @@ jobs:
             sleep 20
 
             # get container id of the just started container
-            CONTAINER=$(ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" ps -q back-java-security)
+            CONTAINER_ID=$(ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" ps -q back-java-security)
 
             # checking container status.
             if [ "$(docker inspect -f {{.State.Running}} $CONTAINER_ID)" != "true" ] || [ "$(docker inspect -f {{.State.Restarting}} $CONTAINER_ID)" = "true" ] ; then

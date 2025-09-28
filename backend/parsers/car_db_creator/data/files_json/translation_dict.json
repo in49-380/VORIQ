@@ -1,5 +1,5 @@
 {
-    "Двигатель": "engine",
+    "Двигатель": "displacement",
     "Тип двигателя": "engine_type",
     "Код двигателя": "engine_code",
     "Тип топлива": "fuel_type",

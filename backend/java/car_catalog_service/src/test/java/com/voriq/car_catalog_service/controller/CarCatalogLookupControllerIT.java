@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,8 +28,7 @@ import org.springframework.web.util.UriTemplate;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static com.voriq.car_catalog_service.config.SecurityConfig.*;
-import static com.voriq.car_catalog_service.config.initialaler.RedisTmpTokenInitializer.removeOldTmpToken;
+import static com.voriq.car_catalog_service.config.ApiPaths.*;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.*;
@@ -53,9 +51,6 @@ class CarCatalogLookupControllerIT {
     @Value("${tmp-token.1}")
     private String tmpToken1;
 
-    @Value("${tmp-token.prefix}")
-    private String prefix;
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -67,9 +62,6 @@ class CarCatalogLookupControllerIT {
 
     @MockitoSpyBean
     private CarCatalogServiceImpl carCatalogService;
-
-    @Autowired
-    private StringRedisTemplate redisTemplate;
 
     private ErrorResponse checkErrorResponseResult(
             MvcResult result,
@@ -87,7 +79,7 @@ class CarCatalogLookupControllerIT {
 
     private List<IdValueResponseDto> getBrands() throws Exception {
 
-        MvcResult result = mockMvc.perform(get(CAR_CATALOG_BRANDS_URL)
+        MvcResult result = mockMvc.perform(get(BRANDS_URL)
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + tmpToken1))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -108,7 +100,7 @@ class CarCatalogLookupControllerIT {
     //========================
     private List<IdValueResponseDto> getModelsByBrand(Long id) throws Exception {
 
-        MvcResult result = mockMvc.perform(get(CAR_CATALOG_MODELS_URL, id)
+        MvcResult result = mockMvc.perform(get(MODELS_URL, id)
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + tmpToken1))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -132,7 +124,7 @@ class CarCatalogLookupControllerIT {
     //========================
     private List<IdValueResponseDto> getYears(Long brandId, Long modelId) throws Exception {
 
-        MvcResult result = mockMvc.perform(get(CAR_CATALOG_YEARS_URL, brandId, modelId)
+        MvcResult result = mockMvc.perform(get(YEARS_URL, brandId, modelId)
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + tmpToken1))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -158,7 +150,7 @@ class CarCatalogLookupControllerIT {
     //========================
     private List<IdValueResponseDto> getEngines(Long brandId, Long modelId, Long yearId) throws Exception {
 
-        MvcResult result = mockMvc.perform(get(CAR_CATALOG_ENGINES_URL, brandId, modelId, yearId)
+        MvcResult result = mockMvc.perform(get(ENGINES_URL, brandId, modelId, yearId)
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + tmpToken1))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -189,7 +181,7 @@ class CarCatalogLookupControllerIT {
                                                       Long engineId) throws Exception {
 
         MvcResult result = mockMvc.perform(get(
-                        CAR_CATALOG_TRANSMISSIONS_URL,
+                        TRANSMISSIONS_URL,
                         brandId,
                         modelId,
                         yearId,
@@ -226,7 +218,7 @@ class CarCatalogLookupControllerIT {
                                                     Long transmissionId) throws Exception {
 
         MvcResult result = mockMvc.perform(get(
-                        CAR_CATALOG_WHEEL_DRIVES_URL,
+                        WHEEL_DRIVES_URL,
                         brandId,
                         modelId,
                         yearId,
@@ -259,13 +251,8 @@ class CarCatalogLookupControllerIT {
     //========================
 
 
-    @AfterAll
-    void cleanRedis() {
-        removeOldTmpToken(redisTemplate, prefix);
-    }
-
     @Nested
-    @DisplayName("GET: /api" + CAR_CATALOG_BRANDS_URL)
+    @DisplayName("GET: /api" + BRANDS_URL)
     class getALlBrandsTests {
 
         @Test
@@ -283,35 +270,35 @@ class CarCatalogLookupControllerIT {
         @Order(2)
         public void get_all_brands_should_return_401_token_is_incorrect() throws Exception {
 
-            MvcResult result = mockMvc.perform(get(CAR_CATALOG_BRANDS_URL)
+            MvcResult result = mockMvc.perform(get(BRANDS_URL)
                             .header(HttpHeaders.AUTHORIZATION, "Bearer " + "Wrong token"))
                     .andExpect(status().isUnauthorized())
                     .andReturn();
 
-            checkErrorResponseResult(result, HttpStatus.UNAUTHORIZED, CAR_CATALOG_BRANDS_URL);
+            checkErrorResponseResult(result, HttpStatus.UNAUTHORIZED, BRANDS_URL);
         }
 
         @Test
         @Order(3)
         public void get_all_brands_should_return_401_header_authorization_is_null() throws Exception {
 
-            MvcResult result = mockMvc.perform(get(CAR_CATALOG_BRANDS_URL))
+            MvcResult result = mockMvc.perform(get(BRANDS_URL))
                     .andExpect(status().isUnauthorized())
                     .andReturn();
 
-            checkErrorResponseResult(result, HttpStatus.UNAUTHORIZED, CAR_CATALOG_BRANDS_URL);
+            checkErrorResponseResult(result, HttpStatus.UNAUTHORIZED, BRANDS_URL);
         }
 
         @Test
         @Order(4)
         public void get_all_brands_should_return_401_header_authorization_is_not_bearer() throws Exception {
 
-            MvcResult result = mockMvc.perform(get(CAR_CATALOG_BRANDS_URL)
+            MvcResult result = mockMvc.perform(get(BRANDS_URL)
                             .header(HttpHeaders.AUTHORIZATION, "Test " + tmpToken1))
                     .andExpect(status().isUnauthorized())
                     .andReturn();
 
-            checkErrorResponseResult(result, HttpStatus.UNAUTHORIZED, CAR_CATALOG_BRANDS_URL);
+            checkErrorResponseResult(result, HttpStatus.UNAUTHORIZED, BRANDS_URL);
         }
 
         @Test
@@ -321,12 +308,12 @@ class CarCatalogLookupControllerIT {
                 doThrow(new RuntimeException("Temporary service error."))
                         .when(carCatalogService).findALlBrands();
 
-                MvcResult result = mockMvc.perform(get(CAR_CATALOG_BRANDS_URL)
+                MvcResult result = mockMvc.perform(get(BRANDS_URL)
                                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tmpToken1))
                         .andExpect(status().isInternalServerError())
                         .andReturn();
 
-                checkErrorResponseResult(result, HttpStatus.INTERNAL_SERVER_ERROR, CAR_CATALOG_BRANDS_URL);
+                checkErrorResponseResult(result, HttpStatus.INTERNAL_SERVER_ERROR, BRANDS_URL);
             } finally {
                 reset(carCatalogService);
             }
@@ -339,12 +326,12 @@ class CarCatalogLookupControllerIT {
                 doThrow(new RuntimeException("DB down"))
                         .when(carCatalogRepository).findALlBrands();
 
-                MvcResult result = mockMvc.perform(get(CAR_CATALOG_BRANDS_URL)
+                MvcResult result = mockMvc.perform(get(BRANDS_URL)
                                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tmpToken1))
                         .andExpect(status().isServiceUnavailable())
                         .andReturn();
 
-                checkErrorResponseResult(result, HttpStatus.SERVICE_UNAVAILABLE, CAR_CATALOG_BRANDS_URL);
+                checkErrorResponseResult(result, HttpStatus.SERVICE_UNAVAILABLE, BRANDS_URL);
             } finally {
                 reset(carCatalogRepository);
             }
@@ -352,12 +339,12 @@ class CarCatalogLookupControllerIT {
     }
 
     @Nested
-    @DisplayName("GET: /api" + CAR_CATALOG_MODELS_URL)
+    @DisplayName("GET: /api" + MODELS_URL)
     class getModelsByBrandTests {
 
 
         private <B> String getURL(B brandId) {
-            return new UriTemplate(CAR_CATALOG_MODELS_URL).expand(brandId).toString();
+            return new UriTemplate(MODELS_URL).expand(brandId).toString();
         }
 
         @Test
@@ -387,7 +374,7 @@ class CarCatalogLookupControllerIT {
 
             String brandId = "test";
 
-            MvcResult result = mockMvc.perform(get(CAR_CATALOG_MODELS_URL, brandId)
+            MvcResult result = mockMvc.perform(get(MODELS_URL, brandId)
                             .header(HttpHeaders.AUTHORIZATION, "Bearer " + tmpToken1))
                     .andExpect(status().isBadRequest())
                     .andReturn();
@@ -403,7 +390,7 @@ class CarCatalogLookupControllerIT {
         @Order(4)
         public void get_models_by_brand_should_return_400_when_id_is_not_positive(Long brandId) throws Exception {
 
-            MvcResult result = mockMvc.perform(get(CAR_CATALOG_MODELS_URL, brandId)
+            MvcResult result = mockMvc.perform(get(MODELS_URL, brandId)
                             .header(HttpHeaders.AUTHORIZATION, "Bearer " + tmpToken1))
                     .andExpect(status().isBadRequest())
                     .andReturn();
@@ -417,7 +404,7 @@ class CarCatalogLookupControllerIT {
 
             Long brandId = getBrandId();
 
-            MvcResult result = mockMvc.perform(get(CAR_CATALOG_MODELS_URL, brandId)
+            MvcResult result = mockMvc.perform(get(MODELS_URL, brandId)
                             .header(HttpHeaders.AUTHORIZATION, "Bearer " + "Wrong token"))
                     .andExpect(status().isUnauthorized())
                     .andReturn();
@@ -431,7 +418,7 @@ class CarCatalogLookupControllerIT {
 
             Long brandId = getBrandId();
 
-            MvcResult result = mockMvc.perform(get(CAR_CATALOG_MODELS_URL, brandId))
+            MvcResult result = mockMvc.perform(get(MODELS_URL, brandId))
                     .andExpect(status().isUnauthorized())
                     .andReturn();
 
@@ -444,7 +431,7 @@ class CarCatalogLookupControllerIT {
 
             Long brandId = getBrandId();
 
-            MvcResult result = mockMvc.perform(get(CAR_CATALOG_MODELS_URL, brandId)
+            MvcResult result = mockMvc.perform(get(MODELS_URL, brandId)
                             .header(HttpHeaders.AUTHORIZATION, "Test " + tmpToken1))
                     .andExpect(status().isUnauthorized())
                     .andReturn();
@@ -460,7 +447,7 @@ class CarCatalogLookupControllerIT {
                 doThrow(new RuntimeException("Temporary service error."))
                         .when(carCatalogService).findModelsByBrand(brandId);
 
-                MvcResult result = mockMvc.perform(get(CAR_CATALOG_MODELS_URL, brandId)
+                MvcResult result = mockMvc.perform(get(MODELS_URL, brandId)
                                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tmpToken1))
                         .andExpect(status().isInternalServerError())
                         .andReturn();
@@ -479,7 +466,7 @@ class CarCatalogLookupControllerIT {
                 doThrow(new RuntimeException("DB down"))
                         .when(carCatalogRepository).findModelsByBrand(brandId);
 
-                MvcResult result = mockMvc.perform(get(CAR_CATALOG_MODELS_URL, brandId)
+                MvcResult result = mockMvc.perform(get(MODELS_URL, brandId)
                                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tmpToken1))
                         .andExpect(status().isServiceUnavailable())
                         .andReturn();
@@ -492,11 +479,11 @@ class CarCatalogLookupControllerIT {
     }
 
     @Nested
-    @DisplayName("GET: /api" + CAR_CATALOG_YEARS_URL)
+    @DisplayName("GET: /api" + YEARS_URL)
     class getYearsTests {
 
         private <B, M> String getURL(B brandId, M modelId) {
-            return new UriTemplate(CAR_CATALOG_YEARS_URL).expand(brandId, modelId).toString();
+            return new UriTemplate(YEARS_URL).expand(brandId, modelId).toString();
         }
 
         @Test
@@ -527,7 +514,7 @@ class CarCatalogLookupControllerIT {
             Long brandId = getBrandId();
             String modelId = "test";
 
-            MvcResult result = mockMvc.perform(get(CAR_CATALOG_YEARS_URL, brandId, modelId)
+            MvcResult result = mockMvc.perform(get(YEARS_URL, brandId, modelId)
                             .header(HttpHeaders.AUTHORIZATION, "Bearer " + tmpToken1))
                     .andExpect(status().isBadRequest())
                     .andReturn();
@@ -545,7 +532,7 @@ class CarCatalogLookupControllerIT {
 
             Long brandId = getBrandId();
 
-            MvcResult result = mockMvc.perform(get(CAR_CATALOG_YEARS_URL, brandId, modelId)
+            MvcResult result = mockMvc.perform(get(YEARS_URL, brandId, modelId)
                             .header(HttpHeaders.AUTHORIZATION, "Bearer " + tmpToken1))
                     .andExpect(status().isBadRequest())
                     .andReturn();
@@ -560,7 +547,7 @@ class CarCatalogLookupControllerIT {
             Long brandId = getBrandId();
             Long modelId = getModelId();
 
-            MvcResult result = mockMvc.perform(get(CAR_CATALOG_YEARS_URL, brandId, modelId)
+            MvcResult result = mockMvc.perform(get(YEARS_URL, brandId, modelId)
                             .header(HttpHeaders.AUTHORIZATION, "Bearer " + "Wrong token"))
                     .andExpect(status().isUnauthorized())
                     .andReturn();
@@ -575,7 +562,7 @@ class CarCatalogLookupControllerIT {
             Long brandId = getBrandId();
             Long modelId = getModelId();
 
-            MvcResult result = mockMvc.perform(get(CAR_CATALOG_YEARS_URL, brandId, modelId))
+            MvcResult result = mockMvc.perform(get(YEARS_URL, brandId, modelId))
                     .andExpect(status().isUnauthorized())
                     .andReturn();
 
@@ -589,7 +576,7 @@ class CarCatalogLookupControllerIT {
             Long brandId = getBrandId();
             Long modelId = getModelId();
 
-            MvcResult result = mockMvc.perform(get(CAR_CATALOG_YEARS_URL, brandId, modelId)
+            MvcResult result = mockMvc.perform(get(YEARS_URL, brandId, modelId)
                             .header(HttpHeaders.AUTHORIZATION, "Test " + tmpToken1))
                     .andExpect(status().isUnauthorized())
                     .andReturn();
@@ -606,7 +593,7 @@ class CarCatalogLookupControllerIT {
                 doThrow(new RuntimeException("Temporary service error."))
                         .when(carCatalogService).findYears(brandId, modelId);
 
-                MvcResult result = mockMvc.perform(get(CAR_CATALOG_YEARS_URL, brandId, modelId)
+                MvcResult result = mockMvc.perform(get(YEARS_URL, brandId, modelId)
                                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tmpToken1))
                         .andExpect(status().isInternalServerError())
                         .andReturn();
@@ -626,7 +613,7 @@ class CarCatalogLookupControllerIT {
                 doThrow(new RuntimeException("DB down"))
                         .when(carCatalogRepository).findYears(brandId, modelId);
 
-                MvcResult result = mockMvc.perform(get(CAR_CATALOG_YEARS_URL, brandId, modelId)
+                MvcResult result = mockMvc.perform(get(YEARS_URL, brandId, modelId)
                                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tmpToken1))
                         .andExpect(status().isServiceUnavailable())
                         .andReturn();
@@ -639,11 +626,11 @@ class CarCatalogLookupControllerIT {
     }
 
     @Nested
-    @DisplayName("GET: /api" + CAR_CATALOG_ENGINES_URL)
+    @DisplayName("GET: /api" + ENGINES_URL)
     class getEnginesTests {
 
         private <B, M, Y> String getURL(B brandId, M modelId, Y yearId) {
-            return new UriTemplate(CAR_CATALOG_ENGINES_URL).expand(brandId, modelId, yearId).toString();
+            return new UriTemplate(ENGINES_URL).expand(brandId, modelId, yearId).toString();
         }
 
         @Test
@@ -675,7 +662,7 @@ class CarCatalogLookupControllerIT {
             Long modelId = getModelId();
             String yearId = "test";
 
-            MvcResult result = mockMvc.perform(get(CAR_CATALOG_ENGINES_URL, brandId, modelId, yearId)
+            MvcResult result = mockMvc.perform(get(ENGINES_URL, brandId, modelId, yearId)
                             .header(HttpHeaders.AUTHORIZATION, "Bearer " + tmpToken1))
                     .andExpect(status().isBadRequest())
                     .andReturn();
@@ -694,7 +681,7 @@ class CarCatalogLookupControllerIT {
             Long brandId = getBrandId();
             Long modelId = getModelId();
 
-            MvcResult result = mockMvc.perform(get(CAR_CATALOG_ENGINES_URL, brandId, modelId, yearId)
+            MvcResult result = mockMvc.perform(get(ENGINES_URL, brandId, modelId, yearId)
                             .header(HttpHeaders.AUTHORIZATION, "Bearer " + tmpToken1))
                     .andExpect(status().isBadRequest())
                     .andReturn();
@@ -710,7 +697,7 @@ class CarCatalogLookupControllerIT {
             Long modelId = getModelId();
             Long yearId = getYearId();
 
-            MvcResult result = mockMvc.perform(get(CAR_CATALOG_ENGINES_URL, brandId, modelId, yearId)
+            MvcResult result = mockMvc.perform(get(ENGINES_URL, brandId, modelId, yearId)
                             .header(HttpHeaders.AUTHORIZATION, "Bearer " + "Wrong token"))
                     .andExpect(status().isUnauthorized())
                     .andReturn();
@@ -726,7 +713,7 @@ class CarCatalogLookupControllerIT {
             Long modelId = getModelId();
             Long yearId = getYearId();
 
-            MvcResult result = mockMvc.perform(get(CAR_CATALOG_ENGINES_URL, brandId, modelId, yearId))
+            MvcResult result = mockMvc.perform(get(ENGINES_URL, brandId, modelId, yearId))
                     .andExpect(status().isUnauthorized())
                     .andReturn();
 
@@ -741,7 +728,7 @@ class CarCatalogLookupControllerIT {
             Long modelId = getModelId();
             Long yearId = getYearId();
 
-            MvcResult result = mockMvc.perform(get(CAR_CATALOG_ENGINES_URL, brandId, modelId, yearId)
+            MvcResult result = mockMvc.perform(get(ENGINES_URL, brandId, modelId, yearId)
                             .header(HttpHeaders.AUTHORIZATION, "Test " + tmpToken1))
                     .andExpect(status().isUnauthorized())
                     .andReturn();
@@ -759,7 +746,7 @@ class CarCatalogLookupControllerIT {
                 doThrow(new RuntimeException("Temporary service error."))
                         .when(carCatalogService).findEngines(brandId, modelId, yearId);
 
-                MvcResult result = mockMvc.perform(get(CAR_CATALOG_ENGINES_URL, brandId, modelId, yearId)
+                MvcResult result = mockMvc.perform(get(ENGINES_URL, brandId, modelId, yearId)
                                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tmpToken1))
                         .andExpect(status().isInternalServerError())
                         .andReturn();
@@ -780,7 +767,7 @@ class CarCatalogLookupControllerIT {
                 doThrow(new RuntimeException("DB down"))
                         .when(carCatalogRepository).findEngines(brandId, modelId, yearId);
 
-                MvcResult result = mockMvc.perform(get(CAR_CATALOG_ENGINES_URL, brandId, modelId, yearId)
+                MvcResult result = mockMvc.perform(get(ENGINES_URL, brandId, modelId, yearId)
                                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tmpToken1))
                         .andExpect(status().isServiceUnavailable())
                         .andReturn();
@@ -793,11 +780,11 @@ class CarCatalogLookupControllerIT {
     }
 
     @Nested
-    @DisplayName("GET: /api" + CAR_CATALOG_TRANSMISSIONS_URL)
+    @DisplayName("GET: /api" + TRANSMISSIONS_URL)
     class getTransmissionsTests {
 
         private <B, M, Y, E> String getURL(B brandId, M modelId, Y yearId, E engineId) {
-            return new UriTemplate(CAR_CATALOG_TRANSMISSIONS_URL).expand(brandId, modelId, yearId, engineId).toString();
+            return new UriTemplate(TRANSMISSIONS_URL).expand(brandId, modelId, yearId, engineId).toString();
         }
 
         @Test
@@ -835,7 +822,7 @@ class CarCatalogLookupControllerIT {
             String engineId = "test";
 
             MvcResult result = mockMvc.perform(get(
-                            CAR_CATALOG_TRANSMISSIONS_URL,
+                            TRANSMISSIONS_URL,
                             brandId,
                             modelId,
                             yearId,
@@ -861,7 +848,7 @@ class CarCatalogLookupControllerIT {
             Long yearId = getYearId();
 
             MvcResult result = mockMvc.perform(get(
-                            CAR_CATALOG_TRANSMISSIONS_URL,
+                            TRANSMISSIONS_URL,
                             brandId,
                             modelId,
                             yearId,
@@ -884,7 +871,7 @@ class CarCatalogLookupControllerIT {
             Long engineId = getEngineId();
 
             MvcResult result = mockMvc.perform(get(
-                            CAR_CATALOG_TRANSMISSIONS_URL,
+                            TRANSMISSIONS_URL,
                             brandId,
                             modelId,
                             yearId,
@@ -907,7 +894,7 @@ class CarCatalogLookupControllerIT {
             Long engineId = getEngineId();
 
             MvcResult result = mockMvc.perform(get(
-                            CAR_CATALOG_TRANSMISSIONS_URL,
+                            TRANSMISSIONS_URL,
                             brandId,
                             modelId,
                             yearId,
@@ -929,7 +916,7 @@ class CarCatalogLookupControllerIT {
             Long engineId = getEngineId();
 
             MvcResult result = mockMvc.perform(get(
-                            CAR_CATALOG_TRANSMISSIONS_URL,
+                            TRANSMISSIONS_URL,
                             brandId,
                             modelId,
                             yearId,
@@ -954,7 +941,7 @@ class CarCatalogLookupControllerIT {
                         .when(carCatalogService).findTransmissions(brandId, modelId, yearId, engineId);
 
                 MvcResult result = mockMvc.perform(get(
-                                CAR_CATALOG_TRANSMISSIONS_URL,
+                                TRANSMISSIONS_URL,
                                 brandId,
                                 modelId,
                                 yearId,
@@ -982,7 +969,7 @@ class CarCatalogLookupControllerIT {
                         .when(carCatalogRepository).findTransmissions(brandId, modelId, yearId, engineId);
 
                 MvcResult result = mockMvc.perform(get(
-                                CAR_CATALOG_TRANSMISSIONS_URL,
+                                TRANSMISSIONS_URL,
                                 brandId,
                                 modelId,
                                 yearId,
@@ -1000,11 +987,11 @@ class CarCatalogLookupControllerIT {
     }
 
     @Nested
-    @DisplayName("GET: /api" + CAR_CATALOG_WHEEL_DRIVES_URL)
+    @DisplayName("GET: /api" + WHEEL_DRIVES_URL)
     class getWheelDrivesTests {
 
         private <B, M, Y, E, T> String getURL(B brandId, M modelId, Y yearId, E engineId, T transmissionId) {
-            return new UriTemplate(CAR_CATALOG_WHEEL_DRIVES_URL)
+            return new UriTemplate(WHEEL_DRIVES_URL)
                     .expand(brandId, modelId, yearId, engineId, transmissionId).toString();
         }
 
@@ -1045,7 +1032,7 @@ class CarCatalogLookupControllerIT {
             String transmissionId = "test";
 
             MvcResult result = mockMvc.perform(get(
-                            CAR_CATALOG_WHEEL_DRIVES_URL,
+                            WHEEL_DRIVES_URL,
                             brandId,
                             modelId,
                             yearId,
@@ -1073,7 +1060,7 @@ class CarCatalogLookupControllerIT {
             Long engineId = getEngineId();
 
             MvcResult result = mockMvc.perform(get(
-                            CAR_CATALOG_WHEEL_DRIVES_URL,
+                            WHEEL_DRIVES_URL,
                             brandId,
                             modelId,
                             yearId,
@@ -1098,7 +1085,7 @@ class CarCatalogLookupControllerIT {
             Long transmissionId = getTransmissionId();
 
             MvcResult result = mockMvc.perform(get(
-                            CAR_CATALOG_WHEEL_DRIVES_URL,
+                            WHEEL_DRIVES_URL,
                             brandId,
                             modelId,
                             yearId,
@@ -1123,7 +1110,7 @@ class CarCatalogLookupControllerIT {
             Long transmissionId = getTransmissionId();
 
             MvcResult result = mockMvc.perform(get(
-                            CAR_CATALOG_WHEEL_DRIVES_URL,
+                            WHEEL_DRIVES_URL,
                             brandId,
                             modelId,
                             yearId,
@@ -1147,7 +1134,7 @@ class CarCatalogLookupControllerIT {
             Long transmissionId = getTransmissionId();
 
             MvcResult result = mockMvc.perform(get(
-                            CAR_CATALOG_WHEEL_DRIVES_URL,
+                            WHEEL_DRIVES_URL,
                             brandId,
                             modelId,
                             yearId,
@@ -1175,7 +1162,7 @@ class CarCatalogLookupControllerIT {
                         .findWheelDrives(brandId, modelId, yearId, engineId, transmissionId);
 
                 MvcResult result = mockMvc.perform(get(
-                                CAR_CATALOG_WHEEL_DRIVES_URL,
+                                WHEEL_DRIVES_URL,
                                 brandId,
                                 modelId,
                                 yearId,
@@ -1206,7 +1193,7 @@ class CarCatalogLookupControllerIT {
                         .findWheelDrives(brandId, modelId, yearId, engineId, transmissionId);
 
                 MvcResult result = mockMvc.perform(get(
-                                CAR_CATALOG_WHEEL_DRIVES_URL,
+                                WHEEL_DRIVES_URL,
                                 brandId,
                                 modelId,
                                 yearId,
@@ -1225,7 +1212,7 @@ class CarCatalogLookupControllerIT {
     }
 
     @Nested
-    @DisplayName("POST: /api" + CAR_CATALOG_RESOLVE_URL)
+    @DisplayName("POST: /api" + RESOLVE_URL)
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class resolveTests {
 
@@ -1254,7 +1241,7 @@ class CarCatalogLookupControllerIT {
 
             String dtoJson = getDtoJson();
 
-            mockMvc.perform(post(CAR_CATALOG_RESOLVE_URL)
+            mockMvc.perform(post(RESOLVE_URL)
                             .header(HttpHeaders.AUTHORIZATION, "Bearer " + tmpToken1)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(dtoJson)
@@ -1273,7 +1260,7 @@ class CarCatalogLookupControllerIT {
 
             String dtoJson = getDtoJson(dto);
 
-            MvcResult result = mockMvc.perform(post(CAR_CATALOG_RESOLVE_URL)
+            MvcResult result = mockMvc.perform(post(RESOLVE_URL)
                             .header(HttpHeaders.AUTHORIZATION, "Bearer " + tmpToken1)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(dtoJson)
@@ -1281,7 +1268,7 @@ class CarCatalogLookupControllerIT {
                     .andExpect(status().isBadRequest())
                     .andReturn();
 
-            checkErrorResponseResult(result, HttpStatus.BAD_REQUEST, CAR_CATALOG_RESOLVE_URL);
+            checkErrorResponseResult(result, HttpStatus.BAD_REQUEST, RESOLVE_URL);
         }
 
 
@@ -1546,7 +1533,7 @@ class CarCatalogLookupControllerIT {
 
             String dtoJson = getDtoJson(dto);
 
-            MvcResult result = mockMvc.perform(post(CAR_CATALOG_RESOLVE_URL)
+            MvcResult result = mockMvc.perform(post(RESOLVE_URL)
                             .header(HttpHeaders.AUTHORIZATION, "Bearer " + tmpToken1)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(dtoJson)
@@ -1554,7 +1541,7 @@ class CarCatalogLookupControllerIT {
                     .andExpect(status().isNotFound())
                     .andReturn();
 
-            checkErrorResponseResult(result, HttpStatus.NOT_FOUND, CAR_CATALOG_RESOLVE_URL);
+            checkErrorResponseResult(result, HttpStatus.NOT_FOUND, RESOLVE_URL);
         }
 
         private Stream<Arguments> сarResolveRequestWithNonExistentData() throws Exception {
@@ -1657,7 +1644,7 @@ class CarCatalogLookupControllerIT {
 
             String dtoJson = getDtoJson();
 
-            MvcResult result = mockMvc.perform(post(CAR_CATALOG_RESOLVE_URL)
+            MvcResult result = mockMvc.perform(post(RESOLVE_URL)
                             .header(HttpHeaders.AUTHORIZATION, "Bearer " + "Wrong token")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(dtoJson)
@@ -1665,7 +1652,7 @@ class CarCatalogLookupControllerIT {
                     .andExpect(status().isUnauthorized())
                     .andReturn();
 
-            checkErrorResponseResult(result, HttpStatus.UNAUTHORIZED, CAR_CATALOG_RESOLVE_URL);
+            checkErrorResponseResult(result, HttpStatus.UNAUTHORIZED, RESOLVE_URL);
         }
 
         @Test
@@ -1674,14 +1661,14 @@ class CarCatalogLookupControllerIT {
 
             String dtoJson = getDtoJson();
 
-            MvcResult result = mockMvc.perform(post(CAR_CATALOG_RESOLVE_URL)
+            MvcResult result = mockMvc.perform(post(RESOLVE_URL)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(dtoJson)
                     )
                     .andExpect(status().isUnauthorized())
                     .andReturn();
 
-            checkErrorResponseResult(result, HttpStatus.UNAUTHORIZED, CAR_CATALOG_RESOLVE_URL);
+            checkErrorResponseResult(result, HttpStatus.UNAUTHORIZED, RESOLVE_URL);
         }
 
         @Test
@@ -1690,7 +1677,7 @@ class CarCatalogLookupControllerIT {
 
             String dtoJson = getDtoJson();
 
-            MvcResult result = mockMvc.perform(post(CAR_CATALOG_RESOLVE_URL)
+            MvcResult result = mockMvc.perform(post(RESOLVE_URL)
                             .header(HttpHeaders.AUTHORIZATION, "Test " + tmpToken1)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(dtoJson)
@@ -1698,7 +1685,7 @@ class CarCatalogLookupControllerIT {
                     .andExpect(status().isUnauthorized())
                     .andReturn();
 
-            checkErrorResponseResult(result, HttpStatus.UNAUTHORIZED, CAR_CATALOG_RESOLVE_URL);
+            checkErrorResponseResult(result, HttpStatus.UNAUTHORIZED, RESOLVE_URL);
 
         }
 
@@ -1712,7 +1699,7 @@ class CarCatalogLookupControllerIT {
                         .when(carCatalogService)
                         .getResolve(any(CarResolveRequest.class));
 
-                MvcResult result = mockMvc.perform(post(CAR_CATALOG_RESOLVE_URL)
+                MvcResult result = mockMvc.perform(post(RESOLVE_URL)
                                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tmpToken1)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(dtoJson)
@@ -1720,7 +1707,7 @@ class CarCatalogLookupControllerIT {
                         .andExpect(status().isInternalServerError())
                         .andReturn();
 
-                checkErrorResponseResult(result, HttpStatus.INTERNAL_SERVER_ERROR, CAR_CATALOG_RESOLVE_URL);
+                checkErrorResponseResult(result, HttpStatus.INTERNAL_SERVER_ERROR, RESOLVE_URL);
             } finally {
                 reset(carCatalogService);
             }
@@ -1743,7 +1730,7 @@ class CarCatalogLookupControllerIT {
                                 any(Long.class)
                         );
 
-                MvcResult result = mockMvc.perform(post(CAR_CATALOG_RESOLVE_URL)
+                MvcResult result = mockMvc.perform(post(RESOLVE_URL)
                                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tmpToken1)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(dtoJson)
@@ -1751,7 +1738,7 @@ class CarCatalogLookupControllerIT {
                         .andExpect(status().isServiceUnavailable())
                         .andReturn();
 
-                checkErrorResponseResult(result, HttpStatus.SERVICE_UNAVAILABLE, CAR_CATALOG_RESOLVE_URL);
+                checkErrorResponseResult(result, HttpStatus.SERVICE_UNAVAILABLE, RESOLVE_URL);
             } finally {
                 reset(carCatalogRepository);
             }

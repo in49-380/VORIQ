@@ -34,6 +34,7 @@ services:
   qa-selenium:
     image: selenium/standalone-chrome:latest
     container_name: ${ENV}-qa-selenium
+    restart: unless-stopped
     # environment:
     #   SELENIUM_PORT: 4444
     # ports:
@@ -81,12 +82,25 @@ services:
   qa-nginx:
     image: nginx:alpine
     container_name: ${ENV}-qa-nginx
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      # - "traefik.http.routers.qa-nginx.rule=Host(`mysite.com`) && PathPrefix(`/qa`)"
+      - "traefik.http.routers.qa-nginx.rule=PathPrefix(`/qa`)"
+      - "traefik.http.routers.qa-nginx.entrypoints=web"
+      # - "traefik.http.routers.qa-nginx.tls.certresolver=myresolver"
+      # - "traefik.http.services.qa-nginx.loadbalancer.server.port=80"
+      - "traefik.docker.network=qa-network"
+       # Middleware prefix removal /prefix
+      - "traefik.http.middlewares.qa-strip.stripprefix.prefixes=/qa"
+      - "traefik.http.routers.qa-nginx.middlewares=qa-strip"
     networks:
-      - qa-network
+      qa-network:
+        aliases:
+          - qa-nginx
     # depends_on:
     #   - qa-test
     ports:
       - ${QA_NGINX_HTTP_PORTS}
     volumes:
       - qa_data_reports:/usr/share/nginx/html:ro
-    restart: unless-stopped
