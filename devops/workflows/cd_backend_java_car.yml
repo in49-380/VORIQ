@@ -39,13 +39,16 @@ jobs:
             CONTAINER="dev_car_catalog_service" 
 
             # Ensure the VORIQ directory exists
-            [ -d "$REPO_DIR/.git" ] || git clone https://github.com/in49-380/VORIQ.git "$REPO_DIR"
+            if [ ! -d "$REPO_DIR/.git" ]; then
+            git clone https://github.com/in49-380/VORIQ.git "$REPO_DIR"
+            fi
 
-            # Change to the VORIQ directory
             cd "$REPO_DIR"
 
-            # get the latest changes
+            # Fetch all updates from origin
             git fetch --all --prune
+
+            # Checkout the branch from origin, reset to match remote exactly
             git checkout -B "$BRANCH" "origin/$BRANCH"
             git reset --hard "origin/$BRANCH"
             git clean -fdx
