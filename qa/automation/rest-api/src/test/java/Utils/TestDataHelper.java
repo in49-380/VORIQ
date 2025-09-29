@@ -13,7 +13,7 @@ public class TestDataHelper {
 
      static final Integer MAXNUMBER = 99999;
 
-    // Какие поля можно «ломать»
+
     public enum CarField {
         BRAND, MODEL, YEAR, ENGINE, TRANSMISSION, WHEEL_DRIVE
     }
@@ -22,7 +22,6 @@ public class TestDataHelper {
         return Integer.parseInt(cfg.apply(key));
     }
 
-    /** Базовый валидный CarResolve из конфига */
     public static CarResolve defaults(Function<String, String> cfg) {
         return new CarResolve(
                 cfgInt(cfg, "brandId"),
@@ -34,7 +33,6 @@ public class TestDataHelper {
         );
     }
 
-    /** Новый CarResolve с переопределением ОДНОГО поля */
     public static CarResolve withOverride(Function<String, String> cfg, CarField field, Integer value) {
         // Берём значения прямо из конфига, чтобы не зависеть от геттеров CarResolve
         Integer brand         = cfgInt(cfg, "brandId");
@@ -55,13 +53,11 @@ public class TestDataHelper {
         return new CarResolve(brand, model, year, engine, transmission, wheelDrive);
     }
 
-    /** Источник аргументов: по одному полю = null */
     public static Stream<Arguments> carResolveNullArgs(Function<String, String> cfg) {
         return Stream.of(CarField.values())
                 .map(f -> Arguments.of(Named.of(f.name() + "=null", withOverride(cfg, f, null))));
     }
 
-    /** Источник аргументов: по одному полю = -1 */
     public static Stream<Arguments> carResolveMinusOneArgs(Function<String, String> cfg) {
         return Stream.of(CarField.values())
                 .map(f -> Arguments.of(Named.of(f.name() + "=-1", withOverride(cfg, f, -1))));
@@ -73,7 +69,6 @@ public class TestDataHelper {
     }
 
 
-    /** Источник для позитивных тестов: валидный один кейс (можно расширять) */
     public static Stream<Arguments> validCarResolveArgs(Function<String, String> cfg) {
         return Stream.of(Arguments.of(Named.of("valid", defaults(cfg))));
     }

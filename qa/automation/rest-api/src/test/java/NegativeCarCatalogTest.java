@@ -54,7 +54,7 @@ public class NegativeCarCatalogTest extends BaseApiTest {
     @ParameterizedTest(name = "[{index}] GET {0}")
     @Tag("negative")
     @Owner("Borys Pedorenko")
-    @DisplayName("400 при MAX в одном из параметров")
+    @DisplayName("Bad GET query with non-existent positive value")
     @MethodSource("objectCarResolveMax")
     void getCarIdCarBadRequestMax(org.example.CarResolve carResolve) {
         apiWrapper.sendPostRequestStatusCode(Service.CATALOG, resolve("objectCarResolve"), carResolve, 404)
@@ -71,7 +71,7 @@ public class NegativeCarCatalogTest extends BaseApiTest {
     @ParameterizedTest(name = "[{index}] GET {0}")
     @Tag("negative")
     @Owner("Borys Pedorenko")
-    @DisplayName("400 при null в одном из параметров")
+    @DisplayName("Bad GET query with null value")
     @MethodSource("objectCarResolveNull")
     void getCarIdCarBadRequest_null(org.example.CarResolve carResolve) {
         apiWrapper.sendPostRequestStatusCode(Service.CATALOG, resolve("objectCarResolve"), carResolve, 400)
@@ -88,7 +88,7 @@ public class NegativeCarCatalogTest extends BaseApiTest {
     @ParameterizedTest(name = "[{index}] GET {0}")
     @Tag("negative")
     @Owner("Borys Pedorenko")
-    @DisplayName("400 при -1 в одном из параметров")
+    @DisplayName("Bad GET query with -1 value")
     @MethodSource("objectCarResolveMinusOne")
     void getCarIdCarBadRequest_minusOne(org.example.CarResolve carResolve) {
         apiWrapper.sendPostRequestStatusCode(Service.CATALOG, resolve("objectCarResolve"), carResolve, 400)
