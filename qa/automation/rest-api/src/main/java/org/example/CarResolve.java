@@ -1,6 +1,7 @@
+
 package org.example;
 
-public class CarResolve {
+public class CarResolve{
     private Integer brandId;
     private Integer modelId;
     private Integer yearId;

@@ -1,37 +1,111 @@
 package Utils;
 
+import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
+
+import java.util.function.Function;
 
 import static io.restassured.RestAssured.given;
 
 
-public class ApiWrapper {
+public record ApiWrapper(Function<Service, RequestSpecification> specProvider) {
     private final static int DEFAULT_STATUS_CODE_GET = 200;
+    private final static int DEFAULT_STATUS_CODE_POST = 200;
 
-    public static ValidatableResponse sendGetRequest(RequestSpecification requestSpecification,
-                                                     String callPath,
-                                                     int statusCode) {
-        return given()
-                .spec(requestSpecification)
+    @Step("GET {path} [{svc}]")
+    public ValidatableResponse sendGetRequest(Service svc,
+                                              String path) {
+        Response response = given()
+                .spec(specProvider.apply(svc))
                 .when()
-                .get(callPath)
+                .get(path)
+                .then()
+                .statusCode(DEFAULT_STATUS_CODE_POST)
+                .contentType(ContentType.JSON)
+                .log().ifValidationFails()
+                .extract().response();
+        return response.then();
+    }
+
+    @Step("GET {path} [{svc}]")
+    public ValidatableResponse sendGetRequestStatusCode(Service svc,
+                                                        String path, int statusCode) {
+        Response response = given()
+                .spec(specProvider.apply(svc))
+                .when()
+                .get(path)
                 .then()
                 .statusCode(statusCode)
                 .contentType(ContentType.JSON)
-                .log().ifValidationFails();
+                .log().ifValidationFails()
+                .extract().response();
+        return response.then();
     }
 
-    public static ValidatableResponse sendGetRequest(String callPath, int statusCode) {
-        return sendGetRequest(given(), callPath, statusCode);
+
+    @Step("GET with status code {statusCode} und delay {delay} {path} [{svc}]")
+    public ValidatableResponse sendGetRequestWithDelayWithoutBodyStatusCode(Service svc,
+                                                                            String path, int delay, int statusCode) {
+        Response response = given()
+                .spec(specProvider.apply(svc))
+                .when()
+                .queryParam("delay", delay)
+                .get(path)
+                .then()
+                .statusCode(statusCode)
+                .log().ifValidationFails()
+                .extract().response();
+        return response.then();
     }
 
-    public static ValidatableResponse sendGetRequest(RequestSpecification requestSpecification, String callPath) {
-        return sendGetRequest(requestSpecification, callPath, DEFAULT_STATUS_CODE_GET);
+
+    @Step("POST {DEFAULT_STATUS_CODE_POST} {path} [{svc}]")
+    public ValidatableResponse sendPostRequest(Service svc,
+                                               String path, Object body) {
+        Response response = given()
+                .spec(specProvider.apply(svc))
+                .body(body)
+                .when()
+                .post(path)
+                .then()
+                .statusCode(DEFAULT_STATUS_CODE_GET)
+                .contentType(ContentType.JSON)
+                .log().ifValidationFails()
+                .extract().response();
+        return response.then();
     }
 
-    public static ValidatableResponse sendGetRequest(String callPath) {
-        return sendGetRequest(given(), callPath, DEFAULT_STATUS_CODE_GET);
+    @Step("POST {path} [{svc}]")
+    public ValidatableResponse sendPostRequestStatusCode(Service svc,
+                                                         String path, Object body, int statusCode) {
+        Response response = given()
+                .spec(specProvider.apply(svc))
+                .body(body)
+                .when()
+                .post(path)
+                .then()
+                .statusCode(statusCode)
+                .contentType(ContentType.JSON)
+                .log().ifValidationFails()
+                .extract().response();
+        return response.then();
+    }
+
+    @Step("POST with status code {statusCode} {path} [{svc}]")
+    public ValidatableResponse sendPostRequestWithoutBodyStatusCode(Service svc,
+                                                                    String path, int statusCode) {
+        Response response = given()
+                .spec(specProvider.apply(svc))
+                .when()
+                .post(path)
+                .then()
+                .statusCode(statusCode)
+                .contentType(ContentType.JSON)
+                .log().ifValidationFails()
+                .extract().response();
+        return response.then();
     }
 }

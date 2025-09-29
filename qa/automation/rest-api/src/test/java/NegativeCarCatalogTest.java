@@ -1,64 +1,100 @@
+
+import Utils.Service;
+import Utils.TestDataHelper;
+import io.qameta.allure.Owner;
 import io.restassured.http.ContentType;
-import org.example.CarResolve;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 
-public class NegativeCarCatalogTest extends BaseHomeWorkTest {
+public class NegativeCarCatalogTest extends BaseApiTest {
 
     @Test
     @Tag("negative")
+    @Owner("Borys Pedorenko")
+    @DisplayName("GET /v1/catalog/brands without authorization")
     public void getAllBrandsWithoutAuthorization() {
 
         given()
                 .when().log().ifValidationFails()
-                .get(getConfig("objectCarCatalog") + getConfig("objectCarBrands"))
-                .then().statusCode(401)
+                .get(getConfig("baseURI.catalog") + resolve("objectCarCatalog") + resolve("objectCarBrands"))
+                .then()
+                .statusCode(401)
                 .contentType(ContentType.JSON)
-                .body(matchesJsonSchemaInClasspath("error_respons-schema.json"))
+                .body(matchesJsonSchemaInClasspath("error_response-schema.json"))
                 .body("error", equalTo("Unauthorized"))
                 .body("message[0]", equalTo("Unauthorized access"));
     }
 
+    int delay = -1000;
+
     @Test
     @Tag("negative")
-    public void getCarIdCarNotFound() {
+    @Owner("Borys Pedorenko")
 
-        CarResolve carResolve = new CarResolve(random0toN(IDMAX), random0toN(IDMAX), random0toN(IDMAX), random0toN(IDMAX), random0toN(IDMAX), random0toN(IDMAX));
+    public void testController() {
 
-        System.out.println(carResolve);
-        given()
-                .contentType(ContentType.JSON).body(carResolve)
-                .header("Authorization", "Bearer " + getConfig("token"))
-                .when().log().ifValidationFails().log().all()
-                .post(getConfig("objectCarCatalog") + getConfig("objectCarResolve"))
-                .then().statusCode(404)
-                .contentType(ContentType.JSON).log().all()
-                .body(matchesJsonSchemaInClasspath("error_respons-schema.json"))
+        apiWrapper.sendGetRequestWithDelayWithoutBodyStatusCode(Service.CATALOG,
+                        resolve("objectTestController"), delay, 400)
+                .body(matchesJsonSchemaInClasspath("error_bed_request-schema.json"))
+                .body("validationErrors[0].field", nullValue())
+                .body("validationErrors.message", hasItem(containsString("Delay should be more than ")));
+    }
+
+
+    static java.util.stream.Stream<org.junit.jupiter.params.provider.Arguments> objectCarResolveMax() {
+        return TestDataHelper.carResolveMAX(BaseApiTest::getConfig);
+    }
+
+    @ParameterizedTest(name = "[{index}] GET {0}")
+    @Tag("negative")
+    @Owner("Borys Pedorenko")
+    @DisplayName("Bad GET query with non-existent positive value")
+    @MethodSource("objectCarResolveMax")
+    void getCarIdCarBadRequestMax(org.example.CarResolve carResolve) {
+        apiWrapper.sendPostRequestStatusCode(Service.CATALOG, resolve("objectCarResolve"), carResolve, 404)
+                .body("size()", greaterThan(0))
+                .body(matchesJsonSchemaInClasspath("error_response-schema.json"))
                 .body("message[0]", equalTo("Car not found"));
     }
 
-    @Test
+
+    static java.util.stream.Stream<org.junit.jupiter.params.provider.Arguments> objectCarResolveNull() {
+        return TestDataHelper.carResolveNullArgs(BaseApiTest::getConfig);
+    }
+
+    @ParameterizedTest(name = "[{index}] GET {0}")
     @Tag("negative")
-    public void getCarIdCarBadRequest() {
-
-        CarResolve carResolve = new CarResolve(random0toN(IDMAX), null, random0toN(IDMAX), random0toN(IDMAX), random0toN(IDMAX), random0toN(IDMAX));
-
-        System.out.println(carResolve);
-        given()
-                .contentType(ContentType.JSON).body(carResolve)
-                .header("Authorization", "Bearer " + getConfig("token"))
-                .when().log().ifValidationFails().log().all()
-                .post(getConfig("objectCarCatalog") + getConfig("objectCarResolve"))
-                .then().statusCode(400)
-                .contentType(ContentType.JSON).log().all()
+    @Owner("Borys Pedorenko")
+    @DisplayName("Bad GET query with null value")
+    @MethodSource("objectCarResolveNull")
+    void getCarIdCarBadRequest_null(org.example.CarResolve carResolve) {
+        apiWrapper.sendPostRequestStatusCode(Service.CATALOG, resolve("objectCarResolve"), carResolve, 400)
+                .body("size()", greaterThan(0))
                 .body(matchesJsonSchemaInClasspath("error_bed_request-schema.json"))
-                .body("validationErrors.find { it.field == 'modelId' }.message",
-                        equalTo("Model Id can not be null"));
+                .body("message[0]", equalTo("The error of validation of the request"));
     }
 
 
+    static java.util.stream.Stream<org.junit.jupiter.params.provider.Arguments> objectCarResolveMinusOne() {
+        return TestDataHelper.carResolveMinusOneArgs(BaseApiTest::getConfig);
+    }
+
+    @ParameterizedTest(name = "[{index}] GET {0}")
+    @Tag("negative")
+    @Owner("Borys Pedorenko")
+    @DisplayName("Bad GET query with -1 value")
+    @MethodSource("objectCarResolveMinusOne")
+    void getCarIdCarBadRequest_minusOne(org.example.CarResolve carResolve) {
+        apiWrapper.sendPostRequestStatusCode(Service.CATALOG, resolve("objectCarResolve"), carResolve, 400)
+                .body("size()", greaterThan(0))
+                .body(matchesJsonSchemaInClasspath("error_bed_request-schema.json"))
+                .body("message[0]", equalTo("The error of validation of the request"));
+    }
 }
