@@ -5,14 +5,10 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(
-        name = "cars_engine",
-        uniqueConstraints = @UniqueConstraint(name = "uq_engine_type", columnNames = "type")
-)
+@Table(name = "cars_engine")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -25,28 +21,26 @@ public class Engine {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ToString.Include
     @Column(name = "type", nullable = false)
+    @ToString.Include
     private String type;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false,
+    @ManyToOne(fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "fuel_type_id", nullable = false,
-            foreignKey = @ForeignKey(name = "fk_engine_fuel_type"))
-    @ToString.Exclude
+    @JoinColumn(name = "fuel_type_id")
+    @ToString.Include
     private FuelType fuelType;
 
+    @Column(name = "series_code")
     @ToString.Include
-    @Column(name = "series_code", nullable = true)
     private String seriesCode;
 
     @ToString.Include
-    @Column(name = "engine_code", nullable = true)
     private String engineCode;
 
+    @Column(name = "displacement_cc", nullable = false)
     @ToString.Include
-    @Column(name = "displacement_cc", nullable = true)
-    private Integer displacementCC;
+    private Double displacementCC;
 
     @OneToMany(mappedBy = "engine", cascade = CascadeType.PERSIST)
     @JsonIgnore
@@ -56,16 +50,22 @@ public class Engine {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Engine other)) return false;
-        return Objects.equals(type, other.type)
-                && Objects.equals(
-                fuelType != null ? fuelType.getName() : null,
-                other.fuelType != null ? other.fuelType.getName() : null);
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Engine engine = (Engine) o;
+
+        if (!id.equals(engine.id)) return false;
+        if (!type.equals(engine.type)) return false;
+        if (!fuelType.equals(engine.fuelType)) return false;
+        return displacementCC.equals(engine.displacementCC);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, fuelType != null ? fuelType.getName() : null);
+        int result = id.hashCode();
+        result = 31 * result + type.hashCode();
+        result = 31 * result + fuelType.hashCode();
+        result = 31 * result + displacementCC.hashCode();
+        return result;
     }
 }
-
