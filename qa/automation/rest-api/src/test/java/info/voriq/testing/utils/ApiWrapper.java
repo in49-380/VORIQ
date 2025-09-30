@@ -1,4 +1,4 @@
-package Utils;
+package info.voriq.testing.utils;
 
 import io.qameta.allure.Step;
 import io.restassured.http.ContentType;

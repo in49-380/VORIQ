@@ -1,6 +1,6 @@
-package Utils;
+package info.voriq.testing.utils;
 
-import org.example.CarResolve;
+import info.voriq.testing.CarResolve;
 
 import java.util.function.Function;
 import java.util.stream.Stream;

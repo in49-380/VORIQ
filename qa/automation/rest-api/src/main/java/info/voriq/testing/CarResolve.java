@@ -1,5 +1,5 @@
 
-package org.example;
+package info.voriq.testing;
 
 public class CarResolve{
     private Integer brandId;

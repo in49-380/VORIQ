@@ -1,4 +1,4 @@
-import Utils.Service;
+import info.voriq.testing.utils.Service;
 import io.qameta.allure.Owner;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

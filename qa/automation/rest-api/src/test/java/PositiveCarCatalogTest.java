@@ -1,7 +1,7 @@
-import Utils.Service;
-import Utils.TestDataHelper;
+import info.voriq.testing.utils.Service;
+import info.voriq.testing.utils.TestDataHelper;
 import io.qameta.allure.Owner;
-import org.example.CarResolve;
+import info.voriq.testing.CarResolve;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

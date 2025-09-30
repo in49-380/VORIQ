@@ -1,5 +1,5 @@
-import Utils.ApiWrapper;
-import Utils.Service;
+import info.voriq.testing.utils.ApiWrapper;
+import info.voriq.testing.utils.Service;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;

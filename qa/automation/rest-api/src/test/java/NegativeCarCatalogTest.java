@@ -1,6 +1,7 @@
 
-import Utils.Service;
-import Utils.TestDataHelper;
+import info.voriq.testing.CarResolve;
+import info.voriq.testing.utils.Service;
+import info.voriq.testing.utils.TestDataHelper;
 import io.qameta.allure.Owner;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.DisplayName;
@@ -57,7 +58,7 @@ public class NegativeCarCatalogTest extends BaseApiTest {
     @Owner("Borys Pedorenko")
     @DisplayName("Bad GET query with non-existent positive value")
     @MethodSource("objectCarResolveMax")
-    void getCarIdCarBadRequestMax(org.example.CarResolve carResolve) {
+    void getCarIdCarBadRequestMax(CarResolve carResolve) {
         apiWrapper.sendPostRequestStatusCode(Service.CATALOG, resolve("objectCarResolve"), carResolve, 404)
                 .body("size()", greaterThan(0))
                 .body(matchesJsonSchemaInClasspath("error_response-schema.json"))
@@ -74,7 +75,7 @@ public class NegativeCarCatalogTest extends BaseApiTest {
     @Owner("Borys Pedorenko")
     @DisplayName("Bad GET query with null value")
     @MethodSource("objectCarResolveNull")
-    void getCarIdCarBadRequest_null(org.example.CarResolve carResolve) {
+    void getCarIdCarBadRequest_null(CarResolve carResolve) {
         apiWrapper.sendPostRequestStatusCode(Service.CATALOG, resolve("objectCarResolve"), carResolve, 400)
                 .body("size()", greaterThan(0))
                 .body(matchesJsonSchemaInClasspath("error_bed_request-schema.json"))
@@ -91,7 +92,7 @@ public class NegativeCarCatalogTest extends BaseApiTest {
     @Owner("Borys Pedorenko")
     @DisplayName("Bad GET query with -1 value")
     @MethodSource("objectCarResolveMinusOne")
-    void getCarIdCarBadRequest_minusOne(org.example.CarResolve carResolve) {
+    void getCarIdCarBadRequest_minusOne(CarResolve carResolve) {
         apiWrapper.sendPostRequestStatusCode(Service.CATALOG, resolve("objectCarResolve"), carResolve, 400)
                 .body("size()", greaterThan(0))
                 .body(matchesJsonSchemaInClasspath("error_bed_request-schema.json"))
