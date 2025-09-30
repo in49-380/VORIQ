@@ -1,4 +1,4 @@
-package info.voriq.testing.utils;
+package info.voriq.testing.utils;//package info.voriq.testing.utils;
 
 import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
@@ -109,3 +109,55 @@ public record ApiWrapper(Function<Service, RequestSpecification> specProvider) {
         return response.then();
     }
 }
+
+//import io.qameta.allure.Step;
+//import io.restassured.http.ContentType;
+//import io.restassured.response.ValidatableResponse;
+//import io.restassured.specification.RequestSpecification;
+//
+//import static io.restassured.RestAssured.given;
+//
+//public class ApiWrapper  {
+//    @Step("GET {path}")
+//    public ValidatableResponse getCatalog(String path) {
+//        return doGet(catalogSpec(), path);
+//    }
+//
+//    @Step("GET {path} [security]")
+//    public ValidatableResponse getSecurity(String path) {
+//        return doGet(securitySpec(), path);
+//    }
+//
+//    @Step("POST {path}")
+//    public ValidatableResponse postCatalog(String path, Object body) {
+//        return doPost(catalogSpec(), path, body);
+//    }
+//
+//    @Step("POST {path} [security]")
+//    public ValidatableResponse postSecurity(String path, Object body) {
+//        return doPost(securitySpec(), path, body);
+//    }
+//
+//    private ValidatableResponse doGet(RequestSpecification spec, String path) {
+//        return given()
+//                .spec(spec)
+//                .when()
+//                .get(path)
+//                .then()
+//                .statusCode(200)
+//                .contentType(ContentType.JSON)
+//                .log().ifValidationFails();
+//    }
+//
+//    private ValidatableResponse doPost(RequestSpecification spec, String path, Object body) {
+//        return given()
+//                .spec(spec)
+//                .body(body)
+//                .when()
+//                .post(path)
+//                .then()
+//                .statusCode(200)
+//                .contentType(ContentType.JSON)
+//                .log().ifValidationFails();
+//    }
+//}
