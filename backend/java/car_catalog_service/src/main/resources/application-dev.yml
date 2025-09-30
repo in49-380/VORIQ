@@ -17,13 +17,8 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
       database-platform: org.hibernate.dialect.PostgreSQLDialect
-
-  data:
-    redis:
-      host: ${REDIS_HOST:localhost}
-      port: ${REDIS_PORT:6379}
 
 app:
   pg:
@@ -36,10 +31,11 @@ app:
 
 springdoc:
   swagger-ui:
-    path: /swagger-ui.html
-    disable-swagger-default-url: true
-  api-docs:
-    path: /v3/api-docs
+    path: /api/swagger-ui/index.html
+    config-url: /car/api/v3/api-docs/swagger-config
+    urls:
+      - name: Car Catalog
+        url: /car/api/v3/api-doc
 
 cors:
   allowed-origins: ${ALLOWED_ORIGINS:http://localhost:8080,http://127.0.0.1:8080}
@@ -48,4 +44,3 @@ tmp-token:
   1: ${TMP_TOKEN_1}
   2: ${TMP_TOKEN_2}
   3: ${TMP_TOKEN_3}
-  prefix: "token_tmp:_"
