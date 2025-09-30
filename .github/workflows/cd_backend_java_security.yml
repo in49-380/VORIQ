@@ -58,8 +58,8 @@ jobs:
         
             # prepare .enf for front
             echo '${{ secrets.DEV_FRONT_GOOGLE_CLIENT_ID }}' > .env
-            echo "VITE_SWAGGER_DOMAIN=http://172.17.0.8" >> .env
-            echo "VITE_SWAGGER_PORT=8084" >> .env
+            # echo "VITE_SWAGGER_DOMAIN=http://172.17.0.8" >> .env
+            # echo "VITE_SWAGGER_PORT=8084" >> .env
 
             # go to the infrastructure directory  
             cd "$REPO_DIR/devops"
