@@ -66,6 +66,7 @@ public class BaseApiTest {
         s = s.replace("{token}", getConfig("token"));
         s = s.replace("{carId}", getConfig("carId"));
 
+
         return s;
     }
 
