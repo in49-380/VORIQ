@@ -24,4 +24,3 @@ public class AuthenticationFilter implements Filter {
         return ctx.next(requestSpec, responseSpec);
     }
 }
-
