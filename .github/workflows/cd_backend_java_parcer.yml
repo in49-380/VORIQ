@@ -50,6 +50,7 @@ jobs:
 
             # get the latest changes
             #git clean -fdx
+            git checkout dev
             git reset --hard
             git fetch --all --prune
             git pull --all
