@@ -8,19 +8,39 @@ spring:
   application:
     name: car_catalog_service
 
-  data:
-    redis:
-      host: ${REDIS_HOST}
-      port: ${REDIS_PORT}
-      connect-timeout: 200ms
-      timeout: 200ms
+  datasource:
+    voriq:
+      url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB2_NAME}
+      username: ${DB_USERNAME:postgres}
+      password: ${DB_PASSWORD}
+      driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+app:
+  pg:
+    host: ${DB_HOST}
+    port: ${DB_PORT}
+    admin-db: ${DB_ADMIN}
+    app-db: ${DB2_NAME}
+    user: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
 springdoc:
   swagger-ui:
-    path: /swagger-ui.html
-    disable-swagger-default-url: true
-  api-docs:
-    path: /v3/api-docs
+    path: /api/swagger-ui/index.html
+    config-url: /car/api/v3/api-docs/swagger-config
+    urls:
+      - name: Car Catalog
+        url: /car/api/v3/api-doc
 
 cors:
   allowed-origins: ${ALLOWED_ORIGINS}
+
+tmp-token:
+  1: ${TMP_TOKEN_1}
+  2: ${TMP_TOKEN_2}
+  3: ${TMP_TOKEN_3}
