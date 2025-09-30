@@ -34,7 +34,7 @@ public class PositiveCarCatalogTest extends BaseApiTest {
 
         apiWrapper.sendPostRequest(Service.CATALOG, resolve("objectCarResolve"), carResolve)
                 .body(matchesJsonSchemaInClasspath("car_catalog-schema.json"))
-                .body("carId", equalTo(1));
+                .body("carId", equalTo(Integer.parseInt(resolve("carId"))));
     }
 
     int delay = 2000;
