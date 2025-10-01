@@ -1,0 +1,31 @@
+# IDEs
+.vscode/
+.idea/
+*.sublime*
+# OS
+.DS_Store
+Thumbs.db
+# Build
+build/
+dist/
+*.exe
+*.log
+# Python
+__pycache__/
+*.pyc
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+# Qt
+*.pro.user
+*.qmake.stash
+# Secrets
+.env
+*.key
+*.pem
+# Vite
+/frontend/node_modules/
+/frontend/dist/
+node_modulesc
