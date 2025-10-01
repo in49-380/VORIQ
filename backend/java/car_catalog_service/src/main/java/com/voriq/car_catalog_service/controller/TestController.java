@@ -1,10 +1,10 @@
 package com.voriq.car_catalog_service.controller;
 
+import com.voriq.car_catalog_service.exception_handler.exception.BadRequestException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
@@ -34,12 +34,16 @@ public class TestController {
     @GetMapping(value = DELAY)
     public ResponseEntity<Void> delay(
             @RequestParam(defaultValue = "5000")
-            @NotNull
-            @Min(value = 1_000, message = "Delay should be more than 1 000ms")
-            @Max(value = 60_000, message = "Delay should be less than 60 000ms")
-            long delay
+            Long delay
     ) {
+        if(delay==null) {
+            throw new BadRequestException("Delay can not be null");
+        }
+        if (delay < 1_000L || delay > 60_000L) {
+            throw new BadRequestException("Delay should be more than 1 000ms and be less than 60 000ms");
+        }
         try {
+
             Thread.sleep(delay);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

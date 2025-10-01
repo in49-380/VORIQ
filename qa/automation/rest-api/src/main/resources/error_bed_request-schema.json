@@ -29,10 +29,10 @@
           "type": "object",
           "properties": {
             "field": {
-              "type": "string"
+              "type": ["string", "null"]
             },
             "message": {
-              "type": "string"
+              "type": ["string", "null"]
             }
           },
           "required": [

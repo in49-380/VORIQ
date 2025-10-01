@@ -8,10 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(
-        name = "cars_transmission",
-        uniqueConstraints = @UniqueConstraint(name = "uq_transmission_marketing_name", columnNames = "marketing_name")
-)
+@Table(name = "cars_transmission")
 @Getter
 @Setter
 @AllArgsConstructor

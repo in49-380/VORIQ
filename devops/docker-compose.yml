@@ -175,7 +175,7 @@ services:
     restart: unless-stopped
     environment:
       - VITE_SWAGGER_DOMAIN=back-java-car
-      - VITE_SWAGGER_PORT=${BACK_JAVA_CAR_HOST_PORT:-8084}
+      - VITE_SWAGGER_PORT=${BACK_JAVA_CAR_CONT_PORT:-8080}
     env_file:
       - ../frontend/.env 
       - .env.${ENV}
@@ -208,7 +208,7 @@ services:
       - REDIS_PORT=${REDIS_HOST_PORT}
       - SPRING_PROFILES_ACTIVE=${ENV}
       - PORT=${BACK_JAVA_SECURITY_CONT_PORT:-8080}
-      - ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000,http://voriq.info:3000,http://172.17.0.3:3000
+      - ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000,http://voriq.info:3000,http://172.17.0.3:3000,https://voriq.info:3000,https://172.17.0.3:3000
       - ACCESS_TOKEN_EXPIRATION_MS=900000
       - MAX_TOKEN=5
       - ISSUE_RATE_LIMIT=5000

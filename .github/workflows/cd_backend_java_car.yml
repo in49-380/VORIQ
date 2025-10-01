@@ -46,6 +46,7 @@ jobs:
 
             # get the latest changes
             #git clean -fdx
+            git checkout dev
             git reset --hard
             git fetch --all --prune
             git pull --all
@@ -57,8 +58,8 @@ jobs:
         
             # prepare .enf for front
             echo '${{ secrets.DEV_FRONT_GOOGLE_CLIENT_ID }}' > .env
-            echo "VITE_SWAGGER_DOMAIN=http://172.17.0.8" >> .env
-            echo "VITE_SWAGGER_PORT=8084" >> .env
+            # echo "VITE_SWAGGER_DOMAIN=http://172.17.0.8" >> .env
+            # echo "VITE_SWAGGER_PORT=8084" >> .env
 
             # go to the infrastructure directory  
             cd "$REPO_DIR/devops"
@@ -76,6 +77,8 @@ jobs:
             # build new image and restart container with new image
             ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" up -d --no-deps --build back-java-car
 
+            sleep 60
+
             # clean up old images to save space
             #docker image prune -f 
             # remove dangling images
@@ -86,7 +89,6 @@ jobs:
             #docker image ls "$IMAGE" -q | xargs -n 1 docker rmi -f
 
             # wait few seconds, until container is run
-            sleep 60
 
             # get container id of the just started container
             CONTAINER_ID=$(ENV=dev && ENV=$ENV docker compose --env-file .env --env-file .env."$ENV" ps -q back-java-car)
