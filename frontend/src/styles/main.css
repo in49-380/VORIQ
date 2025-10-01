@@ -1,0 +1,614 @@
+@font-face {
+  font-family: "Roboto";
+  src: local("Arial");
+  font-weight: 400;
+  font-style: normal;
+}
+:root {
+  --color-theme-dark: rgb(61, 61, 61);
+  --color-theme-light:#cecece;
+  --color-theme-blue:#a8ccfc;
+}
+
+.light {
+  --background-primary: #f3f3f3;
+  --background-secondary: #cecece;
+  --background-light: #fffdfe;
+  --background-dark:rgba(122, 122, 122, 0.7);
+  --color-primary:rgb(58, 58, 58);
+  --color-secondary:rgb(63, 61, 61);
+  --color-title:rgb(27, 27, 27);
+  --color-light: #ffd6d6;
+  --box-shadow: 0 10px 15px -3px rgba(36, 8, 18, 0.1), 0 4px 6px -2px rgba(36, 8, 18, 0.05);
+}
+
+.blue {
+  --background-primary:#dbeafe;
+  --background-secondary:#a8ccfc;
+  --background-light:#eff6ff;
+  --background-dark:rgb(32, 46, 65, 0.7);
+  --color-primary:#080333;
+  --color-secondary:#0f0852;
+  --color-title: rgb(5, 5, 97);
+  --color-light: rgb(157, 193, 228);
+  --box-shadow: 0 10px 15px -3px rgba(8, 3, 48, 0.1), 0 4px 6px -2px rgba(8, 3, 48, 0.05);
+}
+
+.dark {
+  --background-primary:#3e3e3f;
+  --background-secondary:#949494;
+  --background-light:#dfe1e4;
+  --background-dark:rgb(25, 25, 26, 0.7);
+  --color-primary:rgb(156, 155, 155);
+  --color-secondary:white;
+  --color-title:#1d1d1d;
+  --color-light: rgb(179, 175, 175);
+  --box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05) ;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+textarea::-moz-placeholder, input::-moz-placeholder {
+  text-decoration: none;
+  color: inherit;
+  border: none;
+  font: inherit;
+}
+
+a,
+a:active,
+a:visited,
+label,
+textarea,
+textarea::placeholder,
+input,
+input::placeholder,
+button,
+select,
+option {
+  text-decoration: none;
+  color: inherit;
+  border: none;
+  font: inherit;
+}
+
+textarea,
+input,
+input:active,
+input:focus,
+select:active,
+select:focus,
+option,
+button {
+  outline: none;
+  padding: 0.5rem;
+  padding-left: 1rem;
+  border: none;
+  border-radius: 1rem;
+}
+
+a:hover,
+button:hover,
+select:hover,
+label:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}
+
+ol {
+  padding-left: 1.4rem;
+  list-style: decimal;
+}
+
+ul {
+  padding-left: 1.4rem;
+  list-style: square;
+}
+
+ul li {
+  list-style-type: none;
+}
+
+button {
+  background: none;
+}
+
+html {
+  font-size: 62.5%;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: "Roboto", Arial, sans-serif;
+  line-height: 1.2;
+  width: 100%;
+  height: 100%;
+  background-color: var(--background-primary);
+  font-size: 1.6rem;
+  color: var(--color-primary);
+}
+
+.main-container {
+  width: 100%;
+  height: 100vh;
+  background-color: var(--background-primary);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: n;
+  margin: 0 auto;
+  padding: 0 1.6rem;
+}
+
+header {
+  width: 100%;
+  height: 7rem;
+  background-color: inherit;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 3rem;
+  padding: 1.6rem;
+  color: var(--color-secondary);
+  z-index: 100;
+}
+
+footer {
+  width: 100%;
+  height: 7rem;
+  background-color: var(--background-secondary);
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 3rem;
+  padding: 1.6rem;
+  color: var(--color-secondary);
+  z-index: 100;
+}
+
+button {
+  padding: 5px;
+  border-radius: 0.25rem;
+  font-size: 1.6rem;
+  transition: border-color 0.25s;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--background-secondary);
+  outline-offset: 2px;
+}
+
+FaGithub {
+  color: var(--color-primary);
+}
+
+header > .git-hub-button {
+  position: fixed;
+  left: n;
+  top: 1rem;
+  right: 1rem;
+  bottom: n;
+}
+
+footer > .git-hub-button {
+  position: fixed;
+  left: n;
+  top: 1rem;
+  right: 1rem;
+  bottom: n;
+}
+
+.google-auth-button {
+  width: 240px;
+  height: 240px;
+  background-color: inherit;
+}
+
+footer > .footer-left,
+footer > .footer-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.split {
+  width: 80%;
+  height: 80%;
+  background-color: var(--background-secondary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 5;
+  border-radius: 3rem;
+}
+
+.split > .welcome,
+.split > .google {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: n;
+  width: 100%;
+  height: 100%;
+  background-color: inherit;
+}
+
+.split > .welcome {
+  border-top-left-radius: 3rem;
+  border-bottom-left-radius: 3rem;
+  text-align: center;
+}
+
+.split > .google {
+  border-top-right-radius: 3rem;
+  border-bottom-right-radius: 3rem;
+  background-color: var(--background-light);
+}
+
+.big-title {
+  font-size: 5rem;
+  color: var(--color-title);
+  font-weight: bold;
+}
+
+.welcome > .subtitle {
+  font-size: 2rem;
+  color: var(--color-secondary);
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+.dialog-overlay {
+  position: fixed;
+  left: 0;
+  top: 7rem;
+  right: 0;
+  bottom: 0;
+  background-color: var(--background-dark);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.dialog-content {
+  background-color: var(--background-light);
+  z-index: 50;
+}
+
+.dialog-content.fullscreen {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: n;
+  background-color: var(--background-dark);
+}
+
+.dialog-content.small {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 50rem;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: var(--box-shadow);
+}
+
+.dialog-title {
+  font-size: 2rem;
+  color: var(--color-title);
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.dialog-description {
+  margin-bottom: 2rem;
+  color: var(--color-secondary);
+}
+
+.cookie_modal_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: center;
+  width: 100%;
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.cookie_modal_container > :nth-child(1),
+.cookie_modal_container > :nth-child(2),
+.cookie_modal_container > :nth-child(3) {
+  font-size: 1.5rem;
+  color: white;
+  width: 27%;
+  height: 4rem;
+  background-color: inherit;
+}
+
+.cookie_modal_container > :nth-child(1) {
+  background-color: rgb(226, 84, 84);
+}
+
+.cookie_modal_container > :nth-child(2) {
+  background-color: gray;
+}
+
+.cookie_modal_container > :nth-child(3) {
+  background-color: rgb(87, 199, 87);
+}
+
+.cookie_modal_container > :nth-child(1):hover {
+  background-color: red;
+}
+
+.cookie_modal_container > :nth-child(2):hover {
+  background-color: rgb(78, 77, 77);
+}
+
+.cookie_modal_container > :nth-child(3):hover {
+  background-color: green;
+}
+
+.cookie_modal_container > :nth-child(3).smallChar {
+  font-size: 1.2rem;
+  color: white;
+}
+
+.langInCookieModal {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.policy_container {
+  display: flex;
+  justify-content: start;
+  align-items: end;
+  flex-wrap: nowrap;
+  gap: 2rem;
+  width: 100%;
+  position: relative;
+}
+
+.policy_container > button,
+.policy_container > button {
+  font-size: 1.3rem;
+  color: var(--color-light);
+}
+
+.policy_container > button:hover,
+.policy_container > button:active {
+  color: var(--color-primary);
+}
+
+.selector_container {
+  width: 90vw;
+  height: 30vh;
+  background-color: transparent;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.analyze_button_container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: n;
+  width: 40vw;
+  align-self: start;
+}
+
+.analyze_button_container button {
+  width: 15vw;
+  height: 5rem;
+  background-color: inherit;
+  font-size: 1.5rem;
+  color: white;
+  font-weight: bold;
+  padding: 1rem;
+}
+
+.analyze_button_container .disabled_button {
+  background-color: rgb(187, 250, 187);
+  cursor: not-allowed;
+  transform: none;
+  transition-property: background-color;
+  transition-duration: 200ms;
+}
+
+.analyze_button_container .enabled_button {
+  background-color: rgb(87, 199, 87);
+  transition-property: background-color;
+  transition-duration: 200ms;
+}
+
+.analyze_button_container .enabled_button:hover {
+  background-color: green;
+}
+
+.hint_container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  font-size: 1.4rem;
+  color: var(--color-title);
+  font-weight: bold;
+  background-color: var(--background-secondary);
+  border: transparent;
+  border-radius: 5px;
+  padding: 1rem;
+  margin: 0;
+}
+
+.hint_container > .small_element {
+  position: absolute;
+  left: var(--tip-offset);
+  bottom: -10px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px var(--background-secondary) solid;
+}
+
+.hint_container > .hint_buttons_container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 4rem;
+}
+
+#b16 {
+  color: rgb(226, 84, 84);
+}
+
+#b16:hover {
+  color: red;
+}
+
+.car-container {
+  position: relative;
+}
+
+.topCarSite {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 10rem;
+  width: 100%;
+  height: 40%;
+  background-color: inherit;
+}
+
+.carData {
+  width: 40%;
+  height: 90%;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: start;
+  flex-wrap: nowrap;
+  gap: 2rem;
+  margin-left: 2rem;
+}
+
+.carData > h2 {
+  color: rgb(87, 199, 87);
+}
+
+.resultData {
+  width: 40%;
+  height: 90%;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 2rem;
+  margin-left: 2rem;
+}
+
+.resultData > h2 {
+  font-size: 2rem;
+  color: var(--color-light);
+  text-align: center;
+}
+
+.resultData > h1 {
+  font-size: 3rem;
+  color: rgb(226, 84, 84);
+}
+
+.speedometer {
+  width: 200px;
+}
+
+.dial {
+  width: 100%;
+  height: auto;
+  fill: none;
+  stroke-width: 10px;
+}
+
+.speedNums {
+  font-size: 1rem;
+  font-weight: bold;
+  fill: var(--color-secondary);
+}
+
+.speedTicks {
+  stroke: var(--color-secondary);
+  stroke-width: 1px;
+}
+
+.needle {
+  stroke: red;
+  stroke-width: 3px;
+  stroke-linecap: round;
+  transform-origin: 100px 100px;
+  transform: rotate(90deg);
+  animation: swing 1s ease-in-out infinite;
+}
+
+@keyframes swing {
+  20% {
+    transform: rotate(150deg);
+  }
+  40% {
+    transform: rotate(120deg);
+  }
+  70% {
+    transform: rotate(170deg);
+  }
+  100% {
+    transform: rotate(90deg);
+  }
+}/*# sourceMappingURL=main.css.map */
