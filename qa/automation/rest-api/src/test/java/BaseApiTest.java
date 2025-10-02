@@ -9,8 +9,7 @@ import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 
-import java.io.FileInputStream;
-import java.io.IOException;
+
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Properties;
@@ -25,36 +24,13 @@ public class BaseApiTest {
 
     @BeforeAll
     static void bootstrap() {
-//        cfg = new Properties();
-//        try (FileInputStream fis = new FileInputStream("src/main/resources/config_homework.properties")) {
-//            cfg.load(fis);
-//        } catch (IOException e) {
-//            throw new IllegalStateException("Не удалось загрузить config_homework.properties", e);
-//        }
-//        SPECS.put(Service.CATALOG, baseSpec(ConfigManager.get("baseURI.catalog")));
-//        SPECS.put(Service.SECURITY, baseSpec(ConfigManager.get("baseURI.security")));
-
         SPECS.put(Service.CATALOG, catalogSpec());
         SPECS.put(Service.SECURITY, securitySpec());
     }
 
-
     @AfterEach
     void cleanup() {
         reset();
-    }
-
-
-    private static RequestSpecification baseSpec(String baseUri) {
-        return new RequestSpecBuilder()
-                .setBaseUri(baseUri)
-                .addHeader("Authorization", "Bearer " + cfg.getProperty("token"))
-                .setContentType(ContentType.JSON)
-                .log(LogDetail.URI)
-                .log(LogDetail.HEADERS)
-                .log(LogDetail.BODY)
-                .addFilter(new AllureRestAssured())
-                .build();
     }
 
 
@@ -70,7 +46,9 @@ public class BaseApiTest {
                 .build();
     }
 
-    /** Базовая спека для security (с Authorization из ENV) */
+    /**
+     * Базовая спека для security (с Authorization из ENV)
+     */
     private static RequestSpecification securitySpec() {
         return new RequestSpecBuilder()
                 .setBaseUri(ConfigManager.securityBaseUri())
@@ -83,7 +61,9 @@ public class BaseApiTest {
                 .build();
     }
 
-    /** Доступ к спекам по enum-сервису (как и раньше) */
+    /**
+     * Доступ к спекам по enum-сервису (как и раньше)
+     */
     RequestSpecification spec(Service svc) {
         RequestSpecification s = SPECS.get(svc);
         if (s == null) throw new IllegalArgumentException("Неизвестный сервис: " + svc);

@@ -16,14 +16,14 @@ public class FirstSecurityServiceTest extends BaseApiTest {
     @Test
     @Owner("Borys Pedorenko")
     public void firstTest() {
-        String userId = getConfig("userId");
-        String key = getConfig("key");
+        String userId = ConfigManager.userId();
+        String key = ConfigManager.key();
 
         Map<String, Object> body = new HashMap<>();
         body.put("userId", userId);
         body.put("key", key);
 
-        apiWrapper.sendPostRequestStatusCode(Service.SECURITY, ConfigManager.get("objectTokenIssuance"),body,200)
+        apiWrapper.sendPostRequestStatusCode(Service.SECURITY, ConfigManager.objectTokenIssuance(),body,200)
                 .body(matchesJsonSchemaInClasspath("token_kontroller-schema.json"))
                 .body("accessToken", notNullValue());
     }
@@ -34,7 +34,7 @@ public class FirstSecurityServiceTest extends BaseApiTest {
     public void secondTest() {
         given()
                 .when().log().all()
-                .options(getConfig("objectTokenIssuance"))
+                .options(ConfigManager.objectTokenIssuance())
                 .then().log().all()
                 .statusCode(200);
     }

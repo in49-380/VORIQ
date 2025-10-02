@@ -24,7 +24,7 @@ public class NegativeCarCatalogTest extends BaseApiTest {
 
         given()
                 .when().log().ifValidationFails()
-                .get(ConfigManager.catalogBaseUri() + ConfigManager.get("objectCarCatalog") + ConfigManager.get("objectCarBrands"))
+                .get(ConfigManager.catalogBaseUri() + ConfigManager.objectCarCatalog() + ConfigManager.objectCarBrands())
                 .then()
                 .statusCode(401)
                 .contentType(ContentType.JSON)
@@ -42,7 +42,7 @@ public class NegativeCarCatalogTest extends BaseApiTest {
     public void testController() {
 
         apiWrapper.sendGetRequestWithDelayWithoutBodyStatusCode(Service.CATALOG,
-                       ConfigManager.get("objectTestController"), delay, 400)
+                       ConfigManager.objectTestDelay(), delay, 400)
                 .body(matchesJsonSchemaInClasspath("error_bed_request-schema.json"))
                 .body("validationErrors[0].field", nullValue())
                 .body("validationErrors.message", hasItem(containsString("Delay should be more than ")));
@@ -59,7 +59,7 @@ public class NegativeCarCatalogTest extends BaseApiTest {
     @DisplayName("Bad GET query with non-existent positive value")
     @MethodSource("objectCarResolveMax")
     void getCarIdCarBadRequestMax(org.example.CarResolve carResolve) {
-        apiWrapper.sendPostRequestStatusCode(Service.CATALOG, ConfigManager.get("objectCarResolve"), carResolve, 404)
+        apiWrapper.sendPostRequestStatusCode(Service.CATALOG, ConfigManager.objectCarResolve(), carResolve, 404)
                 .body("size()", greaterThan(0))
                 .body(matchesJsonSchemaInClasspath("error_response-schema.json"))
                 .body("message[0]", equalTo("Car not found"));
@@ -76,7 +76,7 @@ public class NegativeCarCatalogTest extends BaseApiTest {
     @DisplayName("Bad GET query with null value")
     @MethodSource("objectCarResolveNull")
     void getCarIdCarBadRequest_null(org.example.CarResolve carResolve) {
-        apiWrapper.sendPostRequestStatusCode(Service.CATALOG, ConfigManager.get("objectCarResolve"), carResolve, 400)
+        apiWrapper.sendPostRequestStatusCode(Service.CATALOG, ConfigManager.objectCarResolve(), carResolve, 400)
                 .body("size()", greaterThan(0))
                 .body(matchesJsonSchemaInClasspath("error_bed_request-schema.json"))
                 .body("message[0]", equalTo("The error of validation of the request"));
@@ -93,7 +93,7 @@ public class NegativeCarCatalogTest extends BaseApiTest {
     @DisplayName("Bad GET query with -1 value")
     @MethodSource("objectCarResolveMinusOne")
     void getCarIdCarBadRequest_minusOne(org.example.CarResolve carResolve) {
-        apiWrapper.sendPostRequestStatusCode(Service.CATALOG, ConfigManager.get("objectCarResolve"), carResolve, 400)
+        apiWrapper.sendPostRequestStatusCode(Service.CATALOG, ConfigManager.objectCarResolve(), carResolve, 400)
                 .body("size()", greaterThan(0))
                 .body(matchesJsonSchemaInClasspath("error_bed_request-schema.json"))
                 .body("message[0]", equalTo("The error of validation of the request"));

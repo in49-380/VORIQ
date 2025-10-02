@@ -22,7 +22,7 @@ public final class ConfigManager {
             if (is == null) throw new IllegalStateException("config_homework.properties not found in classpath");
             PROPS.load(new java.io.InputStreamReader(is, StandardCharsets.UTF_8));
         } catch (Exception e) {
-            throw new RuntimeException("Failed to load config.properties", e);
+            throw new RuntimeException("Failed to load config_homework.properties", e);
         }
         // Опционально: перекрыть системными и ENV
         System.getProperties().forEach((k, v) -> PROPS.put(k, v));
@@ -43,6 +43,7 @@ public final class ConfigManager {
     public static String objectCarWheelDrive()  { return get("objectCarWheelDrive"); }
     public static String objectCarResolve()     { return get("objectCarResolve"); }
     public static String objectTestDelay()      { return get("objectTestController"); }
+    public static String objectTokenIssuance()      { return get("objectTokenIssuance"); }
 
     // -------- тестовые ID (не секреты, можно оставить дефолты) --------
     public static Integer brandId()        { return Integer.parseInt(get("brandId")); }
@@ -68,9 +69,6 @@ public final class ConfigManager {
         }
         return v;
     }
-
-
-
 
 
     /** Получить значение ключа с полной подстановкой (сначала overrides, потом config). */
