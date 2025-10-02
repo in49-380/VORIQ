@@ -1,19 +1,39 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "required": ["timestamp", "status", "error", "message", "path"],
+  "required": [
+    "timestamp",
+    "status",
+    "error",
+    "message",
+    "path"
+  ],
   "properties": {
-    "timestamp": { "type": "string" },
-    "status": { "type": "integer", "const": 400 },
-    "error": { "type": "string" },
+    "timestamp": {
+      "type": "string"
+    },
+    "status": {
+      "type": "integer",
+      "const": 400
+    },
+    "error": {
+      "type": "string"
+    },
     "message": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "minItems": 1
     },
-    "path": { "type": "string" },
+    "path": {
+      "type": "string"
+    },
     "validationErrors": {
-      "type": ["array", "null"],
+      "type": [
+        "array",
+        "null"
+      ],
       "items": {
         "type": "object"
       }

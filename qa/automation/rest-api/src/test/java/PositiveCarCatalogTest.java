@@ -12,7 +12,7 @@ import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInC
 import static org.hamcrest.Matchers.*;
 
 public class PositiveCarCatalogTest extends BaseApiTest {
-static final int DELAY = 2000;
+    static final int DELAY = 2000;
 
     static java.util.stream.Stream<org.junit.jupiter.params.provider.Arguments> getSuffixAndSchema() {
         return TestDataHelper.suffixAndSchema();

@@ -25,7 +25,7 @@ public final class ConfigManager {
             throw new RuntimeException("Failed to load config_homework.properties", e);
         }
         // Опционально: перекрыть системными и ENV
-        System.getProperties().forEach(PROPS::put);
+        PROPS.putAll(System.getProperties());
         // Если хочешь, чтобы ENV имели приоритет над файлом — используй put:
         System.getenv().forEach(PROPS::putIfAbsent);
     }

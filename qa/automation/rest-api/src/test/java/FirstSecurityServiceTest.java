@@ -23,7 +23,7 @@ public class FirstSecurityServiceTest extends BaseApiTest {
         body.put("userId", userId);
         body.put("key", key);
 
-        apiWrapper.sendPostRequestStatusCode(Service.SECURITY, ConfigManager.objectTokenIssuance(),body,200)
+        apiWrapper.sendPostRequestStatusCode(Service.SECURITY, ConfigManager.objectTokenIssuance(), body, 200)
                 .body(matchesJsonSchemaInClasspath("token_kontroller-schema.json"))
                 .body("accessToken", notNullValue());
     }

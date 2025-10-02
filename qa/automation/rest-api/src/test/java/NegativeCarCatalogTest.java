@@ -34,7 +34,7 @@ public class NegativeCarCatalogTest extends BaseApiTest {
                 .body("message[0]", equalTo("Unauthorized access"));
     }
 
-    int delay = -1000;
+    final int delay = -1000;
 
     @Test
     @Tag("negative")
