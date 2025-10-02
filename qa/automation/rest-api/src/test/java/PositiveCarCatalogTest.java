@@ -12,7 +12,7 @@ import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInC
 import static org.hamcrest.Matchers.*;
 
 public class PositiveCarCatalogTest extends BaseApiTest {
-
+static final int DELAY = 2000;
 
     static java.util.stream.Stream<org.junit.jupiter.params.provider.Arguments> getSuffixAndSchema() {
         return TestDataHelper.suffixAndSchema();
@@ -36,7 +36,7 @@ public class PositiveCarCatalogTest extends BaseApiTest {
 
         apiWrapper.sendPostRequest(Service.CATALOG, ConfigManager.objectCarResolve(), carResolve)
                 .body(matchesJsonSchemaInClasspath("car_catalog-schema.json"))
-                .body("carId", equalTo(Integer.parseInt(ConfigManager.get("carId"))));
+                .body("carId", equalTo(ConfigManager.carId()));
     }
 
 
@@ -48,11 +48,8 @@ public class PositiveCarCatalogTest extends BaseApiTest {
         apiWrapper.sendGetRequest(Service.CATALOG, ConfigManager.objectCarTransmissions())
                 .body(matchesJsonSchemaInClasspath("transmissions-schema.json"));
         System.out.println(ConfigManager.token());
-        ;
     }
 
-
-    int delay = 2000;
 
     @Test
     @Tag("positive")
@@ -60,8 +57,8 @@ public class PositiveCarCatalogTest extends BaseApiTest {
     public void testController() {
         apiWrapper.sendGetRequestWithDelayWithoutBodyStatusCode(
                 Service.CATALOG,
-                ConfigManager.get("objectTestController"),
-                delay,
+                ConfigManager.objectTestDelay(),
+                DELAY,
                 204
         );
     }

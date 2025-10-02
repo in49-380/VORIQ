@@ -24,8 +24,8 @@ public class BaseApiTest {
 
     @BeforeAll
     static void bootstrap() {
-        SPECS.put(Service.CATALOG, catalogSpec());
-        SPECS.put(Service.SECURITY, securitySpec());
+        SPECS.put(Service.CATALOG, specUrl(ConfigManager.catalogBaseUri()));
+        SPECS.put(Service.SECURITY, specUrl(ConfigManager.securityBaseUri()));
     }
 
     @AfterEach
@@ -34,26 +34,11 @@ public class BaseApiTest {
     }
 
 
-    private static RequestSpecification catalogSpec() {
+    private static RequestSpecification specUrl(String url) {
         return new RequestSpecBuilder()
-                .setBaseUri(ConfigManager.catalogBaseUri())
+                .setBaseUri(url)
                 .setContentType(ContentType.JSON)
                 .addHeader("Authorization", "Bearer " + ConfigManager.token())
-                .log(LogDetail.URI)
-                .log(LogDetail.HEADERS)
-                .log(LogDetail.BODY)
-                .addFilter(new AllureRestAssured())
-                .build();
-    }
-
-    /**
-     * Базовая спека для security (с Authorization из ENV)
-     */
-    private static RequestSpecification securitySpec() {
-        return new RequestSpecBuilder()
-                .setBaseUri(ConfigManager.securityBaseUri())
-                .setContentType(ContentType.JSON)
-                .addHeader("Authorization", "Bearer " + ConfigManager.securityToken())
                 .log(LogDetail.URI)
                 .log(LogDetail.HEADERS)
                 .log(LogDetail.BODY)

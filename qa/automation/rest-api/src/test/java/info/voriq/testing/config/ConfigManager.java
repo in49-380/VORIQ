@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public final class ConfigManager {
     private static final Properties PROPS = new Properties();
-    private static final Pattern PLACEHOLDER = Pattern.compile("\\{([a-zA-Z0-9_.-]+)\\}");
+    private static final Pattern PLACEHOLDER = Pattern.compile("\\{([a-zA-Z0-9_.-]+)}");
     private static final int MAX_DEPTH = 12;
 
     private static final String ENV_TOKEN = "VORIQ_TOKEN";
@@ -25,40 +25,107 @@ public final class ConfigManager {
             throw new RuntimeException("Failed to load config_homework.properties", e);
         }
         // Опционально: перекрыть системными и ENV
-        System.getProperties().forEach((k, v) -> PROPS.put(k, v));
+        System.getProperties().forEach(PROPS::put);
         // Если хочешь, чтобы ENV имели приоритет над файлом — используй put:
-        System.getenv().forEach((k, v) -> PROPS.putIfAbsent(k, v));
+        System.getenv().forEach(PROPS::putIfAbsent);
     }
 
-    private ConfigManager() {}
+    private ConfigManager() {
+    }
 
-    public static String catalogBaseUri()       { return get("baseURI.catalog"); }
-    public static String securityBaseUri()      { return get("baseURI.security"); }
-    public static String objectCarCatalog()     { return get("objectCarCatalog"); }
-    public static String objectCarBrands()      { return get("objectCarBrands"); }
-    public static String objectCarModels()      { return get("objectCarModels"); }
-    public static String objectCarYears()       { return get("objectCarYears"); }
-    public static String objectCarEngines()     { return get("objectCarEngines"); }
-    public static String objectCarTransmissions(){ return get("objectCarTransmissions"); }
-    public static String objectCarWheelDrive()  { return get("objectCarWheelDrive"); }
-    public static String objectCarResolve()     { return get("objectCarResolve"); }
-    public static String objectTestDelay()      { return get("objectTestController"); }
-    public static String objectTokenIssuance()      { return get("objectTokenIssuance"); }
+    public static String catalogBaseUri() {
+        return get("baseURI.catalog");
+    }
+
+    public static String securityBaseUri() {
+        return get("baseURI.security");
+    }
+
+    public static String objectCarCatalog() {
+        return get("objectCarCatalog");
+    }
+
+    public static String objectCarBrands() {
+        return get("objectCarBrands");
+    }
+
+    public static String objectCarModels() {
+        return get("objectCarModels");
+    }
+
+    public static String objectCarYears() {
+        return get("objectCarYears");
+    }
+
+    public static String objectCarEngines() {
+        return get("objectCarEngines");
+    }
+
+    public static String objectCarTransmissions() {
+        return get("objectCarTransmissions");
+    }
+
+    public static String objectCarWheelDrive() {
+        return get("objectCarWheelDrive");
+    }
+
+    public static String objectCarResolve() {
+        return get("objectCarResolve");
+    }
+
+    public static String objectTestDelay() {
+        return get("objectTestController");
+    }
+
+    public static String objectTokenIssuance() {
+        return get("objectTokenIssuance");
+    }
 
     // -------- тестовые ID (не секреты, можно оставить дефолты) --------
-    public static Integer brandId()        { return Integer.parseInt(get("brandId")); }
-    public static Integer modelId()        { return Integer.parseInt(get("modelId")); }
-    public static Integer yearId()         { return Integer.parseInt(get("yearId")); }
-    public static Integer engineId()       { return Integer.parseInt(get("engineId")); }
-    public static Integer transmissionId() { return Integer.parseInt(get("transmissionId")); }
-    public static Integer wheelDriveId()   { return Integer.parseInt(get("wheelDriveId")); }
-    public static Integer carId()          { return Integer.parseInt(get("carId")); }
+    public static Integer brandId() {
+        return Integer.parseInt(get("brandId"));
+    }
+
+    public static Integer modelId() {
+        return Integer.parseInt(get("modelId"));
+    }
+
+    public static Integer yearId() {
+        return Integer.parseInt(get("yearId"));
+    }
+
+    public static Integer engineId() {
+        return Integer.parseInt(get("engineId"));
+    }
+
+    public static Integer transmissionId() {
+        return Integer.parseInt(get("transmissionId"));
+    }
+
+    public static Integer wheelDriveId() {
+        return Integer.parseInt(get("wheelDriveId"));
+    }
+
+    public static Integer carId() {
+        return Integer.parseInt(get("carId"));
+    }
 
     // -------- секреты (ТОЛЬКО из ENV/Secrets) --------
-    public static String token()          { return env(ENV_TOKEN, "API token"); }
-    public static String securityToken()  { return env(ENV_TOKEN_SECURITY, "Security service token"); }
-    public static String userId()         { return env(ENV_USER_ID, "User ID"); }
-    public static String key()            { return env(ENV_KEY, "API key"); }
+    public static String token() {
+        return env(ENV_TOKEN, "API token");
+    }
+
+    public static String securityToken() {
+        return env(ENV_TOKEN_SECURITY, "Security service token");
+    }
+
+    public static String userId() {
+        return env(ENV_USER_ID, "User ID");
+    }
+
+    public static String key() {
+        return env(ENV_KEY, "API key");
+    }
 
 
     private static String env(String name, String human) {
@@ -71,49 +138,33 @@ public final class ConfigManager {
     }
 
 
-    /** Получить значение ключа с полной подстановкой (сначала overrides, потом config). */
+    /**
+     * Получить значение ключа с полной подстановкой (сначала overrides, потом config).
+     */
     public static String get(String key, Map<String, ?> overrides) {
         String raw = PROPS.getProperty(key);
         if (raw == null) {
             throw new IllegalStateException("Config key not found: " + key);
         }
-
         return resolveAll(raw, overrides);
     }
 
-    /** Удобный varargs: get("objectCarEngines", "brandId",21,"modelId",137,...) */
-    public static String get(String key, Object... kv) {
-        return get(key, toMap(kv));
-    }
-
-    /** Без overrides — всё берём из config.properties. */
+    /**
+     * Без overrides — всё берём из config.properties.
+     */
     public static String get(String key) {
         return get(key, Collections.emptyMap());
     }
 
-
-
-    /** Собрать полный URL: base + path (оба с подстановкой placeholders). */
-    public static String url(String baseKey, String pathKey, Object... kv) {
-        Map<String, ?> overrides = toMap(kv);
-        String base = get(baseKey, overrides);
-        String path = get(pathKey, overrides);
-        // Нормализуем слеши
-        if (base.endsWith("/") && path.startsWith("/")) {
-            return base.substring(0, base.length() - 1) + path;
-        } else if (!base.endsWith("/") && !path.startsWith("/")) {
-            return base + "/" + path;
-        }
-        return base + path;
-    }
-
-    /** Рекурсивное раскрытие: приоритет overrides -> PROPS; повторяем до стабилизации. */
+    /**
+     * Рекурсивное раскрытие: приоритет overrides -> PROPS; повторяем до стабилизации.
+     */
     private static String resolveAll(String input, Map<String, ?> overrides) {
         String result = input;
         for (int depth = 0; depth < MAX_DEPTH; depth++) {
             Matcher m = PLACEHOLDER.matcher(result);
             boolean changed = false;
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             while (m.find()) {
                 String name = m.group(1);
                 String replacement = null;
@@ -158,15 +209,5 @@ public final class ConfigManager {
             }
         }
         return missing;
-    }
-
-    private static Map<String, Object> toMap(Object... kv) {
-        if (kv == null || kv.length == 0) return Collections.emptyMap();
-        if (kv.length % 2 != 0) throw new IllegalArgumentException("Key-Value pairs expected");
-        Map<String, Object> map = new LinkedHashMap<>();
-        for (int i = 0; i < kv.length; i += 2) {
-            map.put(String.valueOf(kv[i]), kv[i + 1]);
-        }
-        return map;
     }
 }
