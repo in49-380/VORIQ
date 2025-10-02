@@ -31,11 +31,10 @@ app:
 
 springdoc:
   swagger-ui:
-    path: /api/swagger-ui/index.html
-    config-url: /car/api/v3/api-docs/swagger-config
-    urls:
-      - name: Car Catalog
-        url: /car/api/v3/api-doc
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+  api-docs:
+    path: /v3/api-docs
 
 cors:
   allowed-origins: ${ALLOWED_ORIGINS:http://localhost:8080,http://127.0.0.1:8080}
