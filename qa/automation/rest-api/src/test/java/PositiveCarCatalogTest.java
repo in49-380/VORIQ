@@ -1,5 +1,6 @@
 import Utils.Service;
 import Utils.TestDataHelper;
+import config.ConfigManager;
 import io.qameta.allure.Owner;
 import org.example.CarResolve;
 import org.junit.jupiter.api.Tag;
@@ -22,20 +23,34 @@ public class PositiveCarCatalogTest extends BaseApiTest {
     @Owner("Borys Pedorenko")
     @MethodSource("getSuffixAndSchema")
     public void get_by_suffix(String suffixKeyOrLiteral, String schemaFile) {
-        apiWrapper.sendGetRequest(Service.CATALOG, resolve(suffixKeyOrLiteral))
+        apiWrapper.sendGetRequest(Service.CATALOG, ConfigManager.get(suffixKeyOrLiteral))
                 .body(matchesJsonSchemaInClasspath(schemaFile));
     }
+
 
     @Test
     @Tag("positive")
     @Owner("Borys Pedorenko")
     public void getCarId() {
-        CarResolve carResolve = TestDataHelper.defaults(BaseApiTest::getConfig);
+        CarResolve carResolve = TestDataHelper.defaults();
 
-        apiWrapper.sendPostRequest(Service.CATALOG, resolve("objectCarResolve"), carResolve)
+        apiWrapper.sendPostRequest(Service.CATALOG, ConfigManager.objectCarResolve(), carResolve)
                 .body(matchesJsonSchemaInClasspath("car_catalog-schema.json"))
-                .body("carId", equalTo(1));
+                .body("carId", equalTo(Integer.parseInt(ConfigManager.get("carId"))));
     }
+
+
+    @Test
+    @Tag("positive")
+    @Owner("Borys Pedorenko")
+    public void getTransmission() {
+
+        apiWrapper.sendGetRequest(Service.CATALOG, ConfigManager.objectCarTransmissions())
+                .body(matchesJsonSchemaInClasspath("transmissions-schema.json"));
+        System.out.println(ConfigManager.token());
+        ;
+    }
+
 
     int delay = 2000;
 
@@ -45,7 +60,7 @@ public class PositiveCarCatalogTest extends BaseApiTest {
     public void testController() {
         apiWrapper.sendGetRequestWithDelayWithoutBodyStatusCode(
                 Service.CATALOG,
-                resolve("objectTestController"),
+                ConfigManager.get("objectTestController"),
                 delay,
                 204
         );

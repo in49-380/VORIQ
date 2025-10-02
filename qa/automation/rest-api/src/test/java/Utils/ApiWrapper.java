@@ -30,6 +30,26 @@ public record ApiWrapper(Function<Service, RequestSpecification> specProvider) {
         return response.then();
     }
 
+//    @Step("GET1 {path} [{svc}]")
+//    public ValidatableResponse sendGet1Request(String urlPath,
+//                                              String path) {
+//        Response response = given()
+//                .spec(specProvider.apply(svc))
+//                .when()
+//                .get(path)
+//                .then()
+//                .statusCode(DEFAULT_STATUS_CODE_POST)
+//                .contentType(ContentType.JSON)
+//                .log().ifValidationFails()
+//                .extract().response();
+//        return response.then();
+//    }
+
+
+
+
+
+
     @Step("GET {path} [{svc}]")
     public ValidatableResponse sendGetRequestStatusCode(Service svc,
                                                         String path, int statusCode) {

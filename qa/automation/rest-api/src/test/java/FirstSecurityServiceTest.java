@@ -1,4 +1,5 @@
 import Utils.Service;
+import config.ConfigManager;
 import io.qameta.allure.Owner;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,7 @@ public class FirstSecurityServiceTest extends BaseApiTest {
         body.put("userId", userId);
         body.put("key", key);
 
-        apiWrapper.sendPostRequestStatusCode(Service.SECURITY,resolve("objectTokenIssuance"),body,200)
+        apiWrapper.sendPostRequestStatusCode(Service.SECURITY, ConfigManager.get("objectTokenIssuance"),body,200)
                 .body(matchesJsonSchemaInClasspath("token_kontroller-schema.json"))
                 .body("accessToken", notNullValue());
     }

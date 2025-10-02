@@ -1,5 +1,6 @@
 import Utils.ApiWrapper;
 import Utils.Service;
+import config.ConfigManager;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
@@ -24,15 +25,19 @@ public class BaseApiTest {
 
     @BeforeAll
     static void bootstrap() {
-        cfg = new Properties();
-        try (FileInputStream fis = new FileInputStream("src/main/resources/config_homework.properties")) {
-            cfg.load(fis);
-        } catch (IOException e) {
-            throw new IllegalStateException("Не удалось загрузить config_homework.properties", e);
-        }
-        SPECS.put(Service.CATALOG, baseSpec(cfg.getProperty("baseURI.catalog")));
-        SPECS.put(Service.SECURITY, baseSpec(cfg.getProperty("baseURI.security")));
+//        cfg = new Properties();
+//        try (FileInputStream fis = new FileInputStream("src/main/resources/config_homework.properties")) {
+//            cfg.load(fis);
+//        } catch (IOException e) {
+//            throw new IllegalStateException("Не удалось загрузить config_homework.properties", e);
+//        }
+//        SPECS.put(Service.CATALOG, baseSpec(ConfigManager.get("baseURI.catalog")));
+//        SPECS.put(Service.SECURITY, baseSpec(ConfigManager.get("baseURI.security")));
+
+        SPECS.put(Service.CATALOG, catalogSpec());
+        SPECS.put(Service.SECURITY, securitySpec());
     }
+
 
     @AfterEach
     void cleanup() {
@@ -52,23 +57,33 @@ public class BaseApiTest {
                 .build();
     }
 
-    static String resolve(String templateKey) {
-        String s = getConfig(templateKey);
-        s = s.replace("{brandId}", getConfig("brandId"));
-        s = s.replace("{modelId}", getConfig("modelId"));
-        s = s.replace("{yearId}", getConfig("yearId"));
-        s = s.replace("{engineId}", getConfig("engineId"));
-        s = s.replace("{transmissionId}", getConfig("transmissionId"));
-        s = s.replace("{objectCarCatalog}", getConfig("objectCarCatalog"));
-        s = s.replace("{objectTokenIssuance}", getConfig("objectTokenIssuance"));
-        s = s.replace("{userId}", getConfig("userId"));
-        s = s.replace("{key}", getConfig("key"));
-        s = s.replace("{token}", getConfig("token"));
 
-        return s;
+    private static RequestSpecification catalogSpec() {
+        return new RequestSpecBuilder()
+                .setBaseUri(ConfigManager.catalogBaseUri())
+                .setContentType(ContentType.JSON)
+                .addHeader("Authorization", "Bearer " + ConfigManager.token())
+                .log(LogDetail.URI)
+                .log(LogDetail.HEADERS)
+                .log(LogDetail.BODY)
+                .addFilter(new AllureRestAssured())
+                .build();
     }
 
+    /** Базовая спека для security (с Authorization из ENV) */
+    private static RequestSpecification securitySpec() {
+        return new RequestSpecBuilder()
+                .setBaseUri(ConfigManager.securityBaseUri())
+                .setContentType(ContentType.JSON)
+                .addHeader("Authorization", "Bearer " + ConfigManager.securityToken())
+                .log(LogDetail.URI)
+                .log(LogDetail.HEADERS)
+                .log(LogDetail.BODY)
+                .addFilter(new AllureRestAssured())
+                .build();
+    }
 
+    /** Доступ к спекам по enum-сервису (как и раньше) */
     RequestSpecification spec(Service svc) {
         RequestSpecification s = SPECS.get(svc);
         if (s == null) throw new IllegalArgumentException("Неизвестный сервис: " + svc);

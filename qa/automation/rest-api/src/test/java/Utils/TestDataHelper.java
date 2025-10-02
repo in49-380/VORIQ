@@ -1,5 +1,6 @@
 package Utils;
 
+import config.ConfigManager;
 import org.example.CarResolve;
 
 import java.util.function.Function;
@@ -22,14 +23,14 @@ public class TestDataHelper {
         return Integer.parseInt(cfg.apply(key));
     }
 
-    public static CarResolve defaults(Function<String, String> cfg) {
+    public static CarResolve defaults() {
         return new CarResolve(
-                cfgInt(cfg, "brandId"),
-                cfgInt(cfg, "modelId"),
-                cfgInt(cfg, "yearId"),
-                cfgInt(cfg, "engineId"),
-                cfgInt(cfg, "transmissionId"),
-                cfgInt(cfg, "wheelDriveId")
+                ConfigManager.brandId(),
+                ConfigManager.modelId(),
+                ConfigManager.yearId(),
+                ConfigManager.engineId(),
+                ConfigManager.transmissionId(),
+                ConfigManager.wheelDriveId()
         );
     }
 
@@ -69,9 +70,9 @@ public class TestDataHelper {
     }
 
 
-    public static Stream<Arguments> validCarResolveArgs(Function<String, String> cfg) {
-        return Stream.of(Arguments.of(Named.of("valid", defaults(cfg))));
-    }
+//    public static Stream<Arguments> validCarResolveArgs(Function<String, String> cfg) {
+//        return Stream.of(Arguments.of(Named.of("valid", defaults(cfg))));
+//    }
 
     public static Stream<Arguments> suffixAndSchema() {
         return Stream.of(
