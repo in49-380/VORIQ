@@ -1,6 +1,6 @@
-import Utils.ApiWrapper;
-import Utils.Service;
-import config.ConfigManager;
+import info.voriq.testing.utils.ApiWrapper;
+import info.voriq.testing.utils.Service;
+import info.voriq.testing.config.ConfigManager;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;

@@ -1,4 +1,4 @@
-package config;
+package info.voriq.testing.config;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;

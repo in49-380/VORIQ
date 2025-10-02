@@ -1,7 +1,7 @@
-package Utils;
+package info.voriq.testing.utils;
 
-import config.ConfigManager;
-import org.example.CarResolve;
+import info.voriq.testing.config.ConfigManager;
+import info.voriq.testing.CarResolve;
 
 import java.util.function.Function;
 import java.util.stream.Stream;
