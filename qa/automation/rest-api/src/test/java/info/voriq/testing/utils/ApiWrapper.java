@@ -25,7 +25,9 @@ public record ApiWrapper(Function<Service, RequestSpecification> specProvider) {
             Map<String, ?> queryParams,
             int delay,
             int expectedStatus,
-            ContentType expectedContentType
+            ContentType expectedContentType,
+            CtCheckMode ctMode
+
     ) {
         RequestSpecification spec = given().spec(specProvider.apply(svc));
 
@@ -49,19 +51,29 @@ public record ApiWrapper(Function<Service, RequestSpecification> specProvider) {
 
         ValidatableResponse then = resp.then()
                 .statusCode(expectedStatus)
-                .contentType(ContentType.JSON)
                 .log().ifValidationFails();
 
-        if (expectedContentType != null) {
-            then.contentType(expectedContentType);
+        if (expectedContentType != null && ctMode != CtCheckMode.NONE) {
+            String ctHeader = resp.getHeader("Content-Type");
+
+            if (ctMode == CtCheckMode.REQUIRE) {
+                if (ctHeader == null || ctHeader.isBlank()) {
+                    throw new AssertionError("Expected Content-Type header=" + expectedContentType + ", but it is not present.");
+                }
+                then.contentType(expectedContentType);
+            } else { // IF_PRESENT
+                if (ctHeader != null && !ctHeader.isBlank()) {
+                    then.contentType(expectedContentType);
+                }
+            }
         }
         return then;
     }
 
     // ---- GET ----
-    @Step("GET {path} [{svc}] → ожидаем {expectedStatus}")
+    @Step("GET {path} [{svc}] → ожидаем {expectedStatus} (JSON, STRICT)")
     public ValidatableResponse get(Service svc, String path, int expectedStatus) {
-        return request(svc, "GET", path, null, null, 0, expectedStatus, ContentType.JSON);
+        return request(svc, "GET", path, null, null, 0, expectedStatus, ContentType.JSON, CtCheckMode.REQUIRE);
     }
 
 
@@ -70,29 +82,34 @@ public record ApiWrapper(Function<Service, RequestSpecification> specProvider) {
         return get(svc, path, DEFAULT_STATUS_CODE_GET);
     }
 
-    @Step("GET {path} [{svc}] c query={queryParams} → ожидаем {expectedStatus}")
+    @Step("GET {path} [{svc}] with query={queryParams} → expected {expectedStatus} (JSON, STRICT)")
     public ValidatableResponse get(Service svc, String path, Map<String, ?> queryParams, int expectedStatus) {
-        return request(svc, "GET", path, null, queryParams, 0, expectedStatus, ContentType.JSON);
+        return request(svc, "GET", path, null, queryParams, 0, expectedStatus, ContentType.JSON, CtCheckMode.REQUIRE);
     }
 
-
-    @Step("GET {path} [{svc}] c delay={delay} → ожидаем {expectedStatus}")
+    @Step("GET {path} [{svc}] with delay={delay} → expected {expectedStatus} (NO CT CHECK)")
     public ValidatableResponse get(Service svc, String path, int delay, int expectedStatus) {
-        return request(svc, "GET", path, null, null, delay, expectedStatus, ContentType.JSON);
+        return request(svc, "GET", path, null, null, delay, expectedStatus, null, CtCheckMode.NONE);
     }
+
+    @Step("GET {path} [{svc}] → expected {expectedStatus} (JSON, IF_PRESENT)")
+    public ValidatableResponse getIfPresent(Service svc, String path, int expectedStatus) {
+        return request(svc, "GET", path, null, null, 0, expectedStatus, ContentType.JSON, CtCheckMode.IF_PRESENT);
+    }
+
 
     // ---- POST ----
-    @Step("POST {path} [{svc}] без тела → ожидаем {expectedStatus}")
+    @Step("POST {path} [{svc}] without body → expected {expectedStatus} (JSON, STRICT)")
     public ValidatableResponse post(Service svc, String path, int expectedStatus) {
-        return request(svc, "POST", path, null, null, 0, expectedStatus, ContentType.JSON);
+        return request(svc, "POST", path, null, null, 0, expectedStatus, ContentType.JSON, CtCheckMode.REQUIRE);
     }
 
-    @Step("POST {path} [{svc}] body={body} → ожидаем {expectedStatus}")
+    @Step("POST {path} [{svc}] body={body} → expected {expectedStatus} (JSON, STRICT)")
     public ValidatableResponse post(Service svc, String path, Object body, int expectedStatus) {
-        return request(svc, "POST", path, body, null, 0, expectedStatus, ContentType.JSON);
+        return request(svc, "POST", path, body, null, 0, expectedStatus, ContentType.JSON, CtCheckMode.REQUIRE);
     }
 
-    @Step("POST {path} [{svc}] body={body}→ ожидаем {DEFAULT_STATUS_CODE_POST}")
+    @Step("POST {path} [{svc}] body={body}→ expected 200 (JSON, STRICT)")
     public ValidatableResponse post(Service svc, String path, Object body) {
         return post(svc, path, body, DEFAULT_STATUS_CODE_POST);
     }

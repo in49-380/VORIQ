@@ -3,13 +3,11 @@ import info.voriq.testing.utils.TestDataHelper;
 import info.voriq.testing.config.ConfigManager;
 import io.qameta.allure.Owner;
 import info.voriq.testing.CarResolve;
-import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.Matchers.*;
 
@@ -57,11 +55,7 @@ public class PositiveCarCatalogTest extends BaseApiTest {
     @Tag("positive")
     @Owner("Borys Pedorenko")
     public void testController() {
-        given()
-                .when().log().ifValidationFails()
-                .queryParam("delay", DELAY)
-                .get(ConfigManager.catalogBaseUri() + ConfigManager.objectTestDelay())
-                .then()
-                .statusCode(204);
+        apiWrapper.get(Service.CATALOG, ConfigManager.objectTestDelay(), DELAY, 204)
+                .body(emptyOrNullString());
     }
 }
