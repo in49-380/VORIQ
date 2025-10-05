@@ -34,15 +34,16 @@ public class NegativeCarCatalogTest extends BaseApiTest {
                 .body("message[0]", equalTo("Unauthorized access"));
     }
 
-    final int delay = -1000;
+    final int DELAY = -1000;
 
     @Test
     @Tag("negative")
     @Owner("Borys Pedorenko")
+    @DisplayName("Bad GET query with delay < 0 value")
 
     public void testController() {
 
-        apiWrapper.get(Service.CATALOG, ConfigManager.objectTestDelay(), delay, 400)
+        apiWrapper.get(Service.CATALOG, ConfigManager.objectTestDelay(), DELAY, 400)
                 .body(matchesJsonSchemaInClasspath("error_bad_request-schema.json"))
                 .body("validationErrors[0].field", nullValue())
                 .body("message[0]", containsString("Delay should be more than"));

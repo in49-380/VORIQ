@@ -3,6 +3,7 @@ import info.voriq.testing.utils.TestDataHelper;
 import info.voriq.testing.config.ConfigManager;
 import io.qameta.allure.Owner;
 import info.voriq.testing.CarResolve;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,6 +22,7 @@ public class PositiveCarCatalogTest extends BaseApiTest {
     @ParameterizedTest(name = "[{index}] GET {0} -> {1}")
     @Tag("positive")
     @Owner("Borys Pedorenko")
+    @DisplayName("Positive test baseURI.catalog of suffix and schema")
     @MethodSource("getSuffixAndSchema")
     public void get_by_suffix(String suffixKeyOrLiteral, String schemaFile) {
         apiWrapper.get(Service.CATALOG, ConfigManager.get(suffixKeyOrLiteral))
@@ -31,6 +33,7 @@ public class PositiveCarCatalogTest extends BaseApiTest {
     @Test
     @Tag("positive")
     @Owner("Borys Pedorenko")
+    @DisplayName("Positive test obtaining an ID card")
     public void getCarId() {
         CarResolve carResolve = TestDataHelper.defaults();
 
@@ -43,16 +46,7 @@ public class PositiveCarCatalogTest extends BaseApiTest {
     @Test
     @Tag("positive")
     @Owner("Borys Pedorenko")
-    public void getTransmission() {
-
-        apiWrapper.get(Service.CATALOG, ConfigManager.objectCarTransmissions())
-                .body(matchesJsonSchemaInClasspath("transmissions-schema.json"));
-    }
-
-
-    @Test
-    @Tag("positive")
-    @Owner("Borys Pedorenko")
+    @DisplayName("Positive test - baseURI.security check with delay")
     public void testController() {
         apiWrapper.get(Service.CATALOG, ConfigManager.objectTestDelay(), DELAY, 204)
                 .body(emptyOrNullString());

@@ -1,6 +1,7 @@
 import info.voriq.testing.utils.Service;
 import info.voriq.testing.config.ConfigManager;
 import io.qameta.allure.Owner;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +16,7 @@ public class PositiveSecurityServiceTest extends BaseApiTest {
     @Test
     @Owner("Borys Pedorenko")
     @Tag("negative")
+    @DisplayName ("Positive test baseURI.security of token issuance")
     public void firstTest() {
         String userId = ConfigManager.userId();
         String key = ConfigManager.key();
