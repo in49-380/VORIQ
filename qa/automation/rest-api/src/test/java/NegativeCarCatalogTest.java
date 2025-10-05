@@ -46,8 +46,6 @@ public class NegativeCarCatalogTest extends BaseApiTest {
                 .body(matchesJsonSchemaInClasspath("error_bad_request-schema.json"))
                 .body("validationErrors[0].field", nullValue())
                 .body("message[0]", containsString("Delay should be more than"));
-
-
     }
 
 
