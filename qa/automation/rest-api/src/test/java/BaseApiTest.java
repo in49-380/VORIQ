@@ -3,7 +3,11 @@ import info.voriq.testing.utils.Service;
 import info.voriq.testing.config.ConfigManager;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.config.HttpClientConfig;
+import io.restassured.config.RestAssuredConfig;
 import io.restassured.filter.log.LogDetail;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.AfterEach;
@@ -13,6 +17,7 @@ import org.junit.jupiter.api.BeforeAll;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Properties;
+
 
 import static io.restassured.RestAssured.reset;
 
@@ -35,23 +40,30 @@ public class BaseApiTest {
 
 
     private static RequestSpecification specUrl(String url) {
+        RestAssuredConfig cfg = RestAssuredConfig.config().httpClient(
+                HttpClientConfig.httpClientConfig()
+                        .setParam("http.connection.timeout", 3_000)
+                        .setParam("http.socket.timeout", 10_000)
+                        .setParam("http.connection-manager.timeout", 2_000))
+                        .logConfig(io.restassured.config.LogConfig.logConfig()
+                                .blacklistHeader("Authorization"));
+
         return new RequestSpecBuilder()
                 .setBaseUri(url)
+                .setConfig(cfg)
                 .setContentType(ContentType.JSON)
                 .addHeader("Authorization", "Bearer " + ConfigManager.token())
-                .log(LogDetail.URI)
-                .log(LogDetail.HEADERS)
-                .log(LogDetail.BODY)
                 .addFilter(new AllureRestAssured())
+                .addFilter(new RequestLoggingFilter(LogDetail.METHOD))
+                .addFilter(new RequestLoggingFilter(LogDetail.URI))
+                .addFilter(new ResponseLoggingFilter(LogDetail.STATUS))
                 .build();
     }
 
-    /**
-     * Доступ к спекам по enum-сервису (как и раньше)
-     */
+
     RequestSpecification spec(Service svc) {
         RequestSpecification s = SPECS.get(svc);
-        if (s == null) throw new IllegalArgumentException("Неизвестный сервис: " + svc);
+        if (s == null) throw new IllegalArgumentException("Unknown service: " + svc);
         return s;
     }
 

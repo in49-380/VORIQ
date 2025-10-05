@@ -24,9 +24,9 @@ public final class ConfigManager {
         } catch (Exception e) {
             throw new RuntimeException("Failed to load config_homework.properties", e);
         }
-        // Опционально: перекрыть системными и ENV
+
         PROPS.putAll(System.getProperties());
-        // Если хочешь, чтобы ENV имели приоритет над файлом — используй put:
+
         System.getenv().forEach(PROPS::putIfAbsent);
     }
 
@@ -169,20 +169,16 @@ public final class ConfigManager {
                 String name = m.group(1);
                 String replacement = null;
 
-                // 1) приоритет override из теста
+
                 if (overrides.containsKey(name) && overrides.get(name) != null) {
                     replacement = String.valueOf(overrides.get(name));
-                }
-                // 2) иначе — из config.properties (ключ может быть как «листом», так и «шаблоном»)
-                else if (PROPS.containsKey(name)) {
+                } else if (PROPS.containsKey(name)) {
                     replacement = PROPS.getProperty(name);
                 }
-
                 if (replacement != null) {
                     m.appendReplacement(sb, Matcher.quoteReplacement(replacement));
                     changed = true;
                 } else {
-                    // Оставляем плейсхолдер как есть — возможно раскроется на следующей итерации
                     m.appendReplacement(sb, Matcher.quoteReplacement("{" + name + "}"));
                 }
             }
@@ -191,7 +187,6 @@ public final class ConfigManager {
             if (!changed) break;
         }
 
-        // После итераций никаких «неизвестных» плейсхолдеров остаться не должно
         Set<String> missing = findUnresolved(result, overrides.keySet());
         if (!missing.isEmpty()) {
             throw new IllegalStateException("Unresolved placeholders: " + String.join(", ", missing));

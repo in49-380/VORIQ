@@ -47,7 +47,6 @@ public class PositiveCarCatalogTest extends BaseApiTest {
 
         apiWrapper.get(Service.CATALOG, ConfigManager.objectCarTransmissions())
                 .body(matchesJsonSchemaInClasspath("transmissions-schema.json"));
-        System.out.println(ConfigManager.token());
     }
 
 

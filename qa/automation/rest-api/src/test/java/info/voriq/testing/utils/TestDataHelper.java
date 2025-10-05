@@ -13,7 +13,7 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 public class TestDataHelper {
 
-    static final Integer MAXNUMBER = 99999;
+    static final Integer MAX_NUMBER = 99999;
     static final Integer VALUE_LESS_ZERO = -1;
     static final Integer VALUE_NULL = null;
 
@@ -63,7 +63,7 @@ public class TestDataHelper {
 
     public static Stream<Arguments> carResolveMAX(Function<String, String> cfg) {
         return Stream.of(CarField.values())
-                .map(f -> Arguments.of(Named.of(f.name() + "=MAX", withOverride(cfg, f, MAXNUMBER))));
+                .map(f -> Arguments.of(Named.of(f.name() + "=MAX", withOverride(cfg, f, MAX_NUMBER))));
     }
 
 
