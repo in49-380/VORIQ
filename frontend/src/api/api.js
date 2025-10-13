@@ -2,15 +2,16 @@ import axios from 'axios';
 // const backURL='http://$VITE_SWAGGER_DOMAIN:$VITE_SWAGGER_PORT/api/v1'
 
 // const domain = import.meta.env.VITE_SWAGGER_DOMAIN || 'http://voriq.info';
-const domain = import.meta.env.VITE_SWAGGER_DOMAIN
-  ? `http://${import.meta.env.VITE_SWAGGER_DOMAIN}`
-  : 'http://voriq.info';
+// const domain = import.meta.env.VITE_SWAGGER_DOMAIN
+//   ? `http://${import.meta.env.VITE_SWAGGER_DOMAIN}`
+//   : 'http://voriq.info';
 
 
-  console.log('env:', domain)
-const port = import.meta.env.VITE_SWAGGER_PORT || '8084';
+//   console.log('env:', domain)
+// const port = import.meta.env.VITE_SWAGGER_PORT || '8084';
 
-const backURL = port ? `${domain}:${port}/api/v1` : `${domain}/api/v1`;
+// const backURL = port ? `${domain}:${port}/api/v1` : `${domain}/api/v1`;
+const backURL='https://voriq.info/car/api/v1'
 
 const authHeader = (json = false) => {
   const contentType = json ? 'application/json' : 'application/x-www-form-urlencoded';
