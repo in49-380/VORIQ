@@ -20,7 +20,8 @@ const SelectorBlock=({brand, model, year,engine, transmission, wheel, setCurrent
 // *****************Brand init******************
     useEffect(()=>{
         const getBrands=async()=>{
-        const result= await runApi((signal)=>get('http://voriq.info:8084/api/v1/catalog/brands',signal))
+        const result= await runApi((signal)=>get('/catalog/brands',signal))
+
         brand.setOptions(result)
         }
     getBrands()
@@ -34,7 +35,7 @@ const SelectorBlock=({brand, model, year,engine, transmission, wheel, setCurrent
         return;
         }
         const result=await runApi((signal)=>
-        get(`http://voriq.info:8084/api/v1/catalog/brands/${brand.value.id}/models`,signal))
+        get(`/catalog/brands/${brand.value.id}/models`,signal))
         model.setOptions(result)
         }
     getModels()
@@ -47,7 +48,7 @@ const SelectorBlock=({brand, model, year,engine, transmission, wheel, setCurrent
         return
         }
         const result=await runApi((signal)=>
-        get(`http://voriq.info:8084/api/v1/catalog/brands/${brand.value.id}/models/${model.value.id}/years`,signal))
+        get(`/catalog/brands/${brand.value.id}/models/${model.value.id}/years`,signal))
         year.setOptions(result)
         }
     getYears()
@@ -60,7 +61,7 @@ const SelectorBlock=({brand, model, year,engine, transmission, wheel, setCurrent
         return
         }
        const result=await runApi((signal)=>
-        get(`http://voriq.info:8084/api/v1/catalog/brands/${brand.value.id}/models/${model.value.id}/years/${year.value[0].id}/engines`,signal))
+        get(`/catalog/brands/${brand.value.id}/models/${model.value.id}/years/${year.value[0].id}/engines`,signal))
         engine.setOptions(result)
     }
     getEngine()
@@ -73,7 +74,7 @@ const SelectorBlock=({brand, model, year,engine, transmission, wheel, setCurrent
         return
         }
        const result=await runApi((signal)=>
-        get(`http://voriq.info:8084/api/v1/catalog/brands/${brand.value.id}/models/${model.value.id}/years/${year.value[0].id}/engines/${engine.value.id}/transmissions`,signal))
+        get(`/catalog/brands/${brand.value.id}/models/${model.value.id}/years/${year.value[0].id}/engines/${engine.value.id}/transmissions`,signal))
         transmission.setOptions(result)
     }
     getTransmission()
@@ -86,7 +87,7 @@ const SelectorBlock=({brand, model, year,engine, transmission, wheel, setCurrent
         return
         }
        const result=await runApi((signal)=>
-        get(`http://voriq.info:8084/api/v1/catalog/brands/${brand.value.id}/models/${model.value.id}/years/${year.value[0].id}/engines/${engine.value.id}/transmissions/${transmission.value.id}/wheel_drive`,signal))
+        get(`/catalog/brands/${brand.value.id}/models/${model.value.id}/years/${year.value[0].id}/engines/${engine.value.id}/transmissions/${transmission.value.id}/wheel_drive`,signal))
         wheel.setOptions(result)
     }
     getWheel()
