@@ -4,14 +4,12 @@ import info.voriq.testing.utils.TestDataHelper;
 import info.voriq.testing.config.ConfigManager;
 import info.voriq.testing.CarResolve;
 import io.qameta.allure.Owner;
-import io.restassured.http.ContentType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.Matchers.*;
 
@@ -23,12 +21,7 @@ public class NegativeCarCatalogTest extends BaseApiTest {
     @DisplayName("GET /v1/catalog/brands without authorization")
     public void getAllBrandsWithoutAuthorization() {
 
-        given()
-                .when().log().ifValidationFails()
-                .get(ConfigManager.catalogBaseUri() + ConfigManager.objectCarCatalog() + ConfigManager.objectCarBrands())
-                .then()
-                .statusCode(401)
-                .contentType(ContentType.JSON)
+        apiWrapper.getNoAuth(Service.CATALOG, ConfigManager.objectCarBrands(), 401)
                 .body(matchesJsonSchemaInClasspath("error_response-schema.json"))
                 .body("error", equalTo("Unauthorized"))
                 .body("message[0]", equalTo("Unauthorized access"));

@@ -31,6 +31,7 @@ public class BaseApiTest {
     static void bootstrap() {
         SPECS.put(Service.CATALOG, specUrl(ConfigManager.catalogBaseUri()));
         SPECS.put(Service.SECURITY, specUrl(ConfigManager.securityBaseUri()));
+        SPECS.put(Service.PARSER, specUrl(ConfigManager.parserBaseUri()));
     }
 
     @AfterEach
@@ -52,7 +53,7 @@ public class BaseApiTest {
                 .setBaseUri(url)
                 .setConfig(cfg)
                 .setContentType(ContentType.JSON)
-                .addHeader("Authorization", "Bearer " + ConfigManager.token())
+                //.addHeader("Authorization", "Bearer " + ConfigManager.token())
                 .addFilter(new AllureRestAssured())
                 .addFilter(new RequestLoggingFilter(LogDetail.METHOD))
                 .addFilter(new RequestLoggingFilter(LogDetail.URI))

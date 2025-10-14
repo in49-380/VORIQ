@@ -41,6 +41,7 @@ public final class ConfigManager {
         return get("baseURI.security");
     }
 
+
     public static String objectCarCatalog() {
         return get("objectCarCatalog");
     }
@@ -80,6 +81,25 @@ public final class ConfigManager {
     public static String objectTokenIssuance() {
         return get("objectTokenIssuance");
     }
+
+    /* Parser*/
+    public static String parserBaseUri() {
+        return get("baseURI.parser");
+    }
+
+    public static String objectParserCar() {
+        return get("objectParserCar");
+    }
+
+    public static String objectParserCarById() {
+        return get("objectParserCarById");
+    }
+
+    public static String objectParserEngines() {
+        return get("objectParserEngines");
+    }
+
+
 
     // -------- тестовые ID (не секреты, можно оставить дефолты) --------
     public static Integer brandId() {

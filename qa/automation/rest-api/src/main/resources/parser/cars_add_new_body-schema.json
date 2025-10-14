@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "items": [
+    {
+      "type": "object",
+      "properties": {
+        "brand": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "year": {
+          "type": "integer"
+        },
+        "marketing_name": {
+          "type": "string"
+        },
+        "displacement": {
+          "type": "number"
+        },
+        "engine_type": {
+          "type": "string"
+        },
+        "fuel_type": {
+          "type": "string"
+        },
+        "transmission_type": {
+          "type": "boolean"
+        },
+        "number_gears": {
+          "type": "integer"
+        },
+        "drive": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "brand",
+        "model",
+        "year",
+        "marketing_name",
+        "displacement",
+        "engine_type",
+        "fuel_type",
+        "transmission_type",
+        "number_gears",
+        "drive"
+      ]
+    }
+  ]
+}

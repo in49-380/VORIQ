@@ -1,0 +1,177 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "items": [
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "model": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "string"
+            },
+            "brand": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "name"
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "brand"
+          ]
+        },
+        "engine": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "type": {
+              "type": "string"
+            },
+            "fuelType": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "name"
+              ]
+            },
+            "seriesCode": {
+              "type": "string"
+            },
+            "engineCode": {
+              "type": "string"
+            },
+            "displacementCC": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "id",
+            "type",
+            "fuelType",
+            "seriesCode",
+            "engineCode",
+            "displacementCC"
+          ]
+        },
+        "year": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "year": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "id",
+            "year"
+          ]
+        },
+        "market": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "code": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "code",
+            "name"
+          ]
+        },
+        "transmission": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "gears": {
+              "type": "integer"
+            },
+            "supplier": {
+              "type": "string"
+            },
+            "family_code": {
+              "type": "string"
+            },
+            "marketingName": {
+              "type": "string"
+            },
+            "manual": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "gears",
+            "supplier",
+            "family_code",
+            "marketingName",
+            "manual"
+          ]
+        },
+        "whilldrive": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "name"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "model",
+        "engine",
+        "year",
+        "market",
+        "transmission",
+        "whilldrive"
+      ]
+    }
+  ]
+}

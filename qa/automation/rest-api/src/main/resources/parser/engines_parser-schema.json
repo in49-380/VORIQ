@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "items": [
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string"
+        },
+        "fuelType": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "name"
+          ]
+        },
+        "seriesCode": {
+          "type": "string"
+        },
+        "engineCode": {
+          "type": "string"
+        },
+        "displacementCC": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "fuelType",
+        "seriesCode",
+        "engineCode",
+        "displacementCC"
+      ]
+    }
+  ]
+}
