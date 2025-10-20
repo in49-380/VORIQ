@@ -298,20 +298,18 @@ footer>.allrights{
     width: 100%;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 80vh auto 80vh 50vh ;
+    grid-template-rows: minmax(max-content, 80vh) 80vh 50vh ;
     grid-template-areas: 
       "flexExperience "
-      "result"
       "chooseUs"
       "aboutUs"
     ;
     $car-container-areas: (
     ".experience-block": flexExperience,
-    ".topCarSite":result, "result"
     ".chooseBlock": chooseUs,
     ".aboutUsBlock": aboutUs,
     );
-
+    
     @include m.grid-area($car-container-areas);
 }
 
@@ -328,15 +326,18 @@ footer>.allrights{
     background-repeat: no-repeat;
 
     padding: 2rem;
+    padding-top: 7rem;
     display: grid;;
-    grid-template-rows: 1fr 1fr ;
+    row-gap: 7rem;
+    grid-template-rows: 1fr 1fr auto ;
     grid-template-areas: 
       "textt"
       "selectors-buttons"
+      "result"
     ;
     $experience-block-areas: (
     ".textt": textt,
-    
+    ".topCarSite":result, "result"
     ".selector-button-wrap": selectors-buttons
     );
 
@@ -346,7 +347,7 @@ footer>.allrights{
 }
 
 .experience-block .textt{
-    @include m.size (60%, 60%, inherit);
+    @include m.size (60%, 100%, inherit);
     text-align: center;
     @include m.flex-col(2rem, center, center);
 }
@@ -371,7 +372,7 @@ footer>.allrights{
 
 .selector-button-wrap{
    
-    @include m.size(90%, 70%, var(--selbutBlock-background-primary));
+    @include m.size(90%, 25vh, var(--selbutBlock-background-primary));
     border-radius: 30px;
     padding-left: 4rem;
 

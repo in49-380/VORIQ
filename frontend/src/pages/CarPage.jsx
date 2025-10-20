@@ -117,13 +117,12 @@ const CarPage = () => {
               setCurrentStep={setCurrentStep}
             />
           </div>
-       </div>   
-  
         <HintBox
               currentStep={currentStep}
               setCurrentStep={setCurrentStep}
         />
        <div className='topCarSite'>
+
        { currentStep>6 && !isNewSearch && hasAllValues &&
         <div className='carData'>
             <h2>You have selected this car:</h2>
@@ -154,6 +153,8 @@ const CarPage = () => {
             <h1>Here will be the results of the selected car’s analysis.</h1>
             <h2>* Not necessarily here — it will depend on the design — but they will be shown.</h2>
         </div>}
+       </div>   
+  
       </div>
   
   
