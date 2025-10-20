@@ -2,19 +2,19 @@ import React from "react";
 import {useState, useEffect} from 'react'
 import useHintBox from '../../hooks/useHintBox'
 import Button from "../Button";
-// import {changeLanguage } from "i18next";
+import {useTranslation} from "react-i18next";
 
 const HintBox=({currentStep, setCurrentStep})=>{
-
+const {t}=useTranslation()
   const hintTour=[
-    { step: 1, value: 's1', content: 'hint1' },
-    { step: 2, value: 's2', content: 'hint2' },
-    { step: 3, value: 's3', content: 'hint3' },
-    { step: 4, value: 's4', content: 'hint4' },
-    { step: 5, value: 's5', content: 'hint5' },
-    { step: 6, value: 's6', content: 'hint6' },
-    { step: 7, value: 'b5', content: 'hint7' },
-    { step: 8, value: 'b6', content: 'hint8' },
+    { step: 1, value: 's1', content: t('hint.1') },
+    { step: 2, value: 's2', content: t('hint.2') },
+    { step: 3, value: 's3', content: t('hint.3') },
+    { step: 4, value: 's4', content: t('hint.4') },
+    { step: 5, value: 's5', content: t('hint.5') },
+    { step: 6, value: 's6', content: t('hint.6') },
+    { step: 7, value: 'b5', content: t('hint.analyze') },
+    { step: 8, value: 'b6', content: t('hint.newSearch') },
   ]
 
   const {hintBoxData}=useHintBox()

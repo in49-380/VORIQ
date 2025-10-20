@@ -22,85 +22,41 @@ to create a white background.
 */
 /* Spacing */
 /* Breakpoints */
+@use '../../styles/variables' as v;
+@use '../../styles/mixins' as m;
 
 .klaro {
-  font-family: inherit;
-  font-family: var(--font-family, inherit);
-
-  font-size: 14px;
-  font-size: var(--font-size, 14px);
+  font-family: var(--font-family);
+  font-size: 1.4rem;
 }
 .klaro button {
-  font-family: inherit;
-  font-family: var(--font-family, inherit);
-  font-size: 14px;
-  font-size: var(--font-size, 14px);
+  font-family: var(--font-family);
+  font-size: 1.2rem;
 }
-.klaro.cm-as-context-notice {
-  height: 100%;
-  padding-bottom: 12px;
-  padding-top: 12px;
-}
-.klaro .cookie-modal,
-.klaro .context-notice,
-.klaro .cookie-notice {
-  /* The switch - the box around the slider */
-}
-.klaro .cookie-modal .cm-switch-container,
-.klaro .context-notice .cm-switch-container,
-.klaro .cookie-notice .cm-switch-container {
-  border-bottom-style: solid;
-  border-bottom-style: var(--border-style, solid);
-  border-bottom-width: 1px;
-  border-bottom-width: var(--border-width, 1px);
-  border-bottom-color: #c8c8c8;
-  border-bottom-color: var(--light2, #c8c8c8);
-  display: block;
-  position: relative;
-  padding: 10px;
-  padding-left: 66px;
-  line-height: 20px;
-  vertical-align: middle;
-  min-height: 40px;
-}
-.klaro .cookie-modal .cm-switch-container:last-child,
-.klaro .context-notice .cm-switch-container:last-child,
-.klaro .cookie-notice .cm-switch-container:last-child {
-  border-bottom: 0;
-}
-.klaro .cookie-modal .cm-switch-container:first-child,
-.klaro .context-notice .cm-switch-container:first-child,
-.klaro .cookie-notice .cm-switch-container:first-child {
-  margin-top: 0;
-}
-.klaro .cookie-modal .cm-switch-container p,
-.klaro .context-notice .cm-switch-container p,
-.klaro .cookie-notice .cm-switch-container p {
-  margin-top: 0;
-}
+
 .klaro .cookie-modal .cm-switch,
 .klaro .context-notice .cm-switch,
 .klaro .cookie-notice .cm-switch {
   position: relative;
   display: inline-block;
-  width: 50px;
-  height: 30px;
+  @include m.size(5rem, 3rem, none);
 }
+
 /* slider color checked */
 .klaro .cookie-modal .cm-list-input:checked + .cm-list-label .slider,
 .klaro .context-notice .cm-list-input:checked + .cm-list-label .slider,
 .klaro .cookie-notice .cm-list-input:checked + .cm-list-label .slider {
-  background-color: #2581c4;
-  background-color: var(--blue3, #2581c4);
+  background-color: var(--claro-slider);
 }
+
 /* slider allServices color half-checked*/
 .klaro .cookie-modal .cm-list-input.half-checked:checked + .cm-list-label .slider,
 .klaro .context-notice .cm-list-input.half-checked:checked + .cm-list-label .slider,
 .klaro .cookie-notice .cm-list-input.half-checked:checked + .cm-list-label .slider {
-  background-color: var(--blue2, #2581c4);
-
-  opacity: 0.6;
+  background-color: var(--claro-slider);
+  opacity: 0.5;
 }
+
 /* slider allServices position */
 .klaro .cookie-modal .cm-list-input.half-checked:checked + .cm-list-label .slider::before,
 .klaro .context-notice .cm-list-input.half-checked:checked + .cm-list-label .slider::before,
@@ -108,136 +64,72 @@ to create a white background.
   -ms-transform: translateX(10px);
   transform: translateX(10px);
 }
-/* .klaro .cookie-modal .cm-list-input.only-required + .cm-list-label .slider,
-.klaro .context-notice .cm-list-input.only-required + .cm-list-label .slider,
-.klaro .cookie-notice .cm-list-input.only-required + .cm-list-label .slider {
-  background-color: #24cc9a;
-  background-color: var(--green2, #24cc9a);
-  opacity: 0.8;
-}
-.klaro .cookie-modal .cm-list-input.only-required + .cm-list-label .slider::before,
-.klaro .context-notice .cm-list-input.only-required + .cm-list-label .slider::before,
-.klaro .cookie-notice .cm-list-input.only-required + .cm-list-label .slider::before {
-  -ms-transform: translateX(10px);
-  transform: translateX(10px);
-} */
-/* .klaro .cookie-modal .cm-list-input.required:checked + .cm-list-label .slider,
-.klaro .context-notice .cm-list-input.required:checked + .cm-list-label .slider,
-.klaro .cookie-notice .cm-list-input.required:checked + .cm-list-label .slider {
-  background-color: #24cc9a;
-  background-color: var(--green2, #24cc9a);
-  opacity: 0.8;
-  cursor: not-allowed;
-} */
-.klaro .cookie-modal .slider,
-.klaro .context-notice .slider,
-.klaro .cookie-notice .slider {
-  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 5px 5px 10px 0 rgba(0, 0, 0, 0.19);
-}
+
 /* Hidden checkbox under the all-services slider */
 .klaro .cookie-modal .cm-list-input,
 .klaro .context-notice .cm-list-input,
 .klaro .cookie-notice .cm-list-input {
-  position: absolute;
-  top: 0;
-  left: 0;
+  @include m.position (absolute,0,0,n,n);
   opacity: 0;
-  width: 50px;
-  height: 30px;
+  @include m.size(5rem, 3rem, none);
 }
 /* list of services */
 /* names of services and their properties */
 .klaro .cookie-modal .cm-list-title,
 .klaro .context-notice .cm-list-title,
 .klaro .cookie-notice .cm-list-title {
-  font-size: 0.9em;
-  font-weight: 600;
+  @include m.font(0.9em, var(--claro-color), bold);
 }
 /* short description of service */
 .klaro .cookie-modal .cm-list-description,
 .klaro .context-notice .cm-list-description,
 .klaro .cookie-notice .cm-list-description {
-  color: #7c7c7c;
-  color: var(--dark1, #7c7c7c);
-  font-size: 0.9em;
+  @include m.font(0.8em, var(--claro-color),normal);
   padding-top: 4px;
 }
-
-/* .klaro .cookie-modal .cm-list-label,
-.klaro .context-notice .cm-list-label,
-.klaro .cookie-notice .cm-list-label {
-} */
 
 .klaro .cookie-modal .cm-list-label .cm-switch,
 .klaro .context-notice .cm-list-label .cm-switch,
 .klaro .cookie-notice .cm-list-label .cm-switch {
-  position: absolute;
-  left: 0;
+  @include m.position(absolute, 0,n,n,n);
+
 }
 
  /* slider color  */
 .klaro .cookie-modal .cm-list-label .slider,
 .klaro .context-notice .cm-list-label .slider,
 .klaro .cookie-notice .cm-list-label .slider {
-  background-color: #ffffffa8;
-  background-color: var(--dark0, #ffffffa8);
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  transition: 0.4s;
-  width: 50px;
   display: inline-block;
+  @include m.position(absolute, 0,0,0,0);
+  @include m.size(5rem, auto, var(--background-light));
+  cursor: pointer;
+  transition: 0.4s;
 }
+
 /* slider circle */
 .klaro .cookie-modal .cm-list-label .slider::before,
 .klaro .context-notice .cm-list-label .slider::before,
 .klaro .cookie-notice .cm-list-label .slider::before {
-  background-color: #e6e6e6;
-  background-color: var(--white3, #e6e6e6);
-  position: absolute;
+  @include m.position(absolute,0.5rem,n,n,0.5rem);
+  @include m.size(2rem, 2rem,var(--claro-circle));
   content: "";
-  height: 20px;
-  width: 20px;
-  left: 5px;
-  bottom: 5px;
   transition: 0.4s;
 }
 .klaro .cookie-modal .cm-list-label .slider.round::before,
 .klaro .context-notice .cm-list-label .slider.round::before,
 .klaro .cookie-notice .cm-list-label .slider.round::before {
   border-radius: 50%;
-
 }
 
 /* slider form */
 .klaro .cookie-modal .cm-list-label .slider.round,
 .klaro .context-notice .cm-list-label .slider.round,
 .klaro .cookie-notice .cm-list-label .slider.round {
-  border-radius: 30px;
+  border-radius: 3rem;
 
 }
 /* slider shadow */
-.klaro .cookie-modal .cm-list-label input:focus + .slider,
-.klaro .context-notice .cm-list-label input:focus + .slider,
-.klaro .cookie-notice .cm-list-label input:focus + .slider {
-   box-shadow: 0 0 1px var(--box-shadow-color, --blue3);
-}
 
-.klaro .cookie-modal .cm-list-label input:checked + .slider::before,
-.klaro .context-notice .cm-list-label input:checked + .slider::before,
-.klaro .cookie-notice .cm-list-label input:checked + .slider::before {
-  -ms-transform: translateX(20px);
-  transform: translateX(20px);
-}
-
-.klaro .cookie-modal .cm-list-input:focus + .cm-list-label .slider,
-.klaro .context-notice .cm-list-input:focus + .cm-list-label .slider,
-.klaro .cookie-notice .cm-list-input:focus + .cm-list-label .slider {
-  box-shadow: 0 4px 6px 0 rgba(125, 125, 125, 0.2), 5px 5px 10px 0 rgba(125, 125, 125, 0.19);
-}
 
 .klaro .cookie-modal .cm-list-input:checked + .cm-list-label .slider::before,
 .klaro .context-notice .cm-list-input:checked + .cm-list-label .slider::before,
@@ -248,14 +140,13 @@ to create a white background.
 .klaro .cookie-modal .slider,
 .klaro .context-notice .slider,
 .klaro .cookie-notice .slider {
-  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 5px 5px 10px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: var(--claro-shadow);
 }
 
 .klaro .cookie-modal a,
 .klaro .context-notice a,
 .klaro .cookie-notice a {
-  color: #2a44da;
-  color: var(--blue3, #2a44da);
+  color: var( --green-button);
   text-decoration: none;
 }
 .klaro .cookie-modal p,
@@ -278,8 +169,7 @@ to create a white background.
 .klaro .cookie-notice ul,
 .klaro .cookie-notice li
  {
-  color: #fafafa;
-  color: var(--dark3, #fafafa);
+  color: var(--claro-color);
 }
 .klaro .cookie-modal p,
 .klaro .cookie-modal h1,
@@ -302,27 +192,7 @@ to create a white background.
   padding: 0;
   margin-top: 0.7em;
 }
-.klaro .cookie-modal h1,
-.klaro .cookie-modal h2,
-.klaro .cookie-modal h3,
-.klaro .cookie-modal h4,
-.klaro .cookie-modal h5,
-.klaro .cookie-modal h6,
-.klaro .context-notice h1,
-.klaro .context-notice h2,
-.klaro .context-notice h3,
-.klaro .context-notice h4,
-.klaro .context-notice h5,
-.klaro .context-notice h6,
-.klaro .cookie-notice h1,
-.klaro .cookie-notice h2,
-.klaro .cookie-notice h3,
-.klaro .cookie-notice h4,
-.klaro .cookie-notice h5,
-.klaro .cookie-notice h6 {
-  font-family: inherit;
-  font-family: var(--title-font-family, inherit);
-}
+
 .klaro .cookie-modal .cm-link,
 .klaro .context-notice .cm-link,
 .klaro .cookie-notice .cm-link {
@@ -332,115 +202,108 @@ to create a white background.
 .klaro .cookie-modal .cm-btn,
 .klaro .context-notice .cm-btn,
 .klaro .cookie-notice .cm-btn {
-  color: #fff;
-  color: var(--button-text-color, #fff);
-  background-color: #5c5c5c;
-  background-color: var(--dark2, #5c5c5c);
-  border-radius: 4px;
-  border-radius: var(--border-radius, 4px);
-  padding: 6px 10px;
+  @include m.font(1em, v.$button-font-color, normal);
   margin-right: 0.5em;
-  border-style: none;
-  padding: 0.4em;
-  font-size: 1em;
-  cursor: pointer;
+  padding: 0.6em;
 }
 .klaro .cookie-modal .cm-btn:disabled,
 .klaro .context-notice .cm-btn:disabled,
 .klaro .cookie-notice .cm-btn:disabled {
   opacity: 0.5;
 }
-.klaro .cookie-modal .cm-btn.cm-btn-close,
-.klaro .context-notice .cm-btn.cm-btn-close,
-.klaro .cookie-notice .cm-btn.cm-btn-close {
-  background-color: #c8c8c8;
-  background-color: var(--dark2, #c8c8c8);
-}
+
 .klaro .cookie-modal .cm-btn.cm-btn-decline,
 .klaro .context-notice .cm-btn.cm-btn-decline,
 .klaro .cookie-notice .cm-btn.cm-btn-decline {
-  background-color: #c8c8c8;
-  background-color: var(--red2, #c8c8c8);
+  background-color: v.$red-button;
 }
 .klaro .cookie-modal .cm-btn.cm-btn-success,
 .klaro .context-notice .cm-btn.cm-btn-success,
 .klaro .cookie-notice .cm-btn.cm-btn-success {
-  background-color: #1a936f;
-  background-color: var(--green2, #1a936f);
+  background-color: v.$green-button;
 }
+
 .klaro .cookie-modal .cm-btn.cm-btn-success-var,
 .klaro .context-notice .cm-btn.cm-btn-success-var,
 .klaro .cookie-notice .cm-btn.cm-btn-success-var {
-  background-color: #24cc9a;
-  background-color: var(--green3, #24cc9a);
+  background-color: v.$gray-button;
 }
+
 .klaro .cookie-modal .cm-btn.cm-btn-info,
 .klaro .context-notice .cm-btn.cm-btn-info,
 .klaro .cookie-notice .cm-btn.cm-btn-info {
-  background-color: #2581c4;
-  background-color: var(--blue2, #2581c4);
+  background-color: v.$gray-button;
 }
-.klaro .context-notice {
-  border-radius: 4px;
-  border-radius: var(--border-radius, 4px);
-  border-style: solid;
-  border-style: var(--border-style, solid);
-  border-width: 1px;
-  border-width: var(--border-width, 1px);
-  border-color: #c8c8c8;
-  border-color: var(--light2, #c8c8c8);
-  background-color: #fafafa;
-  background-color: var(--light1, #fafafa);
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  padding: 12px;
-  height: 100%;
+
+.klaro .cookie-modal .cm-btn.cm-btn-accept,
+.klaro .context-notice .cm-btn.cm-btn-accept,
+.klaro .cookie-notice .cm-btn.cm-btn-accept {
+  background-color: v.$green-button;
+
 }
-.klaro .context-notice.cm-dark {
-  background-color: #333;
-  background-color: var(--dark1, #333);
-  border-color: #5c5c5c;
-  border-color: var(--dark2, #5c5c5c);
-}
-.klaro .context-notice.cm-dark p {
-  color: #fafafa;
-  color: var(--light1, #fafafa);
-}
-.klaro .context-notice.cm-dark p a {
-  color: #459cdc;
-  color: var(--blue2, #459cdc);
-}
-.klaro .context-notice p {
-  color: #333;
-  color: var(--dark1, #333);
-  flex-grow: 0;
-  text-align: center;
-  padding-top: 0;
-  margin-top: 0;
-}
-.klaro .context-notice p a {
-  color: #24cc9a;
-  color: var(--green2, #24cc9a);
-}
-.klaro .context-notice p.cm-buttons {
-  margin-top: 12px;
-}
-.klaro .context-notice p.ccn-description-empty-store {
-  margin-top: 24px;
-  font-size: 14px;
-  font-size: var(--font-size, 14px);
-}
+
+
+
+
+// .klaro .context-notice {
+//   border-radius: 4px;
+//   border-radius: var(--border-radius, 4px);
+//   border-style: solid;
+//   border-style: var(--border-style, solid);
+//   border-width: 1px;
+//   border-width: var(--border-width, 1px);
+//   border-color: #c8c8c8;
+//   border-color: var(--light2, #c8c8c8);
+//   background-color: #fafafa;
+//   background-color: var(--light1, #fafafa);
+//   display: flex;
+//   flex-direction: column;
+//   flex-wrap: wrap;
+//   align-items: center;
+//   justify-content: center;
+//   padding: 12px;
+//   height: 100%;
+// }
+// .klaro .context-notice.cm-dark {
+//   background-color: #333;
+//   background-color: var(--dark1, #333);
+//   border-color: #5c5c5c;
+//   border-color: var(--dark2, #5c5c5c);
+// }
+// .klaro .context-notice.cm-dark p {
+//   color: #fafafa;
+//   color: var(--light1, #fafafa);
+// }
+// .klaro .context-notice.cm-dark p a {
+//   color: #459cdc;
+//   color: var(--blue2, #459cdc);
+// }
+// .klaro .context-notice p {
+//   color: #333;
+//   color: var(--dark1, #333);
+//   flex-grow: 0;
+//   text-align: center;
+//   padding-top: 0;
+//   margin-top: 0;
+// }
+// .klaro .context-notice p a {
+//   color: #24cc9a;
+//   color: var(--green2, #24cc9a);
+// }
+// .klaro .context-notice p.cm-buttons {
+//   margin-top: 12px;
+// }
+// .klaro .context-notice p.ccn-description-empty-store {
+//   margin-top: 24px;
+//   font-size: 14px;
+//   font-size: var(--font-size, 14px);
+// }
 .klaro .cookie-modal {
-  width: 100%;
-  height: 100%;
-  position: fixed;
+  @include m.position(fixed, 0,0,n,n);
+  @include m.size(100%, 100%, none);
   overflow: hidden;
-  left: 0;
-  top: 0;
   z-index: 1000;
+
 }
 .klaro .cookie-modal.cm-embedded {
   position: relative;
@@ -449,34 +312,32 @@ to create a white background.
   left: inherit;
   right: inherit;
   z-index: 0;
+  
 }
 .klaro .cookie-modal.cm-embedded .cm-modal.cm-klaro {
   position: relative;
   -ms-transform: none;
       transform: none;
+      
 }
 .klaro .cookie-modal .cm-bg {
-  background: rgba(228, 222, 222, 0.5);
-  height: 100%;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
+  @include m.size(100%, 100%, rgba(228, 222, 222, 0.5));
+  @include m.position(fixed, 0,0,n,n);
+  
+
 }
 .klaro .cookie-modal .cm-modal.cm-klaro {
-  background-color: #faf6f6;
-  background-color: var(--light1, #333);
-  color: #fafafa;
-  color: var(--dark3, #fafafa);
+  @include m.size(100%, 100%, #faf6f6);
+  @include m.position(fixed, 0,50%,n,n);
+  
   z-index: 1001;
   box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 5px 5px 10px 0 rgba(0, 0, 0, 0.19);
-  width: 100%;
   max-height: 98%;
-  top: 50%;
   -ms-transform: translateY(-50%);
       transform: translateY(-50%);
-  position: fixed;
   overflow: auto;
+  padding: 1rem;
+
 }
 @media (min-width: 660px) {
   .klaro .cookie-modal .cm-modal.cm-klaro {
@@ -562,7 +423,7 @@ to create a white background.
 .klaro .cookie-modal .cm-modal .cm-body ul.cm-services li.cm-purpose .cm-services .cm-caret,
 .klaro .cookie-modal .cm-modal .cm-body ul.cm-purposes li.cm-purpose .cm-services .cm-caret {
   color: #a0a0a0;
-  color: var(--light3, #a0a0a0);
+  color: var(--claro-orange, #a0a0a0);
 }
 .klaro .cookie-modal .cm-modal .cm-body ul.cm-services li.cm-purpose .cm-services .cm-content,
 .klaro .cookie-modal .cm-modal .cm-body ul.cm-purposes li.cm-purpose .cm-services .cm-content {
@@ -600,8 +461,7 @@ to create a white background.
 .klaro .cookie-modal .cm-modal .cm-body ul.cm-services li.cm-purpose p.purposes,
 .klaro .cookie-modal .cm-modal .cm-body ul.cm-purposes li.cm-service p.purposes,
 .klaro .cookie-modal .cm-modal .cm-body ul.cm-purposes li.cm-purpose p.purposes {
-  color: #a0a0a0;
-  color: var(--light3, #a0a0a0);
+  color: #01042c;
   font-size: 0.8em;
 }
 .klaro .cookie-modal .cm-modal .cm-body ul.cm-services li.cm-service.cm-toggle-all,
@@ -630,8 +490,7 @@ to create a white background.
 .klaro .cookie-modal .cm-modal .cm-body ul.cm-purposes li.cm-service span.cm-required,
 .klaro .cookie-modal .cm-modal .cm-body ul.cm-purposes li.cm-purpose span.cm-opt-out,
 .klaro .cookie-modal .cm-modal .cm-body ul.cm-purposes li.cm-purpose span.cm-required {
-  color: #5c5c5c;
-  color: var(--dark2, #5c5c5c);
+  color: #0b0717;
   padding-left: 0.2em;
   font-size: 0.8em;
 }

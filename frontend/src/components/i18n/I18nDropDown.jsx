@@ -56,7 +56,7 @@ const I18nDropDown=()=>{
             width:'16rem',
             backgroundColor: 'var(--background-primary)',
             
-            '&:hover': { backgroundColor: 'var(--background-secondary)',
+            '&:hover': { backgroundColor: 'var(--menu-hover)',
                          border:'none'   
              },
             border:'none',
@@ -79,10 +79,15 @@ const I18nDropDown=()=>{
         option: (provided, state) => ({
             ...provided,
             backgroundColor: state.isFocused
-                ? 'var(--background-dark)'
+                ? 'var(--menu-hover)'
                 : 'var(--background-primary)',
-            color: state.isFocused ? 'var(--color-light)' : 'null',
+            color: state.isFocused ? 'var(--color-secondary)' : 'null',
             cursor: 'pointer',
+             ":active": {
+              ...provided[":active"],
+              backgroundColor: "var(--background-secondary)",
+              color:'var(--color-primary)'
+            },
          }),
 
     }

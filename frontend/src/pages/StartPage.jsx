@@ -7,16 +7,19 @@ const RegistrationPage = () => {
   const {t}=useTranslation()
   return (
     <div className="main-container  start-container">
-      <div className='split'>
-        <div className='welcome big-title'>
-                {t('welcome')}
+        
+        <div className='split'>
+          <div className='voriq-icon'>
+               <img src="/images/logoBig.png" alt=""/>
+               <p>{t('experience.title')}</p>  
+          </div>
+          <div className='google'>
+                <GoogleAuthButton/>
                 <div className='subtitle'>
-                  Please sign in with Google to continue.
+                  {t('welcomeMessage')}
                 </div>
-        </div>
-        <div className='google'>
-           <GoogleAuthButton/>
-        </div>
+          </div>
+        
       </div>
     
 

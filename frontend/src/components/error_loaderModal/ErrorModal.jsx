@@ -14,18 +14,18 @@ const ErrorModal=()=>{
             fullscreen={true}
             title={t('errorModal.messageTitle')}
             description={`${t('errorModal.messageBody')} ${resultMessage}`}
-            className={'flex-row gap-4 text-red-700'}
         >
-            <p>{t('errorModal.messageBodyString2')}</p>
-            <div className='flex flex-row gap-4'>
+            <p className='errorQuestion'>{t('errorModal.messageBodyString2')}</p>
+            <div className='errorButtons'>
                 <Button id='b10'
                         children={t('errorModal.retry')}
                         onClick={retry}
-                        className={'text-red-700'}
+                        className='retryButton'
                 />
                 <Button id='b11'
                         children={t('errorModal.cancel')}
                         onClick={cancel}
+                        className='abortButton'
                 />
             </div>
 

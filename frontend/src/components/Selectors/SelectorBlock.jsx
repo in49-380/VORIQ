@@ -206,17 +206,15 @@ const SelectorBlock=({brand, model, year,engine, transmission, wheel, setCurrent
         }
     }
 
-     useEffect(()=>{
-      if(isNewSearch){
-        brand.softClear()
-        model.clear()
-        year.clear()
-        engine.clear()
-      }
-     },[isNewSearch]) 
-    // **************select styling******************
-    // **********************************************
-
+    //  useEffect(()=>{
+    //   if(isNewSearch){
+    //     brand.softClear()
+    //     model.clear()
+    //     year.clear()
+    //     engine.clear()
+    //   }
+    //  },[isNewSearch]) 
+   
      useEffect(()=>{
       if(isNewSearch){
         brand.softClear()
@@ -245,22 +243,39 @@ const SelectorBlock=({brand, model, year,engine, transmission, wheel, setCurrent
   );
     }
 
-    
+   // label brand/model etc
+    const CustomControl = (props) => (
+      <div style={{ width: '100%' }}>
+        {props.selectProps.label && (
+          <div
+            style={{
+              fontSize: '1.8rem',
+              color: 'var(--color-primary)',
+              marginBottom: '0.3rem',
+              userSelect: 'none',
+            }}
+          >
+            {props.selectProps.label}
+          </div>
+        )}
+        <RSComponents.Control {...props} />
+      </div>
+  );
     const customStyles={
         container:(provided)=>({
           ...provided,
           width:'30%',
-
         }),
 
         control: (provided, state)=>({
             ...provided,
-            backgroundColor: 'var(--background-light)',
+            backgroundColor: 'var(--selbutBlock-background-secondary)',
                       
-            '&:hover': { backgroundColor: 'var(--background-secondary)',
-                         border:'none'   
+            '&:hover': { backgroundColor: 'var(--selbutBlock-background-active)',
              },
-            border:'none',
+            border:'1px solid var(--selbutBlock-border)',
+            height: '4rem',
+            minHeight: '4rem', 
             boxShadow: state.isFocused ? '0 0 0 0 transparent' : 'none', 
         }),
 
@@ -283,7 +298,7 @@ const SelectorBlock=({brand, model, year,engine, transmission, wheel, setCurrent
         menu: (provided) => ({
             ...provided,
            borderRadius: '0.5rem',
-
+           background:'var(--menu-background)'
         }),
 
         menuList: (provided) => ({
@@ -296,17 +311,24 @@ const SelectorBlock=({brand, model, year,engine, transmission, wheel, setCurrent
               background: "transparent",
             },
             "::-webkit-scrollbar-thumb": {
-              background: "var(--background-secondary)",
+              background: 'var(--scroll-thumb)',
               borderRadius: "4px",
             },
         }),
 
         singleValue: (provided) => ({
             ...provided,
-            color: 'var(--color-title)',
+            color: 'var(--color-primary)',
             
         }),
 
+         clearIndicator: (provided) => ({
+          ...provided,
+          color: 'var(--color-primary)',
+          ':hover': {
+            color: 'var(--color-light)'
+          },
+        }),
         multiValue: (provided) => ({
           ...provided,
           backgroundColor: "none",
@@ -315,18 +337,34 @@ const SelectorBlock=({brand, model, year,engine, transmission, wheel, setCurrent
           gap: "4px",
         }),
 
+        multiValueLabel: (provided) => ({
+          ...provided,
+          color: 'var(--color-primary)',
+        }),
+
+        multiValueRemove: (provided) => ({
+            ...provided,
+            color: 'var(--color-primary)',
+            ':hover': {
+              backgroundColor: 'transparent',
+            },
+          }),
+
         option: (provided, state) => ({
             ...provided,
             backgroundColor: state.isFocused
-                ? 'var(--background-dark)'
-                : 'var(--background-primary)',
-            color: state.isFocused ? 'var(--color-light)' : 'null',
+                ? 'var(--menu-hover)'
+                : 'none',
+            color: state.isFocused 
+                ? 'var(--color-primary)' 
+                :  provided.color,
             cursor: 'pointer',
             userSelect: "none",
              ":active": {
               ...provided[":active"],
-              backgroundColor: "var(--backgound-primary)",
-    },
+              backgroundColor: "var(--menu-active)",
+              color:'var(--color-secondary)'
+            },
          }),
 
     }
@@ -340,14 +378,15 @@ const SelectorBlock=({brand, model, year,engine, transmission, wheel, setCurrent
               id='s1'
               getOptionLabel={(option) => option.value}
               getOptionValue={(option) => option.id}
-              placeholder={t('selectorBlock.brand')}
+              // placeholder={t('selectorBlock.brand')}
               value={brand.value}
               options={brand.options}
               onChange={onBrandChange}
               isClearable
               isDisabled={brand.disabled}
               styles={customStyles}
-              components={{DropdownIndicator}}
+              label={t('selectorBlock.brand')}
+              components={{DropdownIndicator, Control: CustomControl}}
             />
       
 
@@ -355,14 +394,15 @@ const SelectorBlock=({brand, model, year,engine, transmission, wheel, setCurrent
               id='s2'
               getOptionLabel={(option) => option.value}
               getOptionValue={(option) => option.id}
-              placeholder={t('selectorBlock.model')}
+              // placeholder={t('selectorBlock.model')}
               value={model.value}
               options={model.options}
               onChange={onModelChange}
               isClearable
               isDisabled={model.disabled}
               styles={customStyles}
-              components={{DropdownIndicator}}
+              label={t('selectorBlock.model')}
+              components={{DropdownIndicator, Control: CustomControl}}
 
 
             />
@@ -371,7 +411,7 @@ const SelectorBlock=({brand, model, year,engine, transmission, wheel, setCurrent
               id='s3'
               getOptionLabel={(option) => option.value}
               getOptionValue={(option) => option.id}
-              placeholder={t('selectorBlock.year')}
+              // placeholder={t('selectorBlock.year')}
               value={year.value}
               options={year.options}
               onChange={onYearChange}
@@ -379,7 +419,8 @@ const SelectorBlock=({brand, model, year,engine, transmission, wheel, setCurrent
               isMulti
               isDisabled={year.disabled}
               styles={customStyles}
-              components={{DropdownIndicator}}
+              label={t('selectorBlock.year')}
+              components={{DropdownIndicator, Control: CustomControl}}
 
 
             />
@@ -388,42 +429,45 @@ const SelectorBlock=({brand, model, year,engine, transmission, wheel, setCurrent
               id='s4'
               getOptionLabel={(option) => option.value}
               getOptionValue={(option) => option.id}
-              placeholder={t('selectorBlock.engine')}
+              // placeholder={t('selectorBlock.engine')}
               value={engine.value}
               options={engine.options}
               onChange={onEngineChange}
               isClearable
               isDisabled={engine.disabled}
               styles={customStyles}
-              components={{DropdownIndicator}}
+              label={t('selectorBlock.engine')}
+              components={{DropdownIndicator, Control: CustomControl}}
             />
 
             <Select
               id='s5'
               getOptionLabel={(option) => option.value}
               getOptionValue={(option) => option.id}
-              placeholder={t('selectorBlock.transmission')}
+              // placeholder={t('selectorBlock.transmission')}
               value={transmission.value}
               options={transmission.options}
               onChange={onTransmissionChange}
               isClearable
               isDisabled={transmission.disabled}
               styles={customStyles}
-              components={{DropdownIndicator}}
+              label={t('selectorBlock.transmission')}
+              components={{DropdownIndicator, Control: CustomControl}}
             />
 
             <Select
               id='s6'
               getOptionLabel={(option) => option.value}
               getOptionValue={(option) => option.id}
-              placeholder={t('selectorBlock.wheel')}
+              // placeholder={t('selectorBlock.wheel')}
               value={wheel.value}
               options={wheel.options}
               onChange={onWheelChange}
               isClearable
               isDisabled={wheel.disabled}
               styles={customStyles}
-              components={{DropdownIndicator}}
+              label={t('selectorBlock.wheel')}
+              components={{DropdownIndicator, Control: CustomControl}}
             />
           
           </div>

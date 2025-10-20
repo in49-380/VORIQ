@@ -43,8 +43,8 @@ const [hintBoxData, setHintBoxData]=useState([])
     const id=elementData.id
 
     const width = Math.max(250, size.width);
-    const height=size.height*2
-    const top=ycenter-height-20
+    const height=size.height*1.5
+    const top=ycenter-height-10
     const newLeft=xcenter-width/2
     const left = Math.min(
          Math.max(10, newLeft),           

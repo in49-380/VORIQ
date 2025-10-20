@@ -43,7 +43,51 @@
     "buttonBlock":{
       "analyze": "Analyze",
       "addAnotherCar": "Add another car"
-    }
-    
+    },
+    "experience":{
+       "discover":"Discover",
+       "decide":"Decide",
+       "enjoy":"Enjoy",
+       "title":"Others’ experience—your edge",
+       "bigText1":"Here you see the full picture: how cars perform on the road, what drivers report, and what the official numbers say.",
+       "bigText2":"All in one place — honest and clear."
+
+    },
+    "choose":{
+       "title":"Why choose us?",
+       "text1":"Buying a car often feels like rolling the dice: glossy ads promise reliability, yet in real life it depends on the engine, the gearbox, or even the model year. That is why we built this platform — independent, transparent, and open-source.",
+       "text2":"Here you get the bigger picture: how often drivers actually report issues, how this compares to official registration numbers, and which components most frequently spark discussions. All of this is distilled into clear, trust worthy statistics.",
+       "text3":"This isn’t just useful for drivers. The more transparent the market becomes, the stronger the incentive for manufacturers to build cars that truly last. In the end, everyone benefits — those buying a car today and those driving it tomorrow."
+    },
+    "about":{
+      "title1":"Openness and accessibility",
+      "text1":"Our project is fully open-source: anyone can not only use the results but also verify how they are produced. All code and logic are transparent. We deliberately avoid “black-box” algorithms or commercial secrecy because trust in data can only be built on transparency.",
+      "title2":"Independence from the market",
+      "text2":"We do not take funding from manufacturers or dealerships. There are no advertising contracts or hidden partners that could influence the outcome. This independence ensures that our statistics reflect reality, not “polished numbers” adjusted for marketing purposes.",
+      "title3":"User privacy protection",
+      "text3":"We do not collect personal data. There are no trackers, no marketing analytics, no profiling of users. Even the temporary Google ID is used only to manage query frequency and is removed after a short time. Nothing is shared with third parties or used for advertising."
+    },
+    "headerLinks":{
+      "services":"our services",
+      "aboutUs":"about us"
+    },
+    "policy":{
+      "privacy":"Privacy Policy",  
+      "termsofUse":"Terms of Use",
+      "cookiePolicy":"Cookie Policy"
+    },
+    "rights":"©2025 VORIQ. All Rights Reserved",
+    "hint": {
+          "1": "Choose your car brand to begin",
+          "2": "Now pick a model — options depend on your brand",
+          "3": "Select one or more production years",
+          "4": "Choose the engine type that fits your model",
+          "5": "Pick the transmission you’re interested in",
+          "6": "Front, rear, or all-wheel? Select your drive type",
+          "analyze": "Run the analysis to see your car’s data summary",
+          "newSearch": "Start over and select another car"
+        },
+    "welcomeMessage": "Please sign in with Google to continue"
+   
   }
   

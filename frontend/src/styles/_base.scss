@@ -51,7 +51,14 @@ button:hover,
 select:hover,
 label:hover {
       cursor: pointer;
-      transform: scale(1.1);
+      // transform: scale(0.9);
+      // transition: transform 0.2s ease;
+}
+
+
+a:active,
+button:active{
+      transform: scale(0.95);
       transition: transform 0.2s ease;
 }
 
@@ -75,12 +82,11 @@ button {
 html{
     font-size: 62.5%;
     width: 100%;
-    height: 100%;
 }
 
 body {
-font-family: 'Roboto', Arial, sans-serif;    
+font-family: 'Inter', Arial, sans-serif;    
 line-height: 1.2;
-@include m.size(100%, 100%, var(--background-primary));
+@include m.size(100%, auto, var(--background-primary));
 @include m.font(1.6rem, var(--color-primary),n )
 }

@@ -28,8 +28,6 @@ const ThemeButton=()=>{
         const nextIndex=(currentIndex + 1) % theme.length;
         const nextColor=theme[nextIndex].color
         setNextColor(nextColor)
-        
-
     }
   
     return(

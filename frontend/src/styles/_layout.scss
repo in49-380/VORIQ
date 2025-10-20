@@ -2,27 +2,59 @@
 @use 'mixins' as m;
 
 .main-container {
-  @include m.size(100%, 100vh, var(--background-primary));
-  @include m.flex-col(n,center,center);
-  margin: 0 auto;
-  padding: 0 1.6rem;
+  @include m.size(100%, auto, none);
+  margin: auto;
+  margin-top: 7rem;
+  margin-bottom: -1px;
 }
 
 header {
-    @include m.size(100%,7rem);
+    @include m.size(100%,7rem, var(--background-primary));
     @include m.position(fixed,0,0);
-    @include m.flex-row(3rem,start,center);
-    padding: 1.6rem;
+
+    display: grid;
+    grid-template-columns: 1fr 4fr 1fr;
+    grid-template-rows: 7rem;
+    grid-template-areas: 
+      "logo links buttons"     
+    ;
+
+    $header-areas: (
+    ".logo": logo,
+    ".links": links,
+    ".header_buttons": buttons,
+    );
+
+    align-items: center;
+    @include m.grid-area($header-areas);
+
+    padding: 0 5rem; 
     color: var(--color-secondary);
     z-index: 100;
 }
 
 footer {
-    @include m.size(100%,7rem, var(--background-secondary));
-    @include m.position(fixed,0,null,null,0);
-    @include m.flex-row(3rem,start,center); 
-    padding: 1.6rem;
-    color: var(--color-secondary);
+    @include m.size(100%,25rem, var(--background-footer));
+    @include m.font(1.4rem, var(--color-primary), normal );
+    display: grid;
+    grid-template-columns: 2fr 4fr 1fr;
+    grid-template-rows: 2fr 1fr;
+    grid-template-areas: 
+      "linksTop . logo"     
+      "privacy privacy allrights"     
+    ;
+
+    $footer-areas: (
+    ".linksTop": linksTop,
+    ".logo": logo,
+    ".footer-nav": privacy,
+    ".allrights": allrights,
+    );
+
+    
+    @include m.grid-area($footer-areas);
+    padding:5rem;
+    padding-bottom: 2rem; 
     z-index: 100;
 }
 

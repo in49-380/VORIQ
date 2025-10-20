@@ -20,7 +20,7 @@ const GoogleAuthButton=()=>{
         <Button id='b17'
         onClick={login} 
         className='google-auth-button'>
-            <FcGoogle size={240} />
+            <FcGoogle size={120} />
         </Button>
         )
     

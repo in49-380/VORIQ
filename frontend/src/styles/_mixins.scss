@@ -90,3 +90,36 @@
       left: 50%;
       transform: translate(-50%, 0);
 }
+
+@mixin grid-area-num($rowstart, $rowend , $colstart, $colend) {
+      grid-area: #{$rowstart}/#{$colstart}/#{$rowend}/#{$colend};
+}
+
+//grid-template-columns: calc(17ch - 4rem) 4rem auto;
+ //     grid-template-rows: 2rem 1.8rem repeat(2, 2rem) 1rem;
+ //     grid-template-areas:
+ //           "house house  lang-ham"
+ //           ". gerb  ."
+ //           "casa gerb  ."
+ //           "nostra gerb  bookbutton"
+  //          "linie linie linie";
+
+ //     $header-index-grid-area: (
+  //          ":nth-child(1)": house,
+  //          ":nth-child(2)": casa,
+  //          ":nth-child(3)": nostra,
+ //           ".logo": gerb,
+ //           ".bookbtn": bookbutton,
+  //          "nav": lang-ham,
+  //          ".line": linie
+  //    );
+//@include grid-area($header-index-grid-area);
+// $areas1:($selector-n:$area-n)
+// @include grid-area($areas1)
+@mixin grid-area ($areas) {
+      @each $selector, $area in $areas {
+            #{$selector} {
+                  grid-area: $area;
+            }
+      }
+}

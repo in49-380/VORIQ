@@ -73,7 +73,7 @@ export default function KlaroConsent() {
       <div className='policy_container'>
         <Button id='b7'><a href="http://api/meta/terms" target="_blank" rel="noopener noreferrer">Therms of use</a></Button>
         <Button id='b8'><a href="http://api/meta/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a></Button>
-        <Button id='b9' ><a href="http://api/meta/cookies" target="_blank" rel="noopener noreferrer">Cookie Policy</a></Button>
+        <Button id='b9'><a href="http://api/meta/cookies" target="_blank" rel="noopener noreferrer">Cookie Policy</a></Button>
       </div>
     </Modal>
     </> 

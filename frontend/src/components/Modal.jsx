@@ -13,13 +13,13 @@ const Modal = ({ open, onOpenChange, children, title, description, fullscreen = 
             fullscreen
               ? `fullscreen bg-opacity-90 backdrop-blur-sm`
               : `small `
-          }${className}`}
+          } ${className}`}
 
           onInteractOutside={(e) => e.preventDefault()}
         >
-          <Dialog.Title className="dialog-title">{title}</Dialog.Title>
-          <Dialog.Description className='dialog-description'>{description}</Dialog.Description>
-          {children}
+            <Dialog.Title className="dialog-title">{title}</Dialog.Title>
+            <Dialog.Description className='dialog-description'>{description}</Dialog.Description>
+            {children}
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

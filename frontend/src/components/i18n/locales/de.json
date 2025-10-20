@@ -41,7 +41,52 @@
    "buttonBlock": {
     "analyze": "Analysieren",
     "addAnotherCar": "Noch ein Auto hinzufügen"
-}
+    },
+    "experience":{
+    "discover":"Entdecken",
+    "decide":"Entscheiden",
+    "enjoy":"Genießen",
+    "title":"Erfahrung anderer — dein Vorteil",
+    "bigText1":"Hier sehen Sie das Gesamtbild: wie sich Autos im Alltag bewähren, was Fahrer berichten und was die offiziellen Zahlen zeigen.",
+    "bigText2":"Alles an einem Ort – ehrlich und transparent"
+
+    },
+    "choose":{
+       "title":"Warum uns wählen?",
+       "text1":"Ein Auto zu kaufen gleicht oft einem Würfelspiel: In der Werbung wird Zuverlässigkeit versprochen, in der Realität hängt vieles jedoch vom Motor, Getriebe oder sogar vom Baujahr ab. Genau deshalb haben wir diese Plattform geschaffen – unabhängig, transparent und Open Source.",
+       "text2":"Hier sehen Sie das Gesamtbild: wie oft Besitzer tatsächlich Probleme melden, wie sich das zu offiziellen Zulassungszahlen verhält und welche Baugruppen am häufigsten diskutiert werden. All dies fassen wir zu klaren und vertrauenswürdigen Statistiken zusammen.",
+       "text3":"Davon profitieren nicht nur die Fahrer. Je transparenter der Markt, desto größer der Anreiz für Hersteller, Fahrzeuge zu bauen, die wirklich länger halten. Am Ende gewinnen alle – die Käufer von heute ebenso wie die Fahrer von morgen."
+    },
+    "about":{
+      "title1":"Offenheit und Nachvollziehbarkeit",
+      "text1":"Unser Projekt ist vollständig Open-Source: Jeder kann nicht nur die Ergebnisse nutzen, sondern auch nachvollziehen, wie sie entstehen. Der gesamte Code und die Logik sind transparent. Wir verzichten bewusst auf „Black-Box“-Algorithmen oder kommerzielle Geheimhaltung, denn Vertrauen in Daten entsteht nur durch Offenheit.",
+      "title2":"Unabhängigkeit vom Markt",
+      "text2":"Wir nehmen kein Geld von Herstellern oder Autohäusern an. Es gibt keine Werbeverträge und keine versteckten Partner, die unsere Ergebnisse beeinflussen könnten. Dadurch spiegeln unsere Statistiken die Realität wider – nicht „geschönte Zahlen“, die für Marketingzwecke angepasst wurden.",
+      "title3":"Schutz der Nutzerdaten",
+      "text3":"Wir sammeln keine personenbezogenen Daten. Es gibt keine Tracker, keine Marketing-Analysen und keine Nutzerprofile. Selbst die temporäre Google-ID dient nur der Abfragebegrenzung und wird nach kurzer Zeit gelöscht. Es wird nichts an Dritte weitergegeben oder für Werbung genutzt."
+    },
+     "headerLinks":{
+      "services":"Unsere Dienstleistungen",
+      "aboutUs":"Über uns"
+    },
+      "policy":{
+      "privacy":"Datenschutzerklärung",  
+      "termsofUse":"Nutzungsbedingungen",
+      "cookiePolicy":"Cookie-Richtlinie"
+    },
+    "rights":"©2025 VORIQ. Alle Rechte vorbehalten",
+    "hint": {
+      "1": "Wähle zuerst die Automarke",
+      "2": "Jetzt wähle ein Modell – die Optionen hängen von der Marke ab",
+      "3": "Wähle ein oder mehrere Baujahre",
+      "4": "Wähle den Motortyp, der zu deinem Modell passt",
+      "5": "Wähle das Getriebe, das dich interessiert",
+      "6": "Vorder-, Hinter- oder Allradantrieb? Wähle deinen Antriebstyp",
+      "analyze": "Starte die Analyse, um die Fahrzeugdaten zu sehen",
+      "newSearch": "Starte eine neue Suche und wähle ein anderes Auto"
+    },
+    "welcomeMessage": "Bitte melden Sie sich mit Google an, um fortzufahren"
+
 
   }
   

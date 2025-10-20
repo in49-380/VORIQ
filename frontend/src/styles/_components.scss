@@ -5,80 +5,156 @@
 // *******************************
 button{
     padding: 5px;
-    border-radius: 0.25rem;
     font-size: 1.6rem;
-    transition: border-color 0.25s;
+
+    border-radius: 0.6rem;
+    -webkit-border-radius: 0.6rem;
+    -moz-border-radius: 0.6rem;
+
 }
 
-button:focus-visible {
-  outline: 2px solid var(--background-secondary);
-  outline-offset:2px
-}
+
 // *****************************************
-// *****************************************
+// **********Header Elements**********************
 // ******************************************
-FaGithub {
-    color: var(--color-primary)
+.logo{
+    height:50%;
 }
 
-header>.git-hub-button{
-    @include m.position(fixed, n, 1rem, 1rem, n)
+.links{
+    place-self: center;
+    @include m.flex-row(3rem, center, center);
+    @include m.font(1.5rem, inherit, normal);
+    text-transform: uppercase;
 }
 
-footer>.git-hub-button{
-    @include m.position(fixed, n, 1rem, 1rem, n)
-}
-
-
-.google-auth-button{
-    @include m.size(240px, 240px)
-}
-
-.logout-button{
+.header_buttons{
+    @include m.flex-row;
 }
 
 // *********************************************
-// *************Footer**************************
+// *************Footer Elements**********************
 // *********************************************
-footer>.footer-left,
+footer>.linksTop{
+    justify-self: start;
+    align-self: start;
+    @include m.flex-col(1rem, center, start);
+}
+
 footer>.footer-nav{
-    @include m.flex (0.5rem, center, center, wrap)
+    justify-self: start;
+    align-self: end;
+    @include m.flex-row (2rem, center, start);
+    
 }
+.git-hub-button{
+    @include m.font(2rem, var(--color-primary), normal);
+}
+
+footer>.logo{
+    height: 25%;
+    justify-self: end;
+    align-self: start;
+}
+footer>.allrights{
+    justify-self: end;
+    align-self: end;
+}
+
 // **********************************************
 // **********welcom-Page*************************
 // **********************************************
-.split{
-    @include m.size(80%, 80%, var(--background-secondary));
-    @include m.flex-row(5, center, center);
-    border-radius:3rem;
+.start-container{
+    @include m.flex();
+    background-image: 
+        var(--background-grad-start),
+        url('/images/bckgrnd1.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    padding: 4rem 0;
 }
 
-.split > .welcome, 
+.split{
+    position: relative; 
+    @include m.size(80%, 80vh, var(--selbutBlock-background-secondary));
+    @include m.flex-row(5, center, center);
+    border-radius:3rem;
+    // overflow: hidden;
+
+
+//     &::before {
+//     content: "";
+//     position: absolute;
+//     top: -50%;
+//     left: -50%;
+//     width: 200%;
+//     height: 200%; 
+//     border-radius: inherit;
+//     pointer-events: none;
+//     z-index: 2;     
+    
+//     border-image: linear-gradient(
+//       135deg,
+//       rgba(255,165,0,0.95) 0%,
+//       rgba(255,165,0,0) 50%
+//     );
+//     background-repeat: no-repeat;
+
+//     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+//     -webkit-mask-composite: xor;
+//     mask-composite: exclude;   
+
+//     animation: shine-border 5s ease-in-out  forwards;
+//   }
+
+//   @keyframes shine-border {
+//   0%   { transform: translate(0, 0); }
+//   100% { transform: translate(100%, 100%);}
+// }
+}
+
+
+.split > .voriq-icon, 
 .split > .google{
     flex:1;
     @include m.flex-col (n, center, center);
     @include m.size(100%, 100%);
-
 }
 
-.split > .welcome{
+.split > .voriq-icon{
     border-top-left-radius: 3rem;
     border-bottom-left-radius: 3rem;
+    background-color: transparent;
     text-align: center;
+    text-transform: uppercase;
 }
+.split > .voriq-icon> img{
+    @include m.size(none, 21%,transparent);
+    object-fit: contain;
+}
+
+.split > .voriq-icon> p{
+    font-size: 2.1rem;
+    padding-left: 2rem;
+}
+
+
 .split > .google{
+    @include m.flex-col(n, center, center);
     border-top-right-radius: 3rem;
     border-bottom-right-radius: 3rem;
-    background-color: var(--background-light);
 }
 
-.big-title{
-    @include m.font(5rem, var(--color-title), bold);
+.google-auth-button{
+    @include m.size(none, 21%,transparent);
+    aspect-ratio: 1;
 }
 
-.welcome>.subtitle{
-    @include m.font(2rem, var(--color-secondary), bold);
-    margin-top: 1rem;
+.google>.subtitle{
+    @include m.font(2.1rem, var(--color-primary ), bold);
+    // margin-top: 1rem;
 }
 // ******************************
 //******* ModalWindow ***********
@@ -86,20 +162,20 @@ footer>.footer-nav{
 
 .dialog-overlay{
     @include m.position(fixed,0,7rem,0,0);
-    background-color: var(--background-dark);
-    -webkit-backdrop-filter: blur(4px);
-    backdrop-filter: blur(4px);
+    background-color: var(--background-grad-secondary);
+    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
    }
 
 .dialog-content{
-    background-color:var(--background-light);
+    background-color:var(--background-primary);
     z-index:50
 }   
 
 .dialog-content.fullscreen{
     @include m.position(fixed,0,0,0,0);
-    @include m.flex-col(n,center,center);
-    background-color:var(--background-dark);
+    @include m.flex-col(4rem,center,center);
+    background-color:var(--background-grad-secondary);
 }
 
 .dialog-content.small{
@@ -108,17 +184,24 @@ footer>.footer-nav{
     padding: 2rem;
     text-align: center;
     box-shadow: var(--box-shadow)
-
 }
 
-.dialog-title{
-    @include m.font(2rem, var(--color-title), bold);
+.dialog-content.small>.dialog-title{
+    @include m.font(2rem, var(--color-secondary), bold);
     text-align:center;
     margin-bottom: 2rem;
 }
-.dialog-description{
+.dialog-content.small>.dialog-description{
+    color: var(--color-secondary);
     margin-bottom: 2rem;
-    color: var(--color-secondary)
+}
+
+.dialog-content.fullscreen>.dialog-title{
+    @include m.font(2rem, var(--color-primary), bold);
+    text-align:center;
+}
+.dialog-content.fullscreen>.dialog-description{
+    color: var(--color-primary)
 }
 
 
@@ -136,9 +219,12 @@ footer>.footer-nav{
 .cookie_modal_container > :nth-child(1),
 .cookie_modal_container > :nth-child(2),
 .cookie_modal_container > :nth-child(3){
-    @include m.font(1.5rem, white, n);
-    @include m.size(27%, 4rem)
+    @include m.font(1.5rem, v.$button-font-color, none);
+    @include m.size(27%, 4rem);
+    box-shadow: v.$button-shadow;
+    border-radius:1rem;
 }
+
 
 .cookie_modal_container > :nth-child(1){
     background-color: v.$red-button;
@@ -149,6 +235,7 @@ footer>.footer-nav{
 .cookie_modal_container > :nth-child(3){
     background-color: v.$green-button;
 }
+
 .cookie_modal_container > :nth-child(1):hover{
     background-color: v.$red-button-hover;
 }
@@ -160,12 +247,7 @@ footer>.footer-nav{
 }
 
 .cookie_modal_container > :nth-child(3).smallChar{
-    @include m.font(1.2rem, white, n);
-
-    // text-sm whitespace-nowrapsmal
-}
-.langInCookieModal{
-    @include m.position(absolute,0,0, null, null)
+    @include m.font(1.2rem, v.$button-font-color, normal);
 }
 
 .policy_container{
@@ -174,45 +256,170 @@ footer>.footer-nav{
     position: relative;
 }
 
-.policy_container>button,
 .policy_container>button{
-    @include m.font(1.3rem, var(--color-light),n);
-
+    @include m.font(1.3rem, var(--color-light),normal);
 }
+
 .policy_container>button:hover,
 .policy_container>button:active{
-    color: var(--color-primary)
+    color: var(--color-secondary)
 }
 
 // *************************************
+// ********ErrorModalWindow*****
+// **************************************
+
+.errorQuestion{
+    font-size: 3rem;
+}
+.errorButtons{
+    @include m.flex-row(5rem, center, space-between);
+}
+
+.retryButton{
+    @include m.font(2rem, v.$green-button, bold);
+}
+
+.retryButton:hover,
+.retryButton:active{
+    color: v.$green-button-hover
+}
+.abortButton{
+    @include m.font(2rem, v.$red-button, bold);
+}
+.abortButton:hover,
+.abortButton:active{
+    color: v.$red-button-hover;
+}
+// *************************************
+// ********Car-Page*********************
+// **************************************
+.car-container{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(80vh, min-content)80vh 50vh ;
+    grid-template-areas: 
+      "flexExperience "
+      "chooseUs"
+      "aboutUs"
+    ;
+    $car-container-areas: (
+    ".experience-block": flexExperience,
+    ".chooseBlock": chooseUs,
+    ".aboutUsBlock": aboutUs,
+    );
+
+    @include m.grid-area($car-container-areas);
+}
+
+// ****************experience-block****
+// *************************************
+.experience-block{
+    position: relative; //for Hint
+
+    background-image: 
+        var(--background-grad-primary),
+        url('/images/bckgrnd1.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    padding: 2rem;
+    display: grid;;
+    grid-template-rows: 1fr auto 1fr ;
+    grid-template-areas: 
+      "textt"
+      "result"
+      "selectors-buttons"
+    ;
+    $experience-block-areas: (
+    ".textt": textt,
+    ".topCarSite":result,
+    ".selector-button-wrap": selectors-buttons
+    );
+
+    @include m.grid-area($experience-block-areas);
+    place-items: center;
+
+}
+
+.experience-block .textt{
+    @include m.size (60%, 60%, inherit);
+    text-align: center;
+    @include m.flex-col(2rem, center, center);
+}
+
+.experience-block .textt .first{
+    @include m.flex-row(2rem, center, center);
+    @include m.font(1.5rem, var(--color-primary), normal)
+}
+.experience-block  .textt .second{
+    @include m.flex-row(2rem, center, center);
+    @include m.font(4.6rem, var(--color-primary), bold);
+    text-transform: uppercase;
+}
+.experience-block .textt .third{
+    width: 60%;
+    @include m.flex-row(2rem, center, center, wrap);
+    @include m.font(2rem, var(--color-primary), normal);
+    line-height: 2.7rem;
+}
+
+.topCarSite{
+    @include m.flex-row(10rem,space-between, center);
+    @include m.size(100%, 40%);
+    align-self: start;
+    padding: 3rem;
+}
+
+.selector-button-wrap{
+   
+    @include m.size(90%, 70%, var(--selbutBlock-background-primary));
+    border-radius: 30px;
+    padding-left: 4rem;
+
+
+    display: grid;
+    grid-template-columns: 75% 25%;
+    grid-template-areas: 
+      "selectors buttons"
+    ;
+    $experience-block-areas: (
+    ".selector_container": selectors,
+    ".analyze_button_container": buttons,
+    );
+
+    @include m.grid-area($experience-block-areas);
+    place-items: center;
+
+}
 // ********Selector-Block*****
 // ***************************************
 .selector_container{
-    @include m.size(90vw,30vh, transparent);
+    @include m.size(100%,80%, transparent);
     @include m.flex-row(2rem, space-around, center, wrap)
-
-
 }
-
-// *************************************
 // ********analyze - newCar Buttons*****
 // ***************************************
 .analyze_button_container{
-    @include m.flex-row(n, space-around, center);
-    width: 40vw;
-    align-self: start;
+    @include m.flex-col(n, space-around, center);
+    width: 100%;
+    height: 80%;
 }
 .analyze_button_container button{
-    @include m.size(15vw, 5rem);
-    @include m.font (1.5rem, white, bold );
+    @include m.size(60%, 5.8rem);
+    border-radius: var(--border-radius);
+    @include m.font (2.2rem, v.$button-font-color, 500 );
     padding:1rem;
 }
 
 .analyze_button_container .disabled_button{
-    background-color: v.$green-button-disabled;
+    background-attachment: v.$green-button;
+    background-color: var(--green-button-disabled, #{v.$green-button});
     cursor: not-allowed;
     transform:none;
-     transition-property: background-color;
+    transition-property: background-color;
     transition-duration: 200ms;
 }
 
@@ -224,24 +431,156 @@ footer>.footer-nav{
 .analyze_button_container .enabled_button:hover{
     background-color: v.$green-button-hover;
 }
+
+// ****************chooseBlock**********
+// *************************************
+.chooseBlock{
+    @include m.size(100%, 100%, inherit);
+    background: var(--background-grad-blue, inherit);
+
+    display: grid;
+    grid-template-rows: 1fr 4fr ;
+    grid-template-columns: 1fr 4fr 4fr 4fr 1fr;
+    grid-template-areas: 
+      ". chooseTitle chooseTitle chooseTitle ."
+      ". choose-us-1 choose-us-2 choose-us-3 ." 
+    ;
+    $choose-block-areas: (
+    ".choose-us-title": chooseTitle,
+    ".choose-us-1": choose-us-1,
+    ".choose-us-2": choose-us-2,
+    ".choose-us-3": choose-us-3,
+    );
+
+    @include m.grid-area($choose-block-areas);
+    place-items: center;
+
+}
+
+.choose-us-title{
+    @include m.size(100%, 100%);
+    @include m.font(5rem, var(--color-secondary), bold);
+    @include m.flex();
+}
+
+.choose-us-1,
+.choose-us-2,
+.choose-us-3
+{   
+    @include m.size(90%, 90%, var(--background-secondary));
+    border-radius: 30px;
+    text-align: center;
+
+    display: grid;
+    grid-template-rows: 1fr 1fr ;
+    grid-template-areas: 
+      "chooseImage"
+      "chooseText" 
+    ;
+    $experience-block-areas: (
+    ".choose-us-title": chooseImage,
+    ".choose-us-1": chooseText
+    );
+}
+
+.chooseImage{
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom: 5px solid var(--green-button);
+}
+
+.choose-us-1 .chooseImage{
+    background-image: url('/images/choose-1.jpg');
+}
+.choose-us-2 .chooseImage{
+    background-image: url('/images/choose-2.jpg');
+}
+.choose-us-3 .chooseImage{
+    background-image: url('/images/choose-3.jpg');
+}
+
+.chooseText{
+    padding: 4rem;
+    @include m.font(1.8rem, var(--color-primary), normal);
+    line-height: 2.5rem;
+}
+
+
+
+// ****************aboutUSBlock**********
+// *************************************
+.aboutUsBlock{
+    width: 100%;
+    height: 100%;
+    background-image: 
+        var(--background-grad-secondary),
+        url('/images/bckgrnd2.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: grid;
+    grid-template-columns: 1fr 5fr 5fr 5fr 1fr;
+    grid-template-areas: 
+      ". about-1 about-2 about-3 ." 
+    ;
+    $about-block-areas: (
+    ".about-1": about-1,
+    ".about-2": about-2,
+    ".about-3": about-3,
+    );
+
+    @include m.grid-area($about-block-areas);
+    align-self: start;
+    justify-self: center;
+}
+
+.about{
+    @include m.flex-col(2rem, start, center);
+    padding: 3rem;
+}
+
+.icon{
+    @include m.size(8rem, 8rem, none);
+    @include m.flex();
+    background:var(--icon-gradient);
+    border-radius: 2rem;
+    padding: 2rem;
+}
+.about p{
+    @include m.font(1.8rem, var(--color-primary), inherit);
+    line-height:3rem;
+}
+
+.about .icon+p{
+    font-weight: bold;
+    text-align: center;
+
+}
+
+.about .icon+p+p{
+    text-align: center;
+}
+
 // ******************************************
 // ************HintTour**********************
 // ******************************************
 .hint_container{
     @include m.position(absolute);
     @include m.flex-col (1rem, center, center);
-    @include m.font(1.4rem, var(--color-title), bold);
+    @include m.font(1.2rem, var(--color-title), normal);
     background-color: var(--background-secondary);
     border: transparent;
-    border-radius: 5px;
+    border-radius: 15px;
     padding: 1rem;
+    padding-top: 2rem;
     margin: 0;
 }
 
 .hint_container>.small_element{
-    // @include m.hcenter(absolute);
     @include m.position(absolute, var(--tip-offset), null,null,-10px);
-    // bottom:-10px;
     width: 0;
     height: 0;
     border-left:10px solid transparent;
@@ -261,21 +600,14 @@ footer>.footer-nav{
 }
 
 // *******************************************
-.car-container{
-    position: relative;
-}
 
-.topCarSite{
-    @include m.flex-row(10rem,space-between, center);
-    @include m.size(100%, 40%);
-}
 // *********************************************
 // *********************************************
 .carData{
     @include m.size(40%, 90%, transparent);
     @include m.flex-col(2rem, left, start);
-    margin-left: 2rem;    
-}
+    margin-left: 2rem;  
+  }
 
 .carData>h2{
     color: v.$green-button;
@@ -313,11 +645,11 @@ footer>.footer-nav{
 .speedNums{
    font-size: 1rem; 
    font-weight: bold;
-   fill:var(--color-secondary);
+   fill:var(--color-primary);
 }
 
 .speedTicks{
-     stroke:var(--color-secondary);
+     stroke:var(--color-primary);
      stroke-width:1px;
 }
 
