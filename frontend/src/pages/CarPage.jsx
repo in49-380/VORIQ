@@ -94,7 +94,36 @@ const CarPage = () => {
            <p className='third'>{t('experience.bigText2')}</p>
          </div>
   
-         <div className='topCarSite'>
+       
+  
+          <div className='selector-button-wrap'>
+            <SelectorBlock
+              brand={brand}
+              model={model}
+              year={year}
+              engine={engine}
+              transmission={transmission}
+              wheel={wheel}
+              setCurrentStep={setCurrentStep}
+            />
+      
+            <ButtonBlock
+              brand={brand}
+              model={model}
+              year={year}
+              engine={engine}
+              transmission={transmission}
+              wheel={wheel}
+              setCurrentStep={setCurrentStep}
+            />
+          </div>
+       </div>   
+  
+        <HintBox
+              currentStep={currentStep}
+              setCurrentStep={setCurrentStep}
+        />
+       <div className='topCarSite'>
        { currentStep>6 && !isNewSearch && hasAllValues &&
         <div className='carData'>
             <h2>You have selected this car:</h2>
@@ -126,35 +155,6 @@ const CarPage = () => {
             <h2>* Not necessarily here — it will depend on the design — but they will be shown.</h2>
         </div>}
       </div>
-  
-          <div className='selector-button-wrap'>
-            <SelectorBlock
-              brand={brand}
-              model={model}
-              year={year}
-              engine={engine}
-              transmission={transmission}
-              wheel={wheel}
-              setCurrentStep={setCurrentStep}
-            />
-      
-            <ButtonBlock
-              brand={brand}
-              model={model}
-              year={year}
-              engine={engine}
-              transmission={transmission}
-              wheel={wheel}
-              setCurrentStep={setCurrentStep}
-            />
-          </div>
-       </div>   
-  
-        <HintBox
-              currentStep={currentStep}
-              setCurrentStep={setCurrentStep}
-        />
-     
   
   
   

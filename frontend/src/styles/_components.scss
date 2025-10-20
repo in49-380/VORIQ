@@ -298,14 +298,16 @@ footer>.allrights{
     width: 100%;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: minmax(80vh, min-content)80vh 50vh ;
+    grid-template-rows: 80vh auto 80vh 50vh ;
     grid-template-areas: 
       "flexExperience "
+      "result"
       "chooseUs"
       "aboutUs"
     ;
     $car-container-areas: (
     ".experience-block": flexExperience,
+    ".topCarSite":result, "result"
     ".chooseBlock": chooseUs,
     ".aboutUsBlock": aboutUs,
     );
@@ -327,15 +329,14 @@ footer>.allrights{
 
     padding: 2rem;
     display: grid;;
-    grid-template-rows: 1fr auto 1fr ;
+    grid-template-rows: 1fr 1fr ;
     grid-template-areas: 
       "textt"
-      "result"
       "selectors-buttons"
     ;
     $experience-block-areas: (
     ".textt": textt,
-    ".topCarSite":result,
+    
     ".selector-button-wrap": selectors-buttons
     );
 
@@ -366,12 +367,7 @@ footer>.allrights{
     line-height: 2.7rem;
 }
 
-.topCarSite{
-    @include m.flex-row(10rem,space-between, center);
-    @include m.size(100%, 40%);
-    align-self: start;
-    padding: 3rem;
-}
+
 
 .selector-button-wrap{
    
@@ -431,7 +427,40 @@ footer>.allrights{
 .analyze_button_container .enabled_button:hover{
     background-color: v.$green-button-hover;
 }
+// ****************resultBlock**********
+// *************************************
+.topCarSite{
+    @include m.flex-row(10rem,space-between, center);
+    @include m.size(100%, 40%);
+    align-self: start;
+}
 
+.carData{
+    @include m.size(40%, 90%, transparent);
+    @include m.flex-col(2rem, left, start);
+    margin-left:5rem;  
+    padding: 3rem;
+
+  }
+
+.carData>h2{
+    color: v.$green-button;
+}
+
+.resultData{
+    @include m.size(40%, 90%, transparent);
+    @include m.flex-col(2rem, space-between, center);
+    margin-left: 2rem;    
+}
+
+.resultData>h2 {
+    @include m.font(2rem, var(--color-light), normal);
+    text-align: center;
+}
+
+.resultData>h1 {
+    @include m.font(3rem, v.$red-button, normal);
+}
 // ****************chooseBlock**********
 // *************************************
 .chooseBlock{
@@ -602,31 +631,7 @@ footer>.allrights{
 // *******************************************
 
 // *********************************************
-// *********************************************
-.carData{
-    @include m.size(40%, 90%, transparent);
-    @include m.flex-col(2rem, left, start);
-    margin-left: 2rem;  
-  }
 
-.carData>h2{
-    color: v.$green-button;
-}
-
-.resultData{
-    @include m.size(40%, 90%, transparent);
-    @include m.flex-col(2rem, space-between, center);
-    margin-left: 2rem;    
-}
-
-.resultData>h2 {
-    @include m.font(2rem, var(--color-light), normal);
-    text-align: center;
-}
-
-.resultData>h1 {
-    @include m.font(3rem, v.$red-button, normal);
-}
 // *************************************************
 // ******Speedometer*******************************
 // ************************************************
